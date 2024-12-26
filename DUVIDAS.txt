@@ -1,0 +1,361 @@
+<script type="text/javascript">
+
+        let secaoIndex = 0;
+        let produtoGlobalIndex = 0; // Variável global para contar os produtos
+        
+        function adicionarSecao(botao) {
+            secaoIndex++;
+
+            
+            //var s = document.getElementById("numSeccao");
+            //alert(s.value);
+            //s.value = secaoIndex;
+            //document.getElementById('numSeccao').setAttribute("value", 3);
+
+            const primeiraSecao = `
+                <div class="secao">
+                    <h3>Secção: <input type="text" name="seccao_nome_${secaoIndex}" placeholder="Nome da secção"></h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nº</th>
+                                <th>N/REF</th>
+                                <th>Designação</th>
+                                <th>Quantidade</th>
+                                <th>Descrição</th>
+                                <th>Preço Unitário</th>
+                                <th>Preço Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="produtos"></tbody>
+                    </table>
+                    <button type="button" onclick="adicionarProduto(this)">Adicionar Produto</button>
+                    <button type="button" onclick="adicionarSecao(this)">Adicionar Secção</button>
+                </div>
+            `;
+
+            const novaSecao = `
+                <div class="secao">
+                    <h3>Secção: <input type="text" name="secoes[${secaoIndex}][nome]" placeholder="Nome da secção"></h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nº</th>
+                                <th>N/REF</th>
+                                <th>Designação</th>
+                                <th>Quantidade</th>
+                                <th>Descrição</th>
+                                <th>Preço Unitário</th>
+                                <th>Preço Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="produtos"></tbody>
+                    </table>
+                    <button type="button" onclick="adicionarProduto(this)">Adicionar Produto</button>
+                    <button type="button" onclick="adicionarSecao(this)">Adicionar Secção</button>
+                    <button type="button" onclick="removerSecao(this)">Remover Secção</button>
+                </div>
+            `;
+
+            let novaSecaoEl;
+
+            let primeiraSecaoEl;
+
+            if (botao && botao.closest) {
+                // O botão está dentro de uma secção
+                const secaoAtual = botao.closest(".secao");
+                if (secaoAtual) {
+                    if (secaoIndex == 1) {
+                        secaoAtual.insertAdjacentHTML("afterend", primeiraSecao);
+                        primeiraSecaoEl = secaoAtual.nextElementSibling;
+                    }
+                    else{
+                        secaoAtual.insertAdjacentHTML("afterend", novaSecao);
+                        novaSecaoEl = secaoAtual.nextElementSibling; // Seleciona a secção recém-criada
+                    }
+                } else {
+                    console.error("Não foi possível localizar a secção do botão.");
+                }
+            } 
+            else {
+                // Quando chamado sem botão
+                const secoes = document.getElementById("secoes");
+                if (secoes) {
+                    secoes.insertAdjacentHTML("beforeend", primeiraSecao);
+                    primeiraSecaoEl = secoes.lastElementChild; // Seleciona a secção recém-criada
+                    
+                } else {
+                    console.error("Contêiner 'secoes' não encontrado.");
+                }
+            }
+
+            atualizarIndicesGlobais(); // Recalcula os índices após adicionar
+
+            // Adiciona automaticamente um produto na nova secção
+            if (novaSecaoEl) {
+                adicionarProduto(novaSecaoEl.querySelector("button[onclick^='adicionarProduto']"));
+                atualizarBotaoSalvarOrcamento();
+            }else if (primeiraSecaoEl) {
+                adicionarProduto(primeiraSecaoEl.querySelector("button[onclick^='adicionarProduto']"));
+                atualizarBotaoSalvarOrcamento();
+            }
+        }
+
+        function atualizarIndicesGlobais() {
+            const secoes = document.querySelectorAll(".secao");
+            produtoGlobalIndex = 0; // Reinicia o contador global
+            secoes.forEach((secao, secaoIdx) => {
+                const produtos = secao.querySelectorAll(".produtos tr");
+                produtos.forEach((produto, produtoIdx) => {
+                    produtoGlobalIndex++; // Incrementa o índice global
+                    produto.querySelector("td:first-child").textContent = produtoGlobalIndex; // Atualiza o número global
+                    const inputs = produto.querySelectorAll("input");
+                    inputs.forEach((input) => {
+                        const name = input.getAttribute("name");
+                        if (name) {
+                            // Atualiza os índices no atributo name
+                            const novoName = name.replace(
+                                /secoes\[\d+\]\[produtos\]\[\d+\]/,
+                                `secoes[${secaoIdx}][produtos][${produtoIdx}]`
+                            );
+                            input.setAttribute("name", novoName);
+                        }
+                    });
+                });
+
+                // Atualiza o índice da secção no nome dos campos da secção
+                const secaoInputs = secao.querySelectorAll("input[name^='secoes']");
+                secaoInputs.forEach((input) => {
+                    const name = input.getAttribute("name");
+                    const novoName = name.replace(/secoes\[\d+\]/, `secoes[${secaoIdx}]`);
+                    input.setAttribute("name", novoName);
+                });
+            });
+        }
+
+
+        //atualizarCampos ao adicionar produtos
+        function atualizarCampos(campoReferencia) {
+            const referencia = campoReferencia.value;
+            const linha = campoReferencia.closest("tr"); // A linha atual onde o campo está
+            const designacaoCampo = linha.querySelector(".designacao");
+            const valorCampo = linha.querySelector(".valor");
+
+            if (referencia.length > 0) {
+                // Buscar o nome do produto
+                $.ajax({
+                    url: 'ajax.novoOrcamento.php',
+                    type: 'GET',
+                    data: { referencia: referencia, action: 'getName' },
+                    success: function(data) {
+                        designacaoCampo.value = data;
+                    },
+                    error: function() {
+                        console.error('Erro ao buscar o nome.');
+                    }
+                });
+
+                // Buscar o valor do produto
+                $.ajax({
+                    url: 'ajax.novoOrcamento.php',
+                    type: 'GET',
+                    data: { referencia: referencia, action: 'getValue' },
+                    success: function(data) {
+                        valorCampo.value = data;
+                    },
+                    error: function() {
+                        console.error('Erro ao buscar o valor.');
+                    }
+                });
+
+            } else {
+                designacaoCampo.value = '';
+                valorCampo.value = '';
+            }
+            atualizarPrecoTotal(campoReferencia)
+        }
+
+        function atualizarPrecoTotal(elemento) {
+            const linha = elemento.closest("tr");
+            const quantidadeCampo = linha.querySelector(".quantidade");
+            const valorTotalCampo = linha.querySelector(".valorTotal");
+            const valorCampo = linha.querySelector(".valor");
+            const quantidade = parseFloat(quantidadeCampo.value) || 0;
+            const valor = parseFloat(valorCampo.value) || 0;
+            valorTotalCampo.value = (quantidade * valor).toFixed(2);
+        }
+
+        function adicionarProduto(elemento) {
+            console.warn(elemento)
+            const linha = elemento.closest("tr");
+
+            linha.style.display = 'block';
+        }
+
+        function atualizarBotaoSalvarOrcamento() {
+            // Remove o botão de salvar orçamento de todas as secções
+            document.querySelectorAll(".botao-salvar-orcamento").forEach(botao => botao.remove());
+
+            // Adiciona o botão de salvar orçamento na última secção
+            const secoes = document.querySelectorAll(".secao");
+            if (secoes.length > 0) {
+                const ultimaSecao = secoes[secoes.length - 1];
+                /*const botaoSalvar = `
+                    <button id=botSaveBudget type="button" class="botao-salvar-orcamento" onclick="salvarNoServidor()">
+                        Salvar Orçamento
+                    </button>
+                `;*/
+                const botaoSalvar = `
+                    <button id=botSaveBudget type="submit" class="botao-salvar-orcamento">
+                        Salvar Orçamento
+                    </button>
+                `;
+                ultimaSecao.insertAdjacentHTML("beforeend", botaoSalvar);
+            }
+        }
+        
+        function removerSecao(botao) {
+            const secoes = document.querySelectorAll(".secao");
+
+            if (confirm("Tem a certeza que deseja remover esta secção?")) {
+                const secao = botao.closest(".secao");
+                secao.remove(); // Remove a secção
+                atualizarIndicesGlobais(); // Recalcula os índices
+            }
+        }
+
+        function removerLinha(botao) {
+            if (confirm("Tem a certeza que deseja remover este produto?")) {
+                const linha = botao.closest("tr");
+                linha.remove(); // Remove a linha
+                atualizarIndicesGlobais(); // Atualiza os índices globais e locais
+            }
+        }
+
+        
+
+        function capturarDadosParaSalvar() {
+            // Inicializa um array para armazenar todas as seções.
+            const secoes = [];
+
+            // Seleciona todas as seções presentes no documento.
+            document.querySelectorAll(".secao").forEach((secaoEl, secaoIdx) => {
+                // O número da seção é baseado na ordem (índice + 1).
+                const idSection = secaoIdx + 1;
+
+                // Obtém o nome da seção.
+                const nomeSecao = secaoEl.querySelector(`input[name="secoes[${secaoIdx}][nome]"]`)?.value || "";
+
+                // Inicializa um array para armazenar os produtos da seção.
+                const produtos = [];
+
+                // Seleciona todas as linhas de produtos dentro da seção.
+                secaoEl.querySelectorAll(".produtos tr").forEach((produtoEl, produtoIdx) => {
+                    // O número do produto é baseado na ordem (índice + 1).
+                    const orderProduct = produtoIdx + 1;
+
+                    // Obtém os dados dos produtos.
+                    const referencia = produtoEl.querySelector(`input[name="secoes[${secaoIdx}][produtos][${produtoIdx}][referencia]"]`)?.value || "";
+                    let xhr = new XMLHttpRequest();
+                    xhr.open("POST", window.location.href, true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            try {
+                                const resposta = JSON.parse(xhr.responseText);
+
+                                if (resposta.idProduto) {
+                                    document.getElementById("resultado").innerText = `ID do Produto: ${resposta.idProduto}`;
+                                } else {
+                                    document.getElementById("resultado").innerText = resposta.error || "Erro desconhecido.";
+                                }
+                            } catch (e) {
+                                document.getElementById("resultado").innerText = "Erro ao processar a resposta.";
+                                console.error("Erro:", e, xhr.responseText);
+                            }
+                        }
+                    };
+
+                    xhr.send(encodeURIComponent(referencia));
+                        
+                    const designacao = produtoEl.querySelector(`input[name="secoes[${secaoIdx}][produtos][${produtoIdx}][designacao]"]`)?.value || "";
+                    const quantidade = produtoEl.querySelector(`input[name="secoes[${secaoIdx}][produtos][${produtoIdx}][quantidade]"]`)?.value || "0";
+                    const descricao = produtoEl.querySelector(`input[name="secoes[${secaoIdx}][produtos][${produtoIdx}][descricao]"]`)?.value || "";
+                    const precoUnitario = produtoEl.querySelector(`input[name="secoes[${secaoIdx}][produtos][${produtoIdx}][preco_unitario]"]`)?.value || "0";
+
+                    var idProduto = <?php
+                        $idProduto = 0;
+                        if (isset($_POST['referencia'])) {
+                            $referencia = $_POST['referencia'];
+                            $sql = "SELECT product.id FROM product WHERE product.ref = '$referencia'";
+                            $result = $con->query($sql);
+                            if ($result && $result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                $idProduto = $row['id'];
+                            }
+                        }
+                        //echo json_encode($idProduto); 
+                        echo ($idProduto); 
+                        ?>;
+
+                    var idBudget = <?php
+                        $sql = "SELECT MAX(id) AS nextBudget FROM budget;";
+                        $result = $con->query($sql);
+                        if ($result && $result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            $idBudget = $row['nextBudget'] + 1;
+                        }
+                        echo json_encode($idBudget); 
+                    ?>;
+
+                    // Adiciona os dados do produto ao array de produtos.
+                    produtos.push({
+                        idBudget,
+                        idSection,
+                        idProduto,
+                        orderProduct, // Número sequencial do produto.
+                        referencia, // Referência do produto.
+                        designacao, // Designação do produto.
+                        quantidade, // Converte a quantidade para inteiro.
+                        descricao, // Descrição do produto.
+                        precoUnitario: parseFloat(precoUnitario), // Converte o preço unitário para número decimal.
+                    });
+                });
+
+                // Adiciona a seção com seus produtos ao array de seções.
+                secoes.push({
+                    nomeSecao, // Nome da seção.
+                    orderSection, // Número sequencial da seção.
+                    produtos // Array de produtos da seção.
+                });
+            });
+
+            // Retorna o array completo com todas as seções e produtos.
+            return secoes;
+        }
+
+        function salvarNoServidor() {
+            const dados = capturarDadosParaSalvar();
+
+            fetch("../pages/inserirOrcamento.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Dados salvos com sucesso!");
+                } else {
+                    console.error("Erro ao salvar:", data.error);
+                    alert("Erro ao salvar os dados.");
+                }
+            })
+            .catch(error => {
+                console.error("Erro de conexão:", error);
+                alert("Erro de conexão com o servidor.");
+            });
+        }
+    </script>

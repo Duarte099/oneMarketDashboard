@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.bx{
+    font-size: 1.7rem;
+}
+
+a{
+    text-decoration: none;
+}
+
+li{
+    list-style: none;
+}
+
+body{
+    background: #25252c;
+    overflow-x: hidden;
+}
+
+.content main{
+    width: 100%;
+    padding: 36px 24px;
+    max-height: calc(100vh - 56px);
+}
+
+.content main .header h1{
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+/* insights */
+
+.content main .insights{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-gap: 24px;
+    margin-top: 36px;
+}
+
+.content main .insights li{
+    padding: 24px;
+    background: #181a1e;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    grid-gap: 24px;
+}
+
+.content main .insights li .bx{
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    font-size: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content main .insights li:nth-child(1) .bx{
+    color: #fff;
+}
+
+.content main .insights li:nth-child(2) .bx{
+    color: #fff;
+}
+
+.content main .insights li:nth-child(3) .bx{
+    color: #fff;
+}
+
+.content main .insights li:nth-child(4) .bx{
+    color: #fff;
+}
+
+.content main .insights li .info h3{
+    font-size: 24px;
+    font-weight: 600;
+    color: #fbfbfb;
+}
+
+.content main .insights li .info p{
+    color: #fbfbfb;
+}
+
+.content main .bottom-data{
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 24px;
+    margin-top: 24px;
+    width: 100%;
+    color: #fbfbfb;
+}
+
+.content main .bottom-data .header{
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+    margin-bottom: 24px;
+}
+
+.content main .bottom-data .header h3{
+    margin-right: auto;
+    font-size: 24px;
+    font-weight: 600;
+    color: #781215;
+}
+
+.content main .bottom-data .header .bx{
+    color: #781215;
+}
+
+.content main .bottom-data>div{
+    border-radius: 20px;
+    background: #181a1e;
+    padding: 24px;
+    overflow-x: auto;
+}
+
+.content main .bottom-data .tables{
+    flex-grow: 1;
+    flex-basis: 500px;
+}   
+
+.content main .bottom-data .tables table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.content main .bottom-data .tables table th{
+    padding-bottom: 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #25252c;
+}
+
+.content main .bottom-data .tables table td{
+    padding: 16px 0;
+    text-align: center;
+}
+
+.content main .bottom-data .tables table tr td:first-child{
+    align-items: center;
+    grid-gap: 12px;
+    padding-left: 6px;
+}
+
+.content main .bottom-data .tables table td img{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.content main .bottom-data .tables table tbody tr{
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.content main .bottom-data .tables table tbody tr:hover{
+    background: #25252c;
+}
+
+
+@media screen and (max-width: 768px) 
+{
+    .content{
+        width: calc(100% - 60px);
+        left: 200px;
+    }
+
+}
+
+@media screen and (max-width: 576px) 
+{
+    .content main .insights {
+        grid-template-columns: 1fr;
+    }
+
+    .content main .bottom-data .header{
+        min-width: 340px;
+    }
+
+    .content main .bottom-data .tables table{
+        min-width: 340px;
+    }
+}

@@ -1,0 +1,325 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.bx{
+    font-size: 1.7rem;
+}
+
+a{
+    text-decoration: none;
+}
+
+html{
+    overflow-x: hidden;
+}
+
+body{
+    background: #25252c;
+    overflow-x: hidden;
+}
+
+.content main .header .left h1{
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.content main .bottom-data .header{
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+    margin-bottom: 24px;
+}
+
+.content main .bottom-data .header h3{
+    margin-right: auto;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.content main .bottom-data .header .bx{
+    cursor: pointer;
+}
+
+.content main .header .report{
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 36px;
+    background: #781215;
+    color: #181a1e;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    grid-gap: 10px;
+    font-weight: 500;
+}
+
+.content main .header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 16px;
+    flex-wrap: wrap;
+}
+
+.content main{
+    width: 100%;
+    padding: 36px 24px;
+    max-height: calc(100vh - 56px);
+}
+
+.content main .bottom-data{
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 24px;
+    margin-top: 24px;
+    width: 100%;
+    color: #fbfbfb;
+}
+
+.content main .bottom-data>div{
+    border-radius: 20px;
+    background: #181a1e;
+    padding: 24px;
+    overflow-x: auto;
+}
+
+.content main .bottom-data .budget{
+    flex-grow: 1;
+    flex-basis: 500px;
+}
+
+.content main .bottom-data .budget table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.content main .bottom-data .budget table th{
+    padding-bottom: 12px;
+    font-size: 13px;
+    text-align: left;
+    border-bottom: 1px solid #25252c;
+}
+
+.content main .bottom-data .budget table td{
+    padding: 16px 0;
+}
+
+.content main .bottom-data .budget table tr td:first-child{
+    display: flex;
+    align-items: center;
+    grid-gap: 12px;
+    padding-left: 6px;
+}
+
+.content main .bottom-data .budget table tbody tr{
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.content main .bottom-data .budget table tbody tr:hover{
+    background: #25252c;
+}
+
+#budgetModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.modal-overlay {
+    display: none;  
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+.modal {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #181a1e;
+    gap: 12px;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 70%;
+    max-width: 1000px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content .headerModal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-content .headerModal h2 {
+    color: white;
+    margin: 0;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.modal-content .headerModal .close {
+    color: #fff;
+    font-size: 36px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.modal-content .headerModal .close:hover {
+    color: red; 
+}
+
+.modal .tabela {
+    background-color: #25252c;
+    padding: 15px;
+    border-radius: 8px;
+}
+table {
+    width: 100%; 
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    color: white; 
+    text-align: left;
+    padding: 12px 15px; 
+}
+
+table th {
+    font-weight: bold;
+}
+
+table td button.select-budget {
+    background-color: #f04747;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+table td button.select-budget:hover {
+    background-color: #d03c3c; 
+}
+
+.content main .modal-content table tbody tr {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.content main .modal-content table tbody tr:hover {
+    background: #181a1e;
+}
+
+.content main .modal-content form .form-input {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    border: 1px solid #444;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #1e1e24;
+    padding: 0 12px;
+    position: relative;
+}
+
+.content main .modal-content form .form-input input {
+    flex-grow: 1;
+    height: 100%;
+    border: none;
+    background: none;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+}
+
+.content main .modal-content form .form-input .clear-button {
+    position: absolute;
+    right: 0px;
+    color: #fff;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    outline: none;
+    transition: color 0.3s;
+}
+
+.content main .modal-content form .form-input button {
+    width: 50px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #444;
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.content main .modal-content form .form-input .clear-button:hover {
+    color: red;
+}
+
+.content main .modal-content form .form-input button:hover {
+    background: #666;
+}
+
+@media screen and (max-width: 768px) 
+{
+    .content{
+        width: calc(100% - 60px);
+        left: 200px;
+    }
+}
+
+@media screen and (max-width: 576px) 
+{
+    .content main .bottom-data .header{
+        min-width: 340px;
+    }
+
+    .content main .bottom-data .budget table{
+        min-width: 340px;
+    }
+}

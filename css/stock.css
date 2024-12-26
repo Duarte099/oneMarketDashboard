@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.bx{
+    font-size: 1.7rem;
+}
+
+a{
+    text-decoration: none;
+}
+
+li{
+    list-style: none;
+}
+
+html{
+    overflow-x: hidden;
+}
+
+body{
+    background: #25252c;
+    overflow-x: hidden;
+}
+
+.content main .header .left h1{
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.content main .bottom-data .header{
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+    margin-bottom: 24px;
+}
+
+.content main .bottom-data .header h3{
+    margin-right: auto;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.content main .bottom-data .header .bx{
+    cursor: pointer;
+}
+
+.content main .header .report{
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 36px;
+    background: #781215;
+    color: #181a1e;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    grid-gap: 10px;
+    font-weight: 500;
+}
+
+.content main .header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 16px;
+    flex-wrap: wrap;
+}
+
+.content main{
+    width: 100%;
+    padding: 36px 24px;
+    max-height: calc(100vh - 56px);
+}
+
+.content main .bottom-data{
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 24px;
+    margin-top: 24px;
+    width: 100%;
+    color: #fbfbfb;
+}
+
+.content main .bottom-data>div{
+    border-radius: 20px;
+    background: #181a1e;
+    padding: 24px;
+    overflow-x: auto;
+}
+
+.content main .bottom-data .products{
+    flex-grow: 1;
+    flex-basis: 500px;
+}
+
+.content main .bottom-data .products table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.content main .bottom-data .products table th{
+    padding-bottom: 12px;
+    font-size: 13px;
+    text-align: left;
+    border-bottom: 1px solid #25252c;
+}
+
+.content main .bottom-data .products table td{
+    padding: 16px 0;
+}
+
+.content main .bottom-data .products table tr td:first-child{
+    display: flex;
+    align-items: center;
+    grid-gap: 12px;
+    padding-left: 6px;
+}
+
+.content main .bottom-data .products table td img{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.content main .bottom-data .products table tbody tr{
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.content main .bottom-data .products table tbody tr:hover{
+    background: #25252c;
+}
+
+.content main .bottom-data .products table tr td .status{
+    font-size: 10px;
+    padding: 6px 16px;
+    color: #181a1e;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+.content main .bottom-data .products table tr td .status.completed{
+    background: #388E3C;
+}
+
+.content main .bottom-data .products table tr td .status.process{
+    background: #1976D2;
+}
+
+.content main .bottom-data .products table tr td .status.pending{
+    background: #FBC02D;
+}
+
+@media screen and (max-width: 768px) {
+    .content{
+        width: calc(100% - 60px);
+        left: 200px;
+    }
+
+}
+
+@media screen and (max-width: 576px) {
+
+    .content main .bottom-data .header{
+        min-width: 340px;
+    }
+
+    .content main .bottom-data .products table{
+        min-width: 340px;
+    }
+
+}
