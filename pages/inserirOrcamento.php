@@ -7,8 +7,6 @@
         exit();
     }
 
-    print_r($_POST);
-
     $estouEm = 2;
 
     include("../db/conexao.php");
@@ -74,7 +72,7 @@
         $result = $con->prepare($sql);
         $result->execute();
 
-        //secções
+        //secções e produtos
         for ($i=1; $i <= 20; $i++) {
             $secao = mysqli_real_escape_string($con, $_POST['seccao_nome_' . $i]);
             if (!empty($secao)) {
@@ -88,15 +86,29 @@
                 $result = $con->query($sqlSelect);
                 $row = $result->fetch_assoc();
                 $idSecao = $row['id'];
-                
-                
-                
-                $sql = "INSERT INTO budget_sections_products (idBudget, idSection, orderSection, idProduct, orderProduct, refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-                $result = $con->prepare($sql);
-                if ($result) {
-                    $result->bind_param("iiiiissisf", $idBudget, $idSecao, $i, );
+                for ($j=1; $j <= 10; $j++) {
+                    $ref = $_POST['secao_' . $i . '_produto_ref_' . $j];
+                    $designacao = $_POST['secao_' . $i . '_produto_designacao_' . $j];
+                    $quantidade = $_POST['secao_' . $i . '_produto_quantidade_' . $j];
+                    $descricao = $_POST['secao_' . $i . '_produto_descricao_' . $j];
+                    $precoUnitario = $_POST['secao_' . $i . '_produto_preco_unitario_' . $j];
+                    if(!empty($ref) && !empty($designacao) && !empty($descricao) && !empty($precoUnitario)) {
+                        print_r("teste");
+                        $sql = "SELECT product.id FROM product WHERE product.reference = '$ref' 
+                                                                AND product.name = '$designacao' 
+                                                                AND product.value = '$precoUnitario';";
+                        $result = $con->query($sql);
+                        $row = $result->fetch_assoc();
+                        $idProduct = $row['id'];
+
+                        $sql = "INSERT INTO budget_sections_products (idBudget, idSection, orderSection, idProduct, orderProduct, refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                        $result = $con->prepare($sql);
+                        $result->bind_param("iiiiissisf", $idBudget, $idSecao, $i, $idProduct, $j, $ref, $designacao, $quantidade, $descricao, $precoUnitario);
+                        $result->execute();
+                    }
                 }
             }
         }
+        // header('Location: ../pages/orcamentos.php');
     }
 ?>

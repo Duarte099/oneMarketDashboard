@@ -195,18 +195,18 @@
                                                 </tr>
                                             </thead>
                                             <?php 
-                                                for ($j=1; $j <= 20; $j++) { 
+                                                for ($j=1; $j <= 10; $j++) { 
                                                     $produtosIndex++; ?>
                                                     <?php if ($j == 1) { ?>
                                                         <tbody class="produtos">
                                                             <tr>
-                                                                <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $produtosIndex; ?>" readonly></td>
-                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $produtosIndex; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);"></td>
-                                                                <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $produtosIndex; ?>" readonly></td>
-                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $produtosIndex; ?>" value="1" oninput="atualizarPrecoTotal(this)"></td>
-                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $produtosIndex; ?>" ></td>
-                                                                <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $produtosIndex; ?>" readonly></td>
-                                                                <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $produtosIndex; ?>" readonly></td>
+                                                                <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
+                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);"></td>
+                                                                <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" readonly></td>
+                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value="1" oninput="atualizarPrecoTotal(this)"></td>
+                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" ></td>
+                                                                <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" readonly></td>
+                                                                <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" readonly></td>
                                                             </tr>
                                                         </tbody>
                                                         <div id="produtosModal-<?php echo $produtosIndex; ?>" class="modal">
@@ -215,13 +215,13 @@
                                                     <?php } else { ?>
                                                         <tbody class="produtos" style="display: none;">
                                                             <tr>
-                                                                <td><input type="number" class="id" name="secao_<?php echo $i; ?>_index_<?php echo $produtosIndex; ?>" readonly></td>
-                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $produtosIndex; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);"></td>
-                                                                <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_designacao_<?php echo $produtosIndex; ?>" readonly></td>
-                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_quantidade_<?php echo $produtosIndex; ?>" value="1" oninput="atualizarPrecoTotal(this)"></td>
-                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_descricao_<?php echo $produtosIndex; ?>" ></td>
-                                                                <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_preco_unitario_<?php echo $produtosIndex; ?>" readonly></td>
-                                                                <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_preco_total_<?php echo $produtosIndex; ?>" readonly></td>
+                                                                <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
+                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);"></td>
+                                                                <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" readonly></td>
+                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value="1" oninput="atualizarPrecoTotal(this)"></td>
+                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" ></td>
+                                                                <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" readonly></td>
+                                                                <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" readonly></td>
                                                             </tr>
                                                         </tbody>
                                                         <div id="produtosModal-<?php echo $produtosIndex; ?>" class="modal">
