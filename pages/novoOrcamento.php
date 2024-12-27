@@ -206,15 +206,5 @@
         <!-- <input type=text id=numSeccao name=numSeccao value=1> -->
         </form>
     </div>
-    <script>
-        // $(document).ready(function() {
-
-        //     $( "#botSaveBudget2" ).on( "click", function() {
-        //         alert( "vai fazer algo !!!"  + $(this).data('num'));
-        //     } );
-
-
-        // });
-    </script>
 </body>
 </html>

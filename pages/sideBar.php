@@ -3,7 +3,7 @@
 <!-- Sidebar -->
 <div class="sidebar">
     <a href="../pages/dashboard.php" class="logo">
-        <img src="../images/logoOnemarketBrancoLetras.png">
+        <img src="../images/logoOnemarketBranco.png">
     </a>
     <ul class="side-menu">
         <li class="<?php echo ($estouEm == 1) ? 'active' : ''; ?>">

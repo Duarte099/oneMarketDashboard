@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="../css/orcamentos.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Orçamentos</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -161,13 +162,14 @@
 
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
-                                        echo "<tr onclick=\"handleRowClick('{$row['idbudget']}', 'editBudget')\" style=\"cursor: pointer;\">
+                                        echo "<tr onclick=\"handleRowClick('{$row['idbudget']}', 'editBudget')\" style=\"cursor: pointer; position: relative;\">
                                             <td>" . $row['numBudget'] . "/" . $row['yearBudget'] . "</td>
                                             <td>{$row['nomeCliente']}</td>
                                             <td>{$row['contactoCliente']}</td>
                                             <td>{$row['nomeWorksheet']}</td>
                                             <td>{$row['dataCriacao']}</td>
                                             <td>{$row['responsavel']}</td>
+                                            <td><button class='btn-small' id='botDeleteBudget' onclick=\"deleteBudget('{$row['numBudget']}/{$row['yearBudget']}'); event.stopPropagation();\">🗑️</button></td>
                                         </tr>";
                                     }
                                 } else {
@@ -179,10 +181,36 @@
                 </div>
             </div>
         </main>
-
         <script src="../index.js" defer></script>
-
+        <script>
+            function deleteBudget(id) {
+                console.log("ID do orçamento a ser excluído:", id);
+                const result = confirm("Tem a certeza que deseja eliminar o orçamento " + id + "?");
+                if (result) {
+                    fetch(`deleteBudget.php?idBudget=${encodeURIComponent(id)}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                    })
+                    .then(response => {
+                        console.log("Resposta do servidor:", response);
+                        if (!response.ok) {
+                            throw new Error(`Erro HTTP! Status: ${response.status}`);
+                        }
+                        return response.text(); // Ou .json() dependendo do que o servidor retorna
+                    })
+                    .then(data => {
+                        console.log("Dados retornados:", data);
+                        alert('Orçamento eliminado com sucesso.');
+                    })
+                    .catch(error => {
+                        console.error("Erro ao executar o fetch:", error);
+                        alert("Ocorreu um erro ao eliminar o orçamento.");
+                    });
+                }
+            }
+        </script>
     </div>
 </body>
-
 </html>

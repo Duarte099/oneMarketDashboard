@@ -156,11 +156,19 @@
                             <?php 
                                 $produtosIndex = 0; 
                                 for ($i=1; $i <= 20; $i++) { 
+                                    $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i';";
+                                    $result = $con->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        $row = $result->fetch_assoc();
+                                        $numProducts = $row['numProducts'];
+                                    }
+
                                     $sql = "SELECT budget_sections.name 
                                             FROM budget_sections 
                                             JOIN budget_sections_products 
                                             ON budget_sections.id = budget_sections_products.idSection 
-                                            AND budget_sections_products.orderSection = $i;";
+                                            AND budget_sections_products.orderSection = $i
+                                            AND budget_sections_products.idBudget = $idBudget;";
                                     $result = $con->query($sql);
                                 
                                     if ($result->num_rows > 0) {
@@ -197,7 +205,7 @@
                                             <?php 
                                                 for ($j=1; $j <= 10; $j++) { 
                                                     $produtosIndex++; ?>
-                                                    <?php if ($j == 1) { ?>
+                                                    <?php if ($j == 1 || $j <= $numProducts) { ?>
                                                         <tbody class="produtos">
                                                             <tr>
                                                                 <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
