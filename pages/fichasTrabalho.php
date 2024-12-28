@@ -55,6 +55,98 @@
                 </a>
             </div>
 
+            <div id="budgetModal" class="modal">
+                <div class="modal-content">
+                    <div class="headerModal">
+                        <h2>Selecione um Orçamento</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <form method="GET" action="">
+                        <div class="form-input">
+                            <input id="search-input" name="search-input" type="text" placeholder="Search..." value="<?=$pesquisa?>">
+                            <button type="button" class="clear-button" onclick="limparPesquisa()">✖</button>
+                        </div>
+                    </form>
+                    <div class="tabela">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Num</th>
+                                    <th>Nome</th>
+                                    <th>Cliente</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    if (isset($_GET['search-input']) && !empty($_GET['search-input'])) {
+                                        $pesquisa = $con->real_escape_string($_GET['search-input']);
+                                        $sql = "SELECT 
+                                                    budget.id as idBudget,
+                                                    budget.num as numBudget,
+                                                    budget.year as yearBudget,
+                                                    budget.name as nomeBudget,
+                                                    client.name as nomeCliente, 
+                                                    budget.created as dataCriacao,
+                                                    administrator.name as responsavel
+                                                FROM budget 
+                                                LEFT JOIN administrator ON budget.createdBy = administrator.id
+                                                LEFT JOIN client ON budget.idClient = client.id
+                                                LEFT JOIN project_type ON budget.idProjectType = project_type.id
+                                                WHERE idWorksheet IS NULL 
+                                                AND (
+                                                    budget.name LIKE '%$pesquisa%' 
+                                                    OR client.name LIKE '%$pesquisa%'
+                                                    OR project_type.name LIKE '%$pesquisa%'
+                                                    OR budget.created LIKE '%$pesquisa%'
+                                                    OR administrator.name LIKE '%$pesquisa%'
+                                                )
+                                                ORDER BY budget.id DESC";
+                                    } else {
+                                        $sql = "SELECT 
+                                                    budget.id as idBudget,
+                                                    budget.num as numBudget,
+                                                    budget.year as yearBudget,
+                                                    budget.name as nomeBudget,
+                                                    client.name as nomeCliente, 
+                                                    budget.created as dataCriacao,
+                                                    administrator.name as responsavel
+                                                FROM budget 
+                                                LEFT JOIN administrator ON budget.createdBy = administrator.id
+                                                LEFT JOIN client ON budget.idClient = client.id
+                                                WHERE idWorksheet IS NULL 
+                                                ORDER BY budget.id DESC 
+                                                LIMIT 10;";
+                                    }
+
+                                    $result = $con->query($sql);
+                                    if (!$result) {
+                                        die("Erro na consulta: " . $con->error);
+                                    }
+
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<tr onclick=\"handleRowClick('{$row['idBudget']}', 'worksheet')\" style=\"cursor: pointer;\">
+                                                <td>" . $row['numBudget'] . "/" . $row['yearBudget'] . "</td>
+                                                <td>{$row['nomeBudget']}</td>
+                                                <td>{$row['nomeCliente']}</td>
+                                            </tr>";
+                                        }
+                                    } else {
+                                        
+                                        echo "<tr><td colspan='5'>Sem orçamentos disponíveis.</td></tr>";
+                                        echo "<tr><td colspan='5' style='text-align: center; padding-top: 10px;'>
+                                            <a href='../pages/novoCliente.php' style='display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;'>
+                                                Criar Novo Cliente
+                                            </a>
+                                        </td></tr>";
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <div class="bottom-data">
                 <div class="budget">
                     <table>
@@ -108,95 +200,6 @@
                 </div>
             </div>
 
-            <!-- Modal -->
-            <div id="budgetModal" class="modal">
-                <div class="modal-content">
-                    <div class="headerModal">
-                        <h2>Selecione um Orçamento</h2>
-                        <span class="close">&times;</span>
-                    </div>
-                    <form method="GET" action="">
-                        <div class="form-input">
-                            <input id="search-input" name="search-input" type="text" placeholder="Search..." value="<?=$pesquisa?>">
-                            <button type="button" class="clear-button" onclick="limparPesquisa()">✖</button>
-                        </div>
-                    </form>
-                    <div class="tabela">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Cliente</th>
-                                    <th>Tipo Projeto</th>
-                                    <th>Data Criação</th>
-                                    <th>Elaborado Por</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    if (isset($_GET['search-input']) && !empty($_GET['search-input'])) {
-                                        $pesquisa = $con->real_escape_string($_GET['search-input']);
-                                        $sql = "SELECT 
-                                                    budget.id as idBudget,
-                                                    budget.name as nomeBudget,
-                                                    client.name as nomeCliente, 
-                                                    project_type.name as projectType,
-                                                    budget.created as dataCriacao,
-                                                    administrator.name as responsavel
-                                                FROM budget 
-                                                LEFT JOIN administrator ON budget.createdBy = administrator.id
-                                                LEFT JOIN client ON budget.idClient = client.id
-                                                LEFT JOIN project_type ON budget.idProjectType = project_type.id
-                                                WHERE idWorksheet IS NULL 
-                                                AND (
-                                                    budget.name LIKE '%$pesquisa%' 
-                                                    OR client.name LIKE '%$pesquisa%'
-                                                    OR project_type.name LIKE '%$pesquisa%'
-                                                    OR budget.created LIKE '%$pesquisa%'
-                                                    OR administrator.name LIKE '%$pesquisa%'
-                                                )
-                                                ORDER BY budget.id DESC";
-                                    } else {
-                                        $sql = "SELECT 
-                                                    budget.id as idBudget,
-                                                    budget.name as nomeBudget,
-                                                    client.name as nomeCliente, 
-                                                    project_type.name as projectType,
-                                                    budget.created as dataCriacao,
-                                                    administrator.name as responsavel
-                                                FROM budget 
-                                                LEFT JOIN administrator ON budget.createdBy = administrator.id
-                                                LEFT JOIN client ON budget.idClient = client.id
-                                                LEFT JOIN project_type ON budget.idProjectType = project_type.id
-                                                WHERE idWorksheet IS NULL 
-                                                ORDER BY budget.id DESC 
-                                                LIMIT 10;";
-                                    }
-
-                                    $result = $con->query($sql);
-                                    if (!$result) {
-                                        die("Erro na consulta: " . $con->error);
-                                    }
-
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo "<tr onclick=\"handleRowClick('{$row['idBudget']}', 'worksheet')\" style=\"cursor: pointer;\">
-                                                <td>{$row['nomeBudget']}</td>
-                                                <td>{$row['nomeCliente']}</td>
-                                                <td>{$row['projectType']}</td>
-                                                <td>{$row['dataCriacao']}</td>
-                                                <td>{$row['responsavel']}</td>
-                                            </tr>";
-                                        }
-                                    } else {
-                                        echo "<tr><td colspan='5'>Sem orçamentos disponíveis.</td></tr>";
-                                    }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
         </main>
 
         <script src="../index.js" defer>

@@ -12,7 +12,6 @@
 
     $op = '';
     $idCliente = $_GET['idClient'];
-    if (isset($_GET['op'])) $op = $_GET['op'];
 
     if ($op == 'save') {
         $numSeccao  = 10;
