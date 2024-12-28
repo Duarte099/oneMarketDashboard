@@ -16,5 +16,5 @@
     $result = $con->prepare($sql);
     $result->execute();
 
-    header("Location: " . $_SERVER['PHP_SELF']);
+    // header('Location: ../pages/orcamentos.php');
 ?>

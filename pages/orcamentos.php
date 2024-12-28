@@ -187,26 +187,14 @@
                 console.log("ID do orçamento a ser excluído:", id);
                 const result = confirm("Tem a certeza que deseja eliminar o orçamento " + id + "?");
                 if (result) {
-                    fetch(`deleteBudget.php?idBudget=${encodeURIComponent(id)}`, {
+                    fetch(`./deleteBudget.php?id=${encodeURIComponent(id)}`, {
                         method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
                     })
-                    .then(response => {
-                        console.log("Resposta do servidor:", response);
-                        if (!response.ok) {
-                            throw new Error(`Erro HTTP! Status: ${response.status}`);
-                        }
-                        return response.text(); // Ou .json() dependendo do que o servidor retorna
-                    })
-                    .then(data => {
-                        console.log("Dados retornados:", data);
-                        alert('Orçamento eliminado com sucesso.');
+                    .then(() => {
+                        console.log("ID enviado com sucesso via GET.");
                     })
                     .catch(error => {
-                        console.error("Erro ao executar o fetch:", error);
-                        alert("Ocorreu um erro ao eliminar o orçamento.");
+                        console.error("Erro ao enviar ID:", error);
                     });
                 }
             }

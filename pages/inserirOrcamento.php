@@ -88,22 +88,33 @@
                 $row = $result->fetch_assoc();
                 $idSecao = $row['id'];
                 for ($j=1; $j <= 10; $j++) {
+                    // $index = $_POST['secao_' . $i . '_produto_index_' . $j];
                     $ref = trim($_POST['secao_' . $i . '_produto_ref_' . $j]);
                     $designacao = $_POST['secao_' . $i . '_produto_designacao_' . $j];
                     $quantidade = $_POST['secao_' . $i . '_produto_quantidade_' . $j];
                     $descricao = $_POST['secao_' . $i . '_produto_descricao_' . $j];
                     $precoUnitario = trim($_POST['secao_' . $i . '_produto_preco_unitario_' . $j]);
-                    if(!empty($ref) && !empty($designacao) && !empty($descricao) && !empty($precoUnitario)) {
+                    if(!empty($ref) && !empty($designacao) && !empty($precoUnitario)) {
                         $sql = "SELECT id FROM product WHERE product.reference = '$ref';";
                         $result = $con->query($sql);
                         if ($result->num_rows > 0) {
                             $row = $result->fetch_assoc();
                             $idProduct = $row['id'];
                         }
-                        $sql = "INSERT INTO budget_sections_products (idBudget, idSection, orderSection, idProduct, orderProduct, refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-                        $result = $con->prepare($sql);
-                        $result->bind_param("iiiiissisd", $idBudget, $idSecao, $i, $idProduct, $j, $ref, $designacao, $quantidade, $descricao, $precoUnitario);
-                        $result->execute();
+
+                        // Verificar se o produto já está associado ao orçamento
+                        $sqlCheck = "SELECT * FROM budget_sections_products 
+                                        WHERE idBudget = ? AND idSection = ? AND idProduct = ? AND orderSection = ? AND orderProduct = ?";
+                        $check = $con->prepare($sqlCheck);
+                        $check->bind_param("iiiii", $idBudget, $idSecao, $idProduct, $i, $j);
+                        $check->execute();
+                        $checkResult = $check->get_result();
+                        if ($checkResult->num_rows == 0) {
+                            $sql = "INSERT INTO budget_sections_products (idBudget, idSection, orderSection, idProduct, orderProduct, refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                            $result = $con->prepare($sql);
+                            $result->bind_param("iiiiissisd", $idBudget, $idSecao, $i, $idProduct, $j, $ref, $designacao, $quantidade, $descricao, $precoUnitario);
+                            $result->execute();
+                        }
                     }
                 }
             }

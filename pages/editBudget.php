@@ -156,14 +156,14 @@
                             <?php 
                                 $produtosIndex = 0; 
                                 for ($i=1; $i <= 20; $i++) { 
-                                    $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i';";
+                                    $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0;";
                                     $result = $con->query($sql);
                                     if ($result->num_rows > 0) {
                                         $row = $result->fetch_assoc();
                                         $numProducts = $row['numProducts'];
                                     }
 
-                                    $sql = "SELECT budget_sections.name 
+                                    $sql = "SELECT budget_sections.name
                                             FROM budget_sections 
                                             JOIN budget_sections_products 
                                             ON budget_sections.id = budget_sections_products.idSection 
@@ -204,17 +204,35 @@
                                             </thead>
                                             <?php 
                                                 for ($j=1; $j <= 10; $j++) { 
-                                                    $produtosIndex++; ?>
+                                                    $produtosIndex++; 
+                                                    $refProduct = '';
+                                                    $nameProduct = '';
+                                                    $amountProduct = 0;
+                                                    $descriptionProduct = '';
+                                                    $valueProduct = 0;?>
                                                     <?php if ($j == 1 || $j <= $numProducts) { ?>
                                                         <tbody class="produtos">
                                                             <tr>
+                                                                <?php 
+                                                                    $sql = "SELECT refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderProduct = '$j' AND orderSection = '$i';";
+                                                                    $result = $con->query($sql);
+                                                                    if ($result->num_rows > 0) {
+                                                                        while ($row = $result->fetch_assoc()) {
+                                                                            $refProduct = $row['refProduct'];
+                                                                            $nameProduct = $row['nameProduct'];
+                                                                            $amountProduct = $row['amountProduct'];
+                                                                            $descriptionProduct = $row['descriptionProduct'];
+                                                                            $valueProduct = $row['valueProduct'];
+                                                                        }
+                                                                    }
+                                                                ?>
                                                                 <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
-                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);"></td>
-                                                                <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" readonly></td>
-                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value="1" oninput="atualizarPrecoTotal(this)"></td>
-                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" ></td>
-                                                                <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" readonly></td>
-                                                                <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" readonly></td>
+                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);"></td>
+                                                                <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value = "<?php echo $nameProduct; ?>" readonly></td>
+                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value = "<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" oninput="atualizarPrecoTotal(this)"></td>
+                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" value = "<?php echo $descriptionProduct; ?>"></td>
+                                                                <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" value = "<?php echo $valueProduct; ?>" readonly></td>
+                                                                <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" value = "<?php echo $amountProduct * $valueProduct;?>" readonly></td>
                                                             </tr>
                                                         </tbody>
                                                         <div id="produtosModal-<?php echo $produtosIndex; ?>" class="modal">
