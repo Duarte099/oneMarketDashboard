@@ -108,12 +108,16 @@
                                 <div class="section-group">
                                     <label>Ficha de Trabalho:</label>
                                     <input type="text" name="fichaTrabalho" required readonly value="<?php 
-                                        $sql = "SELECT worksheet.name FROM worksheet WHERE worksheet.idBudget = $idBudget;";
+                                        $numFichaTrabalho = "";
+                                        $sql = "SELECT num, year FROM worksheet WHERE idBudget = $idBudget;";
                                         $result = $con->query($sql);
                                         if ($result->num_rows > 0) {
                                             $row = $result->fetch_assoc();
-                                            echo $row['name'];
+                                            $numWorksheet = $row['num'];
+                                            $yearWorksheet = $row['year'];
+                                            $numFichaTrabalho = "$numWorksheet/$yearWorksheet";
                                         }
+                                        echo $numFichaTrabalho;
                                     ?>">
                                 </div>
                             </div>

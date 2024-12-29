@@ -110,19 +110,12 @@ body{
 .content main .bottom-data .budget table th{
     padding-bottom: 12px;
     font-size: 13px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #25252c;
 }
 
 .content main .bottom-data .budget table td{
     padding: 16px 0;
-}
-
-.content main .bottom-data .budget table tr td:first-child{
-    display: flex;
-    align-items: center;
-    grid-gap: 12px;
-    padding-left: 6px;
 }
 
 .content main .bottom-data .budget table tbody tr{
@@ -239,12 +232,13 @@ body{
 table {
     width: 100%; 
     border-collapse: collapse;
+    text-align: center;
     margin-top: 10px;
 }
 
 table th, table td {
     color: white; 
-    text-align: left;
+    text-align: center;
     padding: 12px 15px; 
 }
 

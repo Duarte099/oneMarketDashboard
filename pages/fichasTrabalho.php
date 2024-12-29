@@ -152,6 +152,7 @@
                     <table>
                         <thead>
                             <tr>
+                                <th>Numero</th>
                                 <th>Cliente</th>
                                 <th>Contato</th>
                                 <th>Nº Orçamento</th>
@@ -166,7 +167,12 @@
                                 $sql = "SELECT 
                                             client.name as nomeCliente, 
                                             client.contact as contactoCliente, 
-                                            budget.id as idBudget, 
+                                            budget.id as idBudget,
+                                            budget.num as numBudget,
+                                            budget.year as yearBudget, 
+                                            worksheet.id as idWorksheet,
+                                            worksheet.num as numWorksheet,
+                                            worksheet.year as yearWorksheet, 
                                             worksheet.readyStorage, 
                                             worksheet.joinWork, 
                                             worksheet.exitWork, 
@@ -177,14 +183,16 @@
                                         LEFT JOIN 
                                             administrator ON worksheet.createdBy = administrator.id
                                         LEFT JOIN 
-                                            budget ON worksheet.idBudget = budget.id;";
+                                            budget ON worksheet.idBudget = budget.id
+                                        ORDER BY idWorksheet DESC;";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>
+                                        echo "<tr onclick=\"handleRowClick('{$row['idWorksheet']}', 'editWorksheet')\" style=\"cursor: pointer;\">
+                                            <td>" . $row['numWorksheet'] . "/" . $row['yearWorksheet'] . "</td>
                                             <td>{$row['nomeCliente']}</td>
                                             <td>{$row['contactoCliente']}</td>
-                                            <td>{$row['idBudget']}</td>
+                                            <td>" . $row['numBudget'] . "/" . $row['yearBudget'] . "</td>
                                             <td>{$row['readyStorage']}</td>
                                             <td>{$row['joinWork']}</td>
                                             <td>{$row['exitWork']}</td>

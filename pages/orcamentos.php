@@ -147,7 +147,8 @@
                                             budget.year as yearBudget,
                                             client.name as nomeCliente, 
                                             client.contact as contactoCliente, 
-                                            worksheet.name as nomeWorksheet, 
+                                            worksheet.num as numWorksheet, 
+                                            worksheet.year as yearWorksheet, 
                                             budget.created as dataCriacao,
                                             administrator.name as responsavel
                                         FROM budget
@@ -166,7 +167,7 @@
                                             <td>" . $row['numBudget'] . "/" . $row['yearBudget'] . "</td>
                                             <td>{$row['nomeCliente']}</td>
                                             <td>{$row['contactoCliente']}</td>
-                                            <td>{$row['nomeWorksheet']}</td>
+                                            <td>" . $row['numWorksheet'] . "/" . $row['yearWorksheet'] . "</td>
                                             <td>{$row['dataCriacao']}</td>
                                             <td>{$row['responsavel']}</td>
                                             <td><button class='btn-small' id='botDeleteBudget' onclick=\"deleteBudget('{$row['numBudget']}/{$row['yearBudget']}'); event.stopPropagation();\">🗑️</button></td>

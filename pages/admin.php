@@ -57,7 +57,6 @@
                                 <th>Nome</th>
                                 <th>Email</th>
                                 <th>Username</th>
-                                <th>Password</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -68,7 +67,6 @@
                                             administrator.name,
                                             administrator.email,
                                             administrator.user,
-                                            administrator.pass,
                                             administrator.active
                                         FROM administrator ;";
                                 $result = $con->query($sql);
@@ -80,7 +78,6 @@
                                                 <td>{$row['name']}</td>
                                                 <td>{$row['email']}</td>
                                                 <td>{$row['user']}</td>
-                                                <td>{$row['pass']}</td>
                                                 <td>{$status}</td>
                                             </tr>";
                                     }

@@ -80,10 +80,22 @@
                         </h3>
                     </span>
                 </li>
-                <li><i class='bx bx-calculator'></i>
+                <li><i class='bx bx-user'></i>
                     <span class="info">
-                        <p>Orçamentos ativos</p>
-                        <h3>21</h3>
+                        <p>Clientes</p>
+                        <h3>
+                            <?php 
+                                $sql = "SELECT COUNT(*) AS numeroClientes FROM client";
+                                $result = $con->query($sql);
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo $row['numeroClientes'];
+                                    }
+                                } else {
+                                    echo "0";
+                                }
+                            ?>
+                        </h3>
                     </span>
                 </li>
                 <li><i class='bx bx-file'></i>

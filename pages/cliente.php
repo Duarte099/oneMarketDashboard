@@ -58,38 +58,32 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>#</th>
                                 <th>Nome</th>
                                 <th>Email</th>
-                                <th>Contato</th>
+                                <th>Contacto</th>
                                 <th>NIF</th>
                                 <th>Status</th>
-                                <th>Data-Criação</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                                 $sql = "SELECT
-                                            client.id,
                                             client.name, 
                                             client.email,
                                             client.contact,
                                             client.nif,
-                                            client.active,
-                                            client.created
+                                            client.active
                                         FROM client;";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
                                         echo "<tr>
-                                            <td>{$row['id']}</td>
                                             <td>{$row['name']}</td>
                                             <td>{$row['email']}</td>
                                             <td>{$row['contact']}</td>
                                             <td>{$row['nif']}</td>
                                             <td>{$status}</td>
-                                            <td>{$row['created']}</td>
                                             </tr>";
                                     }
                                 } else {

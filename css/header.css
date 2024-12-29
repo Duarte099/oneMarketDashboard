@@ -28,3 +28,68 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.profile-img {
+    width: 40px; /* Largura da imagem */
+    height: 40px; /* Altura da imagem */
+    border-radius: 50%; /* Torna a imagem redonda */
+    object-fit: cover; /* Ajusta o conteúdo para caber no espaço */
+    border: 2px solid white; /* (Opcional) Adiciona uma borda */
+}
+
+/* Estilos principais do modal */
+.modal {
+    position: absolute;
+    top: 100%; /* Para aparecer logo abaixo do ícone de perfil */
+    right: 0;
+    background-color: #1c1c1e; /* Fundo escuro */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    width: 250px; /* Largura do modal */
+    color: #f9f9f9; /* Cor do texto */
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+    display: none; /* Inicialmente oculto */
+}
+
+.user-info {
+    display: flex;
+    align-items: center; /* Alinha a imagem e o texto na mesma linha */
+    padding: 10px 20px;
+    position: relative; /* Permite centralizar o nome com a foto à esquerda */
+}
+
+.user-info .user-name {
+    flex: 1; /* Faz o nome ocupar o espaço restante */
+    text-align: center; /* Centraliza o texto horizontalmente */
+}
+  
+/* Seção de informações do usuário */
+.user-info img {
+    border-radius: 50%; /* Torna a imagem redonda */
+    object-fit: cover;
+}
+
+.user-info span {
+    color: #f9f9f9; /* Texto branco */
+}
+
+/* Linha divisória */
+hr {
+    border: none;
+    border-top: 1px solid #333; /* Linha divisória sutil */
+    margin: 10px 0;
+}
+
+/* Opções do menu */
+.menu-option {
+    text-decoration: none;
+    color: #f9f9f9; /* Cor do texto */
+    padding: 10px 20px; /* Espaçamento interno */
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+.menu-option:hover {
+    background-color: #2c2c2e; /* Fundo ao passar o mouse */
+}

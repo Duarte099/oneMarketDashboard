@@ -13,15 +13,16 @@
     $produtosIndex = 0;
     
     // $op = '';
-    $idBudget = $_GET['idBudget'];
+    $idWorksheet = $_GET['idWorksheet'];
 
     $idAdmin = $_SESSION['id'];
 
-    $sql = "SELECT budget.idClient FROM budget WHERE budget.id = $idBudget;";
+    $sql = "SELECT idClient, idBudget FROM worksheet WHERE id = $idWorksheet;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $idClient =  $row['idClient'];
+        $idBudget =  $row['idBudget'];
     }
 
     $sql = "SELECT COUNT(*) AS numSections FROM budget_sections_products WHERE budget_sections_products.idBudget = $idBudget AND idProduct = 0;";
@@ -30,18 +31,6 @@
         $row = $result->fetch_assoc();
         $numSections =  $row['numSections'];
     }
-
-    // if (isset($_GET['op'])) $op = $_GET['op'];
-
-    // if ($op == 'save') {
-    //     $numSeccao  = 10;
-    //     for ($i=1; $i<=$numSeccao; $i++) {
-    //         if (isset($_POST['produto_ref_' . $i])) {
-    //             $produto_ref = $_POST['produto_ref_' . $i];
-    //             echo "produto_ref = $produto_ref";
-    //         }
-    //     }
-    // }
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +42,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/novaFichaTrabalho.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
-    <title>OneMarket | Nova Ficha de Trabalho</title>
+    <title>OneMarket | Editar Ficha de Trabalho</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -71,11 +60,11 @@
         ?>          
         <!-- End of Navbar -->
 
-        <form action="inserirFichaTrabalho.php?idBudget=<?= $idBudget ?>&op=save" method=post>
+        <form action="inserirFichaTrabalho.php?idWorksheet=<?= $idWorksheet ?>&op=edit" method=post>
             <main>
                 <div class="header">
                     <div class="left">
-                        <h1>Nova Ficha de Trabalho</h1>
+                        <h1>Editar Ficha de Trabalho</h1>
                     </div>
                 </div>
                 <div class="bottom-data">
@@ -133,18 +122,29 @@
                                     ?>">
                                 </div>
                             </div>
+                            <?php 
+                                $sql = "SELECT readyStorage, joinWork, exitWork FROM worksheet WHERE id = $idWorksheet;";
+                                $result = $con->query($sql);
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        $readyStorage = $row['readyStorage'];
+                                        $joinWork = $row['joinWork'];
+                                        $exitWork = $row['exitWork'];
+                                    }
+                                }
+                            ?>
                             <div class="section-row">
                                 <div class="section-group">
                                     <label>Pronto em armazém:</label>
-                                    <input type="date" name="prontoArmazem">
+                                    <input type="date" name="prontoArmazem" value="<?php echo $readyStorage; ?>">
                                 </div>
                                 <div class="section-group">
                                     <label>Entrada em obra:</label>
-                                    <input type="date" name="entradaObra">
+                                    <input type="date" name="entradaObra" value="<?php echo $joinWork; ?>">
                                 </div>
                                 <div class="section-group">
                                     <label>Saída de obra:</label>
-                                    <input type="date" name="saidaObra">
+                                    <input type="date" name="saidaObra" value="<?php echo $exitWork; ?>">
                                 </div>
                                 <div class="section-group">
                                     <label>Elaborado por:</label>
@@ -163,12 +163,12 @@
                             <h2>Secções</h2>
                             <?php 
                                 $produtosIndex = 0; 
-                                $sql = "SELECT COUNT(*) AS numSections FROM budget_sections_products WHERE budget_sections_products.idBudget = $idBudget AND idProduct = 0;";
-                                $result = $con->query($sql);
-                                if ($result->num_rows > 0) {
-                                    $row = $result->fetch_assoc();
-                                    $numSections =  $row['numSections'];
-                                }
+                                $sql = "SELECT COUNT(idSection) AS numSections FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget;";
+                                    $result = $con->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        $row = $result->fetch_assoc();
+                                        $numProducts = $row['numSections'];
+                                    }
                                 for ($i=1; $i <= $numSections; $i++) { 
                                     $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0;";
                                     $result = $con->query($sql);
@@ -219,7 +219,7 @@
                                                     $descriptionProduct = '';
                                                     $valueProduct = 0;
                                                     $sizeProduct = '';?>
-                                                    <?php if ($j <= $numProducts) { ?>
+                                                    <?php if ($j == 1 || $j <= $numProducts) { ?>
                                                         <tbody class="produtos">
                                                             <tr>
                                                                 <?php 
@@ -287,7 +287,8 @@
                                     });
                                 }
                             </script>
-                            <button id=botSaveWorksheet type="submit">Criar Ficha de Trabalho</button>
+                            <button id=botSaveWorksheet type="submit">Guardar alterações</button>   
+                            <button id=botPrintWorksheet type="button">Imprimir</button>      
                         </section>
                     </div>
                 </div>

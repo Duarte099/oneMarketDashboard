@@ -1,99 +1,285 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
 
-.bx{
-    font-size: 1.7rem;
-}
-
-a{
-    text-decoration: none;
-}
-
-html{
-    overflow-x: hidden;
-}
-
-body{
+body {
     background: #25252c;
+    color: #fbfbfb;
     overflow-x: hidden;
 }
 
-.content main .header .left h1{
-    font-size: 36px;
-    font-weight: 600;
-    margin-bottom: 10px;
+h1, h2, h3, h4 {
     color: #fff;
 }
 
-.content main .bottom-data .header{
-    display: flex;
-    align-items: center;
-    grid-gap: 16px;
-    margin-bottom: 24px;
-}
-
-.content main .bottom-data .header h3{
-    margin-right: auto;
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.content main .bottom-data .header .bx{
-    cursor: pointer;
-}
-
-.content main .header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    grid-gap: 16px;
-    flex-wrap: wrap;
-}
-
-.content main{
-    width: 100%;
+.content main {
     padding: 36px 24px;
     max-height: calc(100vh - 56px);
 }
 
-.content main .bottom-data{
+.content main .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.content main .header .left h1 {
+    font-size: 36px;
+    font-weight: 600;
+}
+
+.content main .bottom-data {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 24px;
-    margin-top: 24px;
     width: 100%;
     color: #fbfbfb;
 }
 
-/* .content main .bottom-data>div{
-    border-radius: 20px;
-    background: #181a1e;
-    padding: 24px;
-    overflow-x: auto;
-} */
-
-.content main .bottom-data .budget{
+.content main .bottom-data .budget {
     flex-grow: 1;
     flex-basis: 500px;
+    background: #181a1e;
+    padding: 24px;
+    border-radius: 20px;
 }
 
-@media screen and (max-width: 768px) 
-{
-    .content{
-        width: calc(100% - 60px);
-        left: 200px;
+.content main .bottom-data .budget h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.content main .bottom-data .budget label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #c4c4c4;
+    width:75%;
+}
+
+.content main .bottom-data .budget input[type="text"],
+.content main .bottom-data .budget input[type="number"] {
+    width: 75%;
+    padding: 10px;
+    border: 1px solid #25252c;
+    background: #181a1e;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-top: 8px;
+    display: flex;
+}
+
+.content main .bottom-data .budget input[type="date"]{
+    width: 45%;
+    padding: 10px;
+    border: 1px solid #25252c;
+    background: #181a1e;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-top: 8px;
+    display: flex;
+}
+
+table {
+    width: 100%; 
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    color: white; 
+    text-align: left;
+    padding: 12px 15px; 
+}
+
+table th {
+    font-weight: bold;
+}
+
+table td button.select-budget {
+    background-color: #f04747;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.content main .bottom-data .budget table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+.content main .bottom-data .budget table th {
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #25252c;
+}
+
+.content main .bottom-data .budget table td {
+    padding: 12px 0;
+    font-size: 14px;
+}
+
+.content main .bottom-data .budget table tr td:first-child {
+    padding-left: 6px;
+}
+
+.content main .bottom-data .budget button {
+    margin-top: 9px;
+    padding: 10px 16px;
+    background: #781215;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.content main .bottom-data .budget button:hover {
+    background: #9b1c1f;
+}
+
+#secoes .secao {
+    margin-bottom: 24px;
+}
+
+#secoes .secao h3 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: #fff;
+}
+
+.section {
+    background-color: #25252c;
+}
+
+.section-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.section-group {
+    display: flex;
+    flex-direction: column; 
+    flex: 1;
+    margin-right: 10px; 
+}
+
+
+@media screen and (max-width: 768px) {
+    .content {
+        padding: 16px;
+    }
+
+    .content main .bottom-data .budget {
+        padding: 16px;
     }
 }
 
-@media screen and (max-width: 576px) 
-{
-    .content main .bottom-data .header{
+@media screen and (max-width: 576px) {
+    .content main .bottom-data .budget table {
         min-width: 340px;
     }
+
+    .content main .bottom-data .budget input {
+        font-size: 12px;
+    }
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: inherit; 
+}
+
+#autocomplete-container {
+    position: relative;
+    width: 75%;
+}
+
+#suggestions-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #181a1e;
+    border: 1px solid #25252c;
+    border-radius: 8px;
+    z-index: 1000;
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0;
+    max-height: 200px;
+    overflow-y: auto;
+    color: white;
+}
+
+#suggestions-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+#suggestions-list li:hover {
+    background: #25252c;
+}
+
+.result-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.result-item:hover {
+    background-color: #383838;
+}
+
+.result-item:active {
+    background-color: #505050;
+}
+
+.results-container {
+    width: 100%;
+    background: #25252c;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 1000;
+    display: none; /* Oculto por padrão */
+}
+
+.modal {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 25%;
+    display: none; /* Oculto por padrão */
+    z-index: 1000;
+    background-color: #232323;
+}
+  
+.modal-content {
+    background-color: #232323; /* Cor de fundo escura */
+    border-radius: 5px; /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra */
+    overflow: hidden;
+}
+
+#botSaveBudget{
+    float: right;
 }
