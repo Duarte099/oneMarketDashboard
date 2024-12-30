@@ -1,5 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
+:root {
+    --background-color: #181a1e;
+    --background-color-secundary: #25252c;
+    --primary-text-color: #fff;
+    --secondary-text-color: #fbfbfb;
+    --theme-color: #781215;
+    --border-color: #25252c;
+}
+
+
+:root.light-mode {
+    --background-color: #fff;
+    --background-color-secundary: #e2dcdc;
+    --primary-text-color: #000000;
+    --secondary-text-color: #161616;
+    --theme-color: #781215;
+    --border-color: #25252c;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -20,7 +39,7 @@ li{
 }
 
 body{
-    background: #25252c;
+    background: var(--background-color-secundary);
     overflow-x: hidden;
 }
 
@@ -34,7 +53,7 @@ body{
     font-size: 36px;
     font-weight: 600;
     margin-bottom: 10px;
-    color: #fff;
+    color: var(--primary-text-color);
 }
 
 /* insights */
@@ -48,7 +67,7 @@ body{
 
 .content main .insights li{
     padding: 24px;
-    background: #181a1e;
+    background: var(--background-color);
     border-radius: 20px;
     display: flex;
     align-items: center;
@@ -66,29 +85,29 @@ body{
 }
 
 .content main .insights li:nth-child(1) .bx{
-    color: #fff;
+    color: var(--primary-text-color);
 }
 
 .content main .insights li:nth-child(2) .bx{
-    color: #fff;
+    color: var(--primary-text-color);
 }
 
 .content main .insights li:nth-child(3) .bx{
-    color: #fff;
+    color: var(--primary-text-color);
 }
 
 .content main .insights li:nth-child(4) .bx{
-    color: #fff;
+    color: var(--primary-text-color);
 }
 
 .content main .insights li .info h3{
     font-size: 24px;
     font-weight: 600;
-    color: #fbfbfb;
+    color: var(--secondary-text-color);
 }
 
 .content main .insights li .info p{
-    color: #fbfbfb;
+    color: var(--secondary-text-color);
 }
 
 .content main .bottom-data{
@@ -97,7 +116,7 @@ body{
     grid-gap: 24px;
     margin-top: 24px;
     width: 100%;
-    color: #fbfbfb;
+    color: var(--secondary-text-color);
 }
 
 .content main .bottom-data .header{
@@ -111,16 +130,16 @@ body{
     margin-right: auto;
     font-size: 24px;
     font-weight: 600;
-    color: #781215;
+    color: var(--primary-text-color);
 }
 
 .content main .bottom-data .header .bx{
-    color: #781215;
+    color: var(--theme-color);
 }
 
 .content main .bottom-data>div{
     border-radius: 20px;
-    background: #181a1e;
+    background: var(--background-color);
     padding: 24px;
     overflow-x: auto;
 }
@@ -138,7 +157,7 @@ body{
 .content main .bottom-data .tables table th{
     padding-bottom: 12px;
     font-size: 13px;
-    border-bottom: 1px solid #25252c;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .content main .bottom-data .tables table td{
@@ -165,7 +184,7 @@ body{
 }
 
 .content main .bottom-data .tables table tbody tr:hover{
-    background: #25252c;
+    background: var(--background-color-secundary);
 }
 
 

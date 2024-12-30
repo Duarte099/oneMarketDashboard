@@ -1,5 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
+:root {
+    --background-color: #181a1e;
+    --background-color-secundary: #25252c;
+    --primary-text-color: #fff;
+    --secondary-text-color: #fbfbfb;
+    --theme-color: #781215;
+    --border-color: #25252c;
+}
+
+
+:root.light-mode {
+    --background-color: #fff;
+    --background-color-secundary: #e2dcdc;
+    --primary-text-color: #000000;
+    --secondary-text-color: #161616;
+    --theme-color: #781215;
+    --border-color: #25252c;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -20,7 +39,7 @@ html{
 }
 
 body{
-    background: #25252c;
+    background: var(--background-color-secundary);
     overflow-x: hidden;
 }
 
@@ -28,7 +47,7 @@ body{
     font-size: 36px;
     font-weight: 600;
     margin-bottom: 10px;
-    color: #fff;
+    color: var(--primary-text-color);
 }
 
 .content main .bottom-data .header{
@@ -52,8 +71,8 @@ body{
     height: 36px;
     padding: 0 16px;
     border-radius: 36px;
-    background: #781215;
-    color: #181a1e;
+    background: var(--theme-color);
+    color: var(--background-color);
     display: flex;
     align-items: center;
     justify-content: right;
@@ -81,12 +100,12 @@ body{
     grid-gap: 24px;
     margin-top: 24px;
     width: 100%;
-    color: #fbfbfb;
+    color: var(--secondary-text-color);
 }
 
 .content main .bottom-data>div{
     border-radius: 20px;
-    background: #181a1e;
+    background: var(--background-color);
     padding: 24px;
     overflow-x: auto;
 }
@@ -105,7 +124,7 @@ body{
     padding-bottom: 12px;
     font-size: 13px;
     text-align: left;
-    border-bottom: 1px solid #25252c;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .content main .bottom-data .admins table td{
@@ -125,7 +144,7 @@ body{
 }
 
 .content main .bottom-data .admins table tbody tr:hover{
-    background: #25252c;
+    background: var(--background-color-secundary);
 }
 
 @media screen and (max-width: 768px) 

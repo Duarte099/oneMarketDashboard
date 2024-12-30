@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="../css/sideBar.css">
-
+<script src="../index.js"></script>
 <!-- Sidebar -->
 <div class="sidebar">
     <a href="../pages/dashboard.php" class="logo">
-        <img src="../images/logoOnemarketBranco.png">
+        <img src="../images/logoOnemarketBranco.png" id="logoImage">
     </a>
     <ul class="side-menu">
         <li class="<?php echo ($estouEm == 1) ? 'active' : ''; ?>">

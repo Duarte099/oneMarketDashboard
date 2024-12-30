@@ -1,5 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
+:root {
+    --background-color: #181a1e;
+    --background-color-secundary: #25252c;
+    --primary-text-color: #fff;
+    --secondary-text-color: #fbfbfb;
+    --theme-color: #781215;
+    --border-color: #25252c;
+}
+
+
+:root.light-mode {
+    --background-color: #fff;
+    --background-color-secundary: #e2dcdc;
+    --primary-text-color: #000000;
+    --secondary-text-color: #161616;
+    --theme-color: #781215;
+    --border-color: #25252c;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -20,7 +39,7 @@ li{
 }
 
 body{
-    background: #25252c;
+    background: var(--background-color-secundary);
     overflow-x: hidden;
 }
 
@@ -34,7 +53,7 @@ body{
     font-size: 36px;
     font-weight: 600;
     margin-bottom: 10px;
-    color: #fff;
+    color: var(--primary-text-color);
 }
 
 .content main .bottom-data .header{
@@ -58,8 +77,8 @@ body{
     height: 36px;
     padding: 0 16px;
     border-radius: 36px;
-    background: #781215;
-    color: #181a1e;
+    background: var(--theme-color);
+    color: var(--background-color);
     display: flex;
     align-items: center;
     justify-content: right;
@@ -87,12 +106,12 @@ body{
     grid-gap: 24px;
     margin-top: 24px;
     width: 100%;
-    color: #fbfbfb;
+    color: var(--secondary-text-color);
 }
 
 .content main .bottom-data>div{
     border-radius: 20px;
-    background: #181a1e;
+    background: var(--background-color);
     padding: 24px;
     overflow-x: auto;
 }
@@ -111,7 +130,7 @@ body{
     padding-bottom: 12px;
     font-size: 13px;
     text-align: center;
-    border-bottom: 1px solid #25252c;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .content main .bottom-data .budget table td{
@@ -124,7 +143,7 @@ body{
 }
 
 .content main .bottom-data .budget table tbody tr:hover{
-    background: #25252c;
+    background: var(--background-color-secundary);
 }
 
 #budgetModal {
@@ -184,7 +203,7 @@ body{
 }
 
 .modal-content {
-    background-color: #181a1e;
+    background-color: var(--background-color);
     gap: 12px;
     margin: 5% auto;
     padding: 20px;
@@ -203,14 +222,14 @@ body{
 }
 
 .modal-content .headerModal h2 {
-    color: white;
+    color: var(--primary-text-color);
     margin: 0;
     font-size: 26px;
     font-weight: bold;
 }
 
 .modal-content .headerModal .close {
-    color: #fff;
+    color: var(--primary-text-color);
     font-size: 36px;
     font-weight: bold;
     background: none;
@@ -224,7 +243,7 @@ body{
 }
 
 .modal .tabela {
-    background-color: #25252c;
+    background-color: var(--background-color-secundary);
     padding: 15px;
     border-radius: 8px;
 }
@@ -237,7 +256,7 @@ table {
 }
 
 table th, table td {
-    color: white; 
+    color: var(--primary-text-color);
     text-align: center;
     padding: 12px 15px; 
 }
@@ -248,7 +267,7 @@ table th {
 
 table td button.select-budget {
     background-color: #f04747;
-    color: white;
+    color: var(--primary-text-color);
     border: none;
     padding: 8px 12px;
     border-radius: 5px;
@@ -266,7 +285,7 @@ table td button.select-budget:hover {
 }
 
 .content main .modal-content table tbody tr:hover {
-    background: #181a1e;
+    background: var(--background-color);
 }
 
 .content main .modal-content form .form-input {
@@ -286,7 +305,7 @@ table td button.select-budget:hover {
     height: 100%;
     border: none;
     background: none;
-    color: #fff;
+    color: var(--primary-text-color);
     font-size: 16px;
     outline: none;
 }
@@ -294,7 +313,7 @@ table td button.select-budget:hover {
 .content main .modal-content form .form-input .clear-button {
     position: absolute;
     right: 0px;
-    color: #fff;
+    color: var(--primary-text-color);
     background: none;
     border: none;
     font-size: 18px;
@@ -310,7 +329,7 @@ table td button.select-budget:hover {
     justify-content: center;
     align-items: center;
     background: #444;
-    color: #fff;
+    color: var(--primary-text-color);
     font-size: 18px;
     border: none;
     outline: none;

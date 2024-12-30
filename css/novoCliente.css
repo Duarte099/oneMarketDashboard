@@ -1,5 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
+:root {
+    --background-color: #181a1e;
+    --background-color-secundary: #25252c;
+    --primary-text-color: #fff;
+    --secondary-text-color: #fbfbfb;
+    --theme-color: #781215;
+}
+
+
+:root.light-mode {
+    --background-color: #fff;
+    --background-color-secundary: #e2dcdc;
+    --primary-text-color: #000000;
+    --secondary-text-color: #161616;
+    --theme-color: #781215;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,13 +25,13 @@
 }
 
 body {
-    background: #25252c;
-    color: #fbfbfb;
+    background: var(--background-color-secundary);
+    color: var(--secondary-text-color);
     overflow-x: hidden;
 }
 
 h1, h2 {
-    color: #ffffff;
+    color: var(--primary-text-color)fff;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -33,7 +50,7 @@ h1, h2 {
 }
 
 .bottom-data {
-    background-color: #181a1e;
+    background-color: var(--background-color);
     padding: 24px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -73,8 +90,8 @@ h1, h2 {
     width: 100%;
     padding: 10px;
     border: 1px solid #33333a;
-    background: #25252c;
-    color: #ffffff;
+    background: var(--background-color-secundary);
+    color: var(--primary-text-color);
     border-radius: 8px;
     font-size: 14px;
     outline: none;
@@ -89,8 +106,8 @@ h1, h2 {
 button {
     width: 100%;
     padding: 12px;
-    background-color: #781215;
-    color: white;
+    background-color: var(--theme-color);
+    color: var(--primary-text-color);
     border: none;
     border-radius: 8px;
     font-size: 16px;

@@ -1,5 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
+:root {
+    --background-color: #181a1e;
+    --background-color-secundary: #25252c;
+    --primary-text-color: #fff;
+    --secondary-text-color: #fbfbfb;
+    --theme-color: #781215;
+    --border-color: #25252c;
+}
+
+
+:root.light-mode {
+    --background-color: #fff;
+    --background-color-secundary: #e2dcdc;
+    --primary-text-color: #000000;
+    --secondary-text-color: #161616;
+    --theme-color: #781215;
+    --border-color: #25252c;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,13 +27,13 @@
 }
 
 body {
-    background: #25252c;
-    color: #fbfbfb;
+    background: var(--background-color-secundary);
+    color: var(--secondary-text-color);
     overflow-x: hidden;
 }
 
 h1, h2, h3, h4 {
-    color: #fff;
+    color: var(--primary-text-color);
 }
 
 .content main {
@@ -39,13 +58,13 @@ h1, h2, h3, h4 {
     flex-wrap: wrap;
     grid-gap: 24px;
     width: 100%;
-    color: #fbfbfb;
+    color: var(--secondary-text-color);
 }
 
 .content main .bottom-data .budget {
     flex-grow: 1;
     flex-basis: 500px;
-    background: #181a1e;
+    background: var(--background-color);
     padding: 24px;
     border-radius: 20px;
 }
@@ -68,9 +87,9 @@ h1, h2, h3, h4 {
 .content main .bottom-data .budget input[type="number"] {
     width: 75%;
     padding: 10px;
-    border: 1px solid #25252c;
-    background: #181a1e;
-    color: #fff;
+    border: 1px solid var(--border-color);
+    background: var(--background-color);
+    color: var(--primary-text-color);
     border-radius: 8px;
     font-size: 14px;
     margin-top: 8px;
@@ -80,9 +99,9 @@ h1, h2, h3, h4 {
 .content main .bottom-data .budget input[type="date"]{
     width: 45%;
     padding: 10px;
-    border: 1px solid #25252c;
-    background: #181a1e;
-    color: #fff;
+    border: 1px solid var(--border-color);
+    background: var(--background-color);
+    color: var(--primary-text-color);
     border-radius: 8px;
     font-size: 14px;
     margin-top: 8px;
@@ -96,7 +115,7 @@ table {
 }
 
 table th, table td {
-    color: white; 
+    color: var(--primary-text-color); 
     text-align: left;
     padding: 12px 15px; 
 }
@@ -107,7 +126,7 @@ table th {
 
 table td button.select-budget {
     background-color: #f04747;
-    color: white;
+    color: var(--primary-text-color);
     border: none;
     padding: 8px 12px;
     border-radius: 5px;
@@ -126,7 +145,7 @@ table td button.select-budget {
     font-size: 14px;
     font-weight: 500;
     padding-bottom: 12px;
-    border-bottom: 1px solid #25252c;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .content main .bottom-data .budget table td {
@@ -141,9 +160,9 @@ table td button.select-budget {
 .content main .bottom-data .budget button {
     margin-top: 9px;
     padding: 10px 16px;
-    background: #781215;
+    background: var(--theme-color);
     border: none;
-    color: #fff;
+    color: var(--primary-text-color);
     border-radius: 8px;
     font-size: 14px;
     cursor: pointer;
@@ -162,11 +181,11 @@ table td button.select-budget {
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 12px;
-    color: #fff;
+    color: var(--primary-text-color);
 }
 
 .section {
-    background-color: #25252c;
+    background-color: var(--background-color-secundary);
 }
 
 .section-row {
@@ -218,8 +237,8 @@ table td button.select-budget {
     top: 100%;
     left: 0;
     right: 0;
-    background: #181a1e;
-    border: 1px solid #25252c;
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     z-index: 1000;
     list-style: none;
@@ -227,7 +246,7 @@ table td button.select-budget {
     margin: 5px 0 0;
     max-height: 200px;
     overflow-y: auto;
-    color: white;
+    color: var(--primary-text-color);
 }
 
 #suggestions-list li {
@@ -236,13 +255,13 @@ table td button.select-budget {
 }
 
 #suggestions-list li:hover {
-    background: #25252c;
+    background: var(--background-color-secundary);
 }
 
 .result-item {
     padding: 10px 15px;
     cursor: pointer;
-    color: #fff;
+    color: var(--primary-text-color);
 }
 
 .result-item:hover {
@@ -255,7 +274,7 @@ table td button.select-budget {
 
 .results-container {
     width: 75%;
-    background: #25252c;
+    background: var(--background-color-secundary);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     overflow: hidden;

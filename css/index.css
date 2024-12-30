@@ -1,4 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --background-color: #181a1e;
+    --background-color-secundary: #25252c;
+    --primary-text-color: #fff;
+    --theme-color: #781215;
+}
+
+
+:root.light-mode {
+    --background-color: #fff;
+    --background-color-secundary: #e2dcdc;
+    --primary-text-color: #000000;
+    --theme-color: #781215;
+}
+
 *{
     padding: 0;
     margin: 0;
@@ -10,7 +26,7 @@
     position: relative;
     min-height: 100vh;
     z-index: 0;
-    background: #181a1e;
+    background: var(--background-color);
     padding: 30px;
     justify-content: center;
     display: grid;
@@ -28,7 +44,7 @@
     text-align: center;
     font-size: 2.5rem;
     font-weight: 400;
-    color: #25252c;
+    color: var(--background-color-secundary);
     font-family: 'poppins',sans-serif;
 
 }
@@ -48,14 +64,14 @@
 .content{
     flex-basis: 50%;
     padding: 3em 3em;
-    background: #25252c;
+    background: var(--background-color-secundary);
     box-shadow: 2px 9px 49px -17px rgba(0,0,0,0.1);
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
 }
 .form-img{
     flex-basis: 50%;
-    background: #25252c;
+    background: var(--background-color-secundary);
     background-size: cover;
     padding: 40px;
     border-top-right-radius: 8px;
@@ -92,26 +108,26 @@ a{
     outline: none;
     margin-bottom: 15px;
     font-stretch: 16px;
-    color: #fff;
+    color: var(--primary-text-color);
     text-align: left;
     padding: 14px 20px;
     width: 100%;
     display: inline-block;
     box-sizing: border-box;
     border: none;
-    background: #181a1e;
+    background: var(--background-color);
     transition: 0.3s ease;
 }
 .login-form input:focus{
     background: transparent;
-    border: 1px solid #781215;
+    border: 1px solid var(--theme-color);
 }
 
 .login-form button{
     font-size: 18px;
-    color: #fff;
+    color: var(--primary-text-color);
     width: 100%;
-    background: #781215;
+    background: var(--theme-color);
     border: none;
     padding: 14px 15px;
     font-weight: 600;
@@ -119,7 +135,7 @@ a{
 }
 
 p.account a{
-    color: #781215;
+    color: var(--theme-color);
 }
 
 p.account a:hover{
@@ -149,13 +165,13 @@ p.account a:hover{
 }
 
 .toggle-password:hover {
-    color: #781215;
+    color: var(--theme-color);
 }
 
 .error-message {
     margin-top: 10px;
     padding: 10px;
-    color: #fff;
+    color: var(--primary-text-color);
     border-radius: 4px;
     font-size: 14px;
     font-family: 'poppins',sans-serif;
