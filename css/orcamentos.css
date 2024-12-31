@@ -116,37 +116,40 @@ body{
     flex-basis: 500px;
 }
 
-.content main .bottom-data .budget table{
+.content main .bottom-data .budget table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.content main .bottom-data .budget table th{
+.content main .bottom-data .budget table th {
     padding-bottom: 12px;
     font-size: 13px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
 }
 
-.content main .bottom-data .budget table td{
-    padding: 16px 0;
+.content main .bottom-data .budget table td {
+    text-align: left;
 }
 
-.content main .bottom-data .budget table tr td:first-child{
-    display: flex;
-    align-items: center;
-    grid-gap: 12px;
-    padding-left: 6px;
+/* Tornar o tbody scrollável */
+.content main .bottom-data .budget table tbody {
+    display: block;
+    max-height: 470px;
+    overflow-y: auto;
 }
 
-.content main .bottom-data .budget table tbody tr{
-    cursor: pointer;
-    transition: all 0.3s ease;
+.content main .bottom-data .budget table thead,
+.content main .bottom-data .budget table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
 
-.content main .bottom-data .budget table tbody tr:hover{
+.content main .bottom-data .budget table tbody tr:hover {
     background: var(--background-color-secundary);
 }
+
 
 #budgetModal {
     display: none;
@@ -268,7 +271,7 @@ table td button.select-budget:hover {
     background: var(--background-color);
 }
 
-.content main .modal-content form .form-input {
+.content main .modal-content .form-input {
     display: flex;
     align-items: center;
     height: 40px;
@@ -280,7 +283,7 @@ table td button.select-budget:hover {
     position: relative;
 }
 
-.content main .modal-content form .form-input input {
+.content main .modal-content .form-input input {
     flex-grow: 1;
     height: 100%;
     border: none;
@@ -290,7 +293,7 @@ table td button.select-budget:hover {
     outline: none;
 }
 
-.content main .modal-content form .form-input .clear-button {
+.content main .modal-content .form-input .clear-button {
     position: absolute;
     right: 0px;
     color: var(--primary-text-color);
@@ -302,7 +305,7 @@ table td button.select-budget:hover {
     transition: color 0.3s;
 }
 
-.content main .modal-content form .form-input button {
+.content main .modal-content .form-input button {
     width: 50px;
     height: 100%;
     display: flex;
@@ -317,11 +320,11 @@ table td button.select-budget:hover {
     transition: background 0.3s;
 }
 
-.content main .modal-content form .form-input .clear-button:hover {
+.content main .modal-content .form-input .clear-button:hover {
     color: red;
 }
 
-.content main .modal-content form .form-input button:hover {
+.content main .modal-content .form-input button:hover {
     background: #666;
 }
 

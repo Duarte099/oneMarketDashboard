@@ -12,7 +12,7 @@
 
     $idBudget = $_GET['idBudget'];
 
-    $sql = "DELETE FROM budget WHERE id = '$idBudget';";
+    $sql = "DELETE FROM budget WHERE id = $idBudget;";
     $result = $con->prepare($sql);
     $result->execute();
 

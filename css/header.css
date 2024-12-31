@@ -42,7 +42,7 @@
 }
 
 .content nav a {
-    color: #fbfbfb;
+    color: var(--primary-text-color);
     text-decoration: none;
     cursor: pointer;
 }
@@ -52,19 +52,18 @@
     height: 40px; /* Altura da imagem */
     border-radius: 50%; /* Torna a imagem redonda */
     object-fit: cover; /* Ajusta o conteúdo para caber no espaço */
-    border: 2px solid white; /* (Opcional) Adiciona uma borda */
+    border: 2px solid var(--primary-text-color); /* (Opcional) Adiciona uma borda */
 }
 
 /* Estilos principais do modal */
-.modal {
+.profileModal {
     position: absolute;
     top: 100%; /* Para aparecer logo abaixo do ícone de perfil */
     right: 0;
-    background-color: #1c1c1e; /* Fundo escuro */
+    /* background-color: #1c1c1e; Fundo escuro */
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     width: 250px; /* Largura do modal */
-    color: #f9f9f9; /* Cor do texto */
+    color: var(--primary-text-color); /* Cor do texto */
     font-family: Arial, sans-serif;
     z-index: 1000;
     display: none; /* Inicialmente oculto */
@@ -89,7 +88,7 @@
 }
 
 .user-info span {
-    color: #f9f9f9; /* Texto branco */
+    color: var(--primary-text-color); /* Texto branco */
 }
 
 /* Linha divisória */
@@ -102,7 +101,7 @@ hr {
 /* Opções do menu */
 .menu-option {
     text-decoration: none;
-    color: #f9f9f9; /* Cor do texto */
+    color: var(--primary-text-color); /* Cor do texto */
     padding: 10px 20px; /* Espaçamento interno */
     display: block;
     transition: background-color 0.3s ease;
@@ -176,4 +175,19 @@ hr {
   
 .toggle input:checked + .slider:before {
     transform: translateX(20px);
+}
+
+.close-btn {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #ff0000; /* Vermelho ao passar o mouse */
 }

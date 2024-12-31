@@ -202,6 +202,8 @@
                                         <table id = "table">
                                             <thead>
                                                 <tr>
+                                                    <th>Check</th>
+                                                    <th>Armazém</th>
                                                     <th>Nº</th>
                                                     <th>N/REF</th>
                                                     <th>Designação</th>
@@ -235,6 +237,8 @@
                                                                         }
                                                                     }
                                                                 ?>
+                                                                <td><input type="checkbox" class="check" name="secao_<?php echo $i; ?>_produto_check_<?php echo $j; ?>"></td>
+                                                                <td><input type="checkbox" class="armazem" name="secao_<?php echo $i; ?>_produto_armazem_<?php echo $j; ?>"></td>
                                                                 <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
                                                                 <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" readonly></td>
                                                                 <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value = "<?php echo $nameProduct; ?>" readonly></td>

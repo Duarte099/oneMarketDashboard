@@ -55,6 +55,7 @@
             <main>
                 <div class="header">
                     <div class="left">
+                        <?php echo $idCliente ?>
                         <h1>Novo Orçamento</h1>
                     </div>
                 </div>
@@ -93,11 +94,11 @@
                                 <div class="section-group">
                                     <label>Ficha de Trabalho:</label>
                                     <input type="text" name="fichaTrabalho" required readonly value="<?php 
-                                        $sql = "SELECT worksheet.name FROM worksheet INNER JOIN budget ON worksheet.idBudget = budget.id;";
+                                        $sql = "SELECT worksheet.num, worksheet.year FROM worksheet INNER JOIN budget ON worksheet.idBudget = budget.id;";
                                         $result = $con->query($sql);
                                         if ($result->num_rows > 0) {
                                             $row = $result->fetch_assoc();
-                                            echo $row['name'];
+                                            echo $row['num'] . "/" . $row['year'];
                                         }
                                     ?>">
                                 </div>

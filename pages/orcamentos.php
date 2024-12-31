@@ -8,12 +8,6 @@
         header('Location: index.php');
         exit();
     }
-
-    $pesquisa = '';
-
-    if (isset($_GET['search-input'])) {
-        $pesquisa = $_GET['search-input'];
-    }
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +24,102 @@
 </head>
 
 <body>
+    <script>
+        const searchData = [];
+                                
+        $.ajax({
+            url: 'ajax.obterClientes.php',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                searchData.push(...data);
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro ao buscar os dados:', error);
+            }
+        });
 
+        console.log(searchData);
+
+        function performSearch(searchBox) {
+            const modal = document.getElementById('budgetModal');
+            const tbody = modal.querySelector('table tbody');
+            const query = searchBox.value.toLowerCase();
+            tbody.innerHTML = ""; // Limpa os resultados anteriores
+
+            if (query) {
+                // Filtra os resultados com base na pesquisa
+                const filteredResults = searchData.filter(item =>
+                    item.nomeCliente.toLowerCase().includes(query) ||
+                    item.emailCliente.toLowerCase().includes(query) ||
+                    item.contactoCliente.toLowerCase().includes(query) // Busca diretamente na string "numBudget"
+                );
+
+                if (filteredResults.length > 0) {
+                    filteredResults.forEach((result) => {
+                        const row = document.createElement("tr");
+
+                        // Adiciona as colunas da tabela
+                        const nomeCliente = document.createElement("td");
+                        nomeCliente.textContent = result.nomeCliente; // Exibe "numBudget" diretamente
+
+                        const emailCliente = document.createElement("td");
+                        emailCliente.textContent = result.emailCliente;
+
+                        const contactoCliente = document.createElement("td");
+                        contactoCliente.textContent = result.contactoCliente;
+
+                        // Configura o evento de clique para selecionar o cliente
+                        row.onclick = () => selectResult(result.nomeCliente, searchBox);
+
+                        // Adiciona as células à linha
+                        row.appendChild(nomeCliente);
+                        row.appendChild(emailCliente);
+                        row.appendChild(contactoCliente);
+
+                        // Adiciona a linha ao corpo da tabela
+                        tbody.appendChild(row);
+                    });
+                } else {
+                    // Adiciona uma linha dizendo "Sem resultados"
+                    const row = document.createElement("tr");
+                    const noResultsCell = document.createElement("td");
+                    noResultsCell.textContent = "Sem resultados";
+                    noResultsCell.colSpan = 3; // Define a célula para ocupar todas as colunas
+                    noResultsCell.style.textAlign = "center"; // Centraliza o texto
+
+                    row.appendChild(noResultsCell);
+                    tbody.appendChild(row);
+                }
+            } else {
+                // Adiciona uma linha dizendo "Sem resultados" caso o campo de busca esteja vazio
+                const row = document.createElement("tr");
+                const noResultsCell = document.createElement("td");
+                noResultsCell.textContent = "Sem resultados";
+                noResultsCell.colSpan = 3; // Define a célula para ocupar todas as colunas
+                noResultsCell.style.textAlign = "center"; // Centraliza o texto
+
+                row.appendChild(noResultsCell);
+                tbody.appendChild(row);
+            }
+        }
+
+        function selectResult(nomeCliente, searchBox) {
+            const modal = document.getElementById('budgetModal');
+            searchBox.value = nomeCliente; // Atualiza o valor do campo de entrada com o nome do cliente
+            modal.style.display = "none"; // Fecha o modal
+        }
+
+        function limparPesquisa() {
+            const searchBox = document.getElementById('search-input');
+            const modal = document.getElementById('budgetModal');
+            const tbody = modal.querySelector('table tbody');
+            
+            searchBox.value = ""; // Limpa o campo de pesquisa
+            tbody.innerHTML = ""; // Limpa os resultados da tabela
+            modal.style.display = "none"; // Fecha o modal
+        }
+    </script>
     <?php 
         include('../pages/sideBar.php'); 
     ?>
@@ -48,7 +137,7 @@
                 <div class="left">
                     <h1>Orçamentos</h1>
                 </div>
-                <a href="#" id="new-budget" class="report">
+                <a href="novoOrcamento.php" id="new-budget" class="report">
                     <i class='bx bx-plus'></i>
                     <span>Novo Orçamento</span>
                 </a>
@@ -60,17 +149,14 @@
                         <h2>Selecione um Cliente</h2>
                         <span class="close">&times;</span>
                     </div>
-                    <form method="GET" action="">
                         <div class="form-input">
-                            <input id="search-input" name="search-input" type="text" placeholder="Search..." value="<?=$pesquisa?>">
+                            <input id="budget-search-input" name="budget-search-input" type="text" placeholder="Search..." oninput="performSearch(this)">
                             <button type="button" class="clear-button" onclick="limparPesquisa()">✖</button>
                         </div>
-                    </form>
                     <div class="tabela">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th>Nome</th>
                                     <th>Email</th>
                                     <th>Contacto</th>
@@ -78,48 +164,27 @@
                             </thead>
                             <tbody>
                                 <?php
-                                    if (isset($_GET['search-input']) && !empty($_GET['search-input'])) {
-                                        $pesquisa = $con->real_escape_string($_GET['search-input']);
-                                        $sql = "SELECT 
-                                                    client.id as id,
-                                                    client.name as nome,
-                                                    client.email as email, 
-                                                    client.contact as contacto
-                                                FROM client 
-                                                WHERE (
-                                                    id LIKE '%$pesquisa%' 
-                                                    OR nome LIKE '%$pesquisa%'
-                                                    OR email LIKE '%$pesquisa%'
-                                                    OR contacto LIKE '%$pesquisa%'
-                                                )";
-                                    } else {
-                                        $sql = "SELECT * FROM client;";
-                                    }
-
+                                    $sql = "SELECT
+                                                client.id as idCliente,
+                                                client.name as nameCliente,
+                                                client.email as emailCliente,
+                                                client.contact as contactCliente
+                                            FROM client
+                                            ORDER BY idCliente DESC LIMIT 10;";
                                     $result = $con->query($sql);
-                                    if (!$result) {
-                                        die("Erro na consulta: " . $con->error);
-                                    }
 
                                     if ($result->num_rows > 0) {
                                         while ($row = $result->fetch_assoc()) {
-                                            echo "<tr onclick=\"handleRowClick('{$row['id']}', 'budget')\" style=\"cursor: pointer;\">
-                                                <td>{$row['id']}</td>
-                                                <td>{$row['name']}</td>
-                                                <td>{$row['email']}</td>
-                                                <td>{$row['contact']}</td>
+                                            echo "<tr onclick=\"handleRowClick('{$row['idCliente']}', 'budget')\" style=\"cursor: pointer;\">
+                                                <td>{$row['nameCliente']}</td>
+                                                <td>{$row['emailCliente']}</td>
+                                                <td>{$row['contactCliente']}</td>
                                             </tr>";
                                         }
                                     } else {
-                                        
-                                        echo "<tr><td colspan='5'>Sem orçamentos disponíveis.</td></tr>";
-                                        echo "<tr><td colspan='5' style='text-align: center; padding-top: 10px;'>
-                                            <a href='../pages/novoCliente.php' style='display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;'>
-                                                Criar Novo Cliente
-                                            </a>
-                                        </td></tr>";
+                                        echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
                                     }
-                                ?>
+                                ?>  
                             </tbody>
                         </table>
                     </div>
@@ -137,6 +202,7 @@
                                 <th>Ficha Trabalho</th>
                                 <th>Data Criação</th>
                                 <th>Responsavel</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -170,7 +236,7 @@
                                             <td>" . $row['numWorksheet'] . "/" . $row['yearWorksheet'] . "</td>
                                             <td>{$row['dataCriacao']}</td>
                                             <td>{$row['responsavel']}</td>
-                                            <td><button class='btn-small' id='botDeleteBudget' onclick=\"deleteBudget('{$row['numBudget']}/{$row['yearBudget']}'); event.stopPropagation();\">🗑️</button></td>
+                                            <td><button class='btn-small' id='botDeleteBudget' onclick=\"deleteBudget('{$row['numBudget']}/{$row['yearBudget']}', {$row['idbudget']}); event.stopPropagation();\">🗑️</button></td>
                                         </tr>";
                                     }
                                 } else {
@@ -182,13 +248,12 @@
                 </div>
             </div>
         </main>
-        <script src="../index.js" defer></script>
         <script>
-            function deleteBudget(id) {
+            function deleteBudget(num, id) {
                 console.log("ID do orçamento a ser excluído:", id);
-                const result = confirm("Tem a certeza que deseja eliminar o orçamento " + id + "?");
+                const result = confirm("Tem a certeza que deseja eliminar o orçamento " + num + "?");
                 if (result) {
-                    fetch(`./deleteBudget.php?id=${encodeURIComponent(id)}`, {
+                    fetch(`./deleteBudget.php?idBudget=${encodeURIComponent(id)}`, {
                         method: 'GET',
                     })
                     .then(() => {
@@ -198,7 +263,47 @@
                         console.error("Erro ao enviar ID:", error);
                     });
                 }
+                window.location.href = window.location.pathname; // Recarrega a página
             }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchInput = document.getElementById('budget-search-input');
+                const modal = document.getElementById('budgetModal');
+                const newBudgetButton = document.getElementById('new-budget'); // Seleciona o botão
+
+                // Função para abrir o modal
+                window.openModal = function () {
+                    modal.style.display = 'block';
+                };
+
+                // Função para fechar o modal
+                function closeModal() {
+                    modal.style.display = 'none';
+                    window.location.href = window.location.pathname; // Recarrega a página
+                }
+
+                // Limpar pesquisa modal
+                window.limparPesquisa = function() {
+                    if (searchInput) {
+                        searchInput.value = ''; // Limpa o valor do input
+                        performSearch(searchInput);
+                    }
+                };
+
+                // Fechar modal ao clicar no "x"
+                const closeButton = document.querySelector('.close');
+                if (closeButton) {
+                    closeButton.addEventListener('click', closeModal);
+                }
+
+                // Adiciona evento de clique ao botão "Nova Ficha de Trabalho"
+                if (newBudgetButton) {
+                    newBudgetButton.addEventListener('click', function (event) {
+                        event.preventDefault(); // Evita o comportamento padrão do link
+                        openModal(); // Abre o modal
+                    });
+                }
+            });
         </script>
     </div>
 </body>

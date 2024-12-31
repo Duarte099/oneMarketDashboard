@@ -29,8 +29,9 @@
         </a>
 
         <!-- Modal -->
-        <div id="budgetModal" class="modal">
+        <div id="profileModal" class="profileModal">
             <div class="modal-content">
+                <button id="closeModalBtn" class="close-btn" style="padding-right: 40px; position: absolute; top: 10px; right: 10px; background: transparent; border: none; font-size: 18px; cursor: pointer;"> &times; </button>
                 <!-- Seção superior com foto e nome -->
                 <div class="user-info" style="display: flex; align-items: center; padding: 10px 20px;">
                     <img src="<?php echo $img ?>" alt="Foto de Perfil" class="profile-img" style="width: 50px; height: 50px; margin-right: 10px;">
@@ -45,18 +46,66 @@
     </div>
 </nav>
 <script>
-    localStorage.removeItem('modalOpen');
-    
-    const themeSwitch = document.querySelector('#theme-switch');
-    const logoImage = document.querySelector('#logoImage');
+    document.addEventListener('DOMContentLoaded', function() {
+        const profileModal = document.getElementById('profileModal');
+        const profileLink = document.querySelector('.profile'); // Seleciona o link da foto
+        const closeModalBtn = document.getElementById('closeModalBtn');
 
-    themeSwitch.addEventListener('change', () => {
-        if (themeSwitch.checked) {
+        // Função para abrir o modal
+        window.openModal = function() {
+            profileModal.style.display = 'block';
+        };
+
+        // Função para fechar o modal
+        function closeModal() {
+            profileModal.style.display = 'none';
+        }
+
+        // Adiciona evento ao botão de fechar
+        closeModalBtn.addEventListener('click', () => {
+            closeModal();
+        });
+
+        // Adiciona evento de clique no link ou imagem da foto
+        if (profileLink) {
+            profileLink.addEventListener('click', function(event) {
+                const profileModal = document.getElementById('profileModal');
+                
+                // Alterna a exibição do modal
+                if (profileModal.style.display === 'block') {
+                    profileModal.style.display = 'none'; // Fecha o modal se ele estiver aberto
+                } else {
+                    profileModal.style.display = 'block'; // Abre o modal se ele estiver fechado
+                }
+            });
+        }
+
+        const themeSwitch = document.querySelector('#theme-switch');
+        const logoImage = document.querySelector('#logoImage');
+
+        // Carregar a preferência de tema do localStorage
+        const savedTheme = localStorage.getItem('theme'); // Obter o tema armazenado
+        if (savedTheme === 'light') {
             document.documentElement.classList.add('light-mode');
+            themeSwitch.checked = true;
             logoImage.src = '../images/LogoOnemarketPreto.png';
         } else {
             document.documentElement.classList.remove('light-mode');
+            themeSwitch.checked = false;
             logoImage.src = '../images/LogoOnemarketBranco.png';
         }
+
+        // Alternar tema e salvar a preferência no localStorage
+        themeSwitch.addEventListener('change', () => {
+            if (themeSwitch.checked) {
+                document.documentElement.classList.add('light-mode'); // Ativar modo claro
+                logoImage.src = '../images/LogoOnemarketPreto.png';
+                localStorage.setItem('theme', 'light'); // Salvar preferência
+            } else {
+                document.documentElement.classList.remove('light-mode'); // Ativar modo escuro
+                logoImage.src = '../images/LogoOnemarketBranco.png';
+                localStorage.setItem('theme', 'dark'); // Salvar preferência
+            }
+        });
     });
 </script>

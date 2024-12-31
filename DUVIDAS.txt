@@ -1,1 +1,43 @@
-Secções e Produtos não podem ser alterados na ficha de trabalho correto?
+<?php
+                                    if (isset($_GET['search-input']) && !empty($_GET['search-input'])) {
+                                        $pesquisa = $con->real_escape_string($_GET['search-input']);
+                                        $sql = "SELECT 
+                                                    client.id as id,
+                                                    client.name as nome,
+                                                    client.email as email, 
+                                                    client.contact as contacto
+                                                FROM client 
+                                                WHERE (
+                                                    id LIKE '%$pesquisa%' 
+                                                    OR nome LIKE '%$pesquisa%'
+                                                    OR email LIKE '%$pesquisa%'
+                                                    OR contacto LIKE '%$pesquisa%'
+                                                )";
+                                    } else {
+                                        $sql = "SELECT * FROM client;";
+                                    }
+
+                                    $result = $con->query($sql);
+                                    if (!$result) {
+                                        die("Erro na consulta: " . $con->error);
+                                    }
+
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<tr onclick=\"handleRowClick('{$row['id']}', 'budget')\" style=\"cursor: pointer;\">
+                                                <td>{$row['id']}</td>
+                                                <td>{$row['name']}</td>
+                                                <td>{$row['email']}</td>
+                                                <td>{$row['contact']}</td>
+                                            </tr>";
+                                        }
+                                    } else {
+                                        
+                                        echo "<tr><td colspan='5'>Sem orçamentos disponíveis.</td></tr>";
+                                        echo "<tr><td colspan='5' style='text-align: center; padding-top: 10px;'>
+                                            <a href='../pages/novoCliente.php' style='display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;'>
+                                                Criar Novo Cliente
+                                            </a>
+                                        </td></tr>";
+                                    }
+                                ?>
