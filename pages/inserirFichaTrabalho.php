@@ -18,6 +18,8 @@
     $readyStorage = $_POST['prontoArmazem'];
     $joinWork = $_POST['entradaObra'];
     $exitWork = $_POST['saidaObra'];
+ 
+    //if isset = " "
 
     $op = $_GET['op'];
 

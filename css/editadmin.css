@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --background-color: #181a1e;
+    --background-color-secundary: #25252c;
+    --primary-text-color: #fff;
+    --secondary-text-color: #fbfbfb;
+    --theme-color: #781215;
+}
+
+:root.light-mode {
+    --background-color: #fff;
+    --background-color-secundary: #e2dcdc;
+    --primary-text-color: #000000;
+    --secondary-text-color: #161616;
+    --theme-color: #781215;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--background-color-secundary);
+    color: var(--secondary-text-color);
+    overflow-x: hidden;
+}
+
+h1, h2 {
+    color: var(--primary-text-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.content main {
+    padding: 36px 24px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.header h1 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.bottom-data {
+    background-color: var(--background-color);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.bottom-data section h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.section-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.section-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 250px;
+}
+
+.section-group label {
+    font-size: 14px;
+    color: #c4c4c4;
+}
+
+.section-group input[type="text"],
+.section-group input[type="email"],
+.section-group input[type="password"],
+.section-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #33333a;
+    background: var(--background-color-secundary);
+    color: var(--primary-text-color);
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.section-group input:focus,
+.section-group select:focus {
+    border-color: #4a90e2;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--theme-color);
+    color: var(--primary-text-color);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    gap: 8px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #9b1c1f;
+}
+
+@media screen and (max-width: 768px) {
+    .section-row {
+        flex-direction: column;
+    }
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: inherit; 
+}

@@ -8,12 +8,6 @@
         header('Location: index.php');
         exit();
     }
-
-    $pesquisa = '';
-
-    if (isset($_GET['search-input'])) {
-        $pesquisa = $_GET['search-input'];
-    }
 ?>
 
 <!DOCTYPE html>
@@ -63,11 +57,13 @@
                                 <th>Contacto</th>
                                 <th>NIF</th>
                                 <th>Status</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                                 $sql = "SELECT
+                                            client.id as id,
                                             client.name, 
                                             client.email,
                                             client.contact,
@@ -78,12 +74,13 @@
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
-                                        echo "<tr>
+                                        echo "<tr onclick=\"handleRowClick('{$row['id']}', 'editClient')\" style=\"cursor: pointer; position: relative;\">
                                             <td>{$row['name']}</td>
                                             <td>{$row['email']}</td>
                                             <td>{$row['contact']}</td>
                                             <td>{$row['nif']}</td>
                                             <td>{$status}</td>
+                                            <td><button class='btn-small' id='botDeleteClient' onclick=\"event.stopPropagation(); deleteClient('{$row['name']}', {$row['id']});\">🗑️</button></td>
                                             </tr>";
                                     }
                                 } else {
@@ -96,7 +93,25 @@
             </div>
         </main>
 
-        <script src="../index.js" defer></script>
+        <script src="../index.js"></script>
+        <script>
+            function deleteClient(name, id) {
+                console.log("ID do cliente a ser excluído:", id);
+                const result = confirm("Tem a certeza que deseja eliminar o cliente " + name + "?");
+                if (result) {
+                    fetch(`./deleteClient.php?id=${encodeURIComponent(id)}`, {
+                        method: 'GET',
+                    })
+                    .then(() => {
+                        console.log("ID enviado com sucesso via GET.");
+                    })
+                    .catch(error => {
+                        console.error("Erro ao enviar ID:", error);
+                    });
+                }
+                window.location.href = window.location.pathname;
+            }
+        </script>
     </div>
 </body>
 

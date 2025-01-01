@@ -10,12 +10,6 @@
         header('Location: index.php');
         exit();
     }
-
-    $pesquisa = '';
-
-    if (isset($_GET['search-input'])) {
-        $pesquisa = $_GET['search-input'];
-    }
 ?>
 
 <!DOCTYPE html>
@@ -28,9 +22,203 @@
     <link rel="stylesheet" href="../css/fichasTrabalho.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Fichas de Trabalho</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
+    <script>
+        //PESQUISA FICHAS DE TRABALHO
+        const worksheetsSearchData = [];
+                                
+        $.ajax({
+            url: 'ajax.obterWorksheets.php',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                worksheetsSearchData.push(...data);
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro ao buscar os dados:', error);
+            }
+        }); 
+
+        function worksheetsSearch(searchBox) {
+            const dataWorksheet = document.getElementById('bottom-data');
+            const tbody = dataWorksheet.querySelector('table tbody');
+            const query = searchBox.value.toLowerCase();
+            tbody.innerHTML = ""; // Limpa os resultados anteriores
+
+            const displayResults = (results) => {
+                if (results.length > 0) {
+                    results.forEach((result) => {
+                        const row = document.createElement("tr");
+
+                        // Adiciona as colunas da tabela
+                        const numWorksheet = document.createElement("td");
+                        numWorksheet.textContent = result.numWorksheet;
+
+                        const nomeCliente = document.createElement("td");
+                        nomeCliente.textContent = result.nomeCliente;
+
+                        const contactoCliente = document.createElement("td");
+                        contactoCliente.textContent = result.contactoCliente;
+
+                        const numBudget = document.createElement("td");
+                        numBudget.textContent = result.numBudget;
+
+                        const readyStorage = document.createElement("td");
+                        readyStorage.textContent = result.readyStorage;
+
+                        const joinWork = document.createElement("td");
+                        joinWork.textContent = result.joinWork;
+
+                        const exitWork = document.createElement("td");
+                        exitWork.textContent = result.exitWork;
+
+                        const responsavel = document.createElement("td");
+                        responsavel.textContent = result.responsavel;
+
+                        // Adiciona o botão de exclusão
+                        const actions = document.createElement("td");
+                        const deleteButton = document.createElement("button");
+                        deleteButton.className = 'btn-small';
+                        deleteButton.id = 'botDeleteBudget';
+                        deleteButton.innerHTML = '🗑️';
+                        deleteButton.onclick = (event) => {
+                            deleteBudget(result.numBudget, result.idbudget);
+                            event.stopPropagation();
+                        };
+                        actions.appendChild(deleteButton);
+
+                        // Adiciona todas as células à linha
+                        row.appendChild(numWorksheet);
+                        row.appendChild(nomeCliente);
+                        row.appendChild(contactoCliente);
+                        row.appendChild(numBudget);
+                        row.appendChild(readyStorage);
+                        row.appendChild(joinWork);
+                        row.appendChild(exitWork);
+                        row.appendChild(responsavel);
+                        row.appendChild(actions);
+
+                        row.addEventListener("click", () => handleRowClick(result.idWorksheet, "editWorksheet"));
+                        row.addEventListener("click", () => searchBox.value = "");
+
+                        // Adiciona a linha ao corpo da tabela
+                        tbody.appendChild(row);
+                    });
+                } else {
+                    // Adiciona uma linha dizendo "Sem resultados"
+                    const row = document.createElement("tr");
+                    const noResultsCell = document.createElement("td");
+                    noResultsCell.textContent = "Sem resultados";
+                    noResultsCell.colSpan = 9; // Atualiza para incluir todas as colunas (inclusive a de ações)
+                    noResultsCell.style.textAlign = "center"; // Centraliza o texto
+
+                    row.appendChild(noResultsCell);
+                    tbody.appendChild(row);
+                }
+            };
+
+            if (query) {
+                // Filtra os resultados com base nos campos numBudget, nomeCliente e responsavel
+                const filteredResults = worksheetsSearchData.filter(item =>
+                    item.numWorksheet.toLowerCase().includes(query) ||
+                    item.nomeCliente.toLowerCase().includes(query) ||
+                    item.responsavel.toLowerCase().includes(query)
+                );
+
+                displayResults(filteredResults);
+            } else {
+                // Exibe todos os resultados se o campo de busca estiver vazio
+                displayResults(worksheetsSearchData);
+            }
+        }
+    
+        //PESQUISA ORÇAMENTOS
+        const budgetsSearchData = [];
+                                    
+        $.ajax({
+            url: 'ajax.obterOrcamentos.php',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                budgetsSearchData.push(...data);
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro ao buscar os dados:', error);
+            }
+        }); 
+
+        function budgetsSearch(searchBox) {
+            const modal = document.getElementById('worksheetModal');
+            const tbody = modal.querySelector('table tbody');
+            const query = searchBox.value.toLowerCase();
+            tbody.innerHTML = ""; // Limpa os resultados anteriores
+
+            const displayResults = (results) => {
+                if (results.length > 0) {
+                    results.forEach((result) => {
+                        const row = document.createElement("tr");
+
+                        // Adiciona as colunas da tabela
+                        const numBudget = document.createElement("td");
+                        numBudget.textContent = result.numBudget;
+
+                        const nomeCliente = document.createElement("td");
+                        nomeCliente.textContent = result.nomeCliente;
+
+                        const contactoCliente = document.createElement("td");
+                        contactoCliente.textContent = result.contactoCliente;
+
+                        const numWorksheet = document.createElement("td");
+                        numWorksheet.textContent = result.numWorksheet;
+
+                        const dataCriacao = document.createElement("td");
+                        dataCriacao.textContent = result.dataCriacao;
+
+                        const responsavel = document.createElement("td");
+                        responsavel.textContent = result.responsavel;
+
+                        // Adiciona todas as células à linha
+                        row.appendChild(numBudget);
+                        row.appendChild(nomeCliente);
+                        row.appendChild(responsavel);
+
+                        row.addEventListener("click", () => handleRowClick(result.idBudget, "worksheet"));
+                        row.addEventListener("click", () => searchBox.value = "");
+
+                        // Adiciona a linha ao corpo da tabela
+                        tbody.appendChild(row);
+                    });
+                } else {
+                    // Adiciona uma linha dizendo "Sem resultados"
+                    const row = document.createElement("tr");
+                    const noResultsCell = document.createElement("td");
+                    noResultsCell.textContent = "Sem resultados";
+                    noResultsCell.colSpan = 7; // Atualiza para incluir todas as colunas (inclusive a de ações)
+                    noResultsCell.style.textAlign = "center"; // Centraliza o texto
+
+                    row.appendChild(noResultsCell);
+                    tbody.appendChild(row);
+                }
+            };
+
+            if (query) {
+                // Filtra os resultados com base nos campos numBudget, nomeCliente e responsavel
+                const filteredResults = budgetsSearchData.filter(item =>
+                    item.numBudget.toLowerCase().includes(query) ||
+                    item.nomeCliente.toLowerCase().includes(query) ||
+                    item.responsavel.toLowerCase().includes(query)
+                );
+
+                displayResults(filteredResults);
+            } else {
+                // Exibe todos os resultados se o campo de busca estiver vazio
+                displayResults(budgetsSearchData);
+            }
+        }
+    </script>
 
     <?php 
         include('../pages/sideBar.php'); 
@@ -48,14 +236,17 @@
             <div class="header">
                 <div class="left">
                     <h1>Fichas de Trabalho</h1>
+                    <div class="search-bar">
+                        <input type="text" id="searchBox" placeholder="Pesquisar fichas de trabalho..." oninput="worksheetsSearch(this)" />
+                    </div>
                 </div>
-                <a href="novaFichaTrabalho.php" id="new-budget" class="report">
+                <a href="novaFichaTrabalho.php" id="new-worksheet" class="report">
                     <i class='bx bx-plus'></i>
                     <span>Nova Ficha de Trabalho</span>
                 </a>
             </div>
 
-            <div id="budgetModal" class="modal">
+            <div id="worksheetModal" class="modal">
                 <div class="modal-content">
                     <div class="headerModal">
                         <h2>Selecione um Orçamento</h2>
@@ -63,65 +254,36 @@
                     </div>
                     <form method="GET" action="">
                         <div class="form-input">
-                            <input id="search-input" name="search-input" type="text" placeholder="Search..." value="<?=$pesquisa?>">
-                            <button type="button" class="clear-button" onclick="limparPesquisa()">✖</button>
+                            <input id="search-input" name="search-input" type="text" placeholder="Search..." oninput="budgetsSearch(this)">
                         </div>
                     </form>
                     <div class="tabela">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Num</th>
-                                    <th>Nome</th>
+                                    <th>Numero</th>
                                     <th>Cliente</th>
+                                    <th>Responsavel</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                    if (isset($_GET['search-input']) && !empty($_GET['search-input'])) {
-                                        $pesquisa = $con->real_escape_string($_GET['search-input']);
-                                        $sql = "SELECT 
-                                                    budget.id as idBudget,
-                                                    budget.num as numBudget,
-                                                    budget.year as yearBudget,
-                                                    budget.name as nomeBudget,
-                                                    client.name as nomeCliente, 
-                                                    budget.created as dataCriacao,
-                                                    administrator.name as responsavel
-                                                FROM budget 
-                                                LEFT JOIN administrator ON budget.createdBy = administrator.id
-                                                LEFT JOIN client ON budget.idClient = client.id
-                                                LEFT JOIN project_type ON budget.idProjectType = project_type.id
-                                                WHERE idWorksheet IS NULL 
-                                                AND (
-                                                    budget.name LIKE '%$pesquisa%' 
-                                                    OR client.name LIKE '%$pesquisa%'
-                                                    OR project_type.name LIKE '%$pesquisa%'
-                                                    OR budget.created LIKE '%$pesquisa%'
-                                                    OR administrator.name LIKE '%$pesquisa%'
-                                                )
-                                                ORDER BY budget.id DESC";
-                                    } else {
-                                        $sql = "SELECT 
-                                                    budget.id as idBudget,
-                                                    budget.num as numBudget,
-                                                    budget.year as yearBudget,
-                                                    budget.name as nomeBudget,
-                                                    client.name as nomeCliente, 
-                                                    budget.created as dataCriacao,
-                                                    administrator.name as responsavel
-                                                FROM budget 
-                                                LEFT JOIN administrator ON budget.createdBy = administrator.id
-                                                LEFT JOIN client ON budget.idClient = client.id
-                                                WHERE idWorksheet IS NULL 
-                                                ORDER BY budget.id DESC 
-                                                LIMIT 10;";
-                                    }
+                                    $sql = "SELECT 
+                                                budget.id as idBudget,
+                                                budget.num as numBudget,
+                                                budget.year as yearBudget,
+                                                budget.name as nomeBudget,
+                                                client.name as nomeCliente, 
+                                                budget.created as dataCriacao,
+                                                administrator.name as responsavel
+                                            FROM budget 
+                                            LEFT JOIN administrator ON budget.createdBy = administrator.id
+                                            LEFT JOIN client ON budget.idClient = client.id
+                                            WHERE idWorksheet IS NULL 
+                                            ORDER BY budget.id DESC 
+                                            LIMIT 10;";
 
                                     $result = $con->query($sql);
-                                    if (!$result) {
-                                        die("Erro na consulta: " . $con->error);
-                                    }
 
                                     if ($result->num_rows > 0) {
                                         while ($row = $result->fetch_assoc()) {
@@ -131,14 +293,6 @@
                                                 <td>{$row['nomeCliente']}</td>
                                             </tr>";
                                         }
-                                    } else {
-                                        
-                                        echo "<tr><td colspan='5'>Sem orçamentos disponíveis.</td></tr>";
-                                        echo "<tr><td colspan='5' style='text-align: center; padding-top: 10px;'>
-                                            <a href='../pages/novoCliente.php' style='display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;'>
-                                                Criar Novo Cliente
-                                            </a>
-                                        </td></tr>";
                                     }
                                 ?>
                             </tbody>
@@ -147,8 +301,8 @@
                 </div>
             </div>
 
-            <div class="bottom-data">
-                <div class="budget">
+            <div class="bottom-data" id="bottom-data">
+                <div class="worksheet">
                     <table>
                         <thead>
                             <tr>
@@ -160,6 +314,7 @@
                                 <th>Entrada em Obra</th>
                                 <th>Saída de Obra</th>
                                 <th>Elaborado Por</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -197,6 +352,7 @@
                                             <td>{$row['joinWork']}</td>
                                             <td>{$row['exitWork']}</td>
                                             <td>{$row['nomeAdministrador']}</td>
+                                            <td><button class='btn-small' id='botDeleteWorksheet' onclick=\"deleteWorksheet('{$row['numWorksheet']}/{$row['yearWorksheet']}', {$row['idWorksheet']}); event.stopPropagation();\">🗑️</button></td>
                                             </tr>";
                                     }
                                 } else {
@@ -210,7 +366,62 @@
 
         </main>
 
-        <script src="../index.js" defer>
+        <script src="../index.js" defer></script>
+        <script>
+            function deleteWorksheet(num, id) {
+                const result = confirm("Tem a certeza que deseja eliminar a ficha de trabalho " + num + "?");
+                if (result) {
+                    fetch(`./deleteWorksheet.php?idWorksheet=${encodeURIComponent(id)}`, {
+                        method: 'GET',
+                    })
+                    .then(() => {
+                        console.log("ID enviado com sucesso via GET.");
+                    })
+                    .catch(error => {
+                        console.error("Erro ao enviar ID:", error);
+                    });
+                }
+                window.location.href = window.location.pathname;
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchInput = document.getElementById('search-input');
+                const modal = document.getElementById('worksheetModal');
+                const newBudgetButton = document.getElementById('new-worksheet'); // Seleciona o botão
+
+                // Função para abrir o modal
+                window.openModal = function () {
+                    modal.style.display = 'block';
+                };
+
+                // Função para fechar o modal
+                function closeModal() {
+                    modal.style.display = 'none';
+                    window.location.href = window.location.pathname; // Recarrega a página
+                }
+
+                // Limpar pesquisa modal
+                window.limparPesquisa = function() {
+                    if (searchInput) {
+                        searchInput.value = ''; // Limpa o valor do input
+                        clientsSearch(searchInput);
+                    }
+                };
+
+                // Fechar modal ao clicar no "x"
+                const closeButton = document.querySelector('.close');
+                if (closeButton) {
+                    closeButton.addEventListener('click', closeModal);
+                }
+
+                // Adiciona evento de clique ao botão "Nova Ficha de Trabalho"
+                if (newBudgetButton) {
+                    newBudgetButton.addEventListener('click', function (event) {
+                        event.preventDefault(); // Evita o comportamento padrão do link
+                        openModal(); // Abre o modal
+                    });
+                }
+            });
         </script>
     </div>
 </body>

@@ -80,7 +80,7 @@
                                 <input type="email" name="email" required>
                             </div>
                             <div class="section-group">
-                                <label>Contato:</label>
+                                <label>Contacto:</label>
                                 <input type="number" name="contato" required>
                             </div>
 

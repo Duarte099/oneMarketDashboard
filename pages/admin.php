@@ -58,6 +58,7 @@
                                 <th>Email</th>
                                 <th>Username</th>
                                 <th>Status</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,6 +80,7 @@
                                                 <td>{$row['email']}</td>
                                                 <td>{$row['user']}</td>
                                                 <td>{$status}</td>
+                                                <td><button class='btn-small' id='botDeleteAdmin' onclick=\"event.stopPropagation(); deleteAdmin('{$row['name']}', {$row['id']});\">🗑️</button></td>
                                             </tr>";
                                     }
                                 } else {
@@ -93,6 +95,24 @@
         </main>
 
         <script src="../index.js"></script>
+        <script>
+            function deleteAdmin(name, id) {
+                console.log("ID do administrador a ser excluído:", id);
+                const result = confirm("Tem a certeza que deseja eliminar o administrador " + name + "?");
+                if (result) {
+                    fetch(`./deleteAdmin.php?id=${encodeURIComponent(id)}`, {
+                        method: 'GET',
+                    })
+                    .then(() => {
+                        console.log("ID enviado com sucesso via GET.");
+                    })
+                    .catch(error => {
+                        console.error("Erro ao enviar ID:", error);
+                    });
+                }
+                window.location.href = window.location.pathname;
+            }
+        </script>
     </div>
 </body>
 

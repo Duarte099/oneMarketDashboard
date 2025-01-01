@@ -88,6 +88,9 @@ function handleRowClick(id, action) {
     else if (action == "editBudget") {
         window.location.href = "editBudget.php?idBudget=" + id;
     }
+    else if (action == "editClient") {
+        window.location.href = "editClient.php?id=" + id;
+    }
     else if (action == "editAdmin") {
         window.location.href = "editAdmin.php?id=" + id;
     }

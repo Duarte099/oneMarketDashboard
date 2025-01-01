@@ -55,7 +55,6 @@
             <main>
                 <div class="header">
                     <div class="left">
-                        <?php echo $idCliente ?>
                         <h1>Novo Orçamento</h1>
                     </div>
                 </div>

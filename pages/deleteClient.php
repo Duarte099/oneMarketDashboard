@@ -1,7 +1,7 @@
 <?php
 
     include('../db/conexao.php'); 
-    $estouEm = 2;
+    $estouEm = 5;
 
     session_start();
 
@@ -10,9 +10,9 @@
         exit();
     }
 
-    $idBudget = $_GET['idBudget'];
+    $id = $_GET['id'];
 
-    $sql = "DELETE FROM budget WHERE id = $idBudget;";
+    $sql = "DELETE FROM client WHERE id = $id;";
     $result = $con->prepare($sql);
     $result->execute();
 ?>

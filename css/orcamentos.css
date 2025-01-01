@@ -25,6 +25,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    scrollbar-color: var(--background-color);
 }
 
 .bx{
@@ -42,6 +43,37 @@ html{
 body{
     background: var(--background-color-secundary);
     overflow-x: hidden;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.left {
+    display: flex;
+    flex-direction: column; /* Alinha o título e a barra de pesquisa verticalmente */
+}
+
+.search-bar {
+    margin-top: 10px; /* Adiciona espaçamento entre o título e a barra de pesquisa */
+}
+
+.search-bar input {
+    width: 200%;
+    max-width: 300px; /* Define uma largura máxima */
+    padding: 8px 12px; /* Adiciona espaçamento interno */
+    border: 1px solid var(--border-color); /* Borda cinza */
+    border-radius: 5px; /* Bordas arredondadas */
+    font-size: 14px;
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+}
+
+.search-bar input:focus {
+    outline: none; /* Remove o contorno padrão */
 }
 
 .content main .header .left h1{
@@ -73,7 +105,7 @@ body{
     padding: 0 16px;
     border-radius: 36px;
     background: var(--theme-color);
-    color: var(--background-color);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: right;
@@ -123,7 +155,6 @@ body{
 
 .content main .bottom-data .budget table th {
     padding-bottom: 12px;
-    font-size: 13px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
 }
@@ -135,7 +166,7 @@ body{
 /* Tornar o tbody scrollável */
 .content main .bottom-data .budget table tbody {
     display: block;
-    max-height: 470px;
+    max-height: 422px;
     overflow-y: auto;
 }
 
@@ -154,17 +185,21 @@ body{
 #budgetModal {
     display: none;
     position: fixed;
-    top: 50%;
+    overflow: hidden;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    width: 800px; /* Define largura fixa */
+    height: 600px; /* Define altura fixa */
+    background-color: var(--background-color); /* Certifique-se de ter esta variável */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .modal-overlay {
-    display: none;  
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -173,6 +208,7 @@ body{
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
 }
+
 .modal {
     width: 100%;
     height: 100%;
@@ -183,19 +219,16 @@ body{
     z-index: 1000;
     left: 0;
     top: 0;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
     background-color: var(--background-color);
     gap: 12px;
-    margin: 5% auto;
+    margin: auto;
     padding: 20px;
     border-radius: 8px;
-    width: 70%;
-    max-width: 1000px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 100%; /* Mantém o tamanho ajustado ao modal */
+    height: 100%; /* Mantém o tamanho ajustado ao modal */
     display: flex;
     flex-direction: column;
 }
@@ -224,14 +257,53 @@ body{
 }
 
 .modal-content .headerModal .close:hover {
-    color: red; 
+    color: red;
 }
 
 .modal .tabela {
     background-color: var(--background-color-secundary);
     padding: 15px;
     border-radius: 8px;
+    overflow: hidden; /* Esconde transbordo inicial */
+    height: calc(100% - 100px); /* Ajusta o espaço para a tabela */
 }
+
+/* Rolagem para a tabela */
+.modal .tabela table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.modal .tabela tbody {
+    display: block;
+    max-height: 350px; /* Define altura máxima da área de resultados */
+    overflow-y: auto; /* Permite rolagem vertical */
+}
+
+.modal .tabela thead, .modal .tabela tbody tr {
+    display: table;
+    width: 100%; /* Garante que as colunas ocupem toda a largura */
+    table-layout: fixed; /* Colunas fixas e consistentes */
+}
+
+/* Barra de rolagem customizada (opcional) */
+.modal .tabela tbody::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal .tabela tbody::-webkit-scrollbar-thumb {
+    background-color: #888; /* Cor da barra de rolagem */
+    border-radius: 4px;
+}
+
+.modal .tabela tbody::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.content main .bottom-data .budget table td{
+    padding: 16px 0;
+}
+
 table {
     width: 100%; 
     border-collapse: collapse;
@@ -241,11 +313,16 @@ table {
 table th, table td {
     color: var(--primary-text-color); 
     text-align: left;
-    padding: 12px 15px; 
 }
 
 table th {
+    padding-bottom: 12px;
     font-weight: bold;
+    border-bottom: 1px solid var(--background-color);
+}
+
+table td{
+    padding: 16px 0;
 }
 
 table td button.select-budget {
@@ -293,18 +370,6 @@ table td button.select-budget:hover {
     outline: none;
 }
 
-.content main .modal-content .form-input .clear-button {
-    position: absolute;
-    right: 0px;
-    color: var(--primary-text-color);
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    outline: none;
-    transition: color 0.3s;
-}
-
 .content main .modal-content .form-input button {
     width: 50px;
     height: 100%;
@@ -318,10 +383,6 @@ table td button.select-budget:hover {
     outline: none;
     cursor: pointer;
     transition: background 0.3s;
-}
-
-.content main .modal-content .form-input .clear-button:hover {
-    color: red;
 }
 
 .content main .modal-content .form-input button:hover {
@@ -364,4 +425,18 @@ table td button.select-budget:hover {
 
 .btn-small:hover {
     background-color: #cc0000; /* Cor de fundo ao passar o mouse */
+}
+
+/* Barra de rolagem customizada (opcional) */
+tbody::-webkit-scrollbar {
+    width: 8px;
+}
+
+tbody::-webkit-scrollbar-thumb {
+    background-color: #888; /* Cor da barra de rolagem */
+    border-radius: 4px;
+}
+
+tbody::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
 }

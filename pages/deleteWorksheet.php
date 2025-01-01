@@ -10,9 +10,9 @@
         exit();
     }
 
-    $idBudget = $_GET['idBudget'];
+    $idWorksheet = $_GET['idWorksheet'];
 
-    $sql = "DELETE FROM budget WHERE id = $idBudget;";
+    $sql = "DELETE FROM worksheet WHERE id = $idWorksheet;";
     $result = $con->prepare($sql);
     $result->execute();
 ?>

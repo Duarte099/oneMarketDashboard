@@ -10,6 +10,7 @@
     }
     
     $sql = "SELECT 
+            client.id as idCliente,
             client.name as nomeCliente,
             client.email as emailCliente,
             client.contact as contactoCliente
@@ -21,6 +22,7 @@
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $data[] = [
+                'idCliente' => $row['idCliente'], 
                 'nomeCliente' => $row['nomeCliente'], 
                 'emailCliente' => $row['emailCliente'],
                 'contactoCliente' => $row['contactoCliente'],
