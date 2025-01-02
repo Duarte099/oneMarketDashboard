@@ -40,7 +40,7 @@
                 <hr style="border: none; border-top: 1px solid #333; margin: 10px 0;">
 
                 <!-- Opções -->
-                <a href="#" class="menu-option">Ver Perfil</a>
+                <a href="../pages/perfil.php" class="menu-option">Ver Perfil</a>
             </div>
         </div>
     </div>

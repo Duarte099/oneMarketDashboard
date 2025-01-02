@@ -118,12 +118,6 @@ body{
     flex-wrap: wrap;
 }
 
-.content main{
-    width: 100%;
-    padding: 36px 24px;
-    max-height: calc(100vh - 56px);
-}
-
 .content main .bottom-data{
     display: flex;
     flex-wrap: wrap;

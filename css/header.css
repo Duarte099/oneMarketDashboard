@@ -104,7 +104,6 @@ hr {
     color: var(--primary-text-color); /* Cor do texto */
     padding: 10px 20px; /* Espaçamento interno */
     display: block;
-    transition: background-color 0.3s ease;
 }
 
 .menu-option:hover {
