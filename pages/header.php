@@ -31,7 +31,7 @@
         <!-- Modal -->
         <div id="profileModal" class="profileModal">
             <div class="modal-content">
-                <button id="closeModalBtn" class="close-btn" style="padding-right: 40px; position: absolute; top: 10px; right: 10px; background: transparent; border: none; font-size: 18px; cursor: pointer;"> &times; </button>
+                <button id="closeModalBtn" class="close-btn"> &times; </button>
                 <!-- Seção superior com foto e nome -->
                 <div class="user-info" style="display: flex; align-items: center; padding: 10px 20px;">
                     <img src="<?php echo $img ?>" alt="Foto de Perfil" class="profile-img" style="width: 50px; height: 50px; margin-right: 10px;">
@@ -40,7 +40,8 @@
                 <hr style="border: none; border-top: 1px solid #333; margin: 10px 0;">
 
                 <!-- Opções -->
-                <a href="../pages/perfil.php" class="menu-option">Ver Perfil</a>
+                <a href="../pages/perfil.php" class="menu-option">Perfil</a>
+                <a href="../pages/logout.php" class="menu-option">Logout</a>
             </div>
         </div>
     </div>

@@ -69,6 +69,18 @@
     display: none; /* Inicialmente oculto */
 }
 
+.modal-content {
+    background-color: #212429;
+    gap: 12px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%; /* Mantém o tamanho ajustado ao modal */
+    height: 100%; /* Mantém o tamanho ajustado ao modal */
+    display: flex;
+    flex-direction: column;
+}
+
 .user-info {
     display: flex;
     align-items: center; /* Alinha a imagem e o texto na mesma linha */
@@ -177,16 +189,26 @@ hr {
 }
 
 .close-btn {
-    font-size: 20px;
+    position: absolute; /* Posiciona o botão dentro do modal */
+    top: 1px; /* Ajuste conforme necessário */
+    right: 1px; /* Ajuste conforme necessário */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px; /* Tamanho maior para o "X" */
     font-weight: bold;
     color: #fff;
     background: none;
     border: none;
     cursor: pointer;
     outline: none;
-    transition: color 0.2s;
+    width: 32px; /* Tamanho do botão */
+    height: 32px;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .close-btn:hover {
-    color: #ff0000; /* Vermelho ao passar o mouse */
+    background-color: rgba(255, 0, 0, 0.3); /* Fundo no hover */
+    color: #ff0000;
 }
