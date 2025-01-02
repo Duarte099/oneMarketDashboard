@@ -139,7 +139,7 @@
         const budgetsSearchData = [];
                                     
         $.ajax({
-            url: 'ajax.obterOrcamentos.php',
+            url: 'ajax.obterOrcamentosModal.php',
             type: 'POST',
             dataType: 'json',
             success: function(data) {

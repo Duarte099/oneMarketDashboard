@@ -24,24 +24,12 @@
         $idClient =  $row['idClient'];
     }
 
-    $sql = "SELECT COUNT(*) AS numSections FROM budget_sections_products WHERE budget_sections_products.idBudget = $idBudget AND idProduct = 0;";
+    $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $numSections =  $row['numSections'];
     }
-
-    // if (isset($_GET['op'])) $op = $_GET['op'];
-
-    // if ($op == 'save') {
-    //     $numSeccao  = 10;
-    //     for ($i=1; $i<=$numSeccao; $i++) {
-    //         if (isset($_POST['produto_ref_' . $i])) {
-    //             $produto_ref = $_POST['produto_ref_' . $i];
-    //             echo "produto_ref = $produto_ref";
-    //         }
-    //     }
-    // }
 ?>
 
 <!DOCTYPE html>
@@ -162,13 +150,7 @@
                         <section id="secoes">
                             <h2>Secções</h2>
                             <?php 
-                                $produtosIndex = 0; 
-                                $sql = "SELECT COUNT(*) AS numSections FROM budget_sections_products WHERE budget_sections_products.idBudget = $idBudget AND idProduct = 0;";
-                                $result = $con->query($sql);
-                                if ($result->num_rows > 0) {
-                                    $row = $result->fetch_assoc();
-                                    $numSections =  $row['numSections'];
-                                }
+                                $produtosIndex = 0;
                                 for ($i=1; $i <= $numSections; $i++) { 
                                     $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0;";
                                     $result = $con->query($sql);
@@ -208,12 +190,11 @@
                                                     <th>N/REF</th>
                                                     <th>Designação</th>
                                                     <th>Quantidade</th>
-                                                    <th>Descrição</th>
-                                                    <th>Tamanho</th>
+                                                    <th class="inputs-th">Observações</th>
                                                 </tr>
                                             </thead>
                                             <?php 
-                                                for ($j=1; $j <= 10; $j++) { 
+                                                for ($j=1; $j <= $numProducts; $j++) { 
                                                     $produtosIndex++; 
                                                     $refProduct = '';
                                                     $nameProduct = '';
@@ -221,44 +202,42 @@
                                                     $descriptionProduct = '';
                                                     $valueProduct = 0;
                                                     $sizeProduct = '';?>
-                                                    <?php if ($j <= $numProducts) { ?>
-                                                        <tbody class="produtos">
-                                                            <tr>
-                                                                <?php 
-                                                                    $sql = "SELECT refProduct, nameProduct, amountProduct, descriptionProduct, sizeProduct FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderProduct = '$j' AND orderSection = '$i';";
-                                                                    $result = $con->query($sql);
-                                                                    if ($result->num_rows > 0) {
-                                                                        while ($row = $result->fetch_assoc()) {
-                                                                            $refProduct = $row['refProduct'];
-                                                                            $nameProduct = $row['nameProduct'];
-                                                                            $amountProduct = $row['amountProduct'];
-                                                                            $descriptionProduct = $row['descriptionProduct'];
-                                                                            $sizeProduct = $row['sizeProduct'];
-                                                                        }
+                                                    <tbody class="produtos">
+                                                        <tr>
+                                                            <?php 
+                                                                $sql = "SELECT refProduct, nameProduct, amountProduct, descriptionProduct, sizeProduct FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderProduct = '$j' AND orderSection = '$i';";
+                                                                $result = $con->query($sql);
+                                                                if ($result->num_rows > 0) {
+                                                                    while ($row = $result->fetch_assoc()) {
+                                                                        $refProduct = $row['refProduct'];
+                                                                        $nameProduct = $row['nameProduct'];
+                                                                        $amountProduct = $row['amountProduct'];
+                                                                        $descriptionProduct = $row['descriptionProduct'];
+                                                                        $sizeProduct = $row['sizeProduct'];
                                                                     }
-                                                                ?>
-                                                                <td><input type="checkbox" class="check" name="secao_<?php echo $i; ?>_produto_check_<?php echo $j; ?>"></td>
-                                                                <td><input type="checkbox" class="armazem" name="secao_<?php echo $i; ?>_produto_armazem_<?php echo $j; ?>"></td>
-                                                                <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
-                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" readonly></td>
-                                                                <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value = "<?php echo $nameProduct; ?>" readonly></td>
-                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value = "<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" readonly></td>
-                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" value = "<?php echo $descriptionProduct; ?>"></td>
-                                                                <td><input type="text" class="tamanho" name="secao_<?php echo $i; ?>_produto_tamanho_<?php echo $j; ?>" value = "<?php echo $sizeProduct; ?>"></td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <div id="produtosModal-<?php echo $produtosIndex; ?>" class="modal">
-                                                            <div id="results-container-<?php echo $produtosIndex; ?>" class="results-container"></div>
-                                                        </div>
-                                                    <?php } ?>
+                                                                }
+                                                            ?>
+                                                            <td><input type="checkbox" class="check" name="secao_<?php echo $i; ?>_produto_check_<?php echo $j; ?>"></td>
+                                                            <td><input type="checkbox" class="armazem" name="secao_<?php echo $i; ?>_produto_armazem_<?php echo $j; ?>"></td>
+                                                            <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
+                                                            <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" readonly></td>
+                                                            <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value = "<?php echo $nameProduct; ?>" readonly></td>
+                                                            <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value = "<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" readonly></td>
+                                                            <td class="inputs-td">
+                                                                <input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_observacao_<?php echo $j; ?>" value = "<?php echo $descriptionProduct; ?>">
+                                                                <input type="text" class="tamanho" name="secao_<?php echo $i; ?>_produto_tamanho_<?php echo $j; ?>">
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <div id="produtosModal-<?php echo $produtosIndex; ?>" class="modal">
+                                                        <div id="results-container-<?php echo $produtosIndex; ?>" class="results-container"></div>
+                                                    </div>
                                                 <?php } 
                                             ?>
                                         </table>
                                     </div>
                             <?php } ?>
                             <script>
-                                localStorage.removeItem('modalOpen');
-
                                 document.addEventListener("DOMContentLoaded", function() {
                                     atualizarIndicesGlobais();
                                 });

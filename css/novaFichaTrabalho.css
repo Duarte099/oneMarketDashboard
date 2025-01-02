@@ -109,6 +109,44 @@ h1, h2, h3, h4 {
     display: flex;
 }
 
+/* Estilo da checkbox */
+.content main .bottom-data .budget table input[type="checkbox"] {
+    appearance: none; /* Remove o estilo padrão */
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-color); /* Cor da borda */
+    border-radius: 4px; /* Cantos arredondados */
+    background: var(--background-color); /* Fundo da página */
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+/* Estilo ao passar o mouse */
+.content main .bottom-data .budget table input[type="checkbox"]:hover {
+    border-color: var(--secondary-text-color); /* Alterar cor ao passar o mouse */
+}
+
+/* Estilo quando marcado */
+.content main .bottom-data .budget table input[type="checkbox"]:checked {
+    background: var(--background-color); /* Cor de destaque quando marcado */
+    border-color: var(--primary-text-color);
+    position: relative;
+}
+
+/* Ícone de check personalizado */
+.content main .bottom-data .budget table input[type="checkbox"]:checked::after {
+    content: "✔"; /* Ícone do check */
+    color: var(--primary-text-color); /* Cor do ícone */
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 table {
     width: 100%; 
     border-collapse: collapse;
@@ -141,6 +179,10 @@ table td button.select-budget {
     margin-top: 16px;
 }
 
+.content main .bottom-data .budget table th.inputs-th {
+    text-align: center;
+}
+
 .content main .bottom-data .budget table th {
     text-align: left;
     font-size: 14px;
@@ -152,6 +194,12 @@ table td button.select-budget {
 .content main .bottom-data .budget table td {
     padding: 12px 0;
     font-size: 14px;
+}
+
+.inputs-td {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .content main .bottom-data .budget table tr td:first-child {

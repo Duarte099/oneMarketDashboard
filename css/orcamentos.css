@@ -139,7 +139,9 @@ body{
 .content main .bottom-data>div{
     border-radius: 20px;
     background: var(--background-color);
-    padding: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 24px;
     overflow-x: auto;
 }
 
@@ -148,19 +150,10 @@ body{
     flex-basis: 500px;
 }
 
-.content main .bottom-data .budget table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
 .content main .bottom-data .budget table th {
     padding-bottom: 12px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
-}
-
-.content main .bottom-data .budget table td {
-    text-align: left;
 }
 
 /* Tornar o tbody scrollável */
@@ -168,6 +161,7 @@ body{
     display: block;
     max-height: 422px;
     overflow-y: auto;
+    width: 100%;
 }
 
 .content main .bottom-data .budget table thead,
@@ -181,6 +175,31 @@ body{
     background: var(--background-color-secundary);
 }
 
+.content main .bottom-data .budget table th,
+.content main .bottom-data .budget table td{
+    width: auto;
+    text-align: left;
+    padding: 16px 0;
+}
+
+.content main .bottom-data .budget table th:last-child,
+.content main .bottom-data .budget table td:last-child {
+    width: 50px;
+    text-align: center;
+    padding: 0;
+}
+
+.content main .bottom-data .budget table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.content main .bottom-data .budget table thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
 
 #budgetModal {
     display: none;
@@ -301,7 +320,7 @@ body{
 }
 
 .content main .bottom-data .budget table td{
-    padding: 16px 0;
+    padding: 18px 0;
 }
 
 table {

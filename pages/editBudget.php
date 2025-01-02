@@ -22,7 +22,7 @@
         $idClient =  $row['idClient'];
     }
 
-    $sql = "SELECT COUNT(*) AS numSections FROM budget_sections_products WHERE budget_sections_products.idBudget = $idBudget AND idProduct = 0;";
+    $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -208,7 +208,7 @@
                                             </thead>
                                             <?php 
                                                 for ($j=1; $j <= 10; $j++) { 
-                                                    $produtosIndex++; 
+                                                    $produtosIndex++;
                                                     $refProduct = '';
                                                     $nameProduct = '';
                                                     $amountProduct = 0;
