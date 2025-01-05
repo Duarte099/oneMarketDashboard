@@ -179,7 +179,7 @@ body{
 .content main .bottom-data .budget table td{
     width: auto;
     text-align: left;
-    padding: 16px 0;
+    padding: 18px 0;
 }
 
 .content main .bottom-data .budget table th:last-child,
@@ -199,6 +199,55 @@ body{
     display: table;
     width: 100%;
     table-layout: fixed;
+}
+
+table {
+    width: 100%; 
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    color: var(--primary-text-color); 
+    text-align: left;
+}
+
+table th {
+    padding-bottom: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--background-color);
+}
+
+table td{
+    padding: 16px 0;
+}
+
+table td button.select-budget {
+    background-color: #f04747;
+    color: var(--primary-text-color);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+table td button.select-budget:hover {
+    background-color: #d03c3c; 
+}
+
+/* Barra de rolagem customizada (opcional) */
+.modal .tabela tbody::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal .tabela tbody::-webkit-scrollbar-thumb {
+    background-color: #888; /* Cor da barra de rolagem */
+    border-radius: 4px;
+}
+
+.modal .tabela tbody::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
 }
 
 #budgetModal {
@@ -303,59 +352,6 @@ body{
     display: table;
     width: 100%; /* Garante que as colunas ocupem toda a largura */
     table-layout: fixed; /* Colunas fixas e consistentes */
-}
-
-/* Barra de rolagem customizada (opcional) */
-.modal .tabela tbody::-webkit-scrollbar {
-    width: 8px;
-}
-
-.modal .tabela tbody::-webkit-scrollbar-thumb {
-    background-color: #888; /* Cor da barra de rolagem */
-    border-radius: 4px;
-}
-
-.modal .tabela tbody::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-}
-
-.content main .bottom-data .budget table td{
-    padding: 18px 0;
-}
-
-table {
-    width: 100%; 
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-table th, table td {
-    color: var(--primary-text-color); 
-    text-align: left;
-}
-
-table th {
-    padding-bottom: 12px;
-    font-weight: bold;
-    border-bottom: 1px solid var(--background-color);
-}
-
-table td{
-    padding: 16px 0;
-}
-
-table td button.select-budget {
-    background-color: #f04747;
-    color: var(--primary-text-color);
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-table td button.select-budget:hover {
-    background-color: #d03c3c; 
 }
 
 .content main .modal-content table tbody tr {

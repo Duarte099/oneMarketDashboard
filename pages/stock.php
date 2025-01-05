@@ -41,9 +41,9 @@
                 <div class="left">
                     <h1>Stock de produtos</h1>
                 </div>
-                <a href="#" class="report">
-                    <i class='bx bx-cloud-download'></i>
-                    <span>Download CSV</span>
+                <a href="../pages/newProduct.php" id="new-product" class="report">
+                    <i class='bx bx-plus'></i>
+                    <span>Novo Cliente</span>
                 </a>
             </div>
             <div class="bottom-data">
@@ -51,17 +51,18 @@
                     <table>
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>Img</th>
                                 <th>Nome</th>
                                 <th>Referencia</th>
                                 <th>Valor</th>
                                 <th>Stock</th>
-                                <img src="" alt="">
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                                 $sql = "SELECT 
+                                            product.id as id,
                                             product.img as imagem, 
                                             product.id as idProduto, 
                                             product.name as nomeProduto, 
@@ -73,12 +74,13 @@
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>
+                                        echo "<tr onclick=\"handleRowClick('{$row['id']}', 'stock')\" style=\"cursor: pointer;\">
                                                 <td><img src={$row['imagem']}></td>
                                                 <td>{$row['nomeProduto']}</td>
                                                 <td>{$row['refProduto']}</td>
                                                 <td>{$row['valorProduto']}</td>
-                                                <td>" . number_format($row['stockProduto'], 0) . "</td>
+                                                <td>{$row['stockProduto']}</td>
+                                                <td><button class='btn-small' id='botDeleteBudget' onclick=\"deleteProduct('{$row['nomeProduto']}, {$row['id']}); event.stopPropagation();\">🗑️</button></td>
                                             </tr>";
                                     }
                                 } else {
@@ -93,6 +95,23 @@
     </div>
 
     <script src="../index.js"></script>
+    <script>
+        function deleteProduct(id, nome) {
+            const result = confirm("Tem a certeza que deseja eliminar o produto " + nome + "?");
+            if (result) {
+                fetch(`./deleteProduct.php?idProduct=${encodeURIComponent(id)}`, {
+                    method: 'GET',
+                })
+                .then(() => {
+                    console.log("ID enviado com sucesso via GET.");
+                })
+                .catch(error => {
+                    console.error("Erro ao enviar ID:", error);
+                });
+            }
+            window.location.href = window.location.pathname;
+        }
+    </script>
 </body>
 
 </html>

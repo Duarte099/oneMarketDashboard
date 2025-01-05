@@ -106,7 +106,9 @@ body{
 .content main .bottom-data>div{
     border-radius: 20px;
     background: var(--background-color);
-    padding: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 24px;
     overflow-x: auto;
 }
 
@@ -115,35 +117,55 @@ body{
     flex-basis: 500px;
 }
 
-.content main .bottom-data .admins table{
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.content main .bottom-data .admins table th{
+.content main .bottom-data .admins table th {
     padding-bottom: 12px;
-    font-size: 13px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
 }
 
+/* Tornar o tbody scrollável */
+.content main .bottom-data .admins table tbody {
+    display: block;
+    max-height: 422px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.content main .bottom-data .admins table thead,
+.content main .bottom-data .admins table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.content main .bottom-data .admins table tbody tr:hover {
+    background: var(--background-color-secundary);
+}
+
+.content main .bottom-data .admins table th,
 .content main .bottom-data .admins table td{
+    width: auto;
+    text-align: left;
     padding: 16px 0;
 }
 
-.content main .bottom-data .admins table tr td:first-child{
-    align-items: center;
-    grid-gap: 12px;
-    padding-left: 6px;
+.content main .bottom-data .admins table th:last-child,
+.content main .bottom-data .admins table td:last-child {
+    width: 50px;
+    text-align: center;
+    padding: 0;
 }
 
-.content main .bottom-data .admins table tbody tr{
-    cursor: pointer;
-    transition: all 0.3s ease;
+.content main .bottom-data .admins table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
 }
 
-.content main .bottom-data .admins table tbody tr:hover{
-    background: var(--background-color-secundary);
+.content main .bottom-data .admins table thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
 
 @media screen and (max-width: 768px) 
@@ -182,4 +204,18 @@ body{
 
 .btn-small:hover {
     background-color: #cc0000; /* Cor de fundo ao passar o mouse */
+}
+
+/* Barra de rolagem customizada (opcional) */
+tbody::-webkit-scrollbar {
+    width: 8px;
+}
+
+tbody::-webkit-scrollbar-thumb {
+    background-color: #888; /* Cor da barra de rolagem */
+    border-radius: 4px;
+}
+
+tbody::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
 }

@@ -84,6 +84,7 @@ h1, h2 {
 .section-group input[type="text"],
 .section-group input[type="email"],
 .section-group input[type="password"],
+.section-group input[type="date"],
 .section-group select {
     width: 100%;
     padding: 10px;

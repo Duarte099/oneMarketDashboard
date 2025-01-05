@@ -42,38 +42,10 @@
                     <h1>Novo Administrador</h1>
                 </div>
             </div>
-            <?php
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    $nome = trim($_POST['nome']);
-                    $email = trim($_POST['email']);
-                    $user = trim($_POST['user']);
-                    $password = trim($_POST['password']);
-                    $confirmpassword = trim($_POST['passwordConfirm']);
-                    $status = intval($_POST['status']);
-                
-                    if ($password !== $confirmpassword) {
-                        echo "<script>alert('As passwords não coincidem!');</script>";
-                    } elseif (!empty($nome) && !empty($email) && !empty($user) && !empty($password)&& !empty($confirmpassword)) {
-                        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                        $query = "INSERT INTO administrator (name, email, user, pass, active) VALUES (?, ?, ?, ?, ?)";
-                        $stmt = $con->prepare($query);
-    
-                        if ($stmt) {
-                            $stmt->bind_param("ssssi", $nome, $email, $user, $passwordHash, $status);
-    
-                            if ($stmt->execute()) {
-                                header('Location: admin.php');
-                                exit();
-                            } else {
-                                echo "<script>alert('Erro ao adicionar administrador.');</script>";
-                            }
-                        }
-                    }
-                }
-            ?>
+            
             <div class="bottom-data">
                 <div class="administrator">
-                    <form method="POST" action="">
+                    <form method="POST" action="inserirAdmin.php">
                     <section>
                         <h2>Dados do Administrador</h2>
                         <div class="section-row">
@@ -99,6 +71,10 @@
                             <div class="section-group">
                                 <label>Confirmar Password:</label>
                                 <input type="password" name="passwordConfirm" required>
+                            </div>
+                            <div class="section-group">
+                                <label>Data-Nascimento:</label>
+                                <input type="date" name="birthday" required>
                             </div>    
                             <div class="section-group">
                                 <label>Status</label>

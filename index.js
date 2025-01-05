@@ -97,4 +97,7 @@ function handleRowClick(id, action) {
     else if (action == "editWorksheet") {
         window.location.href = "editFichatrabalho.php?idWorksheet=" + id;
     }
+    else if (action == "stock") {
+        window.location.href = "editProduct.php?idProduct=" + id;
+    }
 }

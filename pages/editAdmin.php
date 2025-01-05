@@ -129,6 +129,14 @@
                                     <input type="password" name="password">
                                 </div>
                                 <div class="section-group">
+                                    <label>Confirmar Password(apenas se mudar):</label>
+                                    <input type="password" name="passwordConfirm" required>
+                                </div>
+                                <div class="section-group">
+                                    <label>Data-Nascimento:</label>
+                                    <input type="date" name="birthday">
+                                </div>
+                                <div class="section-group">
                                     <label>Status:</label>
                                     <select name="status">
                                         <option value="1" <?php echo $admin['active'] == 1 ? 'selected' : ''; ?>>Ativo</option>

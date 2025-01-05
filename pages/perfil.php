@@ -74,12 +74,12 @@
 
                         <label for="password">Password:</label>
                         <input type="password" name="password" id="password" placeholder="Nova password">
-                        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirmar nova password">
+                        <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirmar nova password">
 
                         <label for="birthday">Data nascimento:</label>
                         <input type="date" name="birthday" id="birthday" value="<?php echo $birthday; ?>">
 
-                        <button type="submit">Guardar alterações</button>
+                        <button type="submit" onclick="return validarPass()">Guardar alterações</button>
                     </div>
                 </form>
             </div>
@@ -87,6 +87,22 @@
     </div>
 
     <script src="../index.js"></script>
+    <script>
+        function validarPass() {
+            const pass = document.querySelector('input[name="password"]');
+            const passC = document.querySelector('input[name="passwordConfirm"]');
+
+            // Verifica se as senhas são diferentes
+            if (pass.value !== passC.value) {
+                passC.setCustomValidity("As palavras-passe não coincidem!");
+                passC.reportValidity();
+                return false;
+            } else {
+                passC.setCustomValidity("");
+                return true;
+            }
+        }
+    </script>
 </body>
 
 </html>

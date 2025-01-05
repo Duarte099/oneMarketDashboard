@@ -12,7 +12,7 @@
 
     $id = $_GET['id'];
 
-    $sql = "DELETE FROM administrador WHERE id = $id;";
+    $sql = "DELETE FROM administrator WHERE id = $id;";
     $result = $con->prepare($sql);
     $result->execute();
 ?>

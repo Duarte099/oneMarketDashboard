@@ -111,7 +111,9 @@ body{
 .content main .bottom-data>div{
     border-radius: 20px;
     background: var(--background-color);
-    padding: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 24px;
     overflow-x: auto;
 }
 
@@ -120,63 +122,115 @@ body{
     flex-basis: 500px;
 }
 
-.content main .bottom-data .products table{
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.content main .bottom-data .products table th{
+.content main .bottom-data .products table th {
     padding-bottom: 12px;
-    font-size: 13px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
 }
 
-.content main .bottom-data .products table td{
-    padding: 16px 0;
+/* Tornar o tbody scrollável */
+.content main .bottom-data .products table tbody {
+    display: block;
+    max-height: 422px;
+    overflow-y: auto;
+    width: 100%;
 }
 
-.content main .bottom-data .products table tr td:first-child{
-    display: flex;
-    align-items: center;
-    grid-gap: 12px;
-    padding-left: 6px;
+.content main .bottom-data .products table thead,
+.content main .bottom-data .products table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
 
-.content main .bottom-data .products table td img{
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.content main .bottom-data .products table tbody tr{
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.content main .bottom-data .products table tbody tr:hover{
+.content main .bottom-data .products table tbody tr:hover {
     background: var(--background-color-secundary);
 }
 
-.content main .bottom-data .products table tr td .status{
-    font-size: 10px;
-    padding: 6px 16px;
-    color: var(--background-color);
-    border-radius: 20px;
-    font-weight: 700;
+.content main .bottom-data .products table th,
+.content main .bottom-data .products table td{
+    width: auto;
+    text-align: left;
+    color: var(--primary-text-color); 
 }
 
-.content main .bottom-data .products table tr td .status.completed{
-    background: #388E3C;
+.content main .bottom-data .products table th:last-child,
+.content main .bottom-data .products table td:last-child {
+    width: 50px;
+    text-align: center;
+    padding: 0;
 }
 
-.content main .bottom-data .products table tr td .status.process{
-    background: #1976D2;
+.content main .bottom-data .products table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
 }
 
-.content main .bottom-data .products table tr td .status.pending{
-    background: #FBC02D;
+.content main .bottom-data .products table thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+table th {
+    padding-bottom: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--background-color);
+    padding: 18px 0;
+}
+
+table td{
+    padding: 5px 0;
+}
+
+table td button.select-products {
+    background-color: #f04747;
+    color: var(--primary-text-color);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+table td button.select-products:hover {
+    background-color: #d03c3c; 
+}
+
+.content main .bottom-data .products table td img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block; /* Remove o espaço reservado para texto */
+}
+
+/* Barra de rolagem customizada (opcional) */
+.modal .tabela tbody::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal .tabela tbody::-webkit-scrollbar-thumb {
+    background-color: #888; /* Cor da barra de rolagem */
+    border-radius: 4px;
+}
+
+.modal .tabela tbody::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+/* Barra de rolagem customizada (opcional) */
+tbody::-webkit-scrollbar {
+    width: 8px;
+}
+
+tbody::-webkit-scrollbar-thumb {
+    background-color: #888; /* Cor da barra de rolagem */
+    border-radius: 4px;
+}
+
+tbody::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
 }
 
 @media screen and (max-width: 768px) {
@@ -197,4 +251,23 @@ body{
         min-width: 340px;
     }
 
+}
+
+.btn-small {
+    background-color: var(--theme-color); /* Cor de fundo (vermelho escuro) */
+    color: var(--primary-text-color);           /* Cor do texto (branco) */
+    border: none;             /* Sem borda */
+    width: 40px;              /* Largura fixa para ser quadrado */
+    height: 40px;             /* Altura fixa para ser quadrado */
+    border-radius: 5px;       /* Bordas arredondadas */
+    display: flex;            /* Alinhar conteúdo ao centro */
+    justify-content: center;  /* Centralizar horizontalmente */
+    align-items: center;      /* Centralizar verticalmente */
+    font-size: 14px;          /* Tamanho do texto */
+    cursor: pointer;          /* Muda o cursor ao passar por cima */
+    transition: 0.3s;         /* Transição suave */
+}
+
+.btn-small:hover {
+    background-color: #cc0000; /* Cor de fundo ao passar o mouse */
 }

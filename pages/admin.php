@@ -53,11 +53,11 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>#</th>
                                 <th>Nome</th>
                                 <th>Email</th>
                                 <th>Username</th>
                                 <th>Status</th>
+                                <th>Data Nascimento</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -68,18 +68,19 @@
                                             administrator.name,
                                             administrator.email,
                                             administrator.user,
-                                            administrator.active
+                                            administrator.active,
+                                            administrator.birthday
                                         FROM administrator ;";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
                                         echo "<tr onclick=\"handleRowClick('{$row['id']}', 'editAdmin')\" style=\"cursor: pointer;\">
-                                                <td>{$row['id']}</td>
                                                 <td>{$row['name']}</td>
                                                 <td>{$row['email']}</td>
                                                 <td>{$row['user']}</td>
                                                 <td>{$status}</td>
+                                                <td>{$row['birthday']}</td>
                                                 <td><button class='btn-small' id='botDeleteAdmin' onclick=\"event.stopPropagation(); deleteAdmin('{$row['name']}', {$row['id']});\">🗑️</button></td>
                                             </tr>";
                                     }
