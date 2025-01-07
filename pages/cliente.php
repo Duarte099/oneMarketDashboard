@@ -20,9 +20,110 @@
     <link rel="stylesheet" href="../css/client.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Fichas de Trabalho</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
+    <script>
+        //PESQUISA CLIENTES
+        const clientsSearchData = [];
+                                
+        $.ajax({
+            url: 'ajax.obterClientes.php',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                clientsSearchData.push(...data);
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro ao buscar os dados:', error);
+            }
+        }); 
+
+        function clientsSearch(searchBox) {
+            const dataclient = document.getElementById('bottom-data');
+            const tbody = dataclient.querySelector('table tbody');
+            const query = searchBox.value.toLowerCase();
+            tbody.innerHTML = "";
+
+            const displayResults = (results) => {
+                if (results.length > 0) {
+                    results.forEach((result) => {
+                        if (result.status == 1) {
+                            result.status = "Ativo";
+                        } else {
+                            result.status = "Inativo";
+                        }
+                        const row = document.createElement("tr");
+
+                        // Colunas adicionais
+                        const nome = document.createElement("td");
+                        nome.textContent = result.nome;
+
+                        const email = document.createElement("td");
+                        email.textContent = result.email;
+
+                        const contacto = document.createElement("td");
+                        contacto.textContent = result.contacto;
+
+                        const nif = document.createElement("td");
+                        nif.textContent = result.nif;
+
+                        const status = document.createElement("td");
+                        status.textContent = result.status;
+
+                        // Adiciona o botão de exclusão
+                        const actions = document.createElement("td");
+                        const deleteButton = document.createElement("button");
+                        deleteButton.className = 'btn-small';
+                        deleteButton.id = 'botDeleteclient';
+                        deleteButton.innerHTML = '🗑️';
+                        deleteButton.onclick = (event) => {
+                            event.stopPropagation();
+                            deleteClient(result.nome, result.id);
+                        };
+                        actions.appendChild(deleteButton);
+
+                        // Adiciona todas as células à linha
+                        row.appendChild(nome);
+                        row.appendChild(email);
+                        row.appendChild(contacto);
+                        row.appendChild(nif);
+                        row.appendChild(status);
+                        row.appendChild(actions);
+
+                        row.addEventListener("click", () => handleRowClick(result.id, "editclient"));
+
+                        // Adiciona a linha ao corpo da tabela
+                        tbody.appendChild(row);
+                    });
+                } else {
+                    // Adiciona uma linha dizendo "Sem resultados"
+                    const row = document.createElement("tr");
+                    const noResultsCell = document.createElement("td");
+                    noResultsCell.textContent = "Sem resultados";
+                    noResultsCell.colSpan = 9; // Atualiza para incluir todas as colunas
+                    noResultsCell.style.textAlign = "center";
+
+                    row.appendChild(noResultsCell);
+                    tbody.appendChild(row);
+                }
+            };
+
+            if (query) {
+                const filteredResults = clientsSearchData.filter(item =>
+                    item.nome.toLowerCase().includes(query) ||
+                    item.email.toLowerCase().includes(query) ||
+                    item.contacto.toLowerCase().includes(query) ||
+                    item.nif.toLowerCase().includes(query)
+                );
+
+                displayResults(filteredResults);
+            } else {
+                displayResults(clientsSearchData);
+            }
+        }
+    </script>
 
     <?php 
         include('../pages/sideBar.php'); 
@@ -40,6 +141,9 @@
             <div class="header">
                 <div class="left">
                     <h1>Clientes</h1>
+                    <div class="search-bar">
+                        <input type="text" id="searchBox" placeholder="Pesquisar produtos..." oninput="clientsSearch(this)" />
+                    </div>
                 </div>
                 <a href="../pages/novoCliente.php" id="new-budget" class="report">
                     <i class='bx bx-plus'></i>
@@ -47,7 +151,7 @@
                 </a>
             </div>
 
-            <div class="bottom-data">
+            <div class="bottom-data" id="bottom-data">
                 <div class="client">
                     <table>
                         <thead>

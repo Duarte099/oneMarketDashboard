@@ -20,9 +20,113 @@
     <link rel="stylesheet" href="../css/stock.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Stock</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
+    <script>
+        //PESQUISA PRODUTOS
+        const productsSearchData = [];
+                                
+        $.ajax({
+            url: 'ajax.obterProdutos.php',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                productsSearchData.push(...data);
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro ao buscar os dados:', error);
+            }
+        }); 
+
+        function productsSearch(searchBox) {
+            const dataProduct = document.getElementById('bottom-data');
+            const tbody = dataProduct.querySelector('table tbody');
+            const query = searchBox.value.toLowerCase();
+            tbody.innerHTML = "";
+
+            const displayResults = (results) => {
+                if (results.length > 0) {
+                    results.forEach((result) => {
+                        const row = document.createElement("tr");
+
+                        // Coluna da Imagem
+                        const imgCell = document.createElement("td");
+                        const img = document.createElement("img");
+                        img.src = result.img; // Link da imagem
+                        img.style.width = "50px"; // Tamanho da imagem
+                        img.style.height = "50px"; // Tamanho da imagem
+                        imgCell.appendChild(img);
+                        row.appendChild(imgCell);
+
+                        // Colunas adicionais
+                        const id = document.createElement("td");
+                        id.textContent = result.id;
+
+                        const reference = document.createElement("td");
+                        reference.textContent = result.reference;
+
+                        const name = document.createElement("td");
+                        name.textContent = result.name;
+
+                        const value = document.createElement("td");
+                        value.textContent = result.value;
+
+                        const stock = document.createElement("td");
+                        stock.textContent = result.stock;
+
+                        // Adiciona o botão de exclusão
+                        const actions = document.createElement("td");
+                        const deleteButton = document.createElement("button");
+                        deleteButton.className = 'btn-small';
+                        deleteButton.id = 'botDeleteProduct';
+                        deleteButton.innerHTML = '🗑️';
+                        deleteButton.onclick = (event) => {
+                            event.stopPropagation();
+                            deleteProduct(result.name, result.id);
+                        };
+                        actions.appendChild(deleteButton);
+
+                        // Adiciona todas as células à linha
+                        row.appendChild(reference);
+                        row.appendChild(name);
+                        row.appendChild(value);
+                        row.appendChild(stock);
+                        row.appendChild(actions);
+
+                        row.addEventListener("click", () => handleRowClick(result.id, "editProduct"));
+
+                        // Adiciona a linha ao corpo da tabela
+                        tbody.appendChild(row);
+                    });
+                } else {
+                    // Adiciona uma linha dizendo "Sem resultados"
+                    const row = document.createElement("tr");
+                    const noResultsCell = document.createElement("td");
+                    noResultsCell.textContent = "Sem resultados";
+                    noResultsCell.colSpan = 9; // Atualiza para incluir todas as colunas
+                    noResultsCell.style.textAlign = "center";
+
+                    row.appendChild(noResultsCell);
+                    tbody.appendChild(row);
+                }
+            };
+
+            if (query) {
+                const filteredResults = productsSearchData.filter(item =>
+                    item.reference.toLowerCase().includes(query) ||
+                    item.name.toLowerCase().includes(query) ||
+                    item.value.toLowerCase().includes(query) ||
+                    item.stock.toLowerCase().includes(query)
+                );
+
+                displayResults(filteredResults);
+            } else {
+                displayResults(productsSearchData);
+            }
+        }
+    </script>
 
     <?php 
         include('../pages/sideBar.php'); 
@@ -40,13 +144,16 @@
             <div class="header">
                 <div class="left">
                     <h1>Stock de produtos</h1>
+                    <div class="search-bar">
+                        <input type="text" id="searchBox" placeholder="Pesquisar produtos..." oninput="productsSearch(this)" />
+                    </div>
                 </div>
                 <a href="../pages/newProduct.php" id="new-product" class="report">
                     <i class='bx bx-plus'></i>
                     <span>Novo Cliente</span>
                 </a>
             </div>
-            <div class="bottom-data">
+            <div class="bottom-data" id="bottom-data">
                 <div class="products">
                     <table>
                         <thead>
@@ -63,9 +170,8 @@
                             <?php
                                 $sql = "SELECT 
                                             product.id as id,
-                                            product.img as imagem, 
-                                            product.id as idProduto, 
-                                            product.name as nomeProduto, 
+                                            product.img as imagem,  
+                                            product.name as nome, 
                                             product.reference as refProduto, 
                                             product.value as valorProduto, 
                                             product_stock.quantity as stockProduto
@@ -75,13 +181,13 @@
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<tr onclick=\"handleRowClick('{$row['id']}', 'stock')\" style=\"cursor: pointer;\">
-                                                <td><img src={$row['imagem']}></td>
-                                                <td>{$row['nomeProduto']}</td>
-                                                <td>{$row['refProduto']}</td>
-                                                <td>{$row['valorProduto']}</td>
-                                                <td>{$row['stockProduto']}</td>
-                                                <td><button class='btn-small' id='botDeleteBudget' onclick=\"deleteProduct('{$row['nomeProduto']}, {$row['id']}); event.stopPropagation();\">🗑️</button></td>
-                                            </tr>";
+                                            <td><img src={$row['imagem']}></td>
+                                            <td>{$row['nome']}</td>
+                                            <td>{$row['refProduto']}</td>
+                                            <td>€" . number_format($row['valorProduto'], 2, ',', '.') . "</td>
+                                            <td>{$row['stockProduto']}</td>
+                                            <td><button class='btn-small' id='botDeleteBudget' onclick=\"event.stopPropagation(); deleteProduct('{$row['nome']}', '{$row['id']}');\">🗑️</button></td>
+                                        </tr>";
                                     }
                                 } else {
                                     echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
@@ -96,7 +202,7 @@
 
     <script src="../index.js"></script>
     <script>
-        function deleteProduct(id, nome) {
+        function deleteProduct(nome, id) {
             const result = confirm("Tem a certeza que deseja eliminar o produto " + nome + "?");
             if (result) {
                 fetch(`./deleteProduct.php?idProduct=${encodeURIComponent(id)}`, {

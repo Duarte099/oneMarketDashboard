@@ -227,7 +227,6 @@
                 <span>Novo Orçamento</span>
             </a>
         </div>
-
             <div id="budgetModal" class="modal">
                 <div class="modal-content">
                     <div class="headerModal">
@@ -340,7 +339,6 @@
         </main>
         <script>
             function deleteBudget(num, id) {
-                console.log("ID do orçamento a ser excluído:", id);
                 const result = confirm("Tem a certeza que deseja eliminar o orçamento " + num + "?");
                 if (result) {
                     fetch(`./deleteBudget.php?idBudget=${encodeURIComponent(id)}`, {

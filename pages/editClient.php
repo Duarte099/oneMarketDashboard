@@ -93,7 +93,7 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Editar Administrador</h1>
+                    <h1>Editar Cliente</h1>
                 </div>
             </div>
 
@@ -101,7 +101,7 @@
                 <div class="administrator">
                     <form method="POST" action="">
                         <section>
-                            <h2>Dados do Administrador</h2>
+                            <h2>Dados do Cliente</h2>
                             <div class="section-row">
                                 <div class="section-group">
                                     <label>Nome:</label>

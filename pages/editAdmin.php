@@ -36,21 +36,7 @@
 
     // formulario para editar
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Verifica se o formulário é para editar ou remover
-        if (isset($_POST['delete'])) {
-            // Apagar o admin
-            $deleteQuery = "DELETE FROM administrator WHERE id = ?";
-            $stmt = $con->prepare($deleteQuery);
-            $stmt->bind_param("i", $id);
-
-            if ($stmt->execute()) {
-                header('Location: admin.php');  // Redireciona após a exclusão
-                exit();
-            } else {
-                $error = "Erro ao remover administrador.";
-            }
-        } else {
-            // Caso o formulário seja para editar
+            //Acrescentar foto
             $nome = isset($_POST['nome']) ? trim($_POST['nome']) : $admin['name'];
             $email = isset($_POST['email']) ? trim($_POST['email']) : $admin['email'];
             $user = isset($_POST['user']) ? trim($_POST['user']) : $admin['user'];
@@ -75,7 +61,6 @@
             } else {
                 $error = "Erro ao atualizar administrador.";
             }
-        }
     }
 ?>
 
@@ -108,43 +93,38 @@
                 <div class="administrator">
                     <form method="POST" action="">
                         <section>
-                            <h2>Dados do Administrador</h2>
-                            <div class="section-row">
-                                <div class="section-group">
-                                    <label>Nome:</label>
-                                    <input type="text" name="nome" value="<?php echo htmlspecialchars($admin['name']); ?>" required>
-                                </div>
-                                <div class="section-group">
-                                    <label>Email:</label>
-                                    <input type="email" name="email" value="<?php echo htmlspecialchars($admin['email']); ?>" required>
-                                </div>
-                                <div class="section-group">
-                                    <label>User:</label>
-                                    <input type="text" name="user" value="<?php echo htmlspecialchars($admin['user']); ?>" required>
-                                </div>
-                            </div>
-                            <div class="section-row">
-                                <div class="section-group">
-                                    <label>Password (Deixar em branco para deixar a pass atual):</label>
-                                    <input type="password" name="password">
-                                </div>
-                                <div class="section-group">
-                                    <label>Confirmar Password(apenas se mudar):</label>
-                                    <input type="password" name="passwordConfirm" required>
-                                </div>
-                                <div class="section-group">
-                                    <label>Data-Nascimento:</label>
-                                    <input type="date" name="birthday">
-                                </div>
-                                <div class="section-group">
-                                    <label>Status:</label>
+                        <div class="column-left">
+                                <label for="photo">Foto do Administrador:</label>
+                                <img src="<?php echo $img; ?>" alt="Admin Picture" id="adminPic">
+                                <input type="file" name="photo" id="photo" oninput="displayProfilePic()">
+                        </div>
+                        <div class="column-right">
+                                <label>Nome:</label>
+                                <input type="text" name="nome" value="<?php echo htmlspecialchars($admin['name']); ?>" required>
+
+                                <label>Email:</label>
+                                <input type="email" name="email" value="<?php echo htmlspecialchars($admin['email']); ?>" required>
+
+                                <label>User:</label>
+                                <input type="text" name="user" value="<?php echo htmlspecialchars($admin['user']); ?>" required>
+
+                                <label>Password (Deixar em branco para deixar a pass atual):</label>
+                                <input type="password" name="password">
+
+                                <label>Confirmar Password(apenas se mudar):</label>
+                                <input type="password" name="passwordConfirm" required>
+
+                                <label>Data-Nascimento:</label>
+                                <input type="date" name="birthday">
+
+                                <label>Status:</label>
                                     <select name="status">
                                         <option value="1" <?php echo $admin['active'] == 1 ? 'selected' : ''; ?>>Ativo</option>
                                         <option value="0" <?php echo $admin['active'] == 0 ? 'selected' : ''; ?>>Inativo</option>
                                     </select>
-                                </div>
-                            </div>
-                            <button type="submit">Atualizar Administrador</button>
+
+                                <button type="submit">Atualizar Administrador</button>
+                        </div>   
                         </section>
                     </form>
 

@@ -44,36 +44,37 @@
             </div>
             <div class="bottom-data">
                 <div class="client">
-                    <form method="POST" action="inserirProduto.php">
-                    <section>
-                        <h2>Dados do Produto</h2>
-                        <div class="section-row">
-                            <div class="section-group">
-                                <label>Img:</label>
-                                <input type="image" name="img">
-                            </div>
-                            <div class="section-group">
-                                <label>Nome</label>
-                                <input type="text" name="name" required>
-                            </div>
-                            <div class="section-group">
-                                <label>Referencia:</label>
-                                <input type="text" name="reference" required>
-                            </div>
+                    <form action="inserirProduto.php?op=save" method=post>
+                        <section>
+                            <h2>Dados do Produto</h2>
+                            <div class="section-row">
+                                <div class="section-group">
+                                    <label>Img:</label>
+                                    <input type="image" name="img">
+                                </div>
+                                <div class="section-group">
+                                    <label>Nome</label>
+                                    <input type="text" name="name" required>
+                                </div>
+                                <div class="section-group">
+                                    <label>Referencia:</label>
+                                    <input type="text" name="reference" required>
+                                </div>
 
-                        </div>
-                        <div class="section-row">
-                            <div class="section-group">
-                                <label>Valor:</label>
-                                <input type="number" name="value" required>
                             </div>
-                            <div class="section-group">
-                                <label>Stock</label>
-                                <input type="number" name="stock">
+                            <div class="section-row">
+                                <div class="section-group">
+                                    <label>Valor:</label>
+                                    <input type="number" name="value" required>
+                                </div>
+                                <div class="section-group">
+                                    <label>Stock</label>
+                                    <input type="number" name="stock">
+                                </div>
                             </div>
-                        </div>
-                        <button type="submit">Adicionar Produto</button>
-                    </section>
+                            <button type="submit">Adicionar Produto</button>
+                        </section>
+                    </form>
                 </div>
             </div>
         </main>

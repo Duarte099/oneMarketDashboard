@@ -281,7 +281,7 @@
                                 });
 
                                 $.ajax({
-                                    url: 'ajax.obterProdutos.php',
+                                    url: 'ajax.obterReferencia.php',
                                     type: 'POST',
                                     dataType: 'json',
                                     success: function(data) {

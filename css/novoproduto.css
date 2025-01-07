@@ -6,6 +6,7 @@
     --primary-text-color: #fff;
     --secondary-text-color: #fbfbfb;
     --theme-color: #781215;
+    --border-color: #25252c;
 }
 
 
@@ -15,123 +16,128 @@
     --primary-text-color: #000000;
     --secondary-text-color: #161616;
     --theme-color: #781215;
+    --border-color: #25252c;
 }
 
-* {
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
 
-body {
-    background: var(--background-color-secundary);
-    color: var(--secondary-text-color);
+.bx{
+    font-size: 1.7rem;
+}
+
+a{
+    text-decoration: none;
+}
+
+html{
     overflow-x: hidden;
 }
 
-h1, h2 {
-    color: var(--primary-text-color)fff;
-    margin-bottom: 20px;
-    text-align: center;
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--background-color-secundary);
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-.content main {
+main{
+    width: 100%;
     padding: 36px 24px;
-    max-width: 900px;
-    margin: auto;
+    max-height: calc(100vh - 56px);
 }
 
-.header h1 {
-    font-size: 32px;
+.bottom-data {
+    margin: 0 20px;
+}
+
+main .header .left h1{
+    font-size: 36px;
     font-weight: 600;
-    margin-bottom: 24px;
-    text-align: center;
+    margin-bottom: 10px;
+    color: var(--primary-text-color);
+}
+
+.bottom-data {
+    margin: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .bottom-data {
     background-color: var(--background-color);
-    padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.bottom-data section h2 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.section-row {
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 20px;
     display: flex;
-    gap: 16px;
-    margin-bottom: 20px;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 
-.section-group {
+.column-left {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    min-width: 250px;
+    align-items: center;
+    text-align: center;
+    padding-right: 20px;
 }
 
-.section-group label {
-    font-size: 14px;
-    color: #c4c4c4;
+.column-right {
+    flex: 1;
+    padding-left: 20px;
 }
 
-.section-group input[type="text"],
-.section-group input[type="email"],
-.section-group input[type="number"],
-.section-group input[type="password"],
-.section-group input[type="date"],
-.section-group select {
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--primary-text-color);
+    font-weight: bold;
+}
+
+#productPic{
+    max-width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    margin-bottom: 16px;
+    border: 2px solid var(--border-color);
+    object-fit: cover;
+}
+
+input[type="file"]{
+    cursor: pointer;
+}
+
+input {
+    background-color: var(--background-color);
     width: 100%;
     padding: 10px;
-    border: 1px solid #33333a;
-    background: var(--background-color-secundary);
+    margin-bottom: 16px;
+    box-sizing: border-box;
     color: var(--primary-text-color);
-    border-radius: 8px;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.3s ease;
-}
-
-.section-group input:focus,
-.section-group select:focus {
-    border-color: #4a90e2;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 16px;
 }
 
 button {
-    width: 100%;
-    padding: 12px;
     background-color: var(--theme-color);
     color: var(--primary-text-color);
+    padding: 12px 20px;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
+    border-radius: 4px;
     cursor: pointer;
-    gap: 8px;
-    margin-bottom: 5px;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #9b1c1f;
-}
-
-@media screen and (max-width: 768px) {
-    .section-row {
-        flex-direction: column;
-    }
-}
-
-
-
-.sidebar a {
-    text-decoration: none;
-    color: inherit; 
+    font-size: 16px;
 }
