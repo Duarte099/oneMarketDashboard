@@ -1,6 +1,5 @@
 <?php 
-    include('../db/conexao.php'); 
-    $estouEm = 4;
+    $estouEm = 5;
 
     session_start();
 
@@ -17,9 +16,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../css/novoproduto.css">
+    <link rel="stylesheet" href="../css/novoCliente.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
-    <title>OneMarket | Novo Produto</title>
+    <title>OneMarket | Novo Cliente</title>
 </head>
 
 <body>
@@ -39,49 +38,48 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Novo Produto</h1>
+                    <h1>Novo Cliente</h1>
                 </div>
             </div>
             <div class="bottom-data">
                 <div class="client">
-                    <form action="inserirProduto.php?op=save" method=post>
+                    <form method="POST" action="inserirCliente.php">
                         <section>
-                            <h2>Dados do Produto</h2>
+                            <h2>Dados do Cliente</h2>
                             <div class="section-row">
                                 <div class="section-group">
-                                    <label>Img:</label>
-                                    <input type="image" name="img">
+                                    <label>Nome:</label>
+                                    <input type="text" name="nome" required>
                                 </div>
                                 <div class="section-group">
-                                    <label>Nome</label>
-                                    <input type="text" name="name" required>
+                                    <label>Email:</label>
+                                    <input type="email" name="email">
                                 </div>
                                 <div class="section-group">
-                                    <label>Referencia:</label>
-                                    <input type="text" name="reference" required>
+                                    <label>Contacto:</label>
+                                    <input type="number" name="contacto" required>
                                 </div>
 
                             </div>
                             <div class="section-row">
                                 <div class="section-group">
-                                    <label>Valor:</label>
-                                    <input type="number" name="value" required>
+                                    <label>NIF:</label>
+                                    <input type="number" name="nif" required>
                                 </div>
                                 <div class="section-group">
-                                    <label>Stock</label>
-                                    <input type="number" name="stock">
+                                    <label>Status</label>
+                                    <select name="status">
+                                        <option value="1">Ativo</option>
+                                        <option value="0">Inativo</option>
+                                    </select>
                                 </div>
                             </div>
-                            <button type="submit">Adicionar Produto</button>
+                            <button type="submit">Adicionar Cliente</button>
                         </section>
                     </form>
                 </div>
             </div>
         </main>
-
-        <script>
-        </script>
-
     </div>
 </body>
 

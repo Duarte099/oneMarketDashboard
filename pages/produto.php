@@ -1,5 +1,4 @@
 <?php 
-    include('../db/conexao.php'); 
     $estouEm = 4;
 
     session_start();
@@ -76,26 +75,11 @@
                         const stock = document.createElement("td");
                         stock.textContent = result.stock;
 
-                        // Adiciona o botão de exclusão
-                        const actions = document.createElement("td");
-                        const deleteButton = document.createElement("button");
-                        deleteButton.className = 'btn-small';
-                        deleteButton.id = 'botDeleteProduct';
-                        deleteButton.innerHTML = '🗑️';
-                        deleteButton.onclick = (event) => {
-                            event.stopPropagation();
-                            deleteProduct(result.name, result.id);
-                        };
-                        actions.appendChild(deleteButton);
-
                         // Adiciona todas as células à linha
                         row.appendChild(reference);
                         row.appendChild(name);
                         row.appendChild(value);
                         row.appendChild(stock);
-                        row.appendChild(actions);
-
-                        row.addEventListener("click", () => handleRowClick(result.id, "editProduct"));
 
                         // Adiciona a linha ao corpo da tabela
                         tbody.appendChild(row);
@@ -148,9 +132,9 @@
                         <input type="text" id="searchBox" placeholder="Pesquisar produtos..." oninput="productsSearch(this)" />
                     </div>
                 </div>
-                <a href="../pages/newProduct.php" id="new-product" class="report">
+                <a href="../pages/produtoCriar.php" id="new-product" class="report">
                     <i class='bx bx-plus'></i>
-                    <span>Novo Cliente</span>
+                    <span>Novo Produto</span>
                 </a>
             </div>
             <div class="bottom-data" id="bottom-data">
@@ -163,7 +147,6 @@
                                 <th>Referencia</th>
                                 <th>Valor</th>
                                 <th>Stock</th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -184,9 +167,8 @@
                                             <td><img src={$row['imagem']}></td>
                                             <td>{$row['nome']}</td>
                                             <td>{$row['refProduto']}</td>
-                                            <td>€" . number_format($row['valorProduto'], 2, ',', '.') . "</td>
+                                            <td>€" . number_format($row['valorProduto']) . "</td>
                                             <td>{$row['stockProduto']}</td>
-                                            <td><button class='btn-small' id='botDeleteBudget' onclick=\"event.stopPropagation(); deleteProduct('{$row['nome']}', '{$row['id']}');\">🗑️</button></td>
                                         </tr>";
                                     }
                                 } else {
@@ -201,23 +183,6 @@
     </div>
 
     <script src="../index.js"></script>
-    <script>
-        function deleteProduct(nome, id) {
-            const result = confirm("Tem a certeza que deseja eliminar o produto " + nome + "?");
-            if (result) {
-                fetch(`./deleteProduct.php?idProduct=${encodeURIComponent(id)}`, {
-                    method: 'GET',
-                })
-                .then(() => {
-                    console.log("ID enviado com sucesso via GET.");
-                })
-                .catch(error => {
-                    console.error("Erro ao enviar ID:", error);
-                });
-            }
-            window.location.href = window.location.pathname;
-        }
-    </script>
 </body>
 
 </html>

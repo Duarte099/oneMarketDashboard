@@ -14,7 +14,7 @@
     --background-color: #fff;
     --background-color-secundary: #e2dcdc;
     --primary-text-color: #000000;
-    --secondary-text-color: #161616;
+    --secondary-text-color: #161616;                        
     --theme-color: #781215;
     --border-color: #25252c;
 }
@@ -140,4 +140,16 @@ button {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #33333a;
+    background: var(--background-color);
+    color: var(--primary-text-color);
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;  
+    transition: border-color 0.3s ease;
 }

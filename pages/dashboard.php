@@ -1,5 +1,4 @@
 <?php 
-    include('../db/conexao.php'); 
     $estouEm = 1;
 
     session_start();

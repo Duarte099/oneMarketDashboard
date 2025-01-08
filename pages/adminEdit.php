@@ -1,9 +1,7 @@
 <?php
     session_start();
 
-    include('../db/conexao.php'); 
     $estouEm = 6;
-
 
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
@@ -17,51 +15,6 @@
         header('Location: admin.php');  // Caso não esteja na url volta para a página dos administradores
         exit();
     }   
-
-    // Buscar o id selecionado antes
-    $query = "SELECT * FROM administrator WHERE id = ?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Se não encontrar o administrador
-    if ($result->num_rows === 0) {
-        header('Location: admin.php');  // Manda para a página de administradores
-        exit();
-    }
-
-    // Pega as informações do admin
-    $admin = $result->fetch_assoc();
-
-    // formulario para editar
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            //Acrescentar foto
-            $nome = isset($_POST['nome']) ? trim($_POST['nome']) : $admin['name'];
-            $email = isset($_POST['email']) ? trim($_POST['email']) : $admin['email'];
-            $user = isset($_POST['user']) ? trim($_POST['user']) : $admin['user'];
-            $password = isset($_POST['password']) ? trim($_POST['password']) : '';
-            $status = isset($_POST['status']) ? intval($_POST['status']) : $admin['active'];
-
-            // Se não mudar a pass deixar em branco e assim continua a mesma
-            if (!empty($password)) {
-                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            } else {
-                $passwordHash = $admin['pass'];  // Pass antiga
-            }
-
-            // Atualiza os dados na base de dados
-            $updateQuery = "UPDATE administrator SET name = ?, email = ?, user = ?, pass = ?, active = ? WHERE id = ?";
-            $stmt = $con->prepare($updateQuery);
-            $stmt->bind_param("ssssii", $nome, $email, $user, $passwordHash, $status, $id);
-
-            if ($stmt->execute()) {
-                header('Location: admin.php');  // Quando acabar, manda de volta para a página dos administradores
-                exit();
-            } else {
-                $error = "Erro ao atualizar administrador.";
-            }
-    }
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +33,23 @@
 
     <!-- Main Content -->
     <div class="content">
-        <?php include('../pages/header.php'); ?>          
+        <?php include('../pages/header.php'); 
+            // Buscar o id selecionado antes
+            $query = "SELECT * FROM administrator WHERE id = ?";
+            $stmt = $con->prepare($query);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            // Se não encontrar o administrador
+            if ($result->num_rows === 0) {
+                header('Location: admin.php');  // Manda para a página de administradores
+                exit();
+            }
+
+            // Pega as informações do admin
+            $admin = $result->fetch_assoc();
+        ?>          
 
         <main>
             <div class="header">
@@ -91,7 +60,7 @@
 
             <div class="bottom-data">
                 <div class="administrator">
-                    <form method="POST" action="">
+                    <form method="POST" action="adminInserir.php?op=edit">
                         <section>
                         <div class="column-left">
                                 <label for="photo">Foto do Administrador:</label>
@@ -112,10 +81,10 @@
                                 <input type="password" name="password">
 
                                 <label>Confirmar Password(apenas se mudar):</label>
-                                <input type="password" name="passwordConfirm" required>
+                                <input type="password" name="passwordConfirm">
 
                                 <label>Data-Nascimento:</label>
-                                <input type="date" name="birthday">
+                                <input type="date" name="birthday"value="<?php echo htmlspecialchars($admin['birthday']); ?>" required>
 
                                 <label>Status:</label>
                                     <select name="status">

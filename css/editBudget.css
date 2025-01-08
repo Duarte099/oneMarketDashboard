@@ -63,7 +63,6 @@ h1, h2, h3, h4 {
 
 .content main .bottom-data .budget {
     flex-grow: 1;
-    flex-basis: 500px;
     background: var(--background-color);
     padding: 24px;
     border-radius: 20px;
@@ -170,6 +169,25 @@ table td button.select-budget {
 }
 
 .content main .bottom-data .budget button:hover {
+    background: #9b1c1f;
+}
+
+#bottomButton,
+#botSaveBudget{
+    margin-top: 9px;
+    padding: 10px 16px;
+    background: var(--theme-color);
+    border: none;
+    color: var(--primary-text-color);
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    padding-bottom: 10px;
+}
+
+#bottomButton:hover,
+#botSaveBudget:hover {
     background: #9b1c1f;
 }
 

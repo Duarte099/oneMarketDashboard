@@ -1,5 +1,4 @@
 <?php 
-    include('../db/conexao.php'); 
     $estouEm = 1;
 
     session_start();
@@ -10,17 +9,6 @@
     }
 
     $idAdmin = $_SESSION['id'];
-
-    $sql = "SELECT name, email, user, img, birthday FROM administrator WHERE administrator.id = $idAdmin;";
-    $result = $con->query($sql);
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $name =  $row['name'];
-        $email =  $row['email'];
-        $user =  $row['user'];
-        $img =  $row['img'];
-        $birthday =  $row['birthday'];
-    }
 ?>
 
 <!DOCTYPE html>
@@ -46,6 +34,16 @@
         <!-- Navbar -->
         <?php 
             include('../pages/header.php'); 
+            $sql = "SELECT name, email, user, img, birthday FROM administrator WHERE administrator.id = $idAdmin;";
+            $result = $con->query($sql);
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $name =  $row['name'];
+                $email =  $row['email'];
+                $user =  $row['user'];
+                $img =  $row['img'];
+                $birthday =  $row['birthday'];
+            }
         ?>          
         <!-- End of Navbar -->
         
@@ -56,11 +54,14 @@
                 </div>
             </div>
             <div class="form-container">
-                <form action="../pages/inserirPerfil.php" id="profileForm" method="post" enctype="multipart/form-data">
+                <form action="../pages/perfilInserir.php" id="profileForm" method="post" enctype="multipart/form-data">
                     <div class="column-left">
                         <label for="photo">Foto de perfil:</label>
-                        <img src="<?php echo $img; ?>" alt="Profile Picture" id="profilePic">
-                        <input type="file" name="photo" id="photo" oninput="displayProfilePic()">
+                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $img; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
+                            <img src="../images/semfundo.png" style="width:100%;">
+                        </div>
+                        <!--<img src="<?php echo $img; ?>" alt="Profile Picture" id="profilePic">-->
+                        <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
                     </div>
                     <div class="column-right">
                         <label for="name">Nome:</label>
@@ -100,6 +101,26 @@
             } else {
                 passC.setCustomValidity("");
                 return true;
+            }
+        }
+
+        function displayProfilePic() {
+            const file = event.target.files[0]; // Obtém o primeiro arquivo selecionado
+            const preview = document.getElementById('profilePic'); // Seleciona a div
+
+            if (file) {
+                const reader = new FileReader();
+
+                // Evento para quando o arquivo for carregado
+                reader.onload = function(e) {
+                    // Define o background-image da div com o resultado do arquivo carregado
+                    preview.style.backgroundImage = `url(${e.target.result})`;
+                };
+
+                reader.readAsDataURL(file); // Lê o arquivo como URL base64
+            } else {
+                // Remove a imagem de fundo se nenhum arquivo for selecionado
+                preview.style.backgroundImage = "";
             }
         }
     </script>

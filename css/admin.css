@@ -72,7 +72,7 @@ body{
     padding: 0 16px;
     border-radius: 36px;
     background: var(--theme-color);
-    color: var(--background-color);
+    color: var(--primary-text-color);
     display: flex;
     align-items: center;
     justify-content: right;
@@ -119,7 +119,7 @@ body{
 
 .content main .bottom-data .admins table th {
     padding-bottom: 12px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -145,15 +145,24 @@ body{
 .content main .bottom-data .admins table th,
 .content main .bottom-data .admins table td{
     width: auto;
-    text-align: left;
-    padding: 16px 0;
+    text-align: center;
 }
 
-.content main .bottom-data .admins table th:last-child,
-.content main .bottom-data .admins table td:last-child {
+.content main .bottom-data .admins table td img{
     width: 50px;
-    text-align: center;
-    padding: 0;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block; /* Remove o espaço reservado para texto */
+}
+
+.content main .bottom-data .admins table th:first-child,
+.content main .bottom-data .admins table td:first-child {
+    width: 50px;
+}
+
+.content main .bottom-data .admins table td:first-child {
+    text-align: left;
 }
 
 .content main .bottom-data .admins table {
@@ -166,6 +175,14 @@ body{
     display: table;
     width: 100%;
     table-layout: fixed;
+}
+
+table td{
+    padding: 5px 0;
+}
+
+table th{
+    padding: 18px 0;
 }
 
 @media screen and (max-width: 768px) 
@@ -187,25 +204,6 @@ body{
     }
 }
 
-.btn-small {
-    background-color: var(--theme-color); /* Cor de fundo (vermelho escuro) */
-    color: var(--primary-text-color);           /* Cor do texto (branco) */
-    border: none;             /* Sem borda */
-    width: 40px;              /* Largura fixa para ser quadrado */
-    height: 40px;             /* Altura fixa para ser quadrado */
-    border-radius: 5px;       /* Bordas arredondadas */
-    display: flex;            /* Alinhar conteúdo ao centro */
-    justify-content: center;  /* Centralizar horizontalmente */
-    align-items: center;      /* Centralizar verticalmente */
-    font-size: 14px;          /* Tamanho do texto */
-    cursor: pointer;          /* Muda o cursor ao passar por cima */
-    transition: 0.3s;         /* Transição suave */
-}
-
-.btn-small:hover {
-    background-color: #cc0000; /* Cor de fundo ao passar o mouse */
-}
-
 /* Barra de rolagem customizada (opcional) */
 tbody::-webkit-scrollbar {
     width: 8px;
@@ -218,4 +216,23 @@ tbody::-webkit-scrollbar-thumb {
 
 tbody::-webkit-scrollbar-thumb:hover {
     background-color: #555;
+}
+
+.search-bar {
+    margin-top: 10px; /* Adiciona espaçamento entre o título e a barra de pesquisa */
+}
+
+.search-bar input {
+    width: 200%;
+    max-width: 300px; /* Define uma largura máxima */
+    padding: 8px 12px; /* Adiciona espaçamento interno */
+    border: 1px solid var(--border-color); /* Borda cinza */
+    border-radius: 5px; /* Bordas arredondadas */
+    font-size: 14px;
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+}
+
+.search-bar input:focus {
+    outline: none; /* Remove o contorno padrão */
 }

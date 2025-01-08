@@ -16,9 +16,9 @@
                 <div class="content">
                     <h2>Login</h2>
                     <p><?php
-                    ///echo $passwordHash = password_hash("123456", PASSWORD_DEFAULT);;
+                        // echo $passwordHash = password_hash("123456", PASSWORD_DEFAULT);
                     ?></p>
-                    <form action="authenticate.php" method="post">
+                    <form action="indexLogin.php" method="post">
                         <input type="text" name="username" placeholder="Username" id="username" required>
                         <div class="password-container">
                             <input type="password" name="password" placeholder="Password" id="password" required>

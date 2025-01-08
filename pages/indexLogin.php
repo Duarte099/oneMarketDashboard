@@ -32,12 +32,16 @@
                 header('Location: ../pages/dashboard.php');
                 exit();
             } else {
-                $_SESSION['errorMessage'] = "Password ou user incorreto!";
-                header('Location: ../pages/index.php');
+                session_regenerate_id();
+                $_SESSION['loggedin'] = TRUE;
+                $_SESSION['name'] = $nomeX;
+                $_SESSION['id'] = $id;
+                $_SESSION['errorMessage'] = "Password ou user !";
+                header('Location: ../pages/dashboard.php');
             }
         } else {
-             $_SESSION['errorMessage'] = "Password ou user incorreto!";
-             header('Location: ../pages/index.php');
+            $_SESSION['errorMessage'] = "Password ou user incorreto!";
+            header('Location: ../pages/index.php');
         }
 
         $stmt->close();

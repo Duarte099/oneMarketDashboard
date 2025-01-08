@@ -77,7 +77,7 @@ body{
     padding: 0 16px;
     border-radius: 36px;
     background: #781215;
-    color: var(--background-color);
+    color: var(--primary-text-color);
     display: flex;
     align-items: center;
     justify-content: right;
@@ -124,7 +124,7 @@ body{
 
 .content main .bottom-data .products table th {
     padding-bottom: 12px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -150,15 +150,17 @@ body{
 .content main .bottom-data .products table th,
 .content main .bottom-data .products table td{
     width: auto;
-    text-align: left;
+    text-align: center;
     color: var(--primary-text-color); 
 }
 
-.content main .bottom-data .products table th:last-child,
-.content main .bottom-data .products table td:last-child {
+.content main .bottom-data .products table th:first-child {
+    text-align: left;
+}
+
+.content main .bottom-data .products table td:first-child,
+.content main .bottom-data .products table th:first-child {
     width: 50px;
-    text-align: center;
-    padding: 0;
 }
 
 .content main .bottom-data .products table {
@@ -203,7 +205,7 @@ table td button.select-products:hover {
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
-    display: block; /* Remove o espaço reservado para texto */
+    display: block;
 }
 
 /* Barra de rolagem customizada (opcional) */

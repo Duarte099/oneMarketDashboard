@@ -72,7 +72,7 @@ body{
     padding: 0 16px;
     border-radius: 36px;
     background: var(--theme-color);
-    color: var(--background-color);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: right;
@@ -119,7 +119,7 @@ body{
 
 .content main .bottom-data .client table th {
     padding-bottom: 12px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -145,15 +145,8 @@ body{
 .content main .bottom-data .client table th,
 .content main .bottom-data .client table td{
     width: auto;
-    text-align: left;
-    padding: 16px 0;
-}
-
-.content main .bottom-data .client table th:last-child,
-.content main .bottom-data .client table td:last-child {
-    width: 50px;
     text-align: center;
-    padding: 0;
+    padding: 16px 0;
 }
 
 .content main .bottom-data .client table {

@@ -1,5 +1,4 @@
 <?php 
-    include('../db/conexao.php'); 
     $estouEm = 5;
 
     session_start();
@@ -72,27 +71,12 @@
                         const status = document.createElement("td");
                         status.textContent = result.status;
 
-                        // Adiciona o botão de exclusão
-                        const actions = document.createElement("td");
-                        const deleteButton = document.createElement("button");
-                        deleteButton.className = 'btn-small';
-                        deleteButton.id = 'botDeleteclient';
-                        deleteButton.innerHTML = '🗑️';
-                        deleteButton.onclick = (event) => {
-                            event.stopPropagation();
-                            deleteClient(result.nome, result.id);
-                        };
-                        actions.appendChild(deleteButton);
-
                         // Adiciona todas as células à linha
                         row.appendChild(nome);
                         row.appendChild(email);
                         row.appendChild(contacto);
                         row.appendChild(nif);
                         row.appendChild(status);
-                        row.appendChild(actions);
-
-                        row.addEventListener("click", () => handleRowClick(result.id, "editclient"));
 
                         // Adiciona a linha ao corpo da tabela
                         tbody.appendChild(row);
@@ -145,7 +129,7 @@
                         <input type="text" id="searchBox" placeholder="Pesquisar produtos..." oninput="clientsSearch(this)" />
                     </div>
                 </div>
-                <a href="../pages/novoCliente.php" id="new-budget" class="report">
+                <a href="../pages/clienteCriar.php" id="new-budget" class="report">
                     <i class='bx bx-plus'></i>
                     <span>Novo Cliente</span>
                 </a>
@@ -161,7 +145,6 @@
                                 <th>Contacto</th>
                                 <th>NIF</th>
                                 <th>Status</th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -184,7 +167,6 @@
                                             <td>{$row['contact']}</td>
                                             <td>{$row['nif']}</td>
                                             <td>{$status}</td>
-                                            <td><button class='btn-small' id='botDeleteClient' onclick=\"event.stopPropagation(); deleteClient('{$row['name']}', {$row['id']});\">🗑️</button></td>
                                             </tr>";
                                     }
                                 } else {
@@ -198,24 +180,6 @@
         </main>
 
         <script src="../index.js"></script>
-        <script>
-            function deleteClient(name, id) {
-                console.log("ID do cliente a ser excluído:", id);
-                const result = confirm("Tem a certeza que deseja eliminar o cliente " + name + "?");
-                if (result) {
-                    fetch(`./deleteClient.php?id=${encodeURIComponent(id)}`, {
-                        method: 'GET',
-                    })
-                    .then(() => {
-                        console.log("ID enviado com sucesso via GET.");
-                    })
-                    .catch(error => {
-                        console.error("Erro ao enviar ID:", error);
-                    });
-                }
-                window.location.href = window.location.pathname;
-            }
-        </script>
     </div>
 </body>
 

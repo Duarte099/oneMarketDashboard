@@ -41,7 +41,7 @@
 
                 <!-- Opções -->
                 <a href="../pages/perfil.php" class="menu-option">Perfil</a>
-                <a href="../pages/logout.php" class="menu-option">Logout</a>
+                <a href="../pages/indexLogout.php" class="menu-option">Logout</a>
             </div>
         </div>
     </div>

@@ -2,7 +2,6 @@
 
     session_start();
     
-    include('../db/conexao.php'); 
     $estouEm = 3;
 
 

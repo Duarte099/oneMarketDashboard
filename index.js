@@ -80,24 +80,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function handleRowClick(id, action) {
     if (action == "budget") {
-        window.location.href = "novoOrcamento.php?idClient=" + id;
+        window.location.href = "orcamentoCriar.php?idClient=" + id;
     }
     else if (action == "worksheet") {
-        window.location.href = "novaFichaTrabalho.php?idBudget=" + id;
+        window.location.href = "fichaTrabalhoCriar.php?idBudget=" + id;
     }
     else if (action == "editBudget") {
-        window.location.href = "editBudget.php?idBudget=" + id;
+        window.location.href = "orcamentoEdit.php?idBudget=" + id;
     }
     else if (action == "editClient") {
-        window.location.href = "editClient.php?id=" + id;
+        window.location.href = "clienteEdit.php?id=" + id;
     }
     else if (action == "editAdmin") {
-        window.location.href = "editAdmin.php?id=" + id;
+        window.location.href = "adminEdit.php?id=" + id;
     }
     else if (action == "editWorksheet") {
-        window.location.href = "editFichatrabalho.php?idWorksheet=" + id;
+        window.location.href = "fichaTrabalhoEdit.php?idWorksheet=" + id;
     }
     else if (action == "stock") {
-        window.location.href = "editProduct.php?idProduct=" + id;
+        window.location.href = "produtoEdit.php?idProduct=" + id;
     }
 }

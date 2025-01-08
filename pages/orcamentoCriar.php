@@ -1,6 +1,5 @@
 <?php 
 
-    include('../db/conexao.php'); 
     $estouEm = 2;
 
     session_start();
