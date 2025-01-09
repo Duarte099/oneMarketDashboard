@@ -32,10 +32,6 @@
                 header('Location: ../pages/dashboard.php');
                 exit();
             } else {
-                session_regenerate_id();
-                $_SESSION['loggedin'] = TRUE;
-                $_SESSION['name'] = $nomeX;
-                $_SESSION['id'] = $id;
                 $_SESSION['errorMessage'] = "Password ou user !";
                 header('Location: ../pages/dashboard.php');
             }

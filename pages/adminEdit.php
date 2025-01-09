@@ -1,6 +1,6 @@
 <?php
     session_start();
-
+    include('../db/conexao.php');
     $estouEm = 6;
 
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
@@ -60,7 +60,7 @@
 
             <div class="bottom-data">
                 <div class="administrator">
-                    <form method="POST" action="adminInserir.php?op=edit">
+                    <form method="POST" action="adminInserir.php?idAdmin=<?= $id ?>&op=edit">
                         <section>
                         <div class="column-left">
                                 <label for="photo">Foto do Administrador:</label>
@@ -84,7 +84,7 @@
                                 <input type="password" name="passwordConfirm">
 
                                 <label>Data-Nascimento:</label>
-                                <input type="date" name="birthday"value="<?php echo htmlspecialchars($admin['birthday']); ?>" required>
+                                <input type="date" name="birthday"value="<?php echo htmlspecialchars($admin['birthday']); ?>">
 
                                 <label>Status:</label>
                                     <select name="status">

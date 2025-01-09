@@ -1,7 +1,9 @@
 <?php 
+    session_start();
+
     $estouEm = 4;
 
-    session_start();
+    include('../db/conexao.php');
 
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
@@ -58,9 +60,9 @@
                 </div>
             </div>
             <div class="form-container">
-                <form action="../pages/inserirProduto.php?op=edit" id="profileForm" method="post" enctype="multipart/form-data">
+                <form action="../pages/produtoInserir.php?op=edit" id="profileForm" method="post" enctype="multipart/form-data">
                     <div class="column-left">
-                        <label for="photo">Foto de perfil:</label>
+                        <label for="photo">Foto do produto:</label>
                         <div style="width:100%; max-width:500px; background: url('<?php echo $img; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
                             <img src="../images/semfundo.png" style="width:100%;">
                         </div>
@@ -75,7 +77,7 @@
                         <input type="text" name="ref" id="ref" value="<?php echo $ref; ?>">
 
                         <label for="value">Valor:</label>
-                        <input type="number" name="value" id="value" value="<?php echo $value; ?>">
+                        <input type="text" name="value" id="value" value="<?php echo str_replace('.', '.', $value); ?>" />
 
                         <label for="quantity">Stock:</label>
                         <input type="number" name="quantity" id="quantity" value="<?php echo $quantity; ?>">
@@ -106,6 +108,14 @@
                 preview.src = ""; // Remove a imagem se nenhum arquivo for selecionado
             }
         }
+
+        const form = document.getElementById('profileForm');
+            form.addEventListener('submit', (event) => {
+            const valueInput = document.getElementById('value');
+            valueInput.value = valueInput.value.replace(',', '.'); // Substitui vírgula por ponto
+        });
     </script>
+
+
 </body>
 </html>

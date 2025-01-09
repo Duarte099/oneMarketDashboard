@@ -35,32 +35,63 @@
         }
     }
     elseif ($op == 'edit') {
-        // formulario para editar
+        // Verificar se o formulário foi enviado
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            //Acrescentar foto
-            $nome = isset($_POST['nome']) ? trim($_POST['nome']) : $admin['name'];
-            $email = isset($_POST['email']) ? trim($_POST['email']) : $admin['email'];
-            $user = isset($_POST['user']) ? trim($_POST['user']) : $admin['user'];
-            $password = isset($_POST['password']) ? trim($_POST['password']) : '';
-            $status = isset($_POST['status']) ? intval($_POST['status']) : $admin['active'];
-            $birthday = isset($_POST['birthday']) ? $_POST['birthday'] : $admin['birthday'];
-
-            // Se não mudar a pass deixar em branco e assim continua a mesma
-            if (!empty($password)) {
-                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            }
-
-            // Atualiza os dados na base de dados
-            $updateQuery = "UPDATE administrator SET name = ?, email = ?, user = ?, pass = ?, active = ?, birthday = ? WHERE id = ?";
-            $stmt = $con->prepare($updateQuery);
-            $stmt->bind_param("ssssisi", $nome, $email, $user, $passwordHash, $status, $birthday, $id);
-
-            if ($stmt->execute()) {
-                // header('Location: admin.php');  // Quando acabar, manda de volta para a página dos administradores
-                // exit();
+            include("../db/conexao.php");
+    
+            // Obter o ID do administrador
+            if (isset($_GET['idAdmin'])) {
+                $id = intval($_GET['idAdmin']);
             } else {
-                $error = "Erro ao atualizar administrador.";
+                $error = "ID do administrador não fornecido.";
             }
+    
+            $nome = trim($_POST['nome']);
+            $email = trim($_POST['email']);
+            $user = trim($_POST['user']);
+            $birthday = trim($_POST['birthday']);
+            $status = intval($_POST['status']);
+    
+            $password = trim($_POST['password']);
+            $passwordConfirm = trim($_POST['passwordConfirm']);
+    
+            // Verificar se as senhas foram preenchidas e correspondem
+            if (!empty($password) || !empty($passwordConfirm)) {
+                if ($password !== $passwordConfirm) {
+                    $error = "As senhas não correspondem!";
+                } else {
+                    // Hash da nova senha
+                    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+                }
+            }
+    
+            if (!isset($error)) {
+                // Atualizar os dados do administrador
+                $query = "UPDATE administrator SET name = ?, email = ?, user = ?, birthday = ?, active = ?";
+                if (!empty($password)) {
+                    $query .= ", pass = ?"; // Adicionar a senha se ela for fornecida
+                }
+                $query .= " WHERE id = ?";
+                $stmt = $con->prepare($query);
+    
+                if (!empty($password)) {
+                    $stmt->bind_param("ssssisi", $nome, $email, $user, $birthday, $status, $passwordHash, $id);
+                } else {
+                    $stmt->bind_param("ssssi", $nome, $email, $user, $birthday, $status, $id);
+                }
+    
+                if ($stmt->execute()) {
+                    header('Location: admin.php');
+                    exit();
+                } else {
+                    $error = "Erro ao atualizar administrador!";
+                }
+            }
+        }
+    
+        // Exibir mensagens de erro, se houver
+        if (isset($error)) {
+            echo "<p style='color: red;'>$error</p>";
         }
     }
 ?>

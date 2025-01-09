@@ -1,6 +1,6 @@
 <?php
-    include('../db/conexao.php'); 
     session_start();
+    include('../db/conexao.php'); 
 
     $email = "";
     $nif = "";

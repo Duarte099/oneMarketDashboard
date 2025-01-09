@@ -1,6 +1,8 @@
 <?php
 
     session_start();
+    include('../db/conexao.php'); 
+    $estouEm = 2;
 
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
@@ -9,9 +11,6 @@
 
     // print_r($_POST);
 
-    $estouEm = 2;
-
-    include("../db/conexao.php");
 
     $idAdmin = $_SESSION['id'];
 

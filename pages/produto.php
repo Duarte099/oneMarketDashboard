@@ -1,7 +1,9 @@
 <?php 
+    session_start();
+
     $estouEm = 4;
 
-    session_start();
+    include('../db/conexao.php');
 
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
@@ -167,7 +169,7 @@
                                             <td><img src={$row['imagem']}></td>
                                             <td>{$row['nome']}</td>
                                             <td>{$row['refProduto']}</td>
-                                            <td>€" . number_format($row['valorProduto']) . "</td>
+                                            <td>" . number_format((float)$row['valorProduto'], 2, '.', '.') . "€</td>
                                             <td>{$row['stockProduto']}</td>
                                         </tr>";
                                     }

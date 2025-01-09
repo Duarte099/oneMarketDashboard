@@ -1,6 +1,4 @@
 <?php
-    include('../db/conexao.php');
-
     $idAdmin = $_SESSION['id'];
 
     $sql = "SELECT img FROM administrator WHERE administrator.id = $idAdmin;";

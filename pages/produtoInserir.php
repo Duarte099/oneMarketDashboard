@@ -1,14 +1,15 @@
 <?php
-    include('../db/conexao.php'); 
     session_start();
+
+    include('../db/conexao.php'); 
 
     $op = $_GET['op'];
 
-    $imagem = $_POST['img'];
+    $imagem = '';
     $nome = $_POST['name'];
-    $ref = $_POST['reference'];
+    $ref = $_POST['ref'];
     $valor = $_POST['value'];
-    $stock = $_POST['stock'];
+    $stock = $_POST['quantity'];
 
     if ($op=="save") {
         if (!empty($nome) && !empty($ref) && !empty($valor)) {
@@ -26,13 +27,15 @@
                 $stmt->bind_param("id", $idProduct, $stock);
     
                 if ($stmt->execute()) {
-                    header('Location: ../pages/stock.php');
+                    header('Location: ../pages/produto.php');
                     exit();
                 }
             }
         }
     }
     else if ($op=="edit") {
+        echo $valor;    
+
         // Atualiza os dados na base de dados
         $updateQuery = "UPDATE product SET img = ?, name = ?, reference = ?, value = ? WHERE id = ?";
         $stmt = $con->prepare($updateQuery);
@@ -45,7 +48,7 @@
             $stockStmt->bind_param("ii", $stock, $id);
             
             if ($stmt->execute()) {
-                header('Location: stock.php');  // Quando acabar, manda de volta para a página dos clientes
+                // header('Location: produto.php');  Quando acabar, manda de volta para a página dos clientes
                 exit();
             } else {
                 $error = "Erro ao atualizar o produto.";

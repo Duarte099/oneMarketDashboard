@@ -1,7 +1,9 @@
 <?php 
+    session_start();
+
     $estouEm = 1;
 
-    session_start();
+    include('../db/conexao.php');
 
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
@@ -9,6 +11,17 @@
     }
 
     $idAdmin = $_SESSION['id'];
+
+    $sql = "SELECT name, email, user, img, birthday FROM administrator WHERE administrator.id = $idAdmin;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $name =  $row['name'];
+        $email =  $row['email'];
+        $user =  $row['user'];
+        $img =  $row['img'];
+        $birthday =  $row['birthday'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -34,16 +47,6 @@
         <!-- Navbar -->
         <?php 
             include('../pages/header.php'); 
-            $sql = "SELECT name, email, user, img, birthday FROM administrator WHERE administrator.id = $idAdmin;";
-            $result = $con->query($sql);
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $name =  $row['name'];
-                $email =  $row['email'];
-                $user =  $row['user'];
-                $img =  $row['img'];
-                $birthday =  $row['birthday'];
-            }
         ?>          
         <!-- End of Navbar -->
         
