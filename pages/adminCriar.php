@@ -9,6 +9,13 @@
         header('Location: index.php');
         exit();
     }
+
+    $sql = "SELECT COUNT(id) AS numModules FROM modules;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $numModules = $row['numModules'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +55,7 @@
                     <div class="column-left">
                         <label for="photo">Foto:</label>
                         <div id="profilePic" style="width:100%; max-width:500px; background: url('') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
-                            <img src="../images/semfundo.png" style="width:100%;">
+                            <img src="../images/semfundo.png" style="width:100%;padding-bottom: 13px;">
                         </div>
                         <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
                     </div>
@@ -74,13 +81,38 @@
                         <label for="birthday">Data nascimento:</label>
                         <input type="date" name="birthday" id="birthday">
 
-                        <button type="submit" id="submitButton" onclick="return validarPass()">Guardar alterações</button>
+                        <label for="status">Status:</label>
+                        <select name="status">
+                            <option value="1" class="selectoption">Ativo</option>
+                            <option value="0" class="selectoption">Inativo</option>
+                        </select>
+
+                        <button type="submit" id="submitButton" onclick="return validarPass()">Criar Administrador</button>
                     </div>
                     <div class="column-right" id="permissionsSection" style="display:none;">
                         <div class="button-container">
                             <button type="button" id="infoButton2" class="toggle-button" onclick="showSection('info')">Informações</button>
                             <button type="button" id="permissionsButton2" class="toggle-button" onclick="showSection('permissions')">Permissões</button>
                         </div>
+                        <?php
+                            $sql = "SELECT module AS nameModule, id FROM modules;";
+                            $result = $con->query($sql);
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<div class=\"module\">
+                                        <span>{$row['nameModule']}</span>
+                                        <div class=\"permissions\">
+                                            <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-ver\"> Ver</label>
+                                            <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-edit\"> Editar</label>
+                                            <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-criar\"> Criar</label>
+                                            <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-apagar\"> Apagar</label>
+                                        </div>
+                                    </div>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
+                            }
+                        ?>
                     </div>
                 </form>
             </div>

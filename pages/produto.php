@@ -149,6 +149,7 @@
                                 <th>Referencia</th>
                                 <th>Valor</th>
                                 <th>Stock</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -158,19 +159,22 @@
                                             product.img as imagem,  
                                             product.name as nome, 
                                             product.reference as refProduto, 
-                                            product.value as valorProduto, 
+                                            product.value as valorProduto,
+                                            product.active as ativo,
                                             product_stock.quantity as stockProduto
                                         FROM product
                                         LEFT JOIN product_stock ON product.id = product_stock.idProduct;";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
+                                        $status = $row['ativo'] == 1 ? 'Ativo' : 'Inativo';
                                         echo "<tr onclick=\"handleRowClick('{$row['id']}', 'stock')\" style=\"cursor: pointer;\">
                                             <td><img src={$row['imagem']}></td>
                                             <td>{$row['nome']}</td>
                                             <td>{$row['refProduto']}</td>
                                             <td>" . number_format((float)$row['valorProduto'], 2, '.', '.') . "€</td>
                                             <td>{$row['stockProduto']}</td>
+                                            <td>{$status}</td>
                                         </tr>";
                                     }
                                 } else {

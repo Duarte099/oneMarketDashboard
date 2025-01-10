@@ -5,9 +5,16 @@
 
     $op = $_GET['op'];
 
+    $sql = "SELECT COUNT(id) AS numModules FROM modules;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $numModules = $row['numModules'];
+    }
+
     if ($op == 'save') {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nome = trim($_POST['nome']);
+            $nome = trim($_POST['name']);
             $email = trim($_POST['email']);
             $user = trim($_POST['user']);
             $password = trim($_POST['password']);
@@ -19,25 +26,29 @@
             } elseif (!empty($nome) && !empty($email) && !empty($user) && !empty($password)&& !empty($confirmpassword)) {
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
                 $query = "INSERT INTO administrator (name, email, user, pass, active) VALUES (?, ?, ?, ?, ?)";
-                $stmt = $con->prepare($query);
+                $result = $con->prepare($query);
     
-                if ($stmt) {
-                    $stmt->bind_param("ssssi", $nome, $email, $user, $passwordHash, $status);
-    
-                    if ($stmt->execute()) {
-                        header('Location: ../pages/admin.php');
-                        exit();
-                    } else {
-                        echo "<script>alert('Erro ao adicionar administrador.');</script>";
-                    }
+                if ($result) {
+                    $result->bind_param("ssssi", $nome, $email, $user, $passwordHash, $status);
+                    $result->execute();
+                    $idAdmin = $con->insert_id;
                 }
             }
+            
+            // $sql = "INSERT INTO administrator_modules (idAdministrator, idModule, pView, pInsert, pUpdate, pDelete) VALUES (?, ?, ?, ?, ?, ?)";
+            // $result = $con->prepare($sql);
+
+            // if ($result) {
+            //     $result->bind_param("iissss", $idAdmin, $moduleNumber, $pView, $pInsert, $pUpdate, $pDelete);
+            // }
+
+            // $result->execute();
         }
     }
     elseif ($op == 'edit') {
+        print_r($_POST);
         // Verificar se o formulário foi enviado
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            include("../db/conexao.php");
     
             // Obter o ID do administrador
             if (isset($_GET['idAdmin'])) {
@@ -46,7 +57,7 @@
                 $error = "ID do administrador não fornecido.";
             }
     
-            $nome = trim($_POST['nome']);
+            $nome = trim($_POST['name']);
             $email = trim($_POST['email']);
             $user = trim($_POST['user']);
             $birthday = trim($_POST['birthday']);
@@ -79,19 +90,11 @@
                 } else {
                     $stmt->bind_param("ssssi", $nome, $email, $user, $birthday, $status, $id);
                 }
-    
-                if ($stmt->execute()) {
-                    header('Location: admin.php');
-                    exit();
-                } else {
-                    $error = "Erro ao atualizar administrador!";
-                }
+                $stmt->execute();
+
+
             }
         }
-    
-        // Exibir mensagens de erro, se houver
-        if (isset($error)) {
-            echo "<p style='color: red;'>$error</p>";
-        }
     }
+    // header('Location: ../pages/admin.php');
 ?>

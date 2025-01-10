@@ -12,7 +12,7 @@
 
     $idProduct = $_GET['idProduct'];
 
-    $sql = "SELECT id, img, name, reference, value, quantity FROM product
+    $sql = "SELECT id, img, name, reference, value, quantity, active FROM product
             INNER JOIN product_stock ON idProduct = id
             WHERE product.id = $idProduct;";
     $result = $con->query($sql);
@@ -24,6 +24,7 @@
         $ref =  $row['reference'];
         $value =  $row['value'];
         $quantity =  $row['quantity'];
+        $status = $row['active'];
     }
 ?>
 
@@ -81,6 +82,14 @@
 
                         <label for="quantity">Stock:</label>
                         <input type="number" name="quantity" id="quantity" value="<?php echo $quantity; ?>">
+                        
+                        <label>Status:</label>
+                        <?php
+                        ?>
+                            <select name="status">
+                                <option value="1" <?php echo $status == 1 ? 'selected' : ''; ?>>Ativo</option>
+                                <option value="0" <?php echo $status == 0 ? 'selected' : ''; ?>>Inativo</option>
+                            </select>
 
                         <button type="submit">Guardar alterações</button>
                     </div>

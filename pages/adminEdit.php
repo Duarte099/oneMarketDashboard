@@ -1,113 +1,201 @@
-<?php
+<?php 
     session_start();
-    include('../db/conexao.php');
+
     $estouEm = 6;
+
+    include('../db/conexao.php');
 
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
         exit();
     }
 
-    // Verificar se o id está na URL
-    if (isset($_GET['id'])) {
-        $id = intval($_GET['id']);
-    } else {
-        header('Location: admin.php');  // Caso não esteja na url volta para a página dos administradores
-        exit();
-    }   
+    $idAdmin = $_GET['id'];
+
+    $sql = "SELECT * FROM administrator WHERE id = $idAdmin";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $nome = $row['name'];
+        $email = $row['email'];
+        $user = $row['user'];
+        $img = $row['img'];
+        $birthday = $row['birthday'];
+    }
+
+    $sql = "SELECT COUNT(id) AS numModules FROM modules;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $numModules = $row['numModules'];
+    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../css/editadmin.css">
+    <link rel="stylesheet" href="../css/adminCriar.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
-    <title>OneMarket | Editar Administrador</title>
+    <title>OneMarket | Criar Administrador</title>
 </head>
+
 <body>
 
-    <?php include('../pages/sideBar.php'); ?>
+    <?php 
+        include('../pages/sideBar.php'); 
+    ?>
 
     <!-- Main Content -->
     <div class="content">
-        <?php include('../pages/header.php'); 
-            // Buscar o id selecionado antes
-            $query = "SELECT * FROM administrator WHERE id = ?";
-            $stmt = $con->prepare($query);
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            // Se não encontrar o administrador
-            if ($result->num_rows === 0) {
-                header('Location: admin.php');  // Manda para a página de administradores
-                exit();
-            }
-
-            // Pega as informações do admin
-            $admin = $result->fetch_assoc();
+        <!-- Navbar -->
+        <?php 
+            include('../pages/header.php');
         ?>          
-
+        <!-- End of Navbar -->
+        
         <main>
             <div class="header">
                 <div class="left">
                     <h1>Editar Administrador</h1>
                 </div>
             </div>
-
-            <div class="bottom-data">
-                <div class="administrator">
-                    <form method="POST" action="adminInserir.php?idAdmin=<?= $id ?>&op=edit">
-                        <section>
-                        <div class="column-left">
-                                <label for="photo">Foto do Administrador:</label>
-                                <img src="<?php echo $img; ?>" alt="Admin Picture" id="adminPic">
-                                <input type="file" name="photo" id="photo" oninput="displayProfilePic()">
+            <div class="form-container">
+                <form action="../pages/adminInserir.php?op=edit" id="profileForm" method="post" enctype="multipart/form-data">
+                    <div class="column-left">
+                        <label for="photo">Foto:</label>
+                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $img; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
+                            <img src="../images/semfundo.png" style="width:100%;padding-bottom: 13px;">
                         </div>
-                        <div class="column-right">
-                                <label>Nome:</label>
-                                <input type="text" name="nome" value="<?php echo htmlspecialchars($admin['name']); ?>" required>
+                        <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
+                    </div>
+                    <div class="column-right" id="infoSection">
+                        <div class="button-container">
+                            <button type="button" id="infoButton1" class="toggle-button" onclick="showSection('info')">Informações</button>
+                            <button type="button" id="permissionsButton1" class="toggle-button" onclick="showSection('permissions')">Permissões</button>
+                        </div>
 
-                                <label>Email:</label>
-                                <input type="email" name="email" value="<?php echo htmlspecialchars($admin['email']); ?>" required>
+                        <label for="name">Nome:</label>
+                        <input type="text" name="name" id="name" value="<?php echo $nome; ?>">
 
-                                <label>User:</label>
-                                <input type="text" name="user" value="<?php echo htmlspecialchars($admin['user']); ?>" required>
+                        <label for="user">Nome de utilizador:</label>
+                        <input type="text" name="user" id="user" value="<?php echo $user; ?>">
 
-                                <label>Password (Deixar em branco para deixar a pass atual):</label>
-                                <input type="password" name="password">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" id="email" value="<?php echo $email; ?>">
 
-                                <label>Confirmar Password(apenas se mudar):</label>
-                                <input type="password" name="passwordConfirm">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" placeholder="Nova password">
+                        <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirmar nova password">
 
-                                <label>Data-Nascimento:</label>
-                                <input type="date" name="birthday"value="<?php echo htmlspecialchars($admin['birthday']); ?>">
+                        <label for="birthday">Data nascimento:</label>
+                        <input type="date" name="birthday" id="birthday" value="<?php echo $birthday; ?>">
 
-                                <label>Status:</label>
-                                    <select name="status">
-                                        <option value="1" <?php echo $admin['active'] == 1 ? 'selected' : ''; ?>>Ativo</option>
-                                        <option value="0" <?php echo $admin['active'] == 0 ? 'selected' : ''; ?>>Inativo</option>
-                                    </select>
+                        <label for="status">Status:</label>
+                        <select name="status">
+                            <option value="1" class="selectoption">Ativo</option>
+                            <option value="0" class="selectoption">Inativo</option>
+                        </select>
 
-                                <button type="submit">Atualizar Administrador</button>
-                        </div>   
-                        </section>
-                    </form>
-
-                    <?php
-                        if (isset($error)) {
-                            echo "<p style='color: red;'>$error</p>";
-                        }
-                    ?>
-                </div>
+                        <button type="submit" id="submitButton" onclick="return validarPass()">Criar Administrador</button>
+                    </div>
+                    <div class="column-right" id="permissionsSection" style="display:none;">
+                        <div class="button-container">
+                            <button type="button" id="infoButton2" class="toggle-button" onclick="showSection('info')">Informações</button>
+                            <button type="button" id="permissionsButton2" class="toggle-button" onclick="showSection('permissions')">Permissões</button>
+                        </div>
+                        <div class="modules">
+                            <?php
+                                $sql = "SELECT id, module AS nameModule FROM modules;";
+                                $result = $con->query($sql);
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<div class=\"module\">
+                                            <span>{$row['nameModule']}</span>
+                                            <div class=\"permissions\">
+                                                <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-ver\"> Ver</label>
+                                                <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-edit\"> Editar</label>
+                                                <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-criar\"> Criar</label>
+                                                <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-apagar\"> Apagar</label>
+                                            </div>
+                                        </div>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
+                                }
+                            ?>
+                        </div>
+                    </div>
+                </form>
             </div>
         </main>
-        
-        <script>
-        </script>
     </div>
+
+    <script src="../index.js"></script>
+    <script>
+        function validarPass() {
+            const pass = document.querySelector('input[name="password"]');
+            const passC = document.querySelector('input[name="passwordConfirm"]');
+
+            // Verifica se as senhas são diferentes
+            if (pass.value !== passC.value) {
+                passC.setCustomValidity("As palavras-passe não coincidem!");
+                passC.reportValidity();
+                return false;
+            } else {
+                passC.setCustomValidity("");
+                return true;
+            }
+        }
+
+        function displayProfilePic() {
+            const file = event.target.files[0]; // Obtém o primeiro arquivo selecionado
+            const preview = document.getElementById('profilePic'); // Seleciona a div
+
+            if (file) {
+                const reader = new FileReader();
+
+                // Evento para quando o arquivo for carregado
+                reader.onload = function(e) {
+                    // Define o background-image da div com o resultado do arquivo carregado
+                    preview.style.backgroundImage = `url(${e.target.result})`;
+                };
+
+                reader.readAsDataURL(file); // Lê o arquivo como URL base64
+            } else {
+                // Remove a imagem de fundo se nenhum arquivo for selecionado
+                preview.style.backgroundImage = "";
+            }
+        }
+
+        function showSection(section) {
+            const infoSection = document.getElementById('infoSection');
+            const permissionsSection = document.getElementById('permissionsSection');
+            const infoButton1 = document.getElementById('infoButton1');
+            const permissionsButton1 = document.getElementById('permissionsButton1');
+            const infoButton2 = document.getElementById('infoButton2');
+            const permissionsButton2 = document.getElementById('permissionsButton2');
+
+            if (section == 'info') {
+                infoSection.style.display = 'block';
+                permissionsSection.style.display = 'none';
+                permissionsButton1.style.backgroundColor = 'var(--background-color)';
+                infoButton1.style.backgroundColor = 'var(--theme-color)';
+            }
+            if (section == 'permissions') {
+                infoSection.style.display = 'none';
+                permissionsSection.style.display = 'block';
+                permissionsButton2.style.backgroundColor = 'var(--theme-color)';
+                infoButton2.style.backgroundColor = 'var(--background-color)';
+            }
+        }
+
+        // Mostrar "Informações" ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => showSection('info'));
+    </script>   
 </body>
+
 </html>

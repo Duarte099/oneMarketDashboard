@@ -20,7 +20,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/perfil.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
-    <title>OneMarket | Editar Produto</title>
+    <title>OneMarket | Criar Produto</title>
 </head>
 
 <body>
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="form-container">
-                <form action="../pages/inserirProduto.php" id="profileForm" method="post" enctype="multipart/form-data">
+                <form action="../pages/produtoInserir.php?op=save" id="profileForm" method="post" enctype="multipart/form-data">
                     <div class="column-left">
                         <label for="photo">Foto:</label>
                         <img alt="Image" id="profilePic">
@@ -63,7 +63,7 @@
                         <label for="quantity">Stock:</label>
                         <input type="number" name="quantity" id="quantity">
 
-                        <label for="quantity">Stock:</label>
+                        <label for="quantity">Status:</label>
                         <select name="status">
                             <option value="1" class="selectoption">Ativo</option>
                             <option value="0" class="selectoption">Inativo</option>
