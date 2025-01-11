@@ -5,7 +5,9 @@
 
     $estouEm = 4;
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    $permission = adminPermissions("adm_003", "inserir");
+
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
         header('Location: index.php');
         exit();
     }
@@ -44,11 +46,13 @@
                 </div>
             </div>
             <div class="form-container">
-                <form action="../pages/produtoInserir.php?op=save" id="profileForm" method="post" enctype="multipart/form-data">
+                <form action="../pages/produtoInserir.php" id="profileForm" method="post" enctype="multipart/form-data">
                     <div class="column-left">
                         <label for="photo">Foto:</label>
-                        <img alt="Image" id="profilePic">
-                        <input type="file" name="photo" id="imageInput" oninput="displayProfilePic()">
+                        <div id="profilePic" style="width:100%; max-width:500px; background: url('') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
+                            <img src="../images/semfundo.png" style="width:100%;padding-bottom: 13px;">
+                        </div>
+                        <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
                     </div>
                     <div class="column-right">
                         <label for="name">Nome:</label>
@@ -78,21 +82,23 @@
 
     <script src="../index.js"></script>
     <script>
-        function displayProfilePic(){
+        function displayProfilePic() {
             const file = event.target.files[0]; // Obtém o primeiro arquivo selecionado
-            const preview = document.getElementById('profilePic');
+            const preview = document.getElementById('profilePic'); // Seleciona a div
 
             if (file) {
                 const reader = new FileReader();
 
                 // Evento para quando o arquivo for carregado
                 reader.onload = function(e) {
-                preview.src = e.target.result; // Define o src da imagem para o resultado do arquivo carregado
+                    // Define o background-image da div com o resultado do arquivo carregado
+                    preview.style.backgroundImage = `url(${e.target.result})`;
                 };
 
                 reader.readAsDataURL(file); // Lê o arquivo como URL base64
             } else {
-                preview.src = ""; // Remove a imagem se nenhum arquivo for selecionado
+                // Remove a imagem de fundo se nenhum arquivo for selecionado
+                preview.style.backgroundImage = "";
             }
         }
     </script>

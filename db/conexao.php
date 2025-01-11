@@ -15,5 +15,5 @@
     // echo "<script>console.error(" . json_encode("aaaaaaa") . ");</script>";
     // exit;
 
-    include "functions.php";
+    include_once 'functions.php';
 ?>  

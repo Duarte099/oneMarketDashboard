@@ -3,9 +3,9 @@
     include('../db/conexao.php'); 
     $estouEm = 2;
 
-    
+    $permission = adminPermissions("adm_001", "delete");
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
         header('Location: index.php');
         exit();
     }

@@ -5,7 +5,9 @@
 
     include('../db/conexao.php');
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    $permission = adminPermissions("adm_005", "view");
+
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
         header('Location: index.php');
         exit();
     }
@@ -189,32 +191,6 @@
                                 }
                             ?>
 
-                        </tbody>
-                    </table>
-                </div>
-                <div class="admins">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                                $sql = "SELECT 
-                                            modules.id as id,
-                                            modules.module as nome
-                                        FROM modules ;";
-                                $result = $con->query($sql);
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>
-                                            <td><img src={$row['nome']}></td></tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
-                                }
-                            ?>
                         </tbody>
                     </table>
                 </div>

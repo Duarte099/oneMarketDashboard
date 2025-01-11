@@ -2,6 +2,13 @@
     session_start();
     include('../db/conexao.php'); 
 
+    $permission = adminPermissions("adm_004", "inserir");
+
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+        header('Location: index.php');
+        exit();
+    }
+
     $email = "";
     $nif = "";
 

@@ -5,7 +5,9 @@
 
     include('../db/conexao.php');
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    $permission = adminPermissions("adm_001", "view");
+
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
         header('Location: index.php');
         exit();
     }
@@ -342,7 +344,7 @@
             function deleteBudget(num, id) {
                 const result = confirm("Tem a certeza que deseja eliminar o orçamento " + num + "?");
                 if (result) {
-                    fetch(`./deleteBudget.php?idBudget=${encodeURIComponent(id)}`, {
+                    fetch(`./orcamentoDelete.php?idBudget=${encodeURIComponent(id)}`, {
                         method: 'GET',
                     })
                     .then(() => {

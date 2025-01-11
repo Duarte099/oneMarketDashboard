@@ -1,16 +1,17 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    include("../db/conexao.php");
+
+    $permission1 = adminPermissions("adm_001", "inserir");
+    $permission2 = adminPermissions("adm_001", "update");
+
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission1 == 0 || $permission2 == 0) {
         header('Location: index.php');
         exit();
     }
 
-    // print_r($_POST);
-
     $estouEm = 2;
-
-    include("../db/conexao.php");
 
     $numProjeto = $_POST['numOrcamento'];
     $nameBudget = $_POST['nomeProjeto'];

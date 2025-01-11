@@ -5,7 +5,9 @@
 
     include('../db/conexao.php');
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    $permission = adminPermissions("adm_005", "inserir");
+
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true  || $permission == 0) {
         header('Location: index.php');
         exit();
     }
@@ -94,25 +96,27 @@
                             <button type="button" id="infoButton2" class="toggle-button" onclick="showSection('info')">Informações</button>
                             <button type="button" id="permissionsButton2" class="toggle-button" onclick="showSection('permissions')">Permissões</button>
                         </div>
-                        <?php
-                            $sql = "SELECT module AS nameModule, id FROM modules;";
-                            $result = $con->query($sql);
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<div class=\"module\">
-                                        <span>{$row['nameModule']}</span>
-                                        <div class=\"permissions\">
-                                            <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-ver\"> Ver</label>
-                                            <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-edit\"> Editar</label>
-                                            <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-criar\"> Criar</label>
-                                            <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-apagar\"> Apagar</label>
-                                        </div>
-                                    </div>";
+                        <div class="modules">
+                            <?php
+                                $sql = "SELECT module AS nameModule, id FROM modules;";
+                                $result = $con->query($sql);
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<div class=\"module\">
+                                            <span>{$row['nameModule']}</span>
+                                            <div class=\"permissions\">
+                                                <label><input type=\"checkbox\" name=\"modulo_{$row['id']}_perm_ver\"> Ver</label>
+                                                <label><input type=\"checkbox\" name=\"modulo_{$row['id']}_perm_edit\"> Editar</label>
+                                                <label><input type=\"checkbox\" name=\"modulo_{$row['id']}_perm_criar\"> Criar</label>
+                                                <label><input type=\"checkbox\" name=\"modulo_{$row['id']}_perm_apagar\"> Apagar</label>
+                                            </div>
+                                        </div>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
                                 }
-                            } else {
-                                echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
-                            }
-                        ?>
+                            ?>
+                        </div>
                     </div>
                 </form>
             </div>

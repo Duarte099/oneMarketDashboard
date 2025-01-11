@@ -4,13 +4,13 @@
     include('../db/conexao.php'); 
     $estouEm = 2;
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    $permission1 = adminPermissions("adm_002", "inserir");
+    $permission2 = adminPermissions("adm_002", "update");
+
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission1 == 0 || $permission2 == 0) {
         header('Location: index.php');
         exit();
     }
-
-    // print_r($_POST);
-
 
     $idAdmin = $_SESSION['id'];
 

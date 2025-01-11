@@ -5,14 +5,16 @@
 
     include('../db/conexao.php');
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    $permission = adminPermissions("adm_005", "update");
+
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
         header('Location: index.php');
         exit();
     }
 
-    $idAdmin = $_GET['id'];
+    $idAdminEdit = $_GET['id'];
 
-    $sql = "SELECT * FROM administrator WHERE id = $idAdmin";
+    $sql = "SELECT * FROM administrator WHERE id = $idAdminEdit";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -23,7 +25,7 @@
         $birthday = $row['birthday'];
     }
 
-    $sql = "SELECT COUNT(id) AS numModules FROM modules;";
+    $sql = "SELECT MAX(id) AS numModules FROM modules;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -45,8 +47,12 @@
 
 <body>
 
+
+
     <?php 
+    
         include('../pages/sideBar.php'); 
+        
     ?>
 
     <!-- Main Content -->
@@ -64,7 +70,7 @@
                 </div>
             </div>
             <div class="form-container">
-                <form action="../pages/adminInserir.php?op=edit" id="profileForm" method="post" enctype="multipart/form-data">
+                <form action="../pages/adminInserir.php?op=edit&id=<?=$idAdminEdit?>" id="profileForm" method="post" enctype="multipart/form-data">
                     <div class="column-left">
                         <label for="photo">Foto:</label>
                         <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $img; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
@@ -109,22 +115,66 @@
                         </div>
                         <div class="modules">
                             <?php
-                                $sql = "SELECT id, module AS nameModule FROM modules;";
-                                $result = $con->query($sql);
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<div class=\"module\">
-                                            <span>{$row['nameModule']}</span>
-                                            <div class=\"permissions\">
-                                                <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-ver\"> Ver</label>
-                                                <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-edit\"> Editar</label>
-                                                <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-criar\"> Criar</label>
-                                                <label><input type=\"checkbox\" name=\"modulo-{$row['id']}-perm-apagar\"> Apagar</label>
-                                            </div>
-                                        </div>";
+                                for ($i=1; $i <= $numModules; $i++) { 
+                                    $sql = "SELECT id FROM modules WHERE id = $i;";
+                                    $result = $con->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        $row = $result->fetch_assoc();
+                                        $idModule =  $row['id'];
                                     }
-                                } else {
-                                    echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
+                                    if ($i == $idModule) {
+                                        $pView = "";
+                                        $pInsert = "";
+                                        $pUpdate = "";
+                                        $pDelete = "";
+
+                                        $sql = "SELECT pView, pInsert, pUpdate, pDelete FROM administrator_modules WHERE idAdministrator = $idAdminEdit AND idModule = $i;";
+                                        $result2 = $con->query($sql);
+                                        //echo "--" . $sql;
+                                        
+                                        if ($result2->num_rows > 0) {
+                                            $row2 = $result2->fetch_assoc();
+                                        
+                                            /*echo "--" . $sql;
+                                            echo "--";
+                                            print_r($row2);
+                                            echo "--";
+                                            echo($row2['pView']);*/
+                                            if ($row2['pView'] == 1) {
+                                                $pView = "checked";
+                                            }
+                                            if ($row2['pInsert'] == 1) {
+                                                $pInsert = "checked";
+                                            }
+                                            if ($row2['pUpdate'] == 1) {
+                                                $pUpdate = "checked";
+                                            }
+                                            if ($row2['pDelete'] == 1) {
+                                                $pDelete = "checked";
+                                                //echo "teste";
+                                            }
+                                    
+                                        }
+
+                                        $sql = "SELECT id, module AS nameModule FROM modules WHERE id = $i;";
+                                        $result3 = $con->query($sql);
+                                        if ($result3->num_rows > 0) {        
+                                            $row3 = $result3->fetch_assoc();
+                                            $id = $row3['id'];
+                                            $nome = $row3['nameModule'];
+                                            ?>
+                                                <div class="module">
+                                                    <span><?php echo $nome;?></span>
+                                                    <div class="permissions">
+                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_ver" <?php echo $pView; ?> > Ver</label>
+                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_edit" <?php echo $pInsert; ?> > Editar</label>
+                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_criar" <?php echo $pUpdate; ?> > Criar</label>
+                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_apagar" <?php echo $pDelete; ?> > Apagar</label>
+                                                    </div>
+                                                </div>
+                                            <?php
+                                        }
+                                    }
                                 }
                             ?>
                         </div>

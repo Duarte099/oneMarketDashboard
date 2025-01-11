@@ -3,9 +3,17 @@
 
     session_start();
 
+    $permission1 = adminPermissions("adm_005", "inserir");
+    $permission2 = adminPermissions("adm_005", "update");
+
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true  || $permission1 == 0 || $permission2 == 0) {
+        header('Location: index.php');
+        exit();
+    }
+
     $op = $_GET['op'];
 
-    $sql = "SELECT COUNT(id) AS numModules FROM modules;";
+    $sql = "SELECT MAX(id) AS numModules FROM modules;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -34,67 +42,107 @@
                     $idAdmin = $con->insert_id;
                 }
             }
-            
-            // $sql = "INSERT INTO administrator_modules (idAdministrator, idModule, pView, pInsert, pUpdate, pDelete) VALUES (?, ?, ?, ?, ?, ?)";
-            // $result = $con->prepare($sql);
 
-            // if ($result) {
-            //     $result->bind_param("iissss", $idAdmin, $moduleNumber, $pView, $pInsert, $pUpdate, $pDelete);
-            // }
+            for ($i=1; $i <= $numModules; $i++) { 
+                $sql = "SELECT id FROM modules WHERE id = $i;";
+                $result = $con->query($sql);
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $idModule =  $row['id'];
+                }
+                if ($i == $idModule) {
+                    if (isset($_POST['modulo_' . $i . '_perm_ver']) && $_POST['modulo_' . $i . '_perm_ver'] == "on") {
+                        $permVer = 1;
+                    } else {
+                        $permVer = 0;
+                    }
+                    
+                    if (isset($_POST['modulo_' . $i . '_perm_edit']) && $_POST['modulo_' . $i . '_perm_edit'] == "on") {
+                        $permEdit = 1;
+                    } else {
+                        $permEdit = 0;
+                    }
 
-            // $result->execute();
+                    if (isset($_POST['modulo_' . $i . '_perm_criar']) && $_POST['modulo_' . $i . '_perm_criar'] == "on") {
+                        $permCriar = 1;
+                    } else {
+                        $permCriar = 0;
+                    }
+                    
+                    if (isset($_POST['modulo_' . $i . '_perm_apagar']) && $_POST['modulo_' . $i . '_perm-apagar'] == "on") {
+                        $permApagar = 1;
+                    } else {
+                        $permApagar = 0;
+                    }
+                    $sql = "INSERT INTO administrator_modules (idAdministrator, idModule, pView, pInsert, pUpdate, pDelete) VALUES (?, ?, ?, ?, ?, ?)";
+                    $result = $con->prepare($sql);
+
+                    if ($result) {
+                        $result->bind_param("iissss", $idAdmin, $i, $permVer, $permEdit, $permCriar, $permApagar);
+                    }
+
+                    $result->execute();
+                }
+            }
         }
     }
     elseif ($op == 'edit') {
-        print_r($_POST);
-        // Verificar se o formulário foi enviado
+        $idAdmin = $_GET['id'];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-            // Obter o ID do administrador
-            if (isset($_GET['idAdmin'])) {
-                $id = intval($_GET['idAdmin']);
-            } else {
-                $error = "ID do administrador não fornecido.";
-            }
-    
             $nome = trim($_POST['name']);
             $email = trim($_POST['email']);
             $user = trim($_POST['user']);
-            $birthday = trim($_POST['birthday']);
-            $status = intval($_POST['status']);
-    
             $password = trim($_POST['password']);
-            $passwordConfirm = trim($_POST['passwordConfirm']);
-    
-            // Verificar se as senhas foram preenchidas e correspondem
-            if (!empty($password) || !empty($passwordConfirm)) {
-                if ($password !== $passwordConfirm) {
-                    $error = "As senhas não correspondem!";
-                } else {
-                    // Hash da nova senha
-                    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                }
+            $confirmpassword = trim($_POST['passwordConfirm']);
+            $status = intval($_POST['status']);
+        
+            if ($password !== $confirmpassword) {
+                echo "<script>alert('As passwords não coincidem!');</script>";
+            } elseif (!empty($nome) && !empty($email) && !empty($user) && !empty($password)&& !empty($confirmpassword)) {
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+                $sql = "UPDATE administrator SET name = $nome, email = $email, user = $user, pass = $passwordHash, active = $status";
+                $result = $con->prepare($sql);
+                $result->execute();
             }
-    
-            if (!isset($error)) {
-                // Atualizar os dados do administrador
-                $query = "UPDATE administrator SET name = ?, email = ?, user = ?, birthday = ?, active = ?";
-                if (!empty($password)) {
-                    $query .= ", pass = ?"; // Adicionar a senha se ela for fornecida
-                }
-                $query .= " WHERE id = ?";
-                $stmt = $con->prepare($query);
-    
-                if (!empty($password)) {
-                    $stmt->bind_param("ssssisi", $nome, $email, $user, $birthday, $status, $passwordHash, $id);
-                } else {
-                    $stmt->bind_param("ssssi", $nome, $email, $user, $birthday, $status, $id);
-                }
-                $stmt->execute();
 
+            for ($i=1; $i <= $numModules; $i++) { 
+                $sql = "SELECT id FROM modules WHERE id = $i;";
+                $result = $con->query($sql);
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $idModule =  $row['id'];
+                }
+                if ($i == $idModule) {
+                    if (isset($_POST['modulo_' . $i . '_perm_ver']) && $_POST['modulo_' . $i . '_perm_ver'] == "on") {
+                        $permVer = 1;
+                    } else {
+                        $permVer = 0;
+                    }
+                    
+                    if (isset($_POST['modulo_' . $i . '_perm_edit']) && $_POST['modulo_' . $i . '_perm_edit'] == "on") {
+                        $permEdit = 1;
+                    } else {
+                        $permEdit = 0;
+                    }
 
+                    if (isset($_POST['modulo_' . $i . '_perm_criar']) && $_POST['modulo_' . $i . '_perm_criar'] == "on") {
+                        $permCriar = 1;
+                    } else {
+                        $permCriar = 0;
+                    }
+                    
+                    if (isset($_POST['modulo_' . $i . '_perm_apagar']) && $_POST['modulo_' . $i . '_perm_apagar'] == "on") {
+                        $permApagar = 1;
+                    } else {
+                        $permApagar = 0;
+                    }
+
+                    $sql = "UPDATE administrator_modules SET pView = $permVer, pInsert = $permCriar, pUpdate = $permEdit , pDelete = $permApagar WHERE idAdministrator = $idAdmin AND idModule = $i";
+                    $result = $con->prepare($sql);
+                    $result->execute();
+                }
             }
         }
     }
-    // header('Location: ../pages/admin.php');
+    header('Location: ../pages/admin.php');
 ?>
