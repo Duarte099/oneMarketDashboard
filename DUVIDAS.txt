@@ -1,3 +1,25 @@
 como imprimir pagina
 
 segurança!!!!!!!!!
+
+logs
+
+versões
+
+ajustar imagens em todos os campos onde mostra
+
+ajustar inserir imagem na base de dados
+
+responsivo a todos os dispositivos
+
+arranjar pagina dashboard, colocar mais elementos como agenda, graficos etc
+
+permissão apagar conta como desativar?
+
+botao guardar alterações nos produtos para baixo
+
+não ta a inserir a data de nascimento do administrador
+
+Bordas dos campos do edita cliente a vermelho
+
+Em vês de editar client ou admin ou etc apenas o nome da pessoa

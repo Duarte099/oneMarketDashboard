@@ -5,9 +5,12 @@
 
     include('../db/conexao.php');
 
-    $permission = adminPermissions("adm_003", "update");
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit();
+    }
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+    if (adminPermissions("adm_003", "view") == 0) {
         header('Location: index.php');
         exit();
     }
@@ -127,28 +130,36 @@
                         <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $img; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
                             <img src="../images/semfundo.png" style="width:100%;padding-bottom: 13px;">
                         </div>
-                        <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
+                        <?php if (adminPermissions("adm_003", "update") == 1) { ?>
+                            <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
+                        <?php } ?>
                     </div>
                     <div class="column-right">
                         <label for="name">Nome:</label>
-                        <input type="text" name="name" id="name" value="<?php echo $product['name']; ?>">
+                        <input type="text" name="name" id="name" value="<?php echo $product['name']; ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
 
                         <label for="ref">Referencia:</label>
-                        <input type="text" name="ref" id="ref" value="<?php echo $product['reference']; ?>">
+                        <input type="text" name="ref" id="ref" value="<?php echo $product['reference']; ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
 
                         <label for="value">Valor:</label>
-                        <input type="text" name="value" id="value" value="<?php echo str_replace('.', '.', $product['value']); ?>" />
+                        <input type="text" name="value" id="value" value="<?php echo str_replace('.', '.', $product['value']); ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
 
                         <label for="quantity">Stock:</label>
-                        <input type="int" name="quantity" id="quantity" value="<?php echo intval($product_stock['quantity']); ?>">
+                        <input type="int" name="quantity" id="quantity" value="<?php echo intval($product_stock['quantity']); ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
                         
                         <label>Status:</label>
+                        <?php if (adminPermissions("adm_003", "update") == 0) { ?>
+                            <input type="text" name="status" id="status" value="<?php if ($product['active'] == 0) {echo "Inativo";} else {echo "Ativo";}?>" readonly>
+                        <?php } else {?>
                             <select name="status">
                                 <option value="1" <?php echo $product['active'] == 1 ? 'selected' : ''; ?>>Ativo</option>
                                 <option value="0" <?php echo $product['active'] == 0 ? 'selected' : ''; ?>>Inativo</option>
                             </select>
-
-                        <button type="submit">Guardar alterações</button>
+                        <?php } ?>
+                        
+                        <?php if (adminPermissions("adm_003", "update") == 1) { ?>
+                            <button type="submit">Guardar alterações</button>
+                        <?php } ?>
                     </div>
                 </form>
             </div>

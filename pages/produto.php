@@ -5,9 +5,12 @@
 
     include('../db/conexao.php');
 
-    $permission = adminPermissions("adm_003", "view");
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit();
+    }
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+    if (adminPermissions("adm_003", "view") == 0) {
         header('Location: index.php');
         exit();
     }
@@ -136,10 +139,12 @@
                         <input type="text" id="searchBox" placeholder="Pesquisar produtos..." oninput="productsSearch(this)" />
                     </div>
                 </div>
-                <a href="../pages/produtoCriar.php" id="new-product" class="report">
-                    <i class='bx bx-plus'></i>
-                    <span>Novo Produto</span>
-                </a>
+                <?php if (adminPermissions("adm_003", "inserir") == 1) { ?>
+                    <a href="../pages/produtoCriar.php" id="new-product" class="report">
+                        <i class='bx bx-plus'></i>
+                        <span>Novo Produto</span>
+                    </a>
+                <?php } ?>
             </div>
             <div class="bottom-data" id="bottom-data">
                 <div class="products">

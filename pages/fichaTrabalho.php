@@ -4,9 +4,12 @@
     include('../db/conexao.php'); 
     $estouEm = 3;
 
-    $permission = adminPermissions("adm_002", "view");
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit();
+    }
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+    if (adminPermissions("adm_002", "view") == 0) {
         header('Location: index.php');
         exit();
     }
@@ -240,10 +243,12 @@
                         <input type="text" id="searchBox" placeholder="Pesquisar fichas de trabalho..." oninput="worksheetsSearch(this)" />
                     </div>
                 </div>
-                <a href="novaFichaTrabalho.php" id="new-worksheet" class="report">
-                    <i class='bx bx-plus'></i>
-                    <span>Nova Ficha de Trabalho</span>
-                </a>
+                <?php if (adminPermissions("adm_002", "inserir") == 1) { ?>
+                    <a href="novaFichaTrabalho.php" id="new-worksheet" class="report">
+                        <i class='bx bx-plus'></i>
+                        <span>Nova Ficha de Trabalho</span>
+                    </a>
+                <?php } ?>
             </div>
 
             <div id="worksheetModal" class="modal">
@@ -352,8 +357,8 @@
                                             <td>{$row['joinWork']}</td>
                                             <td>{$row['exitWork']}</td>
                                             <td>{$row['nomeAdministrador']}</td>
-                                            <td><button class='btn-small' id='botDeleteWorksheet' onclick=\"deleteWorksheet('{$row['numWorksheet']}/{$row['yearWorksheet']}', {$row['idWorksheet']}); event.stopPropagation();\">🗑️</button></td>
-                                            </tr>";
+                                            <td>" . (adminPermissions("adm_002", "delete") == '1' ? "<button class='btn-small' id='botDeleteWorksheet' onclick=\"deleteWorksheet('{$row['numWorksheet']}/{$row['yearWorksheet']}', {$row['idWorksheet']}); event.stopPropagation();\">🗑️</button>" : " ") .  "</td>
+                                        </tr>";
                                     }
                                 } else {
                                     echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
@@ -371,7 +376,7 @@
             function deleteWorksheet(num, id) {
                 const result = confirm("Tem a certeza que deseja eliminar a ficha de trabalho " + num + "?");
                 if (result) {
-                    fetch(`./deleteWorksheet.php?idWorksheet=${encodeURIComponent(id)}`, {
+                    fetch(`./fichaTrabalhoDelete.php?idWorksheet=${encodeURIComponent(id)}`, {
                         method: 'GET',
                     })
                     .then(() => {

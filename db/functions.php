@@ -76,7 +76,7 @@
                     return $row['pView'];
                 }
                 break;
-            case "Inserir":
+            case "inserir":
                 $sql = "SELECT pInsert, cod FROM modules INNER JOIN administrator_modules ON modules.id = administrator_modules.idModule WHERE cod = '$codModule' AND idAdministrator = $idAdminPerms;";
                 $result = $con->query($sql);
                 if ($result->num_rows > 0) { 

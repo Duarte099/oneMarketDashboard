@@ -5,9 +5,12 @@
 
     include('../db/conexao.php');
 
-    $permission = adminPermissions("adm_001", "inserir");
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit();
+    }
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+    if (adminPermissions("adm_001", "inserir") == 0) {
         header('Location: index.php');
         exit();
     }

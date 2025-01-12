@@ -5,9 +5,12 @@
 
     include('../db/conexao.php');
 
-    $permission = adminPermissions("adm_001", "view");
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit();
+    }
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+    if (adminPermissions("adm_001", "view") == 0) {
         header('Location: index.php');
         exit();
     }
@@ -225,10 +228,12 @@
                     <input type="text" id="searchBox" placeholder="Pesquisar orçamentos..." oninput="budgetsSearch(this)" />
                 </div>
             </div>
-            <a href="novoOrcamento.php" id="new-budget" class="report">
-                <i class='bx bx-plus'></i>
-                <span>Novo Orçamento</span>
-            </a>
+            <?php if (adminPermissions("adm_001", "inserir") == 1) { ?>
+                <a href="novoOrcamento.php" id="new-budget" class="report">
+                    <i class='bx bx-plus'></i>
+                    <span>Novo Orçamento</span>
+                </a>
+            <?php } ?>
         </div>
             <div id="budgetModal" class="modal">
                 <div class="modal-content">
@@ -328,7 +333,7 @@
                                             <td>{$numWorksheet}</td>
                                             <td>{$row['dataCriacao']}</td>
                                             <td>{$row['responsavel']}</td>
-                                            <td><button class='btn-small' id='botDeleteBudget' onclick=\"deleteBudget('{$row['numBudget']}/{$row['yearBudget']}', {$row['idbudget']}); event.stopPropagation();\">🗑️</button></td>
+                                            <td>" . (adminPermissions("adm_001", "delete") == '1' ? "<button class='btn-small' id='botDeleteBudget' onclick=\"deleteBudget('{$row['numBudget']}/{$row['yearBudget']}', {$row['idbudget']}); event.stopPropagation();\">🗑️</button>" : " ") .  "</td>
                                         </tr>";
                                     }
                                 } else {

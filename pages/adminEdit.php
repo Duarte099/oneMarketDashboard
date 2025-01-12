@@ -5,9 +5,12 @@
 
     include('../db/conexao.php');
 
-    $permission = adminPermissions("adm_005", "update");
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit();
+    }
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+    if (adminPermissions("adm_005", "view") == 0) {
         header('Location: index.php');
         exit();
     }
@@ -23,6 +26,7 @@
         $user = $row['user'];
         $img = $row['img'];
         $birthday = $row['birthday'];
+        $status = $row['active'];
     }
 
     $sql = "SELECT MAX(id) AS numModules FROM modules;";
@@ -46,13 +50,9 @@
 </head>
 
 <body>
-
-
-
     <?php 
     
         include('../pages/sideBar.php'); 
-        
     ?>
 
     <!-- Main Content -->
@@ -76,8 +76,10 @@
                         <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $img; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
                             <img src="../images/semfundo.png" style="width:100%;padding-bottom: 13px;">
                         </div>
-                        <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
-                    </div>
+                        <?php if (adminPermissions("adm_005", "update") == 1) { ?>
+                            <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
+                        <?php } ?>
+                        </div>
                     <div class="column-right" id="infoSection">
                         <div class="button-container">
                             <button type="button" id="infoButton1" class="toggle-button" onclick="showSection('info')">Informações</button>
@@ -85,28 +87,36 @@
                         </div>
 
                         <label for="name">Nome:</label>
-                        <input type="text" name="name" id="name" value="<?php echo $nome; ?>">
+                        <input type="text" name="name" id="name" value="<?php echo $nome; ?>" <?php if (adminPermissions("adm_005", "update") == 0) {echo "readonly";}?>>
 
                         <label for="user">Nome de utilizador:</label>
-                        <input type="text" name="user" id="user" value="<?php echo $user; ?>">
+                        <input type="text" name="user" id="user" value="<?php echo $user; ?>" <?php if (adminPermissions("adm_005", "update") == 0) {echo "readonly";}?>>
 
                         <label for="email">Email:</label>
-                        <input type="email" name="email" id="email" value="<?php echo $email; ?>">
+                        <input type="email" name="email" id="email" value="<?php echo $email; ?>" <?php if (adminPermissions("adm_005", "update") == 0) {echo "readonly";}?>>
 
-                        <label for="password">Password:</label>
-                        <input type="password" name="password" id="password" placeholder="Nova password">
-                        <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirmar nova password">
+                        <?php if (adminPermissions("adm_005", "update") == 1) { ?>
+                            <label for="password">Password:</label>
+                            <input type="password" name="password" id="password" placeholder="Nova password">
+                            <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirmar nova password">
+                        <?php } ?>
 
                         <label for="birthday">Data nascimento:</label>
-                        <input type="date" name="birthday" id="birthday" value="<?php echo $birthday; ?>">
+                        <input type="date" name="birthday" id="birthday" value="<?php echo $birthday; ?>" <?php if (adminPermissions("adm_005", "update") == 0) {echo "readonly";}?>>
 
                         <label for="status">Status:</label>
-                        <select name="status">
-                            <option value="1" class="selectoption">Ativo</option>
-                            <option value="0" class="selectoption">Inativo</option>
-                        </select>
-
-                        <button type="submit" id="submitButton" onclick="return validarPass()">Criar Administrador</button>
+                        <?php if (adminPermissions("adm_005", "update") == 0) { ?>
+                            <input type="text" name="status" id="status" value="<?php if ($status == 0) {echo "Inativo";} else {echo "Ativo";}?>" readonly>
+                        <?php } else {?>
+                            <select name="status">
+                                <option value="1" <?php echo $status == 1 ? 'selected' : ''; ?>>Ativo</option>
+                                <option value="0" <?php echo $status == 0 ? 'selected' : ''; ?>>Inativo</option>
+                            </select>
+                        <?php } ?>
+                        
+                        <?php if (adminPermissions("adm_005", "update") == 1) { ?>
+                            <button type="submit" id="submitButton" onclick="return validarPass()">Criar Administrador</button>
+                        <?php } ?>
                     </div>
                     <div class="column-right" id="permissionsSection" style="display:none;">
                         <div class="button-container">
@@ -166,10 +176,10 @@
                                                 <div class="module">
                                                     <span><?php echo $nome;?></span>
                                                     <div class="permissions">
-                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_ver" <?php echo $pView; ?> > Ver</label>
-                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_edit" <?php echo $pInsert; ?> > Editar</label>
-                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_criar" <?php echo $pUpdate; ?> > Criar</label>
-                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_apagar" <?php echo $pDelete; ?> > Apagar</label>
+                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_ver" <?php echo $pView; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Ver</label>
+                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_edit" <?php echo $pInsert; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Editar</label>
+                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_criar" <?php echo $pUpdate; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Criar</label>
+                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_apagar" <?php echo $pDelete; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Apagar</label>
                                                     </div>
                                                 </div>
                                             <?php

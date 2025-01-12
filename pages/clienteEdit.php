@@ -3,10 +3,12 @@
     include('../db/conexao.php'); 
     $estouEm = 5;
 
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit();
+    }
 
-    $permission = adminPermissions("adm_004", "update");
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+    if (adminPermissions("adm_004", "view") == 0) {
         header('Location: index.php');
         exit();
     }
@@ -106,31 +108,37 @@
                             <div class="section-row">
                                 <div class="section-group">
                                     <label>Nome:</label>
-                                    <input type="text" name="nome" value="<?php echo htmlspecialchars($client['name']); ?>" required>
+                                    <input type="text" name="nome" value="<?php echo htmlspecialchars($client['name']); ?>" <?php if (adminPermissions("adm_004", "update") == 0) {echo "readonly";}?> required>
                                 </div>
                                 <div class="section-group">
                                     <label>Email:</label>
-                                    <input type="email" name="email" value="<?php echo htmlspecialchars($client['email']); ?>" required>
+                                    <input type="email" name="email" value="<?php echo htmlspecialchars($client['email']); ?>" <?php if (adminPermissions("adm_004", "update") == 0) {echo "readonly";}?> required>
                                 </div>
                                 <div class="section-group">
                                     <label>Contacto:</label>
-                                    <input type="text" name="contact" value="<?php echo htmlspecialchars($client['contact']); ?>" required>
+                                    <input type="text" name="contact" value="<?php echo htmlspecialchars($client['contact']); ?>" <?php if (adminPermissions("adm_004", "update") == 0) {echo "readonly";}?> required>
                                 </div>
                             </div>
                             <div class="section-row">
                                 <div class="section-group">
                                     <label>NIF:</label>
-                                    <input type="text" name="nif" value="<?php echo htmlspecialchars($client['nif']); ?>" required>
+                                    <input type="text" name="nif" value="<?php echo htmlspecialchars($client['nif']); ?>" <?php if (adminPermissions("adm_004", "update") == 0) {echo "readonly";}?> required>
                                 </div>
                                 <div class="section-group">
                                     <label>Status:</label>
-                                    <select name="status">
-                                        <option value="1" <?php echo $client['active'] == 1 ? 'selected' : ''; ?>>Ativo</option>
-                                        <option value="0" <?php echo $client['active'] == 0 ? 'selected' : ''; ?>>Inativo</option>
-                                    </select>
+                                    <?php if (adminPermissions("adm_004", "update") == 0) { ?>
+                                        <input type="text" name="status" id="status" value="<?php if ($client['active'] == 0) {echo "Inativo";} else {echo "Ativo";}?>" readonly>
+                                    <?php } else {?>
+                                        <select name="status">
+                                            <option value="1" <?php echo $client['active'] == 1 ? 'selected' : ''; ?>>Ativo</option>
+                                            <option value="0" <?php echo $client['active'] == 0 ? 'selected' : ''; ?>>Inativo</option>
+                                        </select>
+                                    <?php } ?>
                                 </div>
                             </div>
-                            <button type="submit">Atualizar Cliente</button>
+                            <?php if (adminPermissions("adm_004", "update") == 1) { ?>
+                                <button type="submit">Atualizar Cliente</button>
+                            <?php } ?>
                         </section>
                     </form>
 

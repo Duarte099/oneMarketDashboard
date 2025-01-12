@@ -116,7 +116,6 @@ input {
     background-color: var(--background-color);
     width: 100%;
     padding: 10px;
-    margin-bottom: 6px;
     box-sizing: border-box;
     color: var(--primary-text-color);
     border: 1px solid var(--border-color);
@@ -220,15 +219,9 @@ select {
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: 12px;
+    font-size: 13px;
     cursor: pointer;
     white-space: nowrap; /* Impede quebra de linha */
-}
-
-.permissions input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
 }
 
 /* Barra de rolagem customizada (opcional) */
@@ -243,4 +236,41 @@ select {
 
 .modules::-webkit-scrollbar-thumb:hover {
     background-color: #555;
+}
+
+/* Estilo da checkbox */
+input[type="checkbox"] {
+    appearance: none; /* Remove o estilo padrão */
+    width: 5px;
+    height: 5px;
+    border: 2px solid var(--border-color); /* Cor da borda */
+    border-radius: 4px; /* Cantos arredondados */
+    background: var(--background-color); /* Fundo da página */
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+/* Estilo ao passar o mouse */
+input[type="checkbox"]:hover {
+    border-color: var(--secondary-text-color); /* Alterar cor ao passar o mouse */
+}
+
+/* Estilo quando marcado */
+input[type="checkbox"]:checked {
+    background: var(--background-color); /* Cor de destaque quando marcado */
+    position: relative;
+}
+
+/* Ícone de check personalizado */
+input[type="checkbox"]:checked::after {
+    content: "✔"; /* Ícone do check */
+    color: var(--primary-text-color); /* Cor do ícone */
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

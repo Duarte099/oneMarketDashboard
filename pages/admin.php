@@ -5,13 +5,15 @@
 
     include('../db/conexao.php');
 
-    $permission = adminPermissions("adm_005", "view");
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
         exit();
     }
-    
+
+    if (adminPermissions("adm_005", "view") == 0) {
+        header('Location: index.php');
+        exit();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -143,10 +145,12 @@
                         <input type="text" id="searchBox" placeholder="Pesquisar administradores..." oninput="adminsSearch(this)" />
                     </div>
                 </div>
-                <a href="../pages/adminCriar.php" class="report">
-                    <i class='bx bx-plus'></i>
-                    <span>Novo Administrador</span>
-                </a>
+                <?php if (adminPermissions("adm_005", "inserir") == 1) { ?>
+                    <a href="../pages/adminCriar.php" class="report">
+                        <i class='bx bx-plus'></i>
+                        <span>Novo Administrador</span>
+                    </a>
+                <?php } ?>
             </div>
 
             <div class="bottom-data" id="bottom-data">

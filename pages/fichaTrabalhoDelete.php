@@ -4,11 +4,12 @@
     include('../db/conexao.php'); 
     $estouEm = 3;
 
-    session_start();
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit();
+    }
 
-    $permission = adminPermissions("adm_002", "delete");
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+    if (adminPermissions("adm_002", "delete") == 0) {
         header('Location: index.php');
         exit();
     }

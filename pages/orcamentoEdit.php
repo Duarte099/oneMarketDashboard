@@ -5,9 +5,12 @@
 
     include('../db/conexao.php');
 
-    $permission = adminPermissions("adm_001", "update");
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit();
+    }
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+    if (adminPermissions("adm_001", "view") == 0) {
         header('Location: index.php');
         exit();
     }
@@ -121,7 +124,12 @@
                                            $row = $result->fetch_assoc();
                                            echo $row['name'];
                                        }  
-                                    ?>">
+                                    ?>" 
+                                    <?php 
+                                        if (adminPermissions("adm_001", "update") == 0) {
+                                            echo "readonly";
+                                        }
+                                    ?>>
                                 </div>
                                 <div class="section-group">
                                     <label>Contacto:</label>
@@ -179,7 +187,9 @@
                                             name="seccao_nome_<?php echo $i; ?>" 
                                             placeholder="Nome da secção" 
                                             oninput="performSearchSecoes(this, <?php echo $i; ?>)" 
-                                            value="<?php echo $nomeSecao; ?>" />
+                                            value="<?php echo $nomeSecao; ?>" 
+                                            <?php if (adminPermissions("adm_001", "update") == 0) {echo "readonly";}?>
+                                        />
                                         <div id="secoesModal-<?php echo $i; ?>" class="modal">
                                             <div id="results-container-<?php echo $i; ?>" class="results-container"></div>
                                         </div>
@@ -220,10 +230,10 @@
                                                                     }
                                                                 ?>
                                                                 <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
-                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);"></td>
+                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);" <?php if (adminPermissions("adm_001", "update") == 0) {echo "readonly";}?>></td>
                                                                 <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value = "<?php echo $nameProduct; ?>" readonly></td>
-                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value = "<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" oninput="atualizarPrecoTotal(this)"></td>
-                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" value = "<?php echo $descriptionProduct; ?>"></td>
+                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value = "<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" oninput="atualizarPrecoTotal(this)" <?php if (adminPermissions("adm_001", "update") == 0) {echo "readonly";}?>></td>
+                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" value = "<?php echo $descriptionProduct; ?>" <?php if (adminPermissions("adm_001", "update") == 0) {echo "readonly";}?>></td>
                                                                 <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" value = "<?php echo $valueProduct; ?>" readonly></td>
                                                                 <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" value = "<?php echo $amountProduct * $valueProduct;?>" readonly></td>
                                                             </tr>
@@ -248,8 +258,10 @@
                                                         </div>
                                                     <?php } ?>
                                                 <?php } 
+                                                if (adminPermissions("adm_001", "update") == 1) {
+                                                    echo "<button type=\"button\" onclick=\"adicionarProduto(<?php echo $i - 1; ?>)\">Adicionar Produto</button>";
+                                                }
                                             ?>
-                                            <button type="button" onclick="adicionarProduto(<?php echo $i - 1; ?>)">Adicionar Produto</button>
                                         </table>
                                     </div>
                                 </section>
@@ -484,8 +496,14 @@
                         }
                     </script>
                 </div>
-                <button id=bottomButton type="button" onclick="adicionarSecao()">Adicionar Secção</button>
-                <button id=botSaveBudget type="submit">Guardar Alterações</button>
+                <?php 
+                    if (adminPermissions("adm_001", "update") == 1) {
+                        echo "
+                            <button id=bottomButton type=\"button\" onclick=\"adicionarSecao()\">Adicionar Secção</button>
+                            <button id=botSaveBudget type=\"submit\">Guardar Alterações</button>
+                        ";
+                    }
+                ?>
             </main>
         <!-- <input type=text id=numSeccao name=numSeccao value=1> -->
         </form>

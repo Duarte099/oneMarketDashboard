@@ -4,9 +4,12 @@
     include('../db/conexao.php'); 
     $estouEm = 3;
 
-    $permission = adminPermissions("adm_002", "update");
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit();
+    }
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $permission == 0) {
+    if (adminPermissions("adm_002", "view") == 0) {
         header('Location: index.php');
         exit();
     }
@@ -137,15 +140,15 @@
                             <div class="section-row">
                                 <div class="section-group">
                                     <label>Pronto em armazém:</label>
-                                    <input type="date" name="prontoArmazem" value="<?php echo $readyStorage; ?>">
+                                    <input type="date" name="prontoArmazem" value="<?php echo $readyStorage; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
                                 </div>
                                 <div class="section-group">
                                     <label>Entrada em obra:</label>
-                                    <input type="date" name="entradaObra" value="<?php echo $joinWork; ?>">
+                                    <input type="date" name="entradaObra" value="<?php echo $joinWork; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
                                 </div>
                                 <div class="section-group">
                                     <label>Saída de obra:</label>
-                                    <input type="date" name="saidaObra" value="<?php echo $exitWork; ?>">
+                                    <input type="date" name="saidaObra" value="<?php echo $exitWork; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
                                 </div>
                                 <div class="section-group">
                                     <label>Elaborado por:</label>
@@ -244,15 +247,15 @@
                                                                     }
                                                                 }
                                                             ?>
-                                                            <td><input type="checkbox" class="check" name="secao_<?php echo $i; ?>_produto_check_<?php echo $j; ?>" <?php if ($checkProduct == "checked") {echo $checkProduct;} ?>></td>
-                                                            <td><input type="checkbox" class="armazem" name="secao_<?php echo $i; ?>_produto_armazem_<?php echo $j; ?>" <?php if ($storageProduct == "checked") {echo $storageProduct;} ?>></td>
+                                                            <td><input type="checkbox" class="check" name="secao_<?php echo $i; ?>_produto_check_<?php echo $j; ?>" <?php if ($checkProduct == "checked") {echo $checkProduct;} ?> <?php if (adminPermissions("adm_002", "update") == 0) {echo "disabled";}?>></td>
+                                                            <td><input type="checkbox" class="armazem" name="secao_<?php echo $i; ?>_produto_armazem_<?php echo $j; ?>" <?php if ($storageProduct == "checked") {echo $storageProduct;} ?> <?php if (adminPermissions("adm_002", "update") == 0) {echo "disabled";}?>></td>
                                                             <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
                                                             <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" readonly></td>
                                                             <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value = "<?php echo $nameProduct; ?>" readonly></td>
                                                             <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value = "<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" readonly></td>
                                                             <td class="inputs-td">
-                                                                <input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_observacao_<?php echo $j; ?>" value = "<?php echo $observationProduct; ?>">
-                                                                <input type="text" class="tamanho" name="secao_<?php echo $i; ?>_produto_tamanho_<?php echo $j; ?>" value = "<?php echo $sizeProduct; ?>">
+                                                                <input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_observacao_<?php echo $j; ?>" value = "<?php echo $observationProduct; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
+                                                                <input type="text" class="tamanho" name="secao_<?php echo $i; ?>_produto_tamanho_<?php echo $j; ?>" value = "<?php echo $sizeProduct; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -299,7 +302,11 @@
                                     });
                                 }
                             </script>
-                            <button id=botSaveWorksheet type="submit">Guardar alterações</button>   
+                            <?php
+                                if (adminPermissions("adm_002", "update") == 1) {
+                                    echo "<button id=botSaveWorksheet type=\"submit\">Guardar alterações</button>";
+                                }
+                            ?>
                             <button id=botPrintWorksheet type="submit">Imprimir</button>
                         </section>
                     </div>
