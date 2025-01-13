@@ -15,6 +15,8 @@
         exit();
     }
 
+    $versao = isset($_GET['versao']) ? (int)$_GET['versao'] : 1;
+    $inputValue = '';
     $produtosIndex = 0;
     
     // $op = '';
@@ -27,11 +29,18 @@
         $idClient =  $row['idClient'];
     }
 
-    $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
+    $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget AND idVersion = $versao;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $numSections =  $row['numSections'];
+    }
+
+    $sql = "SELECT COUNT(DISTINCT idVersion) AS numVersions FROM budget_sections_products WHERE idBudget = $idBudget;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $numVersions =  $row['numVersions'];
     }
 ?>
 
@@ -62,13 +71,25 @@
         ?>          
         <!-- End of Navbar -->
 
-        <form action="inserirOrcamento.php?idBudget=<?= $idBudget ?>&op=edit" method=post>
-            <main>
-                <div class="header">
-                    <div class="left">
-                        <h1>Editar Orçamento</h1>
-                    </div>
+        
+        <main>
+            <div class="header">
+                <div class="left">
+                    <h1>Editar Orçamento</h1>
                 </div>
+                <form action="" method="GET">
+                    <div class="select-container">
+                        <input type="hidden" name="idBudget" value="<?= $idBudget ?>">
+                        <label for="versao" class="select-label">Versão:</label>
+                        <select name="versao" id="versao" onchange="this.form.submit()">
+                            <?php for ($i=1; $i <= $numVersions; $i++) { ?>
+                                <option value="<?php echo $i; ?>" <?= $i == $versao ? 'selected' : '' ?>><?php echo $i; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <form action="inserirOrcamento.php?idBudget=<?= $idBudget ?>&op=edit" method=post>
                 <div class="bottom-data">
                     <div class="budget">
                         <section>
@@ -155,7 +176,7 @@
                     <?php 
                         $produtosIndex = 0; 
                         for ($i=1; $i <= $numSections + 5; $i++) { 
-                            $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0;";
+                            $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0 AND idVersion = $versao;";
                             $result = $con->query($sql);
                             if ($result->num_rows > 0) {
                                 $row = $result->fetch_assoc();
@@ -217,7 +238,7 @@
                                                         <tbody class="produtos">
                                                             <tr>
                                                                 <?php 
-                                                                    $sql = "SELECT refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderProduct = '$j' AND orderSection = '$i';";
+                                                                    $sql = "SELECT refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderProduct = '$j' AND orderSection = '$i' AND idVersion = $versao;";
                                                                     $result = $con->query($sql);
                                                                     if ($result->num_rows > 0) {
                                                                         while ($row = $result->fetch_assoc()) {
@@ -259,7 +280,7 @@
                                                     <?php } ?>
                                                 <?php } 
                                                 if (adminPermissions("adm_001", "update") == 1) {
-                                                    echo "<button type=\"button\" onclick=\"adicionarProduto(<?php echo $i - 1; ?>)\">Adicionar Produto</button>";
+                                                    echo "<button type=\"button\" onclick=\"adicionarProduto(" . ($i - 1) . ")\">Adicionar Produto</button>";
                                                 }
                                             ?>
                                         </table>
