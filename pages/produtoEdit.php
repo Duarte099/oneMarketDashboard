@@ -158,7 +158,7 @@
                         <?php } ?>
                         
                         <?php if (adminPermissions("adm_003", "update") == 1) { ?>
-                            <button type="submit">Guardar alterações</button>
+                            <button type="submit" style="margin-top: 15px">Guardar alterações</button>
                         <?php } ?>
                     </div>
                 </form>

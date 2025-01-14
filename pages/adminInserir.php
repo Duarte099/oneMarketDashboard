@@ -1,7 +1,7 @@
 <?php
-    include('../db/conexao.php'); 
-
     session_start();
+
+    include('../db/conexao.php'); 
 
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
@@ -27,21 +27,29 @@
             $nome = trim($_POST['name']);
             $email = trim($_POST['email']);
             $user = trim($_POST['user']);
+            $birthday = $_POST['birthday']; 
             $password = trim($_POST['password']);
             $confirmpassword = trim($_POST['passwordConfirm']);
             $status = intval($_POST['status']);
         
             if ($password !== $confirmpassword) {
                 echo "<script>alert('As passwords não coincidem!');</script>";
-            } elseif (!empty($nome) && !empty($email) && !empty($user) && !empty($password)&& !empty($confirmpassword)) {
+            } elseif (!empty($nome) && !empty($email) && !empty($user) && !empty($password)&& !empty($confirmpassword) && !empty($birthday)) {
+                $birthday2 = date('Y-m-d', strtotime($birthday));
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                $query = "INSERT INTO administrator (name, email, user, pass, active) VALUES (?, ?, ?, ?, ?)";
+                $query = "INSERT INTO administrator (name, email, user, pass, birthday, active) VALUES (?, ?, ?, ?, ?, ?)";
                 $result = $con->prepare($query);
-    
+                
                 if ($result) {
-                    $result->bind_param("ssssi", $nome, $email, $user, $passwordHash, $status);
+                    $result->bind_param("sssssi", $nome, $email, $user, $passwordHash, $birthday2, $status);
                     $result->execute();
                     $idAdmin = $con->insert_id;
+
+
+                    //funcao log
+                    $userId = $_SESSION['id'];
+                    $mensagem = "Administrador '$nome' (ID: $idAdmin) criado com sucesso pelo utilizador de ID $userId.";
+                    registrar_log($mensagem);
                 }
             }
 

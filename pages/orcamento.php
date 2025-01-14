@@ -310,7 +310,7 @@
                                             administrator.name as responsavel
                                         FROM budget
                                         LEFT JOIN 
-                                            client ON budget.idClient = client.id
+                                           client ON budget.idClient = client.id
                                         LEFT JOIN 
                                             administrator ON budget.createdBy = administrator.id
                                         LEFT JOIN 

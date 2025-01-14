@@ -2,10 +2,6 @@ como imprimir pagina
 
 segurança!!!!!!!!!
 
-logs
-
-versões
-
 ajustar imagens em todos os campos onde mostra
 
 ajustar inserir imagem na base de dados
@@ -16,23 +12,12 @@ arranjar pagina dashboard, colocar mais elementos como agenda, graficos etc
 
 permissão apagar conta como desativar?
 
-botao guardar alterações nos produtos para baixo
-
-não ta a inserir a data de nascimento do administrador
-
-Bordas dos campos do edita cliente a vermelho
-
 Em vês de editar client ou admin ou etc apenas o nome da pessoa
-
-esclarecer versões, se é supsoto conseguir voltar atras de todas as versoes ou so da anterior
-
-select box, com datas de cada versão ao clicar altera as seções e produtos para os da versao selecionada
 
 ao dar scroll no edit budget tambem dá no header
 
-ao mudar de versão não dar para escrever nem guardar
-
 ao mudar de versão avisar que vai perder tudo
 
-ir buscar versões à outra tabela
+perguntar melhor maneira de recarregar a pagina com js ao deletar alguma coisa
 
+adicionar secção ao editar não está a funcionar

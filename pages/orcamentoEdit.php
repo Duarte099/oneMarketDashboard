@@ -15,12 +15,18 @@
         exit();
     }
 
-    $versao = isset($_GET['versao']) ? (int)$_GET['versao'] : 1;
+    $idBudget = $_GET['idBudget'];
+
+    $sql = "SELECT MAX(idVersion) AS idVersion FROM budget_version WHERE idBudget = $idBudget;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $maxVersao =  $row['idVersion'];
+    }
+
+    $versao = isset($_GET['versao']) ? (int)$_GET['versao'] : $maxVersao;
     $inputValue = '';
     $produtosIndex = 0;
-    
-    // $op = '';
-    $idBudget = $_GET['idBudget'];
 
     $sql = "SELECT budget.idClient FROM budget WHERE budget.id = $idBudget;";
     $result = $con->query($sql);
@@ -29,18 +35,28 @@
         $idClient =  $row['idClient'];
     }
 
-    $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget AND idVersion = $versao;";
-    $result = $con->query($sql);
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $numSections =  $row['numSections'];
+    if ($versao == $maxVersao) {
+        $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
+        $result = $con->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $numSections =  $row['numSections'];
+        }
+    }
+    else {
+        $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_version WHERE idBudget = $idBudget AND idVersion <= $versao;";
+        $result = $con->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $numSections =  $row['numSections'];
+        }
     }
 
-    $sql = "SELECT COUNT(DISTINCT idVersion) AS numVersions FROM budget_sections_products WHERE idBudget = $idBudget;";
+    $sql = "SELECT COUNT(DISTINCT idVersion) AS numVersions FROM budget_version WHERE idBudget = $idBudget;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $numVersions =  $row['numVersions'];
+        $countVersions =  $row['numVersions'];
     }
 ?>
 
@@ -82,14 +98,14 @@
                         <input type="hidden" name="idBudget" value="<?= $idBudget ?>">
                         <label for="versao" class="select-label">Versão:</label>
                         <select name="versao" id="versao" onchange="this.form.submit()">
-                            <?php for ($i=1; $i <= $numVersions; $i++) { ?>
+                            <?php for ($i=1; $i <= $countVersions; $i++) { ?>
                                 <option value="<?php echo $i; ?>" <?= $i == $versao ? 'selected' : '' ?>><?php echo $i; ?></option>
                             <?php } ?>
                         </select>
                     </div>
                 </form>
             </div>
-            <form action="inserirOrcamento.php?idBudget=<?= $idBudget ?>&op=edit" method=post>
+            <form action="orcamentoInserir.php?idBudget=<?= $idBudget ?>&op=edit" method=post>
                 <div class="bottom-data">
                     <div class="budget">
                         <section>
@@ -176,29 +192,58 @@
                     <?php 
                         $produtosIndex = 0; 
                         for ($i=1; $i <= $numSections + 5; $i++) { 
-                            $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0 AND idVersion = $versao;";
-                            $result = $con->query($sql);
-                            if ($result->num_rows > 0) {
-                                $row = $result->fetch_assoc();
-                                $numProducts = $row['numProducts'];
-                            }
+                            if ($versao == $maxVersao) {
+                                $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0;";
+                                $result = $con->query($sql);
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $numProducts = $row['numProducts'];
+                                }
 
-                            $sql = "SELECT budget_sections.name
-                                    FROM budget_sections 
-                                    JOIN budget_sections_products 
-                                    ON budget_sections.id = budget_sections_products.idSection 
-                                    AND budget_sections_products.orderSection = $i
-                                    AND budget_sections_products.idBudget = $idBudget;";
-                            $result = $con->query($sql);
-                        
-                            if ($result->num_rows > 0) {
-                                $row = $result->fetch_assoc();
-                                $nomeSecao = htmlspecialchars($row['name']);
-                                $displayStyle = '';
-                            } else {
-                                $nomeSecao = '';
-                                $displayStyle = 'display: none;';
-                            }?>
+                                $sql = "SELECT budget_sections.name
+                                        FROM budget_sections 
+                                        JOIN budget_sections_products 
+                                        ON budget_sections.id = budget_sections_products.idSection 
+                                        AND budget_sections_products.orderSection = $i
+                                        AND budget_sections_products.idBudget = $idBudget;";
+                                $result = $con->query($sql);
+                            
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $nomeSecao = htmlspecialchars($row['name']);
+                                    $displayStyle = '';
+                                } else {
+                                    $nomeSecao = '';
+                                    $displayStyle = 'display: none;';
+                                }
+                            }
+                            else {
+                                $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_version WHERE idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0 AND idVersion = $versao;";
+                                $result = $con->query($sql);
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $numProducts = $row['numProducts'];
+                                }
+
+                                $sql = "SELECT budget_sections.name
+                                        FROM budget_sections 
+                                        JOIN budget_version 
+                                        ON budget_sections.id = budget_version.idSection 
+                                        AND budget_version.orderSection = $i
+                                        AND budget_version.idBudget = $idBudget
+                                        AND budget_version.idVersion = $versao;";
+                                $result = $con->query($sql);
+                            
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $nomeSecao = htmlspecialchars($row['name']);
+                                    $displayStyle = '';
+                                } else {
+                                    $nomeSecao = '';
+                                    $displayStyle = 'display: none;';
+                                }
+                            }
+                            ?>
                             <div class="budget" style="<?php echo $displayStyle; ?>">
                                 <section id="secoes">
                                     <div class="secao">
@@ -238,23 +283,38 @@
                                                         <tbody class="produtos">
                                                             <tr>
                                                                 <?php 
-                                                                    $sql = "SELECT refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderProduct = '$j' AND orderSection = '$i' AND idVersion = $versao;";
-                                                                    $result = $con->query($sql);
-                                                                    if ($result->num_rows > 0) {
-                                                                        while ($row = $result->fetch_assoc()) {
-                                                                            $refProduct = $row['refProduct'];
-                                                                            $nameProduct = $row['nameProduct'];
-                                                                            $amountProduct = $row['amountProduct'];
-                                                                            $descriptionProduct = $row['descriptionProduct'];
-                                                                            $valueProduct = $row['valueProduct'];
+                                                                    if ($versao == $maxVersao) {
+                                                                        $sql = "SELECT refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderProduct = '$j' AND orderSection = '$i';";
+                                                                        $result = $con->query($sql);
+                                                                        if ($result->num_rows > 0) {
+                                                                            while ($row = $result->fetch_assoc()) {
+                                                                                $refProduct = $row['refProduct'];
+                                                                                $nameProduct = $row['nameProduct'];
+                                                                                $amountProduct = $row['amountProduct'];
+                                                                                $descriptionProduct = $row['descriptionProduct'];
+                                                                                $valueProduct = $row['valueProduct'];
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    else {
+                                                                        $sql = "SELECT refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct FROM budget_version WHERE budget_version.idbudget = $idBudget AND orderProduct = '$j' AND orderSection = '$i' AND idVersion = $versao;";
+                                                                        $result = $con->query($sql);
+                                                                        if ($result->num_rows > 0) {
+                                                                            while ($row = $result->fetch_assoc()) {
+                                                                                $refProduct = $row['refProduct'];
+                                                                                $nameProduct = $row['nameProduct'];
+                                                                                $amountProduct = $row['amountProduct'];
+                                                                                $descriptionProduct = $row['descriptionProduct'];
+                                                                                $valueProduct = $row['valueProduct'];
+                                                                            }
                                                                         }
                                                                     }
                                                                 ?>
                                                                 <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
-                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);" <?php if (adminPermissions("adm_001", "update") == 0) {echo "readonly";}?>></td>
+                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
                                                                 <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value = "<?php echo $nameProduct; ?>" readonly></td>
-                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value = "<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" oninput="atualizarPrecoTotal(this)" <?php if (adminPermissions("adm_001", "update") == 0) {echo "readonly";}?>></td>
-                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" value = "<?php echo $descriptionProduct; ?>" <?php if (adminPermissions("adm_001", "update") == 0) {echo "readonly";}?>></td>
+                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value = "<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" oninput="atualizarPrecoTotal(this)" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
+                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" value = "<?php echo $descriptionProduct; ?>" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
                                                                 <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" value = "<?php echo $valueProduct; ?>" readonly></td>
                                                                 <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" value = "<?php echo $amountProduct * $valueProduct;?>" readonly></td>
                                                             </tr>
@@ -279,7 +339,7 @@
                                                         </div>
                                                     <?php } ?>
                                                 <?php } 
-                                                if (adminPermissions("adm_001", "update") == 1) {
+                                                if (adminPermissions("adm_001", "update") == 1 && $versao == $maxVersao) {
                                                     echo "<button type=\"button\" onclick=\"adicionarProduto(" . ($i - 1) . ")\">Adicionar Produto</button>";
                                                 }
                                             ?>
@@ -518,7 +578,7 @@
                     </script>
                 </div>
                 <?php 
-                    if (adminPermissions("adm_001", "update") == 1) {
+                    if (adminPermissions("adm_001", "update") == 1 && $versao == $maxVersao) {
                         echo "
                             <button id=bottomButton type=\"button\" onclick=\"adicionarSecao()\">Adicionar Secção</button>
                             <button id=botSaveBudget type=\"submit\">Guardar Alterações</button>

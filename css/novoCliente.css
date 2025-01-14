@@ -101,7 +101,7 @@ h1, h2 {
 
 .section-group input:focus,
 .section-group select:focus {
-    border-color: #4a90e2;
+    border-color: red;
 }
 
 button {

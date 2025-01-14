@@ -76,7 +76,7 @@
                             <option value="0" class="selectoption">Inativo</option>
                         </select>
 
-                        <button type="submit">Guardar alterações</button>
+                        <button type="submit" style="margin-top: 15px">Guardar alterações</button>
                     </div>
                 </form>
             </div>

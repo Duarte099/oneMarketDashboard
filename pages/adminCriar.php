@@ -92,7 +92,7 @@
                             <option value="0" class="selectoption">Inativo</option>
                         </select>
 
-                        <button type="submit" id="submitButton" onclick="return validarPass()">Criar Administrador</button>
+                        <button type="submit" id="submitButton" style="margin-top: 15px" onclick="return validarPass()">Criar Administrador</button>
                     </div>
                     <div class="column-right" id="permissionsSection" style="display:none;">
                         <div class="button-container">

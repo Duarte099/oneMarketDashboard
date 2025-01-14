@@ -84,23 +84,25 @@ h1, h2 {
 .section-group input[type="text"],
 .section-group input[type="email"],
 .section-group input[type="password"],
-.section-group select {
+.section-group select
+ {
     width: 100%;
     padding: 10px;
     border: 1px solid #33333a;
+    outline: 2px solid red; 
+    border-color: red; 
     background: var(--background-color-secundary);
     color: var(--primary-text-color);
     border-radius: 8px;
     font-size: 14px;
-    outline: none;
     transition: border-color 0.3s ease;
 }
 
 .section-group input:focus,
-.section-group select:focus {
-    border-color: #4a90e2;
+.section-group select:focus
+{
+    outline: 2px solid red;
 }
-
 button {
     width: 100%;
     padding: 12px;

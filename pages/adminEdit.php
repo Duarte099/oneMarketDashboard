@@ -115,7 +115,7 @@
                         <?php } ?>
                         
                         <?php if (adminPermissions("adm_005", "update") == 1) { ?>
-                            <button type="submit" id="submitButton" onclick="return validarPass()">Criar Administrador</button>
+                            <button type="submit" id="submitButton" style="margin-top: 15px" onclick="return validarPass()">Criar Administrador</button>
                         <?php } ?>
                     </div>
                     <div class="column-right" id="permissionsSection" style="display:none;">

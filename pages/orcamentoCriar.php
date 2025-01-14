@@ -56,7 +56,7 @@
         ?>          
         <!-- End of Navbar -->
 
-        <form action="inserirOrcamento.php?idClient=<?= $idCliente ?>&op=save" method=post>
+        <form action="orcamentoInserir.php?idClient=<?= $idCliente ?>&op=save" method=post>
             <main>
                 <div class="header">
                     <div class="left">

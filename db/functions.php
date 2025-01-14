@@ -102,4 +102,17 @@
                 break;
         }
     }
+
+    function registrar_log($mensagem) {
+        include('../db/conexao.php');
+
+        // Inserir na tabela de logs
+        $query = "INSERT INTO administrator_logs (idAdministrator, logFile) VALUES (?, ?)";
+
+        $stmt = $con->prepare($query);
+        $stmt->bind_param('is', $_SESSION['id'], "$mensagem");
+
+        //returnar true caso guardar, senao retorna false
+        return $stmt->execute();
+    }
 ?>
