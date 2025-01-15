@@ -10,7 +10,7 @@
     }
 
     if (adminPermissions("adm_002", "inserir") == 0 || adminPermissions("adm_002", "update") == 0) {
-        header('Location: index.php');
+        header('Location: dashboard.php');
         exit();
     }
 

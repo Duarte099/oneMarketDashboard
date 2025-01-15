@@ -9,7 +9,7 @@
     }
 
     if (adminPermissions("adm_005", "inserir") == 0 || adminPermissions("adm_005", "update") == 0) {
-        header('Location: index.php');
+        header('Location: dashboard.php');
         exit();
     }
 
@@ -47,8 +47,8 @@
 
 
                     //funcao log
-                    $userId = $_SESSION['id'];
-                    $mensagem = "Administrador '$nome' (ID: $idAdmin) criado com sucesso pelo utilizador de ID $userId.";
+                    $username = $_SESSION['name'];
+                    $mensagem = "Administrador '$nome' (ID: $idAdmin) criado pelo administrador de ID $username.";
                     registrar_log($mensagem);
                 }
             }
@@ -113,6 +113,11 @@
                 $sql = "UPDATE administrator SET name = $nome, email = $email, user = $user, pass = $passwordHash, active = $status";
                 $result = $con->prepare($sql);
                 $result->execute();
+
+                //funcao log
+                $username = $_SESSION['name'];
+                $mensagem = "Administrador '$nome' (ID: $idAdmin) editado pelo administrador de ID $username.";
+                registrar_log($mensagem);
             }
 
             for ($i=1; $i <= $numModules; $i++) { 

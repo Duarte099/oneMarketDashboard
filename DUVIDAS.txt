@@ -1,23 +1,25 @@
 como imprimir pagina
 
-segurança!!!!!!!!!
-
 ajustar imagens em todos os campos onde mostra
 
-ajustar inserir imagem na base de dados
+ajustar inserir imagem na base de dados fire
 
 responsivo a todos os dispositivos
 
-arranjar pagina dashboard, colocar mais elementos como agenda, graficos etc
-
-permissão apagar conta como desativar?
-
-Em vês de editar client ou admin ou etc apenas o nome da pessoa
-
-ao dar scroll no edit budget tambem dá no header
-
 ao mudar de versão avisar que vai perder tudo
 
-perguntar melhor maneira de recarregar a pagina com js ao deletar alguma coisa
+criar nova pagina com estilo diferente para imprimir orçamentos
 
-adicionar secção ao editar não está a funcionar
+arranjar pagina dashboard, colocar mais elementos como agenda, graficos etc:
+
+    estado ficha de trabalho / obra --------- Feito
+
+    ver grafico dos ganhos no ano
+
+    ultimos logs --------- 70% feito - melhorar
+
+    "estudo" se vai ter stock suficiente para esse mês
+
+alterar todas as select boxes para aparecer a seta a identificar que é select box
+
+gestão de stocks -> tentar

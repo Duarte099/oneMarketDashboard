@@ -11,7 +11,7 @@
     }
 
     if (adminPermissions("adm_003", "view") == 0) {
-        header('Location: index.php');
+        header('Location: dashboard.php');
         exit();
     }
 
@@ -120,7 +120,7 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Editar Produto</h1>
+                    <h1><?php echo $product['name'] ?></h1>
                 </div>
             </div>
             <div class="form-container">

@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="../css/header.css">
 
 <nav>
-    <div class="profile-container" style="position: relative;">
+    <div class="profile-container" style="position: fixed;">
         <!-- Imagem do perfil que abre/fecha o modal -->
         <a class="profile" style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
             <div class="theme-toggle">
@@ -23,7 +23,7 @@
                 </label>
                 <span class="icon sun">☀️</span>
             </div>
-            <img src="<?php echo $img ?>" alt="Foto de Perfil" class="profile-img">
+            <img src="<?php echo $img ?>" class="profile-img">
         </a>
 
         <!-- Modal -->

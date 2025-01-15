@@ -9,7 +9,7 @@
     }
 
     if (adminPermissions("adm_001", "delete") == 0) {
-        header('Location: index.php');
+        header('Location: dashboard.php');
         exit();
     }
 

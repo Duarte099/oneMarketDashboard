@@ -9,7 +9,7 @@
     }
 
     if (adminPermissions("adm_001", "inserir") == 0 || adminPermissions("adm_001", "update") == 0) {
-        header('Location: index.php');
+        header('Location: dashboard.php');
         exit();
     }
 
@@ -61,21 +61,18 @@
         for ($i=1; $i <= 20; $i++) {
             $secao = mysqli_real_escape_string($con, $_POST['seccao_nome_' . $i]);
             if (!empty($secao)) {
-                $sqlSelect = "SELECT budget_sections.id, budget_sections.name FROM budget_sections WHERE budget_sections.name = '$secao'";
+                $sqlSelect = "SELECT nameSection FROM budget_sections_products WHERE idBudget = $idbudget AND orderSection = $i";
                 $result = $con->query($sqlSelect);
                 if (!($result->num_rows > 0)) {
-                    $sqlInsert = "INSERT INTO budget_sections (name) VALUES ('$secao');";
-                    $result = $con->prepare($sqlInsert);
-                    $result->execute();
+                    $row = $result->fetch_assoc();
+                    $nameSection = $row['nameSection'];
                 }
-                $result = $con->query($sqlSelect);
-                $row = $result->fetch_assoc();
-                $idSecao = $row['id'];
 
-                $sql = "INSERT INTO budget_sections_products (idBudget, idSection, orderSection) VALUES ($idBudget, $idSecao, $i);";
+                $sql = "INSERT INTO budget_sections_products (idBudget, nameSection, orderSection) VALUES ($idBudget, $nameSection, $i);";
                 $result = $con->prepare($sql);
                 $result->execute();
-                $sql = "INSERT INTO budget_version (idVersion, idBudget, idSection, orderSection) VALUES (1, $idBudget, $idSecao, $i);";
+                $data = date('Y-m-d');
+                $sql = "INSERT INTO budget_version (idVersion, idBudget, nameSection, orderSection, created) VALUES (1, $idBudget, $nameSection, $i, '$data');";
                 $result = $con->prepare($sql);
                 $result->execute();
             }
@@ -103,28 +100,29 @@
             //Se secção não estiver vazia...
             if (!empty($secao)) {
                 //Select para obter informações do nome e id  da secção que esta na base de dados
-                $sqlCheck = "SELECT `name`, budget_sections.id FROM budget_sections INNER JOIN budget_sections_products ON idSection = budget_sections.id WHERE idBudget = $idBudget AND orderSection = $i";
+                $sqlCheck = "SELECT nameSection FROM budget_sections_products WHERE idBudget = $idBudget AND orderSection = $i";
                 $result = $con->query($sqlCheck);
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
-                    $idSecao = $row['id'];
-                    $selectNameSecao = $row['name'];
+                    $selectNameSecao = $row['nameSection'];
                 }
                 //Verificar se a que está na base de dados não é igual à que veio do formulario
                 if ($selectNameSecao != $secao) {
-                    //Inserir na tabela de secções o novo nome de secção (nova secção)
-                    $sqlInsert = "INSERT INTO budget_sections (name) VALUES ('$secao');";
-                    $result = $con->prepare($sqlInsert);
-                    $result->execute();
-                    $idSecao = $con->insert_id;
-
                     //Atualizar na tabela de secções e produtos o nome da secção atualizada
-                    $sql = "UPDATE `budget_sections_products` SET idSection = $idSecao WHERE idBudget = $idBudget AND orderSection = $i";
+                    $sql = "UPDATE `budget_sections_products` SET nameSection = '$secao' WHERE idBudget = $idBudget AND orderSection = $i";
                     $result = $con->prepare($sql);
                     $result->execute();
                 }
+
+                //Inserir novas secções 
+                if ($i > $numSections + 5) {
+                    $sql = "INSERT INTO budget_sections_products (idBudget, nameSection, orderSection) VALUES ($idBudget, '$secao', $i);";
+                    $result = $con->prepare($sql);
+                    $result->execute();
+                }
+                $data = date('Y-m-d');
                 //Inserir a nova versão à tabela de versões
-                $sql = "INSERT INTO budget_version (idVersion, idBudget, idSection, nameSection, orderSection) VALUES ($versao, $idBudget, $idSecao, '$secao', $i);";
+                $sql = "INSERT INTO budget_version (idVersion, idBudget, nameSection, orderSection, created) VALUES ($versao, $idBudget, '$secao', $i, '$data');";
                 $result = $con->prepare($sql);
                 $result->execute();
                 
@@ -154,7 +152,7 @@
                                             `descriptionProduct`,
                                             `valueProduct`
                                     FROM budget_sections_products
-                        WHERE idBudget = $idBudget AND idSection = $idSecao AND orderSection = $i AND orderProduct = $j";
+                        WHERE idBudget = $idBudget AND orderSection = $i AND orderProduct = $j";
                         $result = $con->query($sqlCheck);
                         if ($result->num_rows > 0) {
                             $row = $result->fetch_assoc();
@@ -169,7 +167,7 @@
                                 //Atualiza a tabela de secções e produtos para os novos valores inseridos
                                 $sql = "UPDATE `budget_sections_products` 
                                     SET idProduct = $idProduct, refProduct = '$ref', nameProduct = '$designacao', amountProduct = $quantidade, descriptionProduct = '$descricao', valueProduct = $precoUnitario
-                                    WHERE idBudget = $idBudget AND idSection = $idSecao AND orderSection = $i AND orderProduct = $j";
+                                    WHERE idBudget = $idBudget AND orderSection = $i AND orderProduct = $j";
                                 $result = $con->prepare($sql);
                                 $result->execute();
                             }
@@ -178,17 +176,18 @@
                         {
                             //Se não tiver produtos naquela secção então insere na taela de secções e produtos, o novo produto
                             $sql = "INSERT INTO budget_sections_products 
-                                (idBudget, idSection, orderSection, idProduct, orderProduct, 
+                                (idBudget, nameSection, orderSection, idProduct, orderProduct, 
                                 refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct) 
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                             $result = $con->prepare($sql);
-                            $result->bind_param("iiiiissisd",$idBudget, $idSecao, $i, $idProduct, $j,$ref, $designacao, $quantidade, $descricao, $precoUnitario);
+                            $result->bind_param("iiiiissisd",$idBudget, $secao, $i, $idProduct, $j,$ref, $designacao, $quantidade, $descricao, $precoUnitario);
                             $result->execute();
                         }
+                        $data = date('Y-m-d');
                         //Insere todos os produtos e secções à tabela de versões
                         $sql = "INSERT INTO `budget_version`(`idVersion`,
                                                             `idBudget`,
-                                                            `idSection`,
+                                                            `nameSection`,
                                                             `orderSection`,
                                                             `idProduct`,
                                                             `orderProduct`,
@@ -196,14 +195,15 @@
                                                             `nameProduct`,
                                                             `amountProduct`,
                                                             `descriptionProduct`,
-                                                            `valueProduct`)
-                                VALUES ($versao, $idBudget, $idSecao, $i, $idProduct, $j,'$ref', '$designacao', $quantidade, '$descricao', $precoUnitario);";
+                                                            `valueProduct`,
+                                                            `created`)
+                                VALUES ($versao, $idBudget, '$secao', $i, $idProduct, $j,'$ref', '$designacao', $quantidade, '$descricao', $precoUnitario, '$data');";
                         $result = $con->prepare($sql);
                         $result->execute();
                     }
                 }
             }
         }
-        // header('Location: ../pages/orcamento.php');
+        header('Location: ../pages/orcamento.php');
     }
 ?>

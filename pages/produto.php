@@ -11,7 +11,7 @@
     }
 
     if (adminPermissions("adm_003", "view") == 0) {
-        header('Location: index.php');
+        header('Location: dashboard.php');
         exit();
     }
 ?>

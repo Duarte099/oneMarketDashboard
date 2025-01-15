@@ -10,7 +10,7 @@
     }
 
     if (adminPermissions("adm_002", "view") == 0) {
-        header('Location: index.php');
+        header('Location: dashboard.php');
         exit();
     }
 
@@ -35,6 +35,18 @@
         $row = $result->fetch_assoc();
         $numSections =  $row['numSections'];
     }
+
+    $anoAtual = date('Y');
+    $sql = "SELECT MAX(num) AS maior_numero FROM worksheet WHERE year = $anoAtual;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $proximo_numero = $row['maior_numero'] + 1;
+    }
+    else {
+        $proximo_numero = 1;
+    }
+    $numFicha = "$proximo_numero/$anoAtual";
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +80,7 @@
             <main>
                 <div class="header">
                     <div class="left">
-                        <h1>Editar Ficha de Trabalho</h1>
+                        <h1><?php echo $numFicha; ?></h1>
                     </div>
                 </div>
                 <div class="bottom-data">
@@ -79,17 +91,6 @@
                                 <div class="section-group">
                                     <label>Ficha Numero:</label>
                                     <input type="text" name="numFicha" required readonly value="<?php
-                                        $anoAtual = date('Y');
-                                        $sql = "SELECT MAX(num) AS maior_numero FROM worksheet WHERE year = $anoAtual;";
-                                        $result = $con->query($sql);
-                                        if ($result->num_rows > 0) {
-                                            $row = $result->fetch_assoc();
-                                            $proximo_numero = $row['maior_numero'] + 1;
-                                        }
-                                        else {
-                                            $proximo_numero = 1;
-                                        }
-                                        $numFicha = "$proximo_numero/$anoAtual";
                                         echo $numFicha;
                                     ?>">
                                 </div>
@@ -164,6 +165,7 @@
 
                         <!-- Secções e Produtos -->
                         <section id="secoes">
+                        <div class="budget">
                             <h2>Secções</h2>
                             <?php 
                                 $produtosIndex = 0; 

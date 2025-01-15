@@ -7,6 +7,7 @@
         header('Location: index.php');
         exit();
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +38,7 @@
         
         <main>
             <div class="header">
-                <h1>Dashboard</h1>
+                <h1>Bem vindo <?php echo $_SESSION['name']; ?></h1>
             </div>
 
             <!-- Insights -->
@@ -105,114 +106,122 @@
                 </li>
             </ul>
             <!-- End of Insights -->
-
-            <div class="bottom-data">
-                <div class="tables">
-                    <div class="header">
-                        <i class='bx bx-calculator'></i>
-                        <h3>Orçamentos recentes</h3>
-                    </div>
-                    <table>
+            
+            <!-- AGENDA -->
+            <!-- <div class="agenda">
+                <h2>Agenda</h2>
+                <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_id&ctz=Europe/Lisbon" style="border: 0" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
+            </div> -->
+            
+            <div class="work-status">
+                <div class="products">
+                <h2>Estado das Fichas de Trabalho</h2>
+                <table>
                         <thead>
                             <tr>
                                 <th>Numero</th>
-                                <th>Cliente</th>
-                                <th>Projeto</th>
-                                <th>Responsavel</th>
+                                <th>Nº Orçamento</th>
+                                <th>Pronto em armazém</th>
+                                <th>Entrada em Obra</th>
+                                <th>Saída de Obra</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                                $sql = "SELECT 
-                                            budget.name as budgetName, 
-                                            budget.num as numBudget,
-                                            budget.year as yearBudget,
-                                            client.name as clientName,
-                                            administrator.name as adminName
-                                        FROM budget 
-                                        INNER JOIN client ON budget.idClient = client.id
-                                        INNER JOIN administrator ON administrator.id = budget.createdBy
-                                        ORDER BY budget.id DESC LIMIT 10;";
-                                $result = $con->query($sql);
-                                if ($result->num_rows > 0) {
-                                    while($row = $result->fetch_assoc()){
-                                        // $statusClass = ($row['status'] == 'Concluida') ? 'completa' : 'em-desenvolvimento';
-                                        echo "<tr>
-                                            <td>" . $row['numBudget'] . "/" . $row['yearBudget'] . "</td>
-                                            <td>{$row['clientName']}</td>
-                                            <td>{$row['budgetName']}</td>
-                                            <td>{$row['adminName']}</td>
-                                            </tr>";
+                        <?php
+                            $sql = "SELECT 
+                                    budget.id as idBudget,
+                                    budget.num as numBudget,
+                                    budget.year as yearBudget, 
+                                    worksheet.id as idWorksheet,
+                                    worksheet.num as numWorksheet,
+                                    worksheet.year as yearWorksheet,
+                                    worksheet.readyStorage,
+                                    worksheet.status,
+                                    worksheet.joinWork, 
+                                    worksheet.exitWork,
+                                    CASE
+                                        WHEN worksheet.readyStorage = '0000-00-00' THEN 'Em Desenvolvimento'
+                                        WHEN worksheet.readyStorage != '0000-00-00' AND worksheet.joinWork = '0000-00-00' THEN 'Pendente'
+                                        WHEN worksheet.joinWork != '0000-00-00' AND worksheet.exitWork = '0000-00-00' THEN 'Em Obra'
+                                        WHEN worksheet.exitwork != '0000-00-00' THEN 'Concluido'
+                                    END as status
+                                FROM worksheet
+                                LEFT JOIN 
+                                    budget ON worksheet.idBudget = budget.id
+                                ORDER BY idWorksheet DESC;";
+                            $result = $con->query($sql);
+                            if ($result->num_rows > 0) {
+                                
+                                while ($row = $result->fetch_assoc()) {
+                                    $statustext = $row['status'];
+                                    $statusicon = '';
+
+                                    switch($statustext){
+                                        case 'Em Desenvolvimento':
+                                            $statusicon = '<i class="bx bx-time" style="color: yellow; margin-right: 8px;"></i>';
+                                            break;
+                                        case 'Pendente':
+                                            $statusicon = '<i class="bx bx-error" style="color: red; margin-right: 8px;"></i>';
+                                            break;
+                                        case 'Em Obra':
+                                            $statusicon = '<i class="bx bx-check-circle" style="color: orange; margin-right: 8px;"></i>';
+                                            break;
+                                        case 'Concluido':
+                                            $statusicon = '<i class="bx bx-check-circle" style="color: green; margin-right: 8px;"></i>';
+                                            break;
+                                        default:
+                                            $statusicon = '<i class="bx bx-question-mark" style="color: gray; margin-right: 8px;"></i>';
+                                            break;
                                     }
-                                } else {
-                                    echo "<tr><td colspan='4'>Sem Orçamentos para mostrar.</td></tr>";
-                                }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Fichas de trabalho -->
-            <div class="bottom-data">
-                <div class="tables">
-                    <div class="header">
-                        <i class='bx bx-file'></i>
-                        <h3>Fichas de trabalho recentes</h3>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Numero</th>
-                                <th>Cliente</th>
-                                <th>Contacto</th>
-                                <th>Projeto</th>
-                                <th>Ficha de Trabalho</th>
-                                <th>Data Criação</th>
-                                <th>Responsavel</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                                $sql = "SELECT 
-                                            client.name as nomeCliente, 
-                                            client.contact as contactoCliente, 
-                                            budget.id as idBudget, 
-                                            worksheet.readyStorage, 
-                                            worksheet.joinWork, 
-                                            worksheet.exitWork, 
-                                            administrator.name as nomeAdministrador
-                                        FROM worksheet
-                                        INNER JOIN 
-                                            client ON worksheet.idclient = client.id
-                                        INNER JOIN 
-                                            administrator ON worksheet.createdBy = administrator.id
-                                        INNER JOIN 
-                                            budget ON worksheet.idBudget = budget.id
-                                        ORDER BY worksheet.id DESC LIMIT 10;";
-                                $result = $con->query($sql);
-
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>
-                                        <td>{$row['nomeCliente']}</td>
-                                        <td>{$row['contactoCliente']}</td>
-                                        <td>{$row['idBudget']}</td>
+                                    echo "<tr onclick=\"handleRowClick('{$row['idWorksheet']}', 'editWorksheet')\" style=\"cursor: pointer;\">
+                                        <td>" . $row['numWorksheet'] . "/" . $row['yearWorksheet'] . "</td>
+                                        <td>" . $row['numBudget'] . "/" . $row['yearBudget'] . "</td>
                                         <td>{$row['readyStorage']}</td>
                                         <td>{$row['joinWork']}</td>
                                         <td>{$row['exitWork']}</td>
-                                        <td>{$row['nomeAdministrador']}</td>
-                                        </tr>";
-                                    }   
-                                } else {
-                                    echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
+                                        <td>{$statusicon}{$statustext}</td>
+                                    </tr>";
                                 }
-                            ?>
+                            } else {
+                                echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
+                            }
+                        ?>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <!-- Fim ficha de trabalho layout-->
+
+            <div class="logs-section">
+                <div class="logs">
+                <h2>Logs Recentes</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Log</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        $sql = "SELECT dataLog, logFile
+                            from administrator_logs
+                            ORDER BY dataLog DESC
+                            LIMIT 10";
+                        $result = $con->query($sql);
+                        if ($result->num_rows > 0) {  
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>
+                                <td>{$row['dataLog']}</td>
+                                <td>{$row['logFile']}</td>
+                                </tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='2'>Sem logs recentes para exibir.</td></tr>";
+                        }
+                    ?>
+                </table>
+            </div>
         </main>
     </div>
     <script src="../index.js"></script>

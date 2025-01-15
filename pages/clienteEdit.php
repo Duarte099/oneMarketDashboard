@@ -9,7 +9,7 @@
     }
 
     if (adminPermissions("adm_004", "view") == 0) {
-        header('Location: index.php');
+        header('Location: dashboard.php');
         exit();
     }
 
@@ -96,7 +96,7 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Editar Cliente</h1>
+                    <h1><?php echo htmlspecialchars($client['name']); ?></h1>
                 </div>
             </div>
 

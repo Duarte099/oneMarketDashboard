@@ -27,7 +27,7 @@
 }
 
 .bx{
-    font-size: 1.7rem;
+    font-size: 1.2rem;
 }
 
 a{
@@ -110,7 +110,7 @@ body{
     color: var(--secondary-text-color);
 }
 
-.content main .bottom-data{
+.content main .work-status{
     display: flex;
     flex-wrap: wrap;
     grid-gap: 24px;
@@ -119,73 +119,244 @@ body{
     color: var(--secondary-text-color);
 }
 
-.content main .bottom-data .header{
+.content main .work-status .header{
     display: flex;
     align-items: center;
     grid-gap: 16px;
     margin-bottom: 24px;
 }
 
-.content main .bottom-data .header h3{
+.content main .work-status .header h3{
     margin-right: auto;
     font-size: 24px;
     font-weight: 600;
     color: var(--primary-text-color);
 }
 
-.content main .bottom-data .header .bx{
+.content main .work-status .header .bx{
     color: var(--theme-color);
 }
 
-.content main .bottom-data>div{
+.content main .work-status>div{
     border-radius: 20px;
     background: var(--background-color);
     padding: 24px;
     overflow-x: auto;
 }
 
-.content main .bottom-data .tables{
+.content main .work-status .tables{
     flex-grow: 1;
     flex-basis: 500px;
 }   
 
-.content main .bottom-data .tables table{
+.content main .work-status .tables table{
     width: 100%;
     border-collapse: collapse;
 }
 
-.content main .bottom-data .tables table th{
+.content main .work-status .tables table th{
     padding-bottom: 12px;
     font-size: 13px;
     border-bottom: 1px solid var(--border-color);
 }
 
-.content main .bottom-data .tables table td{
+.content main .work-status .tables table td{
     padding: 16px 0;
     text-align: center;
 }
 
-.content main .bottom-data .tables table tr td:first-child{
+.content main .work-status .tables table tr td:first-child{
     align-items: center;
     grid-gap: 12px;
     padding-left: 6px;
 }
 
-.content main .bottom-data .tables table td img{
+.content main .work-status .tables table td img{
     width: 36px;
     height: 36px;
     border-radius: 50%;
     object-fit: cover;
 }
 
-.content main .bottom-data .tables table tbody tr{
+.content main .work-status .tables table tbody tr{
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.content main .bottom-data .tables table tbody tr:hover{
+.content main .work-status .tables table tbody tr:hover{
     background: var(--background-color-secundary);
 }
+
+.content main .header h1 {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--primary-text-color);
+}
+
+.content main .work-status .products table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.content main .work-status .products table th,
+.content main .work-status .products table td {
+    text-align: center;
+    padding: 10px;
+    color: var(--primary-text-color);
+}
+
+.content main .work-status .products table td img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.content main .work-status .products table tbody tr:hover {
+    background: var(--background-color-secundary);
+}
+
+.content main .work-status .products table tbody {
+    display: block;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.content main .work-status .products table thead,
+.content main .work-status .products table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* Logs */
+
+.content main .logs-section{
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 24px;
+    margin-top: 24px;
+    width: 100%;
+    color: var(--secondary-text-color);
+}
+
+.content main .logs-section .header{
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+    margin-bottom: 24px;
+}
+
+.content main .logs-section .header h3{
+    margin-right: auto;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-text-color);
+}
+
+.content main .logs-section .header .bx{
+    color: var(--theme-color);
+}
+
+.content main .logs-section>div{
+    border-radius: 20px;
+    background: var(--background-color);
+    padding: 24px;
+    overflow-x: auto;
+}
+
+.content main .logs-section .tables{
+    flex-grow: 1;
+    flex-basis: 500px;
+}   
+
+.content main .logs-section .tables table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.content main .logs-section .tables table th{
+    padding-bottom: 12px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.content main .logs-section .tables table td{
+    padding: 16px 0;
+    text-align: center;
+}
+
+.content main .logs-section .tables table tr td:first-child{
+    align-items: center;
+    grid-gap: 12px;
+    padding-left: 6px;
+}
+
+.content main .logs-section .tables table td img{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.content main .logs-section .tables table tbody tr{
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.content main .logs-section .tables table tbody tr:hover{
+    background: var(--background-color-secundary);
+}
+
+.content main .header h1 {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--primary-text-color);
+}
+
+.content main .logs-section .logs table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.content main .logs-section .logs table th,
+.content main .logs-section .logs table td {
+    text-align: center;
+    padding: 10px;
+    color: var(--primary-text-color);
+}
+
+.content main .logs-section .logs table td img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.content main .logs-section .logs table tbody tr:hover {
+    background: var(--background-color-secundary);
+}
+
+.content main .logs-section .logs table tbody {
+    display: block;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.content main .logs-section .logs table thead,
+.content main .logs-section .logs table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+
+
+
 
 
 @media screen and (max-width: 768px) 
@@ -203,11 +374,11 @@ body{
         grid-template-columns: 1fr;
     }
 
-    .content main .bottom-data .header{
+    .content main .work-status .header{
         min-width: 340px;
     }
 
-    .content main .bottom-data .tables table{
+    .content main .work-status .tables table{
         min-width: 340px;
     }
 }

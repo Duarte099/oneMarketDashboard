@@ -83,6 +83,7 @@ h1, h2, h3, h4 {
 }
 
 .content main .bottom-data .budget input[type="text"],
+.content main .bottom-data .budget input[type="search"],
 .content main .bottom-data .budget input[type="number"] {
     width: 75%;
     padding: 10px;
@@ -216,7 +217,6 @@ table td button.select-budget {
     display: flex;
     flex-direction: column; 
     flex: 1;
-    margin-right: 10px; 
 }
 
 

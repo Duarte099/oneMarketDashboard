@@ -110,7 +110,7 @@
         $query = "INSERT INTO administrator_logs (idAdministrator, logFile) VALUES (?, ?)";
 
         $stmt = $con->prepare($query);
-        $stmt->bind_param('is', $_SESSION['id'], "$mensagem");
+        $stmt->bind_param('is', $_SESSION['id'], $mensagem);
 
         //returnar true caso guardar, senao retorna false
         return $stmt->execute();

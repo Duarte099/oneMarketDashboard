@@ -11,7 +11,7 @@
     }
 
     if (adminPermissions("adm_005", "view") == 0) {
-        header('Location: index.php');
+        header('Location: dashboard.php');
         exit();
     }
 
@@ -66,7 +66,7 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Editar Administrador</h1>
+                    <h1><?php echo htmlspecialchars($nome); ?></h1>
                 </div>
             </div>
             <div class="form-container">
