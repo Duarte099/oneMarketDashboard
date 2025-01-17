@@ -27,6 +27,9 @@
 
     $numProjeto = $_POST['numOrcamento'];
     $nameBudget = $_POST['nomeProjeto'];
+    $laborPercent = (float) str_replace('%', '', $_POST['laborPercent']);
+    $discountPercent = (float) str_replace('%', '', $_POST['discountPercent']);
+    $observation = $_POST['observation'];
     $idAdmin = $_SESSION['id'];
 
     $op = $_GET['op'];
@@ -46,12 +49,12 @@
 
         $idClient = $_GET['idClient'];
 
-        $sql = "INSERT INTO budget (idClient, name, num, year, createdBy) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO budget (idClient, name, num, year, laborPercent, discountPercent, observation, createdBy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         $result = $con->prepare($sql);
 
         if ($result) {
-            $result->bind_param("issii", $idClient, $nameBudget, $proximo_numero, $anoAtual, $idAdmin);
+            $result->bind_param("issiddsi", $idClient, $nameBudget, $proximo_numero, $anoAtual, $laborPercent, $discountPercent, $observation, $idAdmin);
         }
 
         $result->execute();
@@ -89,7 +92,7 @@
         }
 
         //cabeçalho
-        $sql = "UPDATE `budget` SET name = '$nameBudget' WHERE id = $idBudget";
+        $sql = "UPDATE `budget` SET name = '$nameBudget', laborPercent = $laborPercent, discountPercent = $discountPercent, observation = '$observation' WHERE id = $idBudget";
         $result = $con->prepare($sql);
         $result->execute();
 

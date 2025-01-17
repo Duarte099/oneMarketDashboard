@@ -175,21 +175,36 @@
                                         echo $numFichaTrabalho;
                                     ?>">
                                 </div>
+                                <div class="section-group">
+                                    <label>Data de Criação:</label>
+                                    <input type="text" name="dataCriacao" readonly required value="<?php 
+                                        $sql = "SELECT budget.created FROM budget WHERE budget.id = $idBudget;";
+                                        $result = $con->query($sql);
+                                        $row = $result->fetch_assoc();
+                                        echo $row['created'];
+                                    ?>">
+                                </div>
                             </div>
                             <div class="section-row">
                                 <div class="section-group">
                                     <label>Deslocações e Montagem:</label>
-                                    <input class="percent" type="text" value="<?php echo $maoObraBudget . "%"; ?>" maxlength="6" pattern="[0-9]*">
-                                    <input type="text" name="totalDeslocacoesMontagens" readonly required value="<?php echo $totalBudget * ($maoObraBudget / 100); ?>">
+                                    <input name="laborPercent" class="percent" type="text" value="<?php echo $maoObraBudget . "%"; ?>" maxlength="6" pattern="[0-9]+(\.[0-9]{1,2})?%">
+                                </div>
+                                <div class="section-group">
+                                    <label>Total Deslocações e Montagem:</label>
+                                    <input type="text" name="totalDeslocacoesMontagens" readonly required value="<?php echo $totalBudget * ($maoObraBudget / 100) . "€"; ?>">
                                 </div>
                                 <div class="section-group">
                                     <label>Total:</label>
-                                    <input type="text" name="total" readonly required value="<?php echo $totalBudget; ?>">
+                                    <input type="text" name="total" readonly required value="<?php echo $totalBudget . "€"; ?>">
                                 </div>
                                 <div class="section-group">
                                     <label>Desconto:</label>
-                                    <input class="percent" type="text" value="<?php echo $descontoBudget . "%"; ?>" maxlength="6" pattern="[0-9]*">
-                                    <input type="text" name="totalDesconto" readonly required value="<?php echo $totalBudget * ($descontoBudget / 100); ?>">
+                                    <input name="discountPercent" class="percent" type="text" value="<?php echo $descontoBudget . "%"; ?>" maxlength="6" pattern="[0-9]+(\.[0-9]{1,2})?%">
+                                </div>
+                                <div class="section-group">
+                                    <label>Total com Desconto:</label>
+                                    <input type="text" name="totalDesconto" readonly required value="<?php echo $totalBudget * ($descontoBudget / 100) . "€"; ?>">
                                 </div>
                                 <script>
                                     //Get human input: 
@@ -242,18 +257,11 @@
                                         }
                                     }
                                 </script>
+                            </div>
+                            <div class="section-row">
                                 <div class="section-group">
                                     <label>Observações:</label>
-                                    <input type="text" name="observacoes" required value="<?php echo $observacao; ?>">
-                                </div>
-                                <div class="section-group">
-                                    <label>Data de Criação:</label>
-                                    <input type="text" name="dataCriacao" readonly required value="<?php 
-                                        $sql = "SELECT budget.created FROM budget WHERE budget.id = $idBudget;";
-                                        $result = $con->query($sql);
-                                        $row = $result->fetch_assoc();
-                                        echo $row['created'];
-                                    ?>">
+                                    <textarea id="overlay-textarea" name="observation" rows="3"><?php echo $observacao; ?></textarea>
                                 </div>
                             </div>
                         </section>
@@ -379,12 +387,12 @@
                                                                     }
                                                                 ?>
                                                                 <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
-                                                                <td><input type="search" list="datalistProduct" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
+                                                                <td><input type="search" list="datalistProduct" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" oninput="atualizarCampos(this);" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
                                                                 <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value = "<?php echo $nameProduct; ?>" readonly></td>
                                                                 <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value = "<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" oninput="atualizarPrecoTotal(this)" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
                                                                 <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" value = "<?php echo $descriptionProduct; ?>" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
                                                                 <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" value = "<?php echo $valueProduct; ?>" readonly></td>
-                                                                <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" value = "<?php echo $amountProduct * $valueProduct;?>" readonly></td>
+                                                                <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" value = "<?php echo $amountProduct * $valueProduct . "€";?>" readonly></td>
                                                             </tr>
                                                         </tbody>
                                                         <datalist id='datalistProduct'>
@@ -403,7 +411,7 @@
                                                         <tbody class="produtos" style="display: none;">
                                                             <tr>
                                                                 <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
-                                                                <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" oninput="atualizarCampos(this); performSearchProdutos(this, <?php echo $produtosIndex; ?>);"></td>
+                                                                <td><input type="search" list="datalistProduct2" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" oninput="atualizarCampos(this);"></td>
                                                                 <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" readonly></td>
                                                                 <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value="1" oninput="atualizarPrecoTotal(this)"></td>
                                                                 <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" ></td>
@@ -411,9 +419,18 @@
                                                                 <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" readonly></td>
                                                             </tr>
                                                         </tbody>
-                                                        <div id="produtosModal-<?php echo $produtosIndex; ?>" class="modal">
-                                                            <div id="results-container-<?php echo $produtosIndex; ?>" class="results-container"></div>
-                                                        </div>
+                                                        <datalist id='datalistProduct2'>
+                                                            <?php
+                                                                $sql = "SELECT DISTINCT refProduct FROM budget_sections_products;";
+                                                                $result = $con->query($sql);
+
+                                                                if ($result->num_rows > 0) {
+                                                                    while ($row = $result->fetch_assoc()) {
+                                                                        echo "<option>$row[refProduct]</option>";
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </datalist>
                                                     <?php } ?>
                                                 <?php } 
                                                 if (adminPermissions("adm_001", "update") == 1 && $versao == $maxVersao) {

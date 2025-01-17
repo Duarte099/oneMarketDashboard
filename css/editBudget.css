@@ -76,7 +76,6 @@ h1, h2, h3, h4 {
 
 .content main .bottom-data .budget label {
     display: block;
-    margin-bottom: 12px;
     font-size: 14px;
     color: #c4c4c4;
     width:75%;
@@ -105,6 +104,17 @@ h1, h2, h3, h4 {
     border-radius: 8px;
     font-size: 14px;
     margin-top: 8px;
+    display: flex;
+}
+
+.content main .bottom-data .budget textarea {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid var(--border-color);
+    background: var(--background-color);
+    color: var(--primary-text-color);
+    border-radius: 8px;
+    font-size: 14px;
     display: flex;
 }
 

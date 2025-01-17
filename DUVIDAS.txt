@@ -1,5 +1,3 @@
-como imprimir pagina
-
 ajustar imagens em todos os campos onde mostra
 
 ajustar inserir imagem na base de dados fire
@@ -23,3 +21,5 @@ arranjar pagina dashboard, colocar mais elementos como agenda, graficos etc:
 alterar todas as select boxes para aparecer a seta a identificar que é select box
 
 gestão de stocks -> tentar
+
+Como colocar textarea que nem base dados -> duvida

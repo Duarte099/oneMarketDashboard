@@ -32,7 +32,7 @@
                 header('Location: ../pages/dashboard.php');
                 exit();
             } else {
-                $_SESSION['errorMessage'] = "Password ou user !";
+                $_SESSION['errorMessage'] = "Password ou user Incorreto!";
                 header('Location: ../pages/dashboard.php');
             }
         } else {
