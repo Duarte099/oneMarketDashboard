@@ -28,13 +28,6 @@
     $inputValue = '';
     $produtosIndex = 0;
 
-    $sql = "SELECT budget.idClient FROM budget WHERE budget.id = $idBudget;";
-    $result = $con->query($sql);
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $idClient =  $row['idClient'];
-    }
-
     if ($versao == $maxVersao) {
         $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
         $result = $con->query($sql);
@@ -52,7 +45,7 @@
         }
     }
 
-    $sql = "SELECT num, year, name, laborPercent , discountPercent, observation FROM budget WHERE id = $idBudget;";
+    $sql = "SELECT num, year, name, laborPercent , discountPercent, observation, idClient, created FROM budget WHERE id = $idBudget;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -62,6 +55,8 @@
         $maoObraBudget = $row['laborPercent'];
         $descontoBudget = $row['discountPercent'];
         $observacao = $row['observation'];
+        $idClient =  $row['idClient'];
+        $createdBudget = $row['created'];
     }
     $numOrçamento = "$numBudget/$yearBudget";
 
@@ -77,6 +72,16 @@
     $row = $result->fetch_assoc();
         $clientName = $row['name'];
         $clientContact = $row['contact'];
+
+    $numFichaTrabalho = "";
+    $sql = "SELECT num, year FROM worksheet WHERE idBudget = $idBudget;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $numWorksheet = $row['num'];
+        $yearWorksheet = $row['year'];
+        $numFichaTrabalho = "$numWorksheet/$yearWorksheet";
+    }
 ?>
 
 <!DOCTYPE html>
@@ -137,11 +142,9 @@
                         <section>
                             <h2>Dados do Orçamento</h2>
                             <div class="section-row">
-                                <div class="section-group">
+                                <div class="section-group" >
                                     <label>Orçamento Numero:</label>
-                                    <input type="text" name="numOrcamento" required readonly value="<?php
-                                        echo $numOrçamento;
-                                    ?>">
+                                    <input type="text" name="numOrcamento" required readonly value="<?php echo $numOrçamento; ?>">
                                 </div>
                                 <div class="section-group">
                                     <label>Projeto:</label>
@@ -162,27 +165,11 @@
                                 </div>
                                 <div class="section-group">
                                     <label>Ficha de Trabalho:</label>
-                                    <input type="text" name="fichaTrabalho" required readonly value="<?php 
-                                        $numFichaTrabalho = "";
-                                        $sql = "SELECT num, year FROM worksheet WHERE idBudget = $idBudget;";
-                                        $result = $con->query($sql);
-                                        if ($result->num_rows > 0) {
-                                            $row = $result->fetch_assoc();
-                                            $numWorksheet = $row['num'];
-                                            $yearWorksheet = $row['year'];
-                                            $numFichaTrabalho = "$numWorksheet/$yearWorksheet";
-                                        }
-                                        echo $numFichaTrabalho;
-                                    ?>">
+                                    <input type="text" name="fichaTrabalho" required readonly value="<?php echo $numFichaTrabalho; ?>">
                                 </div>
                                 <div class="section-group">
                                     <label>Data de Criação:</label>
-                                    <input type="text" name="dataCriacao" readonly required value="<?php 
-                                        $sql = "SELECT budget.created FROM budget WHERE budget.id = $idBudget;";
-                                        $result = $con->query($sql);
-                                        $row = $result->fetch_assoc();
-                                        echo $row['created'];
-                                    ?>">
+                                    <input type="text" name="dataCriacao" readonly required value="<?php echo $createdBudget; ?>">
                                 </div>
                             </div>
                             <div class="section-row">
@@ -261,7 +248,7 @@
                             <div class="section-row">
                                 <div class="section-group">
                                     <label>Observações:</label>
-                                    <textarea id="overlay-textarea" name="observation" rows="3"><?php echo $observacao; ?></textarea>
+                                    <textarea id="overlay-textarea" class="autoExpand" name="observation" rows="1"><?php echo $observacao; ?></textarea>
                                 </div>
                             </div>
                         </section>
@@ -319,8 +306,8 @@
                                             name="seccao_nome_<?php echo $i; ?>" 
                                             list="datalistSection"
                                             placeholder="Nome da secção" 
-                                            oninput="performSearchSecoes(this, <?php echo $i; ?>)" 
-                                            value="<?php echo $nomeSecao; ?>" 
+                                            value="<?php echo $nomeSecao; ?>"
+                                            style="width: 100%;" 
                                             <?php if (adminPermissions("adm_001", "update") == 0) {echo "readonly";}?>
                                         />
                                         <datalist id='datalistSection'>
@@ -338,13 +325,13 @@
                                         <table id = "table">
                                             <thead>
                                                 <tr>
-                                                    <th>Nº</th>
-                                                    <th>N/REF</th>
-                                                    <th>Designação</th>
-                                                    <th>Quantidade</th>
+                                                    <th style="width: 65px;">Nº</th>
+                                                    <th style="width: 150px;">N/REF</th>
+                                                    <th style="width: 300px;">Designação</th>
+                                                    <th style="width: 65px;">Quantidade</th>
                                                     <th>Descrição</th>
-                                                    <th>Preço Unitário</th>
-                                                    <th>Preço Total</th>
+                                                    <th style="width: 100px;">Preço Unitário</th>
+                                                    <th style="width: 100px;">Preço Total</th>
                                                 </tr>
                                             </thead>
                                             <?php 
@@ -386,11 +373,11 @@
                                                                         }
                                                                     }
                                                                 ?>
-                                                                <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
+                                                                <td><input type="text" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" value="100" readonly></td>
                                                                 <td><input type="search" list="datalistProduct" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" oninput="atualizarCampos(this);" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
                                                                 <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value = "<?php echo $nameProduct; ?>" readonly></td>
                                                                 <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value = "<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" oninput="atualizarPrecoTotal(this)" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
-                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" value = "<?php echo $descriptionProduct; ?>" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
+                                                                <td><textarea rows="1" class="autoExpand" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>><?php echo $descriptionProduct; ?></textarea></td>
                                                                 <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" value = "<?php echo $valueProduct; ?>" readonly></td>
                                                                 <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" value = "<?php echo $amountProduct * $valueProduct . "€";?>" readonly></td>
                                                             </tr>
@@ -410,16 +397,16 @@
                                                     <?php } else { ?>
                                                         <tbody class="produtos" style="display: none;">
                                                             <tr>
-                                                                <td><input type="number" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" readonly></td>
-                                                                <td><input type="search" list="datalistProduct2" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" oninput="atualizarCampos(this);"></td>
+                                                                <td><input type="text" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" value="100" readonly></td>
+                                                                <td><input type="search" list="datalistProduct" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" oninput="atualizarCampos(this);"></td>
                                                                 <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" readonly></td>
-                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value="1" oninput="atualizarPrecoTotal(this)"></td>
-                                                                <td><input type="text" class="descricao" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" ></td>
+                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" oninput="atualizarPrecoTotal(this)"></td>
+                                                                <td><textarea rows="1" style="height: 42px;" class="autoExpand" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>"></textarea></td>
                                                                 <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" readonly></td>
                                                                 <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" readonly></td>
                                                             </tr>
                                                         </tbody>
-                                                        <datalist id='datalistProduct2'>
+                                                        <datalist id='datalistProduct'>
                                                             <?php
                                                                 $sql = "SELECT DISTINCT refProduct FROM budget_sections_products;";
                                                                 $result = $con->query($sql);
@@ -586,6 +573,17 @@
 
                             valorTotalCampo.value = (quantidade * valor).toFixed(2);
                         }
+
+                        function budgetPrint(idBudget) {
+                            // Abre a outra página em uma nova janela
+                            const printWindow = window.open('orcamentoImpressao.php?idBudget=' + idBudget, '_blank');
+
+                            // Aguarda a página carregar completamente
+                            printWindow.onload = () => {
+                                // Chama o método de impressão da nova página
+                                printWindow.print();
+                            };
+                        }
                     </script>
                 </div>
                 <?php 
@@ -596,9 +594,9 @@
                         ";
                     }
                 ?>
-            </main>
-        <!-- <input type=text id=numSeccao name=numSeccao value=1> -->
-        </form>
+                <button id=botPrintBudget type="button" onclick="budgetPrint(<?php echo $idBudget; ?>)">Imprimir</button>
+            </form>
+        </main>
     </div>
 </body>
 </html>

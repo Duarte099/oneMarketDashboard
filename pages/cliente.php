@@ -131,7 +131,7 @@
                 <div class="left">
                     <h1>Clientes</h1>
                     <div class="search-bar">
-                        <input type="text" id="searchBox" placeholder="Pesquisar produtos..." oninput="clientsSearch(this)" />
+                        <input type="text" id="searchBox" placeholder="Pesquisar clientes..." oninput="clientsSearch(this)" />
                     </div>
                 </div>
                 <?php if (adminPermissions("adm_004", "inserir") == 1) { ?>

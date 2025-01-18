@@ -51,3 +51,17 @@ function handleRowClick(id, action) {
         window.location.href = "produtoEdit.php?idProduct=" + id;
     }
 }
+
+$(document).ready(function () {
+    function adjustHeight(element) {
+        element.style.height = 'auto'; // Reseta a altura para calcular corretamente
+        element.style.height = (element.scrollHeight) + 'px'; // Define a altura com base no scrollHeight
+    }
+
+    // Aplica o ajuste ao carregar a página e em eventos
+    $('.autoExpand').each(function () {
+        adjustHeight(this); // Ajusta a altura para texto padrão
+    }).on('input change', function () {
+        adjustHeight(this); // Ajusta a altura ao digitar ou alterar texto
+    });
+});

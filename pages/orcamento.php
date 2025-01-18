@@ -94,9 +94,9 @@
                 if (query) {
                     // Filtra os resultados com base na pesquisa
                     const filteredResults = clientsSearchData.filter(item =>
-                        item.nomeCliente.toLowerCase().includes(query) ||
-                        item.emailCliente.toLowerCase().includes(query) ||
-                        item.contactoCliente.toLowerCase().includes(query)
+                        item.nome.toLowerCase().includes(query) ||
+                        item.email.toLowerCase().includes(query) ||
+                        item.contacto.toLowerCase().includes(query)
                     );
 
                     displayResults(filteredResults);

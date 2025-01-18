@@ -64,22 +64,18 @@
         for ($i=1; $i <= 20; $i++) {
             $secao = mysqli_real_escape_string($con, $_POST['seccao_nome_' . $i]);
             if (!empty($secao)) {
-                $sqlSelect = "SELECT nameSection FROM budget_sections_products WHERE idBudget = $idbudget AND orderSection = $i";
-                $result = $con->query($sqlSelect);
-                if (!($result->num_rows > 0)) {
-                    $row = $result->fetch_assoc();
-                    $nameSection = $row['nameSection'];
-                }
-
-                $sql = "INSERT INTO budget_sections_products (idBudget, nameSection, orderSection) VALUES ($idBudget, $nameSection, $i);";
+                $sql = "INSERT INTO budget_sections_products (idBudget, nameSection, orderSection) VALUES ($idBudget, '$secao', $i);";
                 $result = $con->prepare($sql);
                 $result->execute();
+
                 $data = date('Y-m-d');
-                $sql = "INSERT INTO budget_version (idVersion, idBudget, nameSection, orderSection, created) VALUES (1, $idBudget, $nameSection, $i, '$data');";
+                $sql = "INSERT INTO budget_version (idVersion, idBudget, nameSection, orderSection, created) VALUES (1, $idBudget, '$secao', $i, '$data');";
                 $result = $con->prepare($sql);
                 $result->execute();
             }
         }
+
+        header('Location: ../pages/orcamentoEdit.php?idBudget=' . $idBudget);
     }
     elseif ($op == "edit") {
         $idBudget = $_GET['idBudget'];

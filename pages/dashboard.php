@@ -107,12 +107,6 @@
             </ul>
             <!-- End of Insights -->
             
-            <!-- AGENDA -->
-            <!-- <div class="agenda">
-                <h2>Agenda</h2>
-                <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_id&ctz=Europe/Lisbon" style="border: 0" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
-            </div> -->
-            
             <div class="work-status">
                 <div class="products">
                 <h2>Estado das Fichas de Trabalho</h2>
@@ -192,6 +186,8 @@
                 </div>
             </div>
 
+            
+
             <div class="logs-section">
                 <div class="logs">
                 <h2>Logs Recentes</h2>
@@ -222,6 +218,8 @@
                     ?>
                 </table>
             </div>
+
+
         </main>
     </div>
     <script src="../index.js"></script>

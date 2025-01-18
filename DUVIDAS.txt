@@ -4,10 +4,6 @@ ajustar inserir imagem na base de dados fire
 
 responsivo a todos os dispositivos
 
-ao mudar de versão avisar que vai perder tudo
-
-criar nova pagina com estilo diferente para imprimir orçamentos
-
 arranjar pagina dashboard, colocar mais elementos como agenda, graficos etc:
 
     estado ficha de trabalho / obra --------- Feito
@@ -22,4 +18,4 @@ alterar todas as select boxes para aparecer a seta a identificar que é select b
 
 gestão de stocks -> tentar
 
-Como colocar textarea que nem base dados -> duvida
+no modal do orcamento de selecionar clientes se não aparecer resultados na pesquisa fica na mesma com resultados invisiveis que dao para selecionar 

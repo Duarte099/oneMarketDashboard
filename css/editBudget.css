@@ -84,7 +84,7 @@ h1, h2, h3, h4 {
 .content main .bottom-data .budget input[type="text"],
 .content main .bottom-data .budget input[type="search"],
 .content main .bottom-data .budget input[type="number"] {
-    width: 75%;
+    width: 100%;
     padding: 10px;
     border: 1px solid var(--border-color);
     background: var(--background-color);
@@ -109,13 +109,19 @@ h1, h2, h3, h4 {
 
 .content main .bottom-data .budget textarea {
     width: 100%;
-    padding: 5px;
+    padding: 10px;
     border: 1px solid var(--border-color);
     background: var(--background-color);
     color: var(--primary-text-color);
     border-radius: 8px;
     font-size: 14px;
+    margin-top: 8px;
     display: flex;
+    overflow: hidden;
+}
+
+.autoExpand {
+    min-height: 47px !important;
 }
 
 table {
@@ -127,7 +133,7 @@ table {
 table th, table td {
     color: var(--primary-text-color); 
     text-align: left;
-    padding: 12px 15px; 
+    padding-right: 10px;
 }
 
 table th {
@@ -159,7 +165,6 @@ table td button.select-budget {
 }
 
 .content main .bottom-data .budget table td {
-    padding: 12px 0;
     font-size: 14px;
 }
 
@@ -184,7 +189,8 @@ table td button.select-budget {
 }
 
 #bottomButton,
-#botSaveBudget{
+#botSaveBudget,
+#botPrintBudget{
     margin-top: 9px;
     padding: 10px 16px;
     background: var(--theme-color);
@@ -227,6 +233,7 @@ table td button.select-budget {
     display: flex;
     flex-direction: column; 
     flex: 1;
+    padding-right: 10px;
 }
 
 
@@ -329,6 +336,12 @@ table td button.select-budget {
 
 #botSaveBudget{
     float: right;
+}
+
+#botPrintBudget{
+    float: right;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .select-container {
