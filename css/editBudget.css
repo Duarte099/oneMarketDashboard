@@ -359,7 +359,7 @@ table td button.select-budget {
 }
 
 select {
-    width: 150px;
+    width: auto;
     padding: 8px 12px;
     border: 1px solid var(--border-color);
     background: var(--background-color);
@@ -367,9 +367,6 @@ select {
     border-radius: 8px;
     font-size: 14px;
     cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     transition: border-color 0.3s ease, background 0.3s ease;
 }
 

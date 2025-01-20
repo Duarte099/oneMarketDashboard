@@ -103,28 +103,10 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Novo Orçamento</h1>
+                    <h1>Nova Ficha de Trabalho</h1>
                 </div>
-                <form action="" method="GET">
-                    <div class="select-container">
-                        <input type="hidden" name="idBudget" value="<?= $idBudget ?>">
-                        <label for="versao" class="select-label">Versão:</label>
-                        <select name="versao" id="versao" onchange="confirmSubmit(this, <?php echo $maxVersao; ?>)">
-                            <!-- <?php
-                                $sql = "SELECT DISTINCT idVersion, created FROM budget_version WHERE idBudget = $idBudget ORDER BY idVersion DESC;";
-                                $result = $con->query($sql);
-
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<option value=\"{$row['idVersion']}\" " . ($row['idVersion'] == $versao ? 'selected' : '') . ">{$row['idVersion']} | {$row['created']}</option>";
-                                    }
-                                }
-                            ?> -->
-                        </select>
-                    </div>
-                </form>
             </div>
-            <form action="inserirFichaTrabalho.php?idBudget=<?= $idBudget ?>&op=save" method=post>
+            <form action="fichaTrabalhoInserir.php?idBudget=<?= $idBudget ?>&op=save" method=post>
                 <div class="bottom-data">
                     <div class="worksheet">
                         <section>
@@ -176,20 +158,13 @@
                     <?php 
                         $produtosIndex = 0;
                         for ($i=1; $i <= $numSections; $i++) {
-                            $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0;";
+                            $sql = "SELECT COUNT(idProduct) AS numProducts, nameSection  FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0;";
                             $result = $con->query($sql);
                             if ($result->num_rows > 0) {
                                 $row = $result->fetch_assoc();
                                 $numProducts = $row['numProducts'];
-                            }
-
-                            $sql = "SELECT nameSection FROM budget_sections_products WHERE orderSection = $i AND idBudget = $idBudget;";
-                            $result = $con->query($sql);
-                            if ($result->num_rows > 0) {
-                                $row = $result->fetch_assoc();
                                 $nomeSecao = $row['nameSection'];
                             }
-
                             ?>
                             <div class="worksheet">
                                 <section id="secoes">
@@ -206,8 +181,8 @@
                                                     <th style="width: 55px;">Check</th>
                                                     <th style="width: 55px;">Armazém</th>
                                                     <th style="width: 65px; text-align: center;">Nº</th>
-                                                    <th style="width: 150px;">N/REF</th>
-                                                    <th style="width: 300px;">Designação</th>
+                                                    <th style="width: 150px; text-align: center;">N/REF</th>
+                                                    <th style="width: 300px; text-align: center;">Designação</th>
                                                     <th style="width: 65px;">Quantidade</th>
                                                     <th class="inputs-th">Observações</th>
                                                 </tr>
@@ -254,7 +229,7 @@
                                     </div>
                                 </section>
                             </div>
-                    <?php } ?>
+                        <?php } ?>
                     <script>
                         document.addEventListener("DOMContentLoaded", function() {
                             atualizarIndicesGlobais();

@@ -202,7 +202,9 @@ table td button.select-worksheet {
     align-items: center;
 }
 
-.content main .bottom-data .worksheet button {
+#bottomButton,
+#botSaveWorksheet,
+#botPrintWorksheet{
     margin-top: 9px;
     padding: 10px 16px;
     background: var(--theme-color);
@@ -212,6 +214,19 @@ table td button.select-worksheet {
     font-size: 14px;
     cursor: pointer;
     transition: background 0.3s ease;
+    padding-bottom: 10px;
+}
+
+#bottomButton:hover,
+#botSaveWorksheet:hover,
+#botPrintWorksheet:hover {
+    background: #9b1c1f;
+}
+
+#botPrintWorksheet{
+    float: right;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .content main .bottom-data .worksheet textarea {
@@ -227,7 +242,7 @@ table td button.select-worksheet {
     overflow: hidden;
 }
 
-.content main .bottom-data .worksheet button:hover {
+.content main button:hover {
     background: #9b1c1f;
 }
 
@@ -363,4 +378,40 @@ table td button.select-worksheet {
 
 #botSaveworksheet{
     float: right;
+}
+
+.select-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinha à esquerda */
+    margin-top: 10px;
+}
+
+.select-label {
+    font-size: 14px;
+    color: var(--primary-text-color);
+    font-weight: 500;
+    margin-bottom: 5px; /* Espaço entre o texto e a select box */
+}
+
+select {
+    width: auto;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    background: var(--background-color);
+    color: var(--primary-text-color);
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+select:hover {
+    border-color: var(--theme-color);
+}
+
+select:focus {
+    border-color: var(--theme-color);
+    outline: none;
+    box-shadow: 0 0 5px rgba(120, 18, 21, 0.5);
 }

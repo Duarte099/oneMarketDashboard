@@ -19,3 +19,5 @@ alterar todas as select boxes para aparecer a seta a identificar que é select b
 gestão de stocks -> tentar
 
 no modal do orcamento de selecionar clientes se não aparecer resultados na pesquisa fica na mesma com resultados invisiveis que dao para selecionar 
+
+verificar e corrigir ao ir para alguma pagina que precise de valores no url, se nao tiver voltar para a pagina anterior

@@ -3,6 +3,8 @@
     include('../db/conexao.php'); 
     $estouEm = 1;
 
+    $anoAtual = date('Y');
+    
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
         exit();
@@ -17,6 +19,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Dashboard</title>
@@ -107,6 +110,103 @@
             </ul>
             <!-- End of Insights -->
             
+
+            <div class="year-selector">
+                <button id="prevYear" class="year-button">❮</button> <!-- Seta de diminuir o ano -->
+                <span id="currentYear" class="year-display"><?php echo $anoAtual; ?></span>
+            </div>
+
+            <h2 id="tituloGrafico">Ganhos Mensais em € (<?php echo $anoAtual; ?>)</h2>
+
+            <canvas id="ganhosChart" width="400" height="200"></canvas> <!-- Canvas para o gráfico -->
+
+            <script>
+                let anoAtual = <?php echo $anoAtual; ?>; // Ano inicial, vindo do PHP
+                const anoDisplay = document.getElementById('currentYear');
+
+                // Evento para o botão de diminuir o ano
+                document.getElementById('prevYear').addEventListener('click', function() {
+                    anoAtual--;  // Decrementa o ano
+                    anoDisplay.innerText = anoAtual; // Atualiza o display do ano
+                    atualizarGrafico(); // Atualiza o gráfico com o novo ano
+                });
+
+                // Função para buscar dados e atualizar o gráfico
+                async function buscarDados() {
+                    try {
+                        const response = await fetch(`tabelaganhos.php?ano=${anoAtual}`); // Passa o ano como parâmetro
+                        if (!response.ok) {
+                            throw new Error('Erro ao buscar dados da API');
+                        }
+                        return await response.json(); // Retorna os dados da API
+                    } catch (error) {
+                        console.error('Erro na busca dos dados:', error);
+                        return null;
+                    }
+                }
+
+                async function atualizarGrafico() {
+                    const response = await buscarDados(); // Busca os dados
+                    if (!response) {
+                        console.error('Dados não disponíveis para criar o gráfico.');
+                        return;
+                    }
+
+                    const data = response.data; // Dados de ganhos
+
+                    // Atualiza o título
+                    const titulo = document.getElementById('tituloGrafico');
+                    if (titulo) {
+                        titulo.innerText = `Ganhos Mensais em € (${anoAtual})`;
+                    }
+
+                    const canvas = document.getElementById('ganhosChart');
+                    if (!canvas) {
+                        console.error('Elemento canvas com ID "ganhosChart" não encontrado.');
+                        return;
+                    }
+
+                    const ctx = canvas.getContext('2d');
+
+                    // Verifica se o gráfico já foi criado
+                    if (window.ganhosChart) {
+                        window.ganhosChart.destroy(); // Destroi o gráfico existente
+                    }
+
+                    // Cria um novo gráfico
+                    window.ganhosChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                            datasets: [{
+                                label: 'Ganhos em €',
+                                data: [
+                                    data.JANE, data.FEVE, data.MARC, data.ABRI, data.MAIO, 
+                                    data.JUNH, data.JULH, data.AGOS, data.SETE, data.OUTR, 
+                                    data.NOVE, data.DEZE
+                                ],
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Inicia o gráfico com o ano inicial
+                document.addEventListener('DOMContentLoaded', atualizarGrafico);
+
+            </script>
+
+
             <div class="work-status">
                 <div class="products">
                 <h2>Estado das Fichas de Trabalho</h2>
@@ -131,7 +231,6 @@
                                     worksheet.num as numWorksheet,
                                     worksheet.year as yearWorksheet,
                                     worksheet.readyStorage,
-                                    worksheet.status,
                                     worksheet.joinWork, 
                                     worksheet.exitWork,
                                     CASE
@@ -185,7 +284,8 @@
                     </table>
                 </div>
             </div>
-
+            
+            
             
 
             <div class="logs-section">

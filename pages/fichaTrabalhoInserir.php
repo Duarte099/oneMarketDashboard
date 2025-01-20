@@ -19,11 +19,11 @@
     $readyStorage = $_POST['prontoArmazem'];
     $joinWork = $_POST['entradaObra'];
     $exitWork = $_POST['saidaObra'];
+    $observacaoWorksheet = $_POST['observation'];
 
     $op = $_GET['op'];
 
     if ($op == "save") {
-        print_r($_POST);
         $idBudget = $_GET['idBudget'];
 
         $anoAtual = date("Y");
@@ -45,12 +45,12 @@
             $idClient =  $row['idClient'];
         }
 
-        $sql = "INSERT INTO worksheet (idBudget, idClient, num, year, readyStorage, joinWork, exitWork, createdBy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO worksheet (idBudget, idClient, num, year, readyStorage, joinWork, exitWork, observation, createdBy) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $result = $con->prepare($sql);
 
         if ($result) {
-            $result->bind_param("iiiisssi", $idBudget, $idClient, $proximo_numero, $anoAtual, $readyStorage, $joinWork, $exitWork, $idAdmin);
+            $result->bind_param("iiiissssi", $idBudget, $idClient, $proximo_numero, $anoAtual, $readyStorage, $joinWork, $exitWork, $observacaoWorksheet ,$idAdmin);
         }
 
         $result->execute();
@@ -94,18 +94,13 @@
                 $observacao = $_POST['secao_' . $i . '_produto_observacao_' . $j];
                 $tamanho = $_POST['secao_' . $i . '_produto_tamanho_' . $j];
                 if(!empty($descricao) || !empty($tamanho)) {
-                    $sql = "SELECT id FROM product WHERE product.reference = '$ref';";
-                    $result = $con->query($sql);
-                    if ($result->num_rows > 0) {
-                        $row = $result->fetch_assoc();
-                        $idProduct = $row['id'];
-                    }
-                    $sql = "UPDATE budget_sections_products SET checkProduct = $check, storageProduct = $storage, observationProduct = '$observacao', sizeProduct = '$tamanho' WHERE idBudget = $idBudget AND idProduct = $idProduct AND orderSection = $i AND orderProduct = $j;";
+                    $sql = "UPDATE budget_sections_products SET checkProduct = $check, storageProduct = $storage, observationProduct = '$observacao', sizeProduct = '$tamanho' WHERE idBudget = $idBudget AND orderSection = $i AND orderProduct = $j;";
                     $result = $con->prepare($sql);
                     $result->execute();
                 }
             }
         }
+        header('Location: ../pages/fichaTrabalhoEdit.php?idWorksheet=' . $idWorksheet);
     }
     elseif ($op == "edit") {
         $idWorksheet = $_GET['idWorksheet'];
@@ -168,6 +163,6 @@
                 }
             }
         }
+        header('Location: ../pages/fichaTrabalho.php');
     }
-    header('Location: ../pages/fichasTrabalho.php');
 ?>
