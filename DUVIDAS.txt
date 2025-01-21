@@ -21,3 +21,6 @@ gestão de stocks -> tentar
 no modal do orcamento de selecionar clientes se não aparecer resultados na pesquisa fica na mesma com resultados invisiveis que dao para selecionar 
 
 verificar e corrigir ao ir para alguma pagina que precise de valores no url, se nao tiver voltar para a pagina anterior
+
+alterar dashboard, meter a tabela das fichas de trabalho apenas com o numero e o estado, e ao lado a tabela das logs e limite de linhas, botão para ver mais e ao clicar na ficha ir para o edit
+

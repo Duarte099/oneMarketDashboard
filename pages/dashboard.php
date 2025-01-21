@@ -110,101 +110,125 @@
             </ul>
             <!-- End of Insights -->
             
-
-            <div class="year-selector">
-                <button id="prevYear" class="year-button">❮</button> <!-- Seta de diminuir o ano -->
-                <span id="currentYear" class="year-display"><?php echo $anoAtual; ?></span>
+            <!-- Ano -->
+            <div class="chart-container">
+                <div class="year-selector">
+                    <button id="prevYear" class="year-button">❮</button>
+                    <span id="currentYear" class="year-display"><?php echo $anoAtual; ?></span>
+                    <button id="nextYear" class="year-button">❯</button>
+                </div>
+                <canvas id="ganhosChart"></canvas>
             </div>
-
-            <h2 id="tituloGrafico">Ganhos Mensais em € (<?php echo $anoAtual; ?>)</h2>
-
-            <canvas id="ganhosChart" width="400" height="200"></canvas> <!-- Canvas para o gráfico -->
+            
 
             <script>
-                let anoAtual = <?php echo $anoAtual; ?>; // Ano inicial, vindo do PHP
-                const anoDisplay = document.getElementById('currentYear');
+                document.addEventListener('DOMContentLoaded', function () {
+                    let anoAtual = new Date().getFullYear(); // Ano atual
+                    let anoSelecionado = anoAtual; // Inicialmente, o ano selecionado é o atual
+                    const anoDisplay = document.getElementById('currentYear');
 
-                // Evento para o botão de diminuir o ano
-                document.getElementById('prevYear').addEventListener('click', function() {
-                    anoAtual--;  // Decrementa o ano
-                    anoDisplay.innerText = anoAtual; // Atualiza o display do ano
-                    atualizarGrafico(); // Atualiza o gráfico com o novo ano
-                });
+                    // Atualiza o ano exibido no display
+                    function atualizarAnoDisplay() {
+                        anoDisplay.innerText = anoSelecionado;
+                    }
 
-                // Função para buscar dados e atualizar o gráfico
-                async function buscarDados() {
-                    try {
-                        const response = await fetch(`tabelaganhos.php?ano=${anoAtual}`); // Passa o ano como parâmetro
-                        if (!response.ok) {
-                            throw new Error('Erro ao buscar dados da API');
+                    // Atualiza o gráfico com base no ano selecionado
+                    async function atualizarGrafico() {
+                        const response = await buscarDados();
+                        if (!response) {
+                            console.error('Não foi possível atualizar o gráfico.');
+                            return;
                         }
-                        return await response.json(); // Retorna os dados da API
-                    } catch (error) {
-                        console.error('Erro na busca dos dados:', error);
-                        return null;
-                    }
-                }
 
-                async function atualizarGrafico() {
-                    const response = await buscarDados(); // Busca os dados
-                    if (!response) {
-                        console.error('Dados não disponíveis para criar o gráfico.');
-                        return;
-                    }
+                        const data = response.data;
+                        const canvas = document.getElementById('ganhosChart');
+                        if (!canvas) {
+                            console.error('Canvas para o gráfico não encontrado.');
+                            return;
+                        }
 
-                    const data = response.data; // Dados de ganhos
+                        const ctx = canvas.getContext('2d');
+                        if (!ctx) {
+                            console.error('Contexto 2D não disponível para o gráfico.');
+                            return;
+                        }
 
-                    // Atualiza o título
-                    const titulo = document.getElementById('tituloGrafico');
-                    if (titulo) {
-                        titulo.innerText = `Ganhos Mensais em € (${anoAtual})`;
-                    }
+                        // Verifica se o gráfico já existe antes de destruir
+                        if (window.ganhosChart && typeof window.ganhosChart.destroy === 'function') {
+                            window.ganhosChart.destroy();
+                        }
 
-                    const canvas = document.getElementById('ganhosChart');
-                    if (!canvas) {
-                        console.error('Elemento canvas com ID "ganhosChart" não encontrado.');
-                        return;
-                    }
-
-                    const ctx = canvas.getContext('2d');
-
-                    // Verifica se o gráfico já foi criado
-                    if (window.ganhosChart) {
-                        window.ganhosChart.destroy(); // Destroi o gráfico existente
-                    }
-
-                    // Cria um novo gráfico
-                    window.ganhosChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                            datasets: [{
-                                label: 'Ganhos em €',
-                                data: [
-                                    data.JANE, data.FEVE, data.MARC, data.ABRI, data.MAIO, 
-                                    data.JUNH, data.JULH, data.AGOS, data.SETE, data.OUTR, 
-                                    data.NOVE, data.DEZE
-                                ],
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            scales: {
-                                y: {
-                                    beginAtZero: true
+                        // Cria o novo gráfico
+                        window.ganhosChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                                datasets: [{
+                                    label: 'Ganhos em €',
+                                    data: [
+                                        data.JANE, data.FEVE, data.MARC, data.ABRI, data.MAIO,
+                                        data.JUNH, data.JULH, data.AGOS, data.SETE, data.OUTR,
+                                        data.NOVE, data.DEZE
+                                    ],
+                                    backgroundColor: '#781215',
+                                    borderColor: '#781215',
+                                    borderWidth: 1,
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
                                 }
                             }
+                        });
+
+                        // Atualiza o título do gráfico
+                        const titulo = document.getElementById('tituloGrafico');
+                        if (titulo) {
+                            titulo.innerText = `Ganhos Mensais em € (${anoSelecionado})`;
+                        }
+                    }
+
+                    // Busca os dados do ano selecionado
+                    async function buscarDados() {
+                        try {
+                            const response = await fetch(`tabelaganhos.php?ano=${anoSelecionado}`);
+                            if (!response.ok) {
+                                throw new Error('Erro ao buscar os dados.');
+                            }
+                            return await response.json();
+                        } catch (error) {
+                            console.error(error);
+                            return null;
+                        }
+                    }
+
+                    // Eventos dos botões
+                    document.getElementById('prevYear').addEventListener('click', function () {
+                        if (anoSelecionado > anoAtual - 1) { // Apenas permite o ano atual e o anterior
+                            anoSelecionado--;
+                            atualizarAnoDisplay();
+                            atualizarGrafico();
                         }
                     });
-                }
 
-                // Inicia o gráfico com o ano inicial
-                document.addEventListener('DOMContentLoaded', atualizarGrafico);
+                    document.getElementById('nextYear').addEventListener('click', function () {
+                        if (anoSelecionado < anoAtual) { // Apenas permite voltar ao ano atual
+                            anoSelecionado++;
+                            atualizarAnoDisplay();
+                            atualizarGrafico();
+                        }
+                    });
 
+                    // Inicializa o gráfico com o ano atual
+                    atualizarAnoDisplay();
+                    atualizarGrafico();
+                });
             </script>
+
 
 
             <div class="work-status">
