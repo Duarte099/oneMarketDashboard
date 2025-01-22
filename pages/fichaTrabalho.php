@@ -151,7 +151,7 @@
             error: function(xhr, status, error) {
                 console.error('Erro ao buscar os dados:', error);
             }
-        }); 
+        });
 
         function budgetsSearch(searchBox) {
             const modal = document.getElementById('worksheetModal');
@@ -252,7 +252,7 @@
             </div>
 
             <div id="worksheetModal" class="modal">
-                <div class="modal-content">
+                <div class="worksheet-modal-content">
                     <div class="headerModal">
                         <h2>Selecione um Orçamento</h2>
                         <span class="close">&times;</span>
@@ -402,16 +402,9 @@
                 // Função para fechar o modal
                 function closeModal() {
                     modal.style.display = 'none';
-                    window.location.href = window.location.pathname; // Recarrega a página
+                    searchInput.value = '';
+                    budgetsSearch(searchInput);
                 }
-
-                // Limpar pesquisa modal
-                window.limparPesquisa = function() {
-                    if (searchInput) {
-                        searchInput.value = ''; // Limpa o valor do input
-                        clientsSearch(searchInput);
-                    }
-                };
 
                 // Fechar modal ao clicar no "x"
                 const closeButton = document.querySelector('.close');

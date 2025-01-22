@@ -176,7 +176,11 @@
                                     while ($row = $result->fetch_assoc()) {
                                         $status = $row['ativo'] == 1 ? 'Ativo' : 'Inativo';
                                         echo "<tr onclick=\"handleRowClick('{$row['id']}', 'stock')\" style=\"cursor: pointer;\">
-                                            <td><img src={$row['imagem']}></td>
+                                            <td>
+                                                <div id=\"profilePic\" style=\"width:100%; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
+                                                    <img src=\"../images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
+                                                </div>
+                                            </td>
                                             <td>{$row['nome']}</td>
                                             <td>{$row['refProduto']}</td>
                                             <td>" . number_format((float)$row['valorProduto'], 2, '.', '.') . "€</td>

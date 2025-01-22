@@ -56,11 +56,55 @@
         $product_stock = $resultStock->fetch_assoc();
     }
 
+    // Diretório onde os arquivos serão armazenados
+    $uploadDir = '../images/uploads/';
+    $publicDir = '/PAP/images/uploads/'; // Caminho acessível pelo navegador
+
+    // Verifica se o campo 'photo' está definido no array $_FILES
+    if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+        // Recupera informações do arquivo enviado        
+        $fileTmpPath = $_FILES['photo']['tmp_name']; // Caminho temporário
+        $fileName = $_FILES['photo']['name'];       // Nome original do arquivo
+
+        $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+        if (true) { // testar se a extensão faz parte das extensoes permitidas
+            // gif / jpg / jpeg / png
+            // verificar o tamanho da iamgem .. pode ser verificado em javascript // size of document
+            // Gera um nome único para evitar sobrescrita de arquivos
+            $uniqueFileName = uniqid('photo_', true) . '.' . $extension;
+            $uniqueFileName_mini = "mini_" . $uniqueFileName;
+
+            // Define o caminho completo para o upload
+            $destinationPath = $uploadDir . $uniqueFileName_mini;
+            $destinationPathmINI = $uploadDir . $uniqueFileName;
+
+            // Move o arquivo para o diretório final
+            if (move_uploaded_file($fileTmpPath, $destinationPath)) {
+
+                // GERAR O THUMBNAIL
+                $thumbWidth = 500; // Largura desejada
+                $thumbHeight = 500; // Altura desejada
+
+                createThumbnail($destinationPath, $destinationPathmINI, $thumbWidth, $thumbHeight);
+
+
+                // Gera o link público para o arquivo
+                $fileUrl = $publicDir . $uniqueFileName;
+
+                /** redimensionamento da imagem */
+
+                echo "Upload realizado com sucesso! Link: <a href=\"$fileUrl\">$fileUrl</a>";
+            } else {
+                echo "Erro ao mover o arquivo para o diretório final.";
+            }
+        }
+    } else {
+        echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
+    }
     
     // formulario para editar
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Caso o formulário seja para editar
-        $img = isset($_POST['photo']) ? trim($_POST['photo']) : $product['img'];
         $name = isset($_POST['name']) ? trim($_POST['name']) : $product['name'];
         $ref = isset($_POST['ref']) ? trim($_POST['ref']) : $product['reference'];
         $value = isset($_POST['value']) ? trim($_POST['value']) : $product['value'];
@@ -72,7 +116,7 @@
         // Atualiza os dados na base de dados
         $updateQuery = "UPDATE product SET img = ?, name = ?, reference = ?, value = ?, active = ? WHERE id = ?";
         $stmt = $con->prepare($updateQuery);
-        $stmt->bind_param("ssssii", $img, $name, $ref, $value, $status, $id);
+        $stmt->bind_param("ssssii", $fileUrl, $name, $ref, $value, $status, $id);
 
         // Atualiza os dados na tabela product_stock
         $updateStockQuery = "UPDATE product_stock SET quantity = ? WHERE idProduct = ?";
@@ -127,7 +171,7 @@
                 <form method="POST" action="" id="profileForm" enctype="multipart/form-data">
                     <div class="column-left">
                         <label for="photo">Foto do produto:</label>
-                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $img; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
+                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $product['img']; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
                             <img src="../images/semfundo.png" style="width:100%;padding-bottom: 13px;">
                         </div>
                         <?php if (adminPermissions("adm_003", "update") == 1) { ?>

@@ -211,3 +211,22 @@ hr {
     background-color: rgba(255, 0, 0, 0.3); /* Fundo no hover */
     color: #ff0000;
 }
+
+
+.content nav.transparent {
+    opacity: 0; /* Torna o header invisível */
+    pointer-events: none; /* Impede interações com os botões */
+    transition: opacity 0.3s ease; /* Transição suave */
+}
+
+
+.content nav .profile-img,
+.content nav .toggle {
+    transition: opacity 0.3s ease; /* Transição suave para os botões */
+}
+
+.content nav.transparent .profile-img,
+.content nav.transparent .toggle {
+    opacity: 0; /* Torna os botões invisíveis */
+    pointer-events: none; /* Impede cliques nos botões */
+}

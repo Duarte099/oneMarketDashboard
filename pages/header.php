@@ -32,7 +32,7 @@
                 <button id="closeModalBtn" class="close-btn"> &times; </button>
                 <!-- Seção superior com foto e nome -->
                 <div class="user-info" style="display: flex; align-items: center; padding: 10px 20px;">
-                    <img src="<?php echo $img ?>" alt="Foto de Perfil" class="profile-img" style="width: 50px; height: 50px; margin-right: 10px;">
+                    <img src="<?php echo $img ?>" class="profile-img" style="width: 50px; height: 50px; margin-right: 10px;">
                     <span class="user-name" style="font-size: 16px; font-weight: bold;"><?=$_SESSION['name']?></span>
                 </div>
                 <hr style="border: none; border-top: 1px solid #333; margin: 10px 0;">
@@ -45,6 +45,20 @@
     </div>
 </nav>
 <script>
+    const header = document.querySelector('.content nav');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) { // Se o scroll ultrapassar 50px
+            header.classList.add('transparent');
+        } else {
+            header.classList.remove('transparent');
+        }
+    });
+
+
+
+
+
     document.addEventListener('DOMContentLoaded', function() {
         const profileModal = document.getElementById('profileModal');
         const profileLink = document.querySelector('.profile'); // Seleciona o link da foto

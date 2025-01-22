@@ -231,7 +231,7 @@ body{
     top: 0;
 }
 
-.modal-content {
+.worksheet-modal-content {
     background-color: var(--background-color);
     gap: 12px;
     margin: auto;
@@ -243,20 +243,20 @@ body{
     flex-direction: column;
 }
 
-.modal-content .headerModal {
+.worksheet-modal-content .headerModal {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.modal-content .headerModal h2 {
+.worksheet-modal-content .headerModal h2 {
     color: var(--primary-text-color);
     margin: 0;
     font-size: 26px;
     font-weight: bold;
 }
 
-.modal-content .headerModal .close {
+.worksheet-modal-content .headerModal .close {
     color: var(--primary-text-color);
     font-size: 36px;
     font-weight: bold;
@@ -266,7 +266,7 @@ body{
     transition: color 0.3s;
 }
 
-.modal-content .headerModal .close:hover {
+.worksheet-modal-content .headerModal .close:hover {
     color: red;
 }
 
@@ -357,41 +357,43 @@ table td button.select-worksheet {
     font-size: 14px;
 }
 
+table td{
+    padding: 16px 0;
+}
+
 table td button.select-worksheet:hover {
     background-color: #d03c3c; 
 }
 
-.content main .modal-content table tbody tr {
+.content main .worksheet-modal-content table tbody tr {
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: left;
 }
 
-.content main .modal-content table tbody{
+.content main .worksheet-modal-content table tbody{
     overflow-y: auto;
 }
 
-.content main .modal-content table thead td{
+.content main .worksheet-modal-content table thead td{
     text-align: left;
 }
 
-.content main .modal-content table tbody tr:hover {
+.content main .worksheet-modal-content table tbody tr:hover {
     background: var(--background-color);
 }
 
-.content main .modal-content .form-input {
+.content main .worksheet-modal-content .form-input {
     display: flex;
     align-items: center;
     height: 40px;
-    border: 1px solid #444;
-    border-radius: 20px;
-    overflow: hidden;
-    background: #1e1e24;
+    border-radius: 5px;
+    background: var(--background-color-secundary);
     padding: 0 12px;
     position: relative;
 }
 
-.content main .modal-content .form-input input {
+.content main .worksheet-modal-content .form-input input {
     flex-grow: 1;
     height: 100%;
     border: none;
@@ -401,7 +403,7 @@ table td button.select-worksheet:hover {
     outline: none;
 }
 
-.content main .modal-content .form-input button {
+.content main .worksheet-modal-content .form-input button {
     width: 50px;
     height: 100%;
     display: flex;
@@ -416,7 +418,7 @@ table td button.select-worksheet:hover {
     transition: background 0.3s;
 }
 
-.content main .modal-content .form-input button:hover {
+.content main .worksheet-modal-content .form-input button:hover {
     background: #666;
 }
 

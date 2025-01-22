@@ -174,7 +174,7 @@
                                             administrator.email,
                                             administrator.user,
                                             administrator.active,
-                                            administrator.img,
+                                            administrator.img as imagem,
                                             administrator.birthday
                                         FROM administrator ;";
                                 $result = $con->query($sql);
@@ -182,7 +182,11 @@
                                     while ($row = $result->fetch_assoc()) {
                                         $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
                                         echo "<tr onclick=\"handleRowClick('{$row['id']}', 'editAdmin')\" style=\"cursor: pointer;\">
-                                            <td><img src={$row['img']}></td>
+                                                <td>
+                                                    <div id=\"profilePic\" style=\"width:100%; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
+                                                        <img src=\"../images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
+                                                    </div>
+                                                </td>
                                                 <td>{$row['name']}</td>
                                                 <td>{$row['email']}</td>
                                                 <td>{$row['user']}</td>

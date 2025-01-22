@@ -400,7 +400,7 @@
                                                                 <td><input type="text" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" value="100" readonly></td>
                                                                 <td><input type="search" list="datalistProduct" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" oninput="atualizarCampos(this);"></td>
                                                                 <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>"></td>
-                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" oninput="atualizarPrecoTotal(this)"></td>
+                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value="1" oninput="atualizarPrecoTotal(this)"></td>
                                                                 <td><textarea rows="1" style="height: 42px;" class="autoExpand" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>"></textarea></td>
                                                                 <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" readonly></td>
                                                                 <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" readonly></td>

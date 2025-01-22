@@ -19,7 +19,7 @@
         $name =  $row['name'];
         $email =  $row['email'];
         $user =  $row['user'];
-        $img =  $row['img'];
+        $imgPerfil =  $row['img'];
         $birthday =  $row['birthday'];
     }
 ?>
@@ -60,10 +60,10 @@
                 <form action="../pages/perfilInserir.php" id="profileForm" method="post" enctype="multipart/form-data">
                     <div class="column-left">
                         <label for="photo">Foto de perfil:</label>
-                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $img; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
+                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $imgPerfil; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
                             <img src="../images/semfundo.png" style="width:100%;">
                         </div>
-                        <!--<img src="<?php echo $img; ?>" alt="Profile Picture" id="profilePic">-->
+                        <!--<img src="<?php echo $imgPerfil; ?>" alt="Profile Picture" id="profilePic">-->
                         <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
                     </div>
                     <div class="column-right">

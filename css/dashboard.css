@@ -47,6 +47,7 @@ body{
     width: 100%;
     padding: 36px 24px;
     max-height: calc(100vh - 56px);
+    position: relative;
 }
 
 .content main .header h1{
@@ -110,32 +111,102 @@ body{
     color: var(--secondary-text-color);
 }
 
-.content main .work-status{
-    display: flex;
-    flex-wrap: wrap;
-    grid-gap: 24px;
+
+
+/* Ficha de Trabalho e logs */
+
+
+.content main .FichaLogs {
+    display: flex; 
+    gap: 24px; 
     margin-top: 24px;
-    width: 100%;
     color: var(--secondary-text-color);
+    flex-wrap: wrap; 
 }
 
-.content main .work-status .header{
+/* Ficha de Trabalho */
+.content main .work-status {
+    width: 48%; 
+    min-width: 300px; 
+}
+
+.content main .work-status .header {
     display: flex;
     align-items: center;
     grid-gap: 16px;
     margin-bottom: 24px;
 }
 
-.content main .work-status .header h3{
+.content main .work-status .header h3 {
     margin-right: auto;
     font-size: 24px;
     font-weight: 600;
     color: var(--primary-text-color);
 }
 
+.content main .work-status .products {
+    position: relative;
+}
+
+.content main .work-status .products button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: auto;
+    padding: 10px 15px;
+    background-color: var(--theme-color);
+    color: var(--primary-text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.content main .work-status .products button:hover {
+    background-color: darkred;
+}
+
+.content main .work-status .products table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .content main .work-status .header .bx{
     color: var(--theme-color);
 }
+
 
 .content main .work-status>div{
     border-radius: 20px;
@@ -149,8 +220,10 @@ body{
     flex-basis: 500px;
 }   
 
+
+
 .content main .work-status .tables table{
-    width: 100%;
+    width: 70%;
     border-collapse: collapse;
 }
 
@@ -194,11 +267,6 @@ body{
     color: var(--primary-text-color);
 }
 
-.content main .work-status .products table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
 
 .content main .work-status .products table th,
 .content main .work-status .products table td {
@@ -231,18 +299,16 @@ body{
     table-layout: fixed;
 }
 
+
+
 /* Logs */
 
-.content main .logs-section{
-    display: flex;
-    flex-wrap: wrap;
-    grid-gap: 24px;
-    margin-top: 24px;
-    width: 100%;
-    color: var(--secondary-text-color);
+.content main .logs-section {
+    width: 50%; 
+    min-width: 300px; 
 }
 
-.content main .logs-section .header{
+.content main .logs-section .header {
     display: flex;
     align-items: center;
     grid-gap: 16px;
@@ -272,7 +338,7 @@ body{
     flex-basis: 500px;
 }   
 
-.content main .logs-section .tables table{
+.content main .logs-section .logs table{
     width: 100%;
     border-collapse: collapse;
 }
@@ -355,6 +421,8 @@ body{
 }
 
 
+
+/* Grafico */
 .chart-container {
     background: var(--background-color);
     border-radius: 20px;

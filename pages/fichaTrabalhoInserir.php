@@ -88,15 +88,14 @@ if ($op == "save") {
                         $sql = "UPDATE budget_sections_products SET checkProduct = $check, storageProduct = $storage, observationProduct = '$observacao', sizeProduct = '$tamanho' WHERE idBudget = $idBudget AND orderSection = {$rowSection['orderSection']} AND orderProduct = '{$rowProducts['orderProduct']}';";
                         $result = $con->prepare($sql);
                         $result->execute();
-
-                        $sql = "INSERT INTO worksheet_version (idVersion, idWorksheet, readyStorage, joinWork, exitWork, observation, checkProduct, storageProduct, observationProduct, sizeProduct) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                        $result = $con->prepare($sql);
-                        if ($result) {
-                            $idVersion = 1;
-                            $result->bind_param("iissssssss", $idVersion, $idWorksheet, $readyStorage, $joinWork, $exitWork, $observacaoWorksheet, $check, $storage, $observacao, $tamanho);
-                        }
-                        $result->execute();
                     }
+                    $sql = "INSERT INTO worksheet_version (idVersion, idWorksheet, readyStorage, joinWork, exitWork, observation, orderSection, orderProduct, checkProduct, storageProduct, observationProduct, sizeProduct) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $result = $con->prepare($sql);
+                    if ($result) {
+                        $idVersion = 1;
+                        $result->bind_param("iissssiissss", $idVersion, $idWorksheet, $readyStorage, $joinWork, $exitWork, $observacaoWorksheet, $rowSection['orderSection'], $rowProducts['orderProduct'], $check, $storage, $observacao, $tamanho);
+                    }
+                    $result->execute();
                 }
             }
         }
@@ -110,6 +109,13 @@ if ($op == "save") {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $idBudget =  $row['idBudget'];
+    }
+
+    $sql2 = "SELECT MAX(idVersion) AS idVersion FROM worksheet_version WHERE idWorksheet = $idWorksheet;";
+    $result2 = $con->query($sql2);
+    if ($result2->num_rows > 0) {
+        $row = $result2->fetch_assoc();
+        $idVersion =  $row['idVersion'] + 1;
     }
 
     //cabeçalho
@@ -153,11 +159,10 @@ if ($op == "save") {
                         $result = $con->prepare($sql);
                         $result->execute();
 
-                        $sql = "INSERT INTO worksheet_version (idVersion, idWorksheet, readyStorage, joinWork, exitWork, observation, checkProduct, storageProduct, observationProduct, sizeProduct) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        $sql = "INSERT INTO worksheet_version (idVersion, idWorksheet, readyStorage, joinWork, exitWork, observation, orderSection, orderProduct, checkProduct, storageProduct, observationProduct, sizeProduct) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                         $result = $con->prepare($sql);
                         if ($result) {
-                            $idVersion = 1;
-                            $result->bind_param("iissssssss", $idVersion, $idWorksheet, $readyStorage, $joinWork, $exitWork, $observacaoWorksheet, $check, $storage, $observacao, $tamanho);
+                            $result->bind_param("iissssiissss", $idVersion, $idWorksheet, $readyStorage, $joinWork, $exitWork, $observacaoWorksheet, $rowSection['orderSection'], $rowProducts['orderProduct'], $check, $storage, $observacao, $tamanho);
                         }
                         $result->execute();
                     }

@@ -9,7 +9,6 @@
         header('Location: index.php');
         exit();
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -229,121 +228,113 @@
                 });
             </script>
 
+            <div class="FichaLogs">
+                <div class="work-status">
+                    <div class="products">
+                        <h2>Estado das Fichas de Trabalho</h2>
+                        <button type="button" onclick="window.location.href='fichatrabalho.php'">Ver Mais</button>
+                    <table>
+                            <thead>
+                                <tr>
+                                    <th>Numero</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                                $sql = "SELECT 
+                                        budget.id as idBudget,
+                                        budget.num as numBudget,
+                                        budget.year as yearBudget, 
+                                        worksheet.id as idWorksheet,
+                                        worksheet.num as numWorksheet,
+                                        worksheet.year as yearWorksheet,
+                                        worksheet.readyStorage,
+                                        worksheet.joinWork, 
+                                        worksheet.exitWork,
+                                        CASE
+                                            WHEN worksheet.readyStorage = '0000-00-00' THEN 'Em Desenvolvimento'
+                                            WHEN worksheet.readyStorage != '0000-00-00' AND worksheet.joinWork = '0000-00-00' THEN 'Pendente'
+                                            WHEN worksheet.joinWork != '0000-00-00' AND worksheet.exitWork = '0000-00-00' THEN 'Em Obra'
+                                            WHEN worksheet.exitwork != '0000-00-00' THEN 'Concluido'
+                                        END as status
+                                    FROM worksheet
+                                    LEFT JOIN 
+                                        budget ON worksheet.idBudget = budget.id
+                                    ORDER BY idWorksheet DESC
+                                    LIMIT 10;";
+                                $result = $con->query($sql);
+                                if ($result->num_rows > 0) {
+                                    
+                                    while ($row = $result->fetch_assoc()) {
+                                        $statustext = $row['status'];
+                                        $statusicon = '';
 
+                                        switch($statustext){
+                                            case 'Em Desenvolvimento':
+                                                $statusicon = '<i class="bx bx-time" style="color: yellow; margin-right: 8px;"></i>';
+                                                break;
+                                            case 'Pendente':
+                                                $statusicon = '<i class="bx bx-error" style="color: red; margin-right: 8px;"></i>';
+                                                break;
+                                            case 'Em Obra':
+                                                $statusicon = '<i class="bx bx-check-circle" style="color: orange; margin-right: 8px;"></i>';
+                                                break;
+                                            case 'Concluido':
+                                                $statusicon = '<i class="bx bx-check-circle" style="color: green; margin-right: 8px;"></i>';
+                                                break;
+                                            default:
+                                                $statusicon = '<i class="bx bx-question-mark" style="color: gray; margin-right: 8px;"></i>';
+                                                break;
+                                        }
+                                        echo "<tr onclick=\"handleRowClick('{$row['idWorksheet']}', 'editWorksheet')\" style=\"cursor: pointer;\">
+                                            <td>" . $row['numWorksheet'] . "/" . $row['yearWorksheet'] . "</td>
+                                            <td>{$statusicon}{$statustext}</td>
+                                        </tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
+                                }
+                            ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                
+                
 
-            <div class="work-status">
-                <div class="products">
-                <h2>Estado das Fichas de Trabalho</h2>
-                <table>
+                <div class="logs-section">
+                    <div class="logs">
+                    <h2>Logs Recentes</h2>
+                    <table>
                         <thead>
                             <tr>
-                                <th>Numero</th>
-                                <th>Nº Orçamento</th>
-                                <th>Pronto em armazém</th>
-                                <th>Entrada em Obra</th>
-                                <th>Saída de Obra</th>
-                                <th>Status</th>
+                                <th>Data</th>
+                                <th>Log</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
-                            $sql = "SELECT 
-                                    budget.id as idBudget,
-                                    budget.num as numBudget,
-                                    budget.year as yearBudget, 
-                                    worksheet.id as idWorksheet,
-                                    worksheet.num as numWorksheet,
-                                    worksheet.year as yearWorksheet,
-                                    worksheet.readyStorage,
-                                    worksheet.joinWork, 
-                                    worksheet.exitWork,
-                                    CASE
-                                        WHEN worksheet.readyStorage = '0000-00-00' THEN 'Em Desenvolvimento'
-                                        WHEN worksheet.readyStorage != '0000-00-00' AND worksheet.joinWork = '0000-00-00' THEN 'Pendente'
-                                        WHEN worksheet.joinWork != '0000-00-00' AND worksheet.exitWork = '0000-00-00' THEN 'Em Obra'
-                                        WHEN worksheet.exitwork != '0000-00-00' THEN 'Concluido'
-                                    END as status
-                                FROM worksheet
-                                LEFT JOIN 
-                                    budget ON worksheet.idBudget = budget.id
-                                ORDER BY idWorksheet DESC;";
+                            $sql = "SELECT dataLog, logFile
+                                from administrator_logs
+                                ORDER BY dataLog DESC
+                                LIMIT 10";
                             $result = $con->query($sql);
-                            if ($result->num_rows > 0) {
-                                
+                            if ($result->num_rows > 0) {  
                                 while ($row = $result->fetch_assoc()) {
-                                    $statustext = $row['status'];
-                                    $statusicon = '';
-
-                                    switch($statustext){
-                                        case 'Em Desenvolvimento':
-                                            $statusicon = '<i class="bx bx-time" style="color: yellow; margin-right: 8px;"></i>';
-                                            break;
-                                        case 'Pendente':
-                                            $statusicon = '<i class="bx bx-error" style="color: red; margin-right: 8px;"></i>';
-                                            break;
-                                        case 'Em Obra':
-                                            $statusicon = '<i class="bx bx-check-circle" style="color: orange; margin-right: 8px;"></i>';
-                                            break;
-                                        case 'Concluido':
-                                            $statusicon = '<i class="bx bx-check-circle" style="color: green; margin-right: 8px;"></i>';
-                                            break;
-                                        default:
-                                            $statusicon = '<i class="bx bx-question-mark" style="color: gray; margin-right: 8px;"></i>';
-                                            break;
-                                    }
-                                    echo "<tr onclick=\"handleRowClick('{$row['idWorksheet']}', 'editWorksheet')\" style=\"cursor: pointer;\">
-                                        <td>" . $row['numWorksheet'] . "/" . $row['yearWorksheet'] . "</td>
-                                        <td>" . $row['numBudget'] . "/" . $row['yearBudget'] . "</td>
-                                        <td>{$row['readyStorage']}</td>
-                                        <td>{$row['joinWork']}</td>
-                                        <td>{$row['exitWork']}</td>
-                                        <td>{$statusicon}{$statustext}</td>
+                                    echo "<tr>
+                                    <td>{$row['dataLog']}</td>
+                                    <td>{$row['logFile']}</td>
                                     </tr>";
                                 }
                             } else {
-                                echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
+                                echo "<tr><td colspan='2'>Sem logs recentes para exibir.</td></tr>";
                             }
                         ?>
-                        </tbody>
                     </table>
                 </div>
             </div>
-            
-            
-            
-
-            <div class="logs-section">
-                <div class="logs">
-                <h2>Logs Recentes</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Log</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                        $sql = "SELECT dataLog, logFile
-                            from administrator_logs
-                            ORDER BY dataLog DESC
-                            LIMIT 10";
-                        $result = $con->query($sql);
-                        if ($result->num_rows > 0) {  
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>
-                                <td>{$row['dataLog']}</td>
-                                <td>{$row['logFile']}</td>
-                                </tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='2'>Sem logs recentes para exibir.</td></tr>";
-                        }
-                    ?>
-                </table>
-            </div>
-
-
         </main>
     </div>
     <script src="../index.js"></script>

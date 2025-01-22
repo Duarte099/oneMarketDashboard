@@ -21,7 +21,14 @@
 
     $idAdmin = $_SESSION['id'];
 
-    $sql = "SELECT idClient, idBudget, num, year, observation, readyStorage, joinWork, exitWork FROM worksheet WHERE id = $idWorksheet;";
+    $sql = "SELECT MAX(idVersion) AS idVersion FROM worksheet_version WHERE idWorksheet = $idWorksheet;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $maxVersao =  $row['idVersion'];
+    }
+
+    $sql = "SELECT idClient, idBudget, num, year FROM worksheet WHERE id = $idWorksheet;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -29,12 +36,33 @@
         $idBudget =  $row['idBudget'];
         $numWorksheet = $row['num'];
         $yearWorksheet = $row['year'];
-        $readyStorage = $row['readyStorage'];
-        $joinWork = $row['joinWork'];
-        $exitWork = $row['exitWork'];
-        $observation = $row['observation'];
     }
     $numFicha = "$numWorksheet/$yearWorksheet";
+
+    $versao = isset($_GET['versao']) ? (int)$_GET['versao'] : $maxVersao;
+    if ($versao == $maxVersao) {
+        $sql = "SELECT observation, readyStorage, joinWork, exitWork FROM worksheet WHERE id = $idWorksheet;";
+        $result = $con->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $readyStorage = $row['readyStorage'];
+            $joinWork = $row['joinWork'];
+            $exitWork = $row['exitWork'];
+            $observation = $row['observation'];
+        }
+        $numFicha = "$numWorksheet/$yearWorksheet";
+    }
+    else {
+        $sql = "SELECT observation, readyStorage, joinWork, exitWork FROM worksheet_version WHERE idWorksheet = $idWorksheet AND idVersion = $versao;";
+        $result = $con->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $readyStorage = $row['readyStorage'];
+            $joinWork = $row['joinWork'];
+            $exitWork = $row['exitWork'];
+            $observation = $row['observation'];
+        }
+    }
 
     $sql = "SELECT name, contact FROM client WHERE client.id = $idClient;";
     $result = $con->query($sql);
@@ -225,25 +253,36 @@
                                                             $sizeProduct = '';?>
                                                             <tbody class="produtos">
                                                                 <tr>
-                                                                    <?php 
-                                                                        $sql = "SELECT checkProduct, storageProduct, refProduct, nameProduct, amountProduct, observationProduct, sizeProduct FROM budget_sections_products WHERE idbudget = $idBudget AND orderProduct = '{$rowProducts['orderProduct']}' AND orderSection = '{$rowSection['orderSection']}';";
+                                                                    <?php
+                                                                        $sql = "SELECT refProduct, nameProduct, amountProduct FROM budget_sections_products WHERE idbudget = $idBudget AND orderProduct = '{$rowProducts['orderProduct']}' AND orderSection = '{$rowSection['orderSection']}';";
                                                                         $result = $con->query($sql);
                                                                         if ($result->num_rows > 0) {
-                                                                            while ($row = $result->fetch_assoc()) {
-                                                                                $checkProduct = "";
-                                                                                $storageProduct = "";
-                                                                                if (isset($row['checkProduct']) && $row['checkProduct'] == 1) {
-                                                                                    $checkProduct = "checked";
-                                                                                }
-                                                                                if (isset($row['storageProduct']) && $row['storageProduct'] == 1) {
-                                                                                    $storageProduct = "checked";
-                                                                                }
-                                                                                $refProduct = $row['refProduct'];
-                                                                                $nameProduct = $row['nameProduct'];
-                                                                                $amountProduct = $row['amountProduct'];
-                                                                                $observationProduct = $row['observationProduct'];
-                                                                                $sizeProduct = $row['sizeProduct'];
+                                                                            $row = $result->fetch_assoc();
+                                                                            $refProduct = $row['refProduct'];
+                                                                            $nameProduct = $row['nameProduct'];
+                                                                            $amountProduct = $row['amountProduct'];
+                                                                        }
+
+                                                                        if ($versao == $maxVersao) {
+                                                                            $sql = "SELECT checkProduct, storageProduct, observationProduct, sizeProduct FROM budget_sections_products WHERE idbudget = $idBudget AND orderProduct = '{$rowProducts['orderProduct']}' AND orderSection = '{$rowSection['orderSection']}';";
+                                                                            $result = $con->query($sql);
+                                                                        }
+                                                                        else {
+                                                                            $sql = "SELECT checkProduct, storageProduct, observationProduct, sizeProduct FROM worksheet_version WHERE idWorksheet = $idWorksheet AND orderProduct = '{$rowProducts['orderProduct']}' AND orderSection = '{$rowSection['orderSection']}';";
+                                                                            $result = $con->query($sql);
+                                                                        }
+                                                                        if ($result->num_rows > 0) {
+                                                                            $row = $result->fetch_assoc();
+                                                                            $checkProduct = "";
+                                                                            $storageProduct = "";
+                                                                            if (isset($row['checkProduct']) && $row['checkProduct'] == 1) {
+                                                                                $checkProduct = "checked";
                                                                             }
+                                                                            if (isset($row['storageProduct']) && $row['storageProduct'] == 1) {
+                                                                                $storageProduct = "checked";
+                                                                            }
+                                                                            $observationProduct = $row['observationProduct'];
+                                                                            $sizeProduct = $row['sizeProduct'];
                                                                         }
                                                                     ?>
                                                                     <td><input type="checkbox" class="check" name="secao_<?php echo $rowSection['orderSection']; ?>_produto_check_<?php echo $rowProducts['orderProduct']; ?>" <?php if ($checkProduct == "checked") {echo $checkProduct;} ?> <?php if (adminPermissions("adm_002", "update") == 0) {echo "disabled";}?>></td>
@@ -297,12 +336,6 @@
                             // Itera por cada secção
                             secoes.forEach((secao, secaoIdx) => {
                                 const produtos = secao.querySelectorAll(".produtos"); // Seleciona os produtos dentro da secção
-
-                                // Atualiza o número da secção (caso necessário)
-                                const secaoTitulo = secao.querySelector("h3");
-                                if (secaoTitulo) {
-                                    secaoTitulo.textContent = `Secção ${secaoIdx + 1}:`;
-                                }
 
                                 // Itera pelos produtos dentro da secção
                                 produtos.forEach((produto) => {

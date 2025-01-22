@@ -133,3 +133,81 @@
     width: calc(100% - 60px);
     left: 60px;
 }
+
+
+/* Estilo para o botão hambúrguer */
+.hamburger-menu {
+    position: fixed;
+    top: 20px;
+    left: 15px;
+    z-index: 3000;
+    font-size: 24px;
+    color: var(--primary-text-color);
+    cursor: pointer;
+    display: none; /* Esconde em telas grandes */
+}
+
+.sidebar.close~.hamburger-menu {
+    left: 70px;
+    transition: all 0.3s ease;
+}
+
+
+/* Sidebar completamente escondida */
+.sidebar.hidden {
+    display: none; /* Esconde a sidebar completamente */
+}
+
+/* Sidebar em tela cheia */
+.sidebar.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3000;
+    background: var(--background-color);
+    overflow-y: auto;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+/* Ajuste do botão hambúrguer para tela cheia */
+.hamburger-menu.active {
+    position: fixed;
+    top: 20px;
+    right: 20px; /* Muda para a direita na tela cheia */
+    font-size: 30px;
+    color: var(--primary-text-color);
+    z-index: 3100;
+}
+
+/* Exibir o botão em telas menores */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: block;
+    }
+
+    .sidebar {
+        width: 60px;
+    }
+
+    .sidebar.close {
+        width: 0;
+    }
+
+    .content {
+        width: 100%;
+        left: 0;
+    }
+
+    .sidebar.close~.content {
+        width: 100%;
+        left: 0;
+    }
+
+    .sidebar.hidden~.content {
+        width: 100%;
+        left: 0;
+    }
+}

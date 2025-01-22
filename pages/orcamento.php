@@ -33,7 +33,7 @@
     <script>
         //PESQUISA MODAL CLIENTES
             const clientsSearchData = [];
-                                    
+                                        
             $.ajax({
                 url: 'ajax.obterClientes.php',
                 type: 'POST',
@@ -44,7 +44,7 @@
                 error: function(xhr, status, error) {
                     console.error('Erro ao buscar os dados:', error);
                 }
-            }); 
+            });
 
             function clientsSearch(searchBox) {
                 const modal = document.getElementById('budgetModal');
@@ -59,20 +59,20 @@
 
                             // Adiciona as colunas da tabela
                             const nomeCliente = document.createElement("td");
-                            nomeCliente.textContent = result.nomeCliente;
+                            nomeCliente.textContent = result.nome;
 
                             const emailCliente = document.createElement("td");
-                            emailCliente.textContent = result.emailCliente;
+                            emailCliente.textContent = result.email;
 
                             const contactoCliente = document.createElement("td");
-                            contactoCliente.textContent = result.contactoCliente;
+                            contactoCliente.textContent = result.contacto;
 
-                            // Adiciona as células à linha
+                            // Adiciona todas as células à linha
                             row.appendChild(nomeCliente);
                             row.appendChild(emailCliente);
                             row.appendChild(contactoCliente);
 
-                            row.addEventListener("click", () => handleRowClick(result.idCliente, "budget"));
+                            row.addEventListener("click", () => handleRowClick(result.id, "budget"));
                             row.addEventListener("click", () => searchBox.value = "");
 
                             // Adiciona a linha ao corpo da tabela
@@ -83,7 +83,7 @@
                         const row = document.createElement("tr");
                         const noResultsCell = document.createElement("td");
                         noResultsCell.textContent = "Sem resultados";
-                        noResultsCell.colSpan = 3; // Define a célula para ocupar todas as colunas
+                        noResultsCell.colSpan = 3; // Atualiza para incluir todas as colunas (inclusive a de ações)
                         noResultsCell.style.textAlign = "center"; // Centraliza o texto
 
                         row.appendChild(noResultsCell);
@@ -92,7 +92,7 @@
                 };
 
                 if (query) {
-                    // Filtra os resultados com base na pesquisa
+                    // Filtra os resultados com base nos campos numBudget, nomeCliente e responsavel
                     const filteredResults = clientsSearchData.filter(item =>
                         item.nome.toLowerCase().includes(query) ||
                         item.email.toLowerCase().includes(query) ||
@@ -107,104 +107,104 @@
             }
         
         //PESQUISA ORÇAMENTOS
-        const budgetsSearchData = [];
-                                    
-        $.ajax({
-            url: 'ajax.obterOrcamentos.php',
-            type: 'POST',
-            dataType: 'json',
-            success: function(data) {
-                budgetsSearchData.push(...data);
-            },
-            error: function(xhr, status, error) {
-                console.error('Erro ao buscar os dados:', error);
-            }
-        }); 
-
-        function budgetsSearch(searchBox) {
-            const data = document.getElementById('bottom-data');
-            const tbody = data.querySelector('table tbody');
-            const query = searchBox.value.toLowerCase();
-            tbody.innerHTML = ""; // Limpa os resultados anteriores
-
-            const displayResults = (results) => {
-                if (results.length > 0) {
-                    results.forEach((result) => {
-                        const row = document.createElement("tr");
-
-                        // Adiciona as colunas da tabela
-                        const numBudget = document.createElement("td");
-                        numBudget.textContent = result.numBudget;
-
-                        const nomeCliente = document.createElement("td");
-                        nomeCliente.textContent = result.nomeCliente;
-
-                        const contactoCliente = document.createElement("td");
-                        contactoCliente.textContent = result.contactoCliente;
-
-                        const numWorksheet = document.createElement("td");
-                        numWorksheet.textContent = result.numWorksheet;
-
-                        const dataCriacao = document.createElement("td");
-                        dataCriacao.textContent = result.dataCriacao;
-
-                        const responsavel = document.createElement("td");
-                        responsavel.textContent = result.responsavel;
-
-                        // Adiciona o botão de exclusão
-                        const actions = document.createElement("td");
-                        const deleteButton = document.createElement("button");
-                        deleteButton.className = 'btn-small';
-                        deleteButton.id = 'botDeleteBudget';
-                        deleteButton.innerHTML = '🗑️';
-                        deleteButton.onclick = (event) => {
-                            deleteBudget(result.numBudget, result.idbudget);
-                            event.stopPropagation();
-                        };
-                        actions.appendChild(deleteButton);
-
-                        // Adiciona todas as células à linha
-                        row.appendChild(numBudget);
-                        row.appendChild(nomeCliente);
-                        row.appendChild(contactoCliente);
-                        row.appendChild(numWorksheet);
-                        row.appendChild(dataCriacao);
-                        row.appendChild(responsavel);
-                        row.appendChild(actions);
-
-                        row.addEventListener("click", () => handleRowClick(result.idBudget, "editBudget"));
-                        row.addEventListener("click", () => searchBox.value = "");
-
-                        // Adiciona a linha ao corpo da tabela
-                        tbody.appendChild(row);
-                    });
-                } else {
-                    // Adiciona uma linha dizendo "Sem resultados"
-                    const row = document.createElement("tr");
-                    const noResultsCell = document.createElement("td");
-                    noResultsCell.textContent = "Sem resultados";
-                    noResultsCell.colSpan = 7; // Atualiza para incluir todas as colunas (inclusive a de ações)
-                    noResultsCell.style.textAlign = "center"; // Centraliza o texto
-
-                    row.appendChild(noResultsCell);
-                    tbody.appendChild(row);
+            const budgetsSearchData = [];
+                                        
+            $.ajax({
+                url: 'ajax.obterOrcamentos.php',
+                type: 'POST',
+                dataType: 'json',
+                success: function(data) {
+                    budgetsSearchData.push(...data);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro ao buscar os dados:', error);
                 }
-            };
+            }); 
 
-            if (query) {
-                // Filtra os resultados com base nos campos numBudget, nomeCliente e responsavel
-                const filteredResults = budgetsSearchData.filter(item =>
-                    item.numBudget.toLowerCase().includes(query) ||
-                    item.nomeCliente.toLowerCase().includes(query) ||
-                    item.responsavel.toLowerCase().includes(query)
-                );
+            function budgetsSearch(searchBox) {
+                const data = document.getElementById('bottom-data');
+                const tbody = data.querySelector('table tbody');
+                const query = searchBox.value.toLowerCase();
+                tbody.innerHTML = ""; // Limpa os resultados anteriores
 
-                displayResults(filteredResults);
-            } else {
-                // Exibe todos os resultados se o campo de busca estiver vazio
-                displayResults(budgetsSearchData);
+                const displayResults = (results) => {
+                    if (results.length > 0) {
+                        results.forEach((result) => {
+                            const row = document.createElement("tr");
+
+                            // Adiciona as colunas da tabela
+                            const numBudget = document.createElement("td");
+                            numBudget.textContent = result.numBudget;
+
+                            const nomeCliente = document.createElement("td");
+                            nomeCliente.textContent = result.nomeCliente;
+
+                            const contactoCliente = document.createElement("td");
+                            contactoCliente.textContent = result.contactoCliente;
+
+                            const numWorksheet = document.createElement("td");
+                            numWorksheet.textContent = result.numWorksheet;
+
+                            const dataCriacao = document.createElement("td");
+                            dataCriacao.textContent = result.dataCriacao;
+
+                            const responsavel = document.createElement("td");
+                            responsavel.textContent = result.responsavel;
+
+                            // Adiciona o botão de exclusão
+                            const actions = document.createElement("td");
+                            const deleteButton = document.createElement("button");
+                            deleteButton.className = 'btn-small';
+                            deleteButton.id = 'botDeleteBudget';
+                            deleteButton.innerHTML = '🗑️';
+                            deleteButton.onclick = (event) => {
+                                deleteBudget(result.numBudget, result.idbudget);
+                                event.stopPropagation();
+                            };
+                            actions.appendChild(deleteButton);
+
+                            // Adiciona todas as células à linha
+                            row.appendChild(numBudget);
+                            row.appendChild(nomeCliente);
+                            row.appendChild(contactoCliente);
+                            row.appendChild(numWorksheet);
+                            row.appendChild(dataCriacao);
+                            row.appendChild(responsavel);
+                            row.appendChild(actions);
+
+                            row.addEventListener("click", () => handleRowClick(result.idBudget, "editBudget"));
+                            row.addEventListener("click", () => searchBox.value = "");
+
+                            // Adiciona a linha ao corpo da tabela
+                            tbody.appendChild(row);
+                        });
+                    } else {
+                        // Adiciona uma linha dizendo "Sem resultados"
+                        const row = document.createElement("tr");
+                        const noResultsCell = document.createElement("td");
+                        noResultsCell.textContent = "Sem resultados";
+                        noResultsCell.colSpan = 7; // Atualiza para incluir todas as colunas (inclusive a de ações)
+                        noResultsCell.style.textAlign = "center"; // Centraliza o texto
+
+                        row.appendChild(noResultsCell);
+                        tbody.appendChild(row);
+                    }
+                };
+
+                if (query) {
+                    // Filtra os resultados com base nos campos numBudget, nomeCliente e responsavel
+                    const filteredResults = budgetsSearchData.filter(item =>
+                        item.numBudget.toLowerCase().includes(query) ||
+                        item.nomeCliente.toLowerCase().includes(query) ||
+                        item.responsavel.toLowerCase().includes(query)
+                    );
+
+                    displayResults(filteredResults);
+                } else {
+                    // Exibe todos os resultados se o campo de busca estiver vazio
+                    displayResults(budgetsSearchData);
+                }
             }
-        }
     </script>
 
     <?php 
@@ -236,7 +236,7 @@
             <?php } ?>
         </div>
             <div id="budgetModal" class="modal">
-                <div class="modal-content">
+                <div class="budget-modal-content">
                     <div class="headerModal">
                         <h2>Selecione um Cliente</h2>
                         <span class="close">&times;</span>
@@ -375,16 +375,9 @@
                 // Função para fechar o modal
                 function closeModal() {
                     modal.style.display = 'none';
-                    window.location.href = window.location.pathname; // Recarrega a página
+                    searchInput.value = '';
+                    clientsSearch(searchInput);
                 }
-
-                // Limpar pesquisa modal
-                window.limparPesquisa = function() {
-                    if (searchInput) {
-                        searchInput.value = ''; // Limpa o valor do input
-                        clientsSearch(searchInput);
-                    }
-                };
 
                 // Fechar modal ao clicar no "x"
                 const closeButton = document.querySelector('.close');

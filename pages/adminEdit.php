@@ -24,7 +24,7 @@
         $nome = $row['name'];
         $email = $row['email'];
         $user = $row['user'];
-        $img = $row['img'];
+        $imgAdmin = $row['img'];
         $birthday = $row['birthday'];
         $status = $row['active'];
     }
@@ -73,7 +73,7 @@
                 <form action="../pages/adminInserir.php?op=edit&id=<?=$idAdminEdit?>" id="profileForm" method="post" enctype="multipart/form-data">
                     <div class="column-left">
                         <label for="photo">Foto:</label>
-                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $img; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
+                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $imgAdmin; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
                             <img src="../images/semfundo.png" style="width:100%;padding-bottom: 13px;">
                         </div>
                         <?php if (adminPermissions("adm_005", "update") == 1) { ?>
@@ -115,7 +115,7 @@
                         <?php } ?>
                         
                         <?php if (adminPermissions("adm_005", "update") == 1) { ?>
-                            <button type="submit" id="submitButton" style="margin-top: 15px" onclick="return validarPass()">Criar Administrador</button>
+                            <button type="submit" id="submitButton" style="margin-top: 15px" onclick="return validarPass()">Guardar Alterações</button>
                         <?php } ?>
                     </div>
                     <div class="column-right" id="permissionsSection" style="display:none;">

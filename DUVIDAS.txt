@@ -1,20 +1,4 @@
-ajustar imagens em todos os campos onde mostra
-
-ajustar inserir imagem na base de dados fire
-
 responsivo a todos os dispositivos
-
-arranjar pagina dashboard, colocar mais elementos como agenda, graficos etc:
-
-    estado ficha de trabalho / obra --------- Feito
-
-    ver grafico dos ganhos no ano
-
-    ultimos logs --------- 70% feito - melhorar
-
-    "estudo" se vai ter stock suficiente para esse mês
-
-alterar todas as select boxes para aparecer a seta a identificar que é select box
 
 gestão de stocks -> tentar
 
@@ -22,5 +6,8 @@ no modal do orcamento de selecionar clientes se não aparecer resultados na pesq
 
 verificar e corrigir ao ir para alguma pagina que precise de valores no url, se nao tiver voltar para a pagina anterior
 
-alterar dashboard, meter a tabela das fichas de trabalho apenas com o numero e o estado, e ao lado a tabela das logs e limite de linhas, botão para ver mais e ao clicar na ficha ir para o edit
+adicionar bd ao readme~
 
+adicionar segurança às paginas ajax
+
+adicionar a todas as paginas segurança de verificar password que ta na base de dados se é igual à que ele inseriu
