@@ -1,8 +1,11 @@
 <?php
-    include('../db/conexao.php'); 
+   // include('../db/conexao.php'); 
 ?>
 <link rel="stylesheet" href="../css/sideBar.css">
 <script src="../index.js" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
 
 <!-- Sidebar -->
 <div class="sidebar">
@@ -41,36 +44,10 @@
     </ul>
 </div>
 
-<!-- Botão Hambúrguer -->
-<div class="hamburger-menu">
-    <i class='bx bx-menu'></i>
-</div>
+
+
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-            const sidebar = document.querySelector(".sidebar");
-            const hamburgerMenu = document.querySelector(".hamburger-menu");
 
-            let isFullscreen = false; // Flag para verificar o estado da sidebar
-
-            hamburgerMenu.addEventListener("click", () => {
-                if (sidebar.classList.contains("hidden")) {
-                    // Se estiver escondida, abrir como tela cheia
-                    sidebar.classList.remove("hidden");
-                    sidebar.classList.add("fullscreen");
-                    hamburgerMenu.classList.add("active");
-                    isFullscreen = true;
-                } else if (isFullscreen) {
-                    // Se estiver em tela cheia, voltar ao estado escondido
-                    sidebar.classList.remove("fullscreen");
-                    sidebar.classList.add("hidden");
-                    hamburgerMenu.classList.remove("active");
-                    isFullscreen = false;
-                } else {
-                    // Se não estiver escondida nem em tela cheia, esconder completamente
-                    sidebar.classList.add("hidden");
-                }
-            });
-        });
 
 </script>

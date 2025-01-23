@@ -15,15 +15,16 @@
         exit();
     }
 
-
-    // Verificar se o id está na URL
-    if (isset($_GET['idProduct'])) {
-        $id = intval($_GET['idProduct']);
-    } else {
-        header('Location: produto.php');  // Caso não esteja na url volta para a página dos produtos
+    $idProduct = $_GET['idProduct'];
+    $sql = "SELECT * FROM product WHERE id = '$idProduct'";
+    $result = $con->query($sql);
+    if ($result->num_rows <= 0) {
+        header('Location: dashboard.php');
         exit();
-    } 
-
+    }
+    else {
+        $id = $_GET['idProduct'];
+    }
 
     // Buscar o id selecionado antes
     $query = "SELECT * FROM product WHERE id = ?";
@@ -31,12 +32,6 @@
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
-
-    // Se não encontrar o produto
-    if ($result->num_rows === 0) {
-        header('Location: produto.php');  // Manda para a página dos produtos
-        exit();
-    }
 
     // Pega as informações do produto
     $product = $result->fetch_assoc();
@@ -48,7 +43,6 @@
     $stmtStock->execute();
     $resultStock = $stmtStock->get_result();
 
-
     // Se não encontrar nada, define um valor por padrao
     if ($resultStock->num_rows === 0) {
         $product_stock = ['quantity' => 0]; // valor definido caso não encontre
@@ -56,54 +50,54 @@
         $product_stock = $resultStock->fetch_assoc();
     }
 
-    // Diretório onde os arquivos serão armazenados
-    $uploadDir = '../images/uploads/';
-    $publicDir = '/PAP/images/uploads/'; // Caminho acessível pelo navegador
-
-    // Verifica se o campo 'photo' está definido no array $_FILES
-    if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-        // Recupera informações do arquivo enviado        
-        $fileTmpPath = $_FILES['photo']['tmp_name']; // Caminho temporário
-        $fileName = $_FILES['photo']['name'];       // Nome original do arquivo
-
-        $extension = pathinfo($fileName, PATHINFO_EXTENSION);
-        if (true) { // testar se a extensão faz parte das extensoes permitidas
-            // gif / jpg / jpeg / png
-            // verificar o tamanho da iamgem .. pode ser verificado em javascript // size of document
-            // Gera um nome único para evitar sobrescrita de arquivos
-            $uniqueFileName = uniqid('photo_', true) . '.' . $extension;
-            $uniqueFileName_mini = "mini_" . $uniqueFileName;
-
-            // Define o caminho completo para o upload
-            $destinationPath = $uploadDir . $uniqueFileName_mini;
-            $destinationPathmINI = $uploadDir . $uniqueFileName;
-
-            // Move o arquivo para o diretório final
-            if (move_uploaded_file($fileTmpPath, $destinationPath)) {
-
-                // GERAR O THUMBNAIL
-                $thumbWidth = 500; // Largura desejada
-                $thumbHeight = 500; // Altura desejada
-
-                createThumbnail($destinationPath, $destinationPathmINI, $thumbWidth, $thumbHeight);
-
-
-                // Gera o link público para o arquivo
-                $fileUrl = $publicDir . $uniqueFileName;
-
-                /** redimensionamento da imagem */
-
-                echo "Upload realizado com sucesso! Link: <a href=\"$fileUrl\">$fileUrl</a>";
-            } else {
-                echo "Erro ao mover o arquivo para o diretório final.";
-            }
-        }
-    } else {
-        echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
-    }
-    
     // formulario para editar
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Diretório onde os arquivos serão armazenados
+        $uploadDir = '../images/uploads/';
+        $publicDir = '/PAP/images/uploads/'; // Caminho acessível pelo navegador
+
+        // Verifica se o campo 'photo' está definido no array $_FILES
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            // Recupera informações do arquivo enviado        
+            $fileTmpPath = $_FILES['photo']['tmp_name']; // Caminho temporário
+            $fileName = $_FILES['photo']['name'];       // Nome original do arquivo
+
+            $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+            if (true) { // testar se a extensão faz parte das extensoes permitidas
+                // gif / jpg / jpeg / png
+                // verificar o tamanho da iamgem .. pode ser verificado em javascript // size of document
+                // Gera um nome único para evitar sobrescrita de arquivos
+                $uniqueFileName = uniqid('photo_', true) . '.' . $extension;
+                $uniqueFileName_mini = "mini_" . $uniqueFileName;
+
+                // Define o caminho completo para o upload
+                $destinationPath = $uploadDir . $uniqueFileName_mini;
+                $destinationPathmINI = $uploadDir . $uniqueFileName;
+
+                // Move o arquivo para o diretório final
+                if (move_uploaded_file($fileTmpPath, $destinationPath)) {
+
+                    // GERAR O THUMBNAIL
+                    $thumbWidth = 500; // Largura desejada
+                    $thumbHeight = 500; // Altura desejada
+
+                    createThumbnail($destinationPath, $destinationPathmINI, $thumbWidth, $thumbHeight);
+
+
+                    // Gera o link público para o arquivo
+                    $fileUrl = $publicDir . $uniqueFileName;
+
+                    /** redimensionamento da imagem */
+
+                    echo "Upload realizado com sucesso! Link: <a href=\"$fileUrl\">$fileUrl</a>";
+                } else {
+                    echo "Erro ao mover o arquivo para o diretório final.";
+                }
+            }
+        } else {
+            echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
+        }
+
         // Caso o formulário seja para editar
         $name = isset($_POST['name']) ? trim($_POST['name']) : $product['name'];
         $ref = isset($_POST['ref']) ? trim($_POST['ref']) : $product['reference'];

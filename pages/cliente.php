@@ -33,7 +33,7 @@
         const clientsSearchData = [];
                                 
         $.ajax({
-            url: 'ajax.obterClientes.php',
+            url: 'json.obterClientes.php',
             type: 'POST',
             dataType: 'json',
             success: function(data) {

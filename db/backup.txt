@@ -1,0 +1,935 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1:3306
+-- Tempo de geração: 22-Jan-2025 às 01:00
+-- Versão do servidor: 9.1.0
+-- versão do PHP: 8.3.14
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+--
+-- Banco de dados: `onemarket`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `administrator`
+--
+
+DROP TABLE IF EXISTS `administrator`;
+CREATE TABLE IF NOT EXISTS `administrator` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` text COLLATE utf8mb4_general_ci NOT NULL,
+  `user` text COLLATE utf8mb4_general_ci NOT NULL,
+  `pass` text COLLATE utf8mb4_general_ci NOT NULL,
+  `img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `birthday` date DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `administrator`
+--
+
+INSERT INTO `administrator` (`id`, `name`, `email`, `user`, `pass`, `img`, `birthday`, `created`, `updated`, `active`) VALUES
+(88, 'test', 'test@test', 'test', '$2y$10$QO6Kux6nWcWGxgy7YltNqeBcVZ5r0xrUgA2psJppki7VIN5Wx3IOe', '/PAP/images/uploads/photo_67901cb433cb87.43940294.png', '2000-09-09', '2025-01-21 22:16:20', '2025-01-21 22:16:20', 1),
+(89, 'teste', 'teste@teste.com', 'teste', '$2y$10$iHYF7eyha19cSqVkxhdFJuukPO8xgfjD2lyk/elIZcU0TLinWm502', '/PAP/images/uploads/photo_67903d26877596.28234662.gif', '2000-09-09', '2025-01-22 00:34:31', '2025-01-22 00:34:31', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `administrator_logs`
+--
+
+DROP TABLE IF EXISTS `administrator_logs`;
+CREATE TABLE IF NOT EXISTS `administrator_logs` (
+  `idAdministrator` int NOT NULL,
+  `dataLog` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `logFile` text COLLATE utf8mb4_general_ci NOT NULL,
+  KEY `idAdministrator` (`idAdministrator`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `administrator_logs`
+--
+
+INSERT INTO `administrator_logs` (`idAdministrator`, `dataLog`, `logFile`) VALUES
+(88, '2025-01-22 00:34:31', 'Administrador \'teste\' (ID: 89) criado pelo administrador de ID test.'),
+(88, '2025-01-22 00:34:46', 'Administrador \'teste\' (ID: 89) editado pelo administrador de ID test.');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `administrator_modules`
+--
+
+DROP TABLE IF EXISTS `administrator_modules`;
+CREATE TABLE IF NOT EXISTS `administrator_modules` (
+  `idAdministrator` int NOT NULL,
+  `idModule` int NOT NULL,
+  `pView` tinyint(1) NOT NULL DEFAULT '0',
+  `pInsert` tinyint(1) NOT NULL DEFAULT '0',
+  `pUpdate` tinyint(1) NOT NULL DEFAULT '0',
+  `pDelete` tinyint(1) NOT NULL DEFAULT '0',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idAdministrator`,`idModule`),
+  KEY `idModule` (`idModule`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `administrator_modules`
+--
+
+INSERT INTO `administrator_modules` (`idAdministrator`, `idModule`, `pView`, `pInsert`, `pUpdate`, `pDelete`, `updated`, `created`) VALUES
+(88, 1, 1, 1, 1, 1, '2025-01-22 00:29:58', '2025-01-22 00:29:58'),
+(88, 3, 1, 1, 1, 1, '2025-01-22 00:29:58', '2025-01-22 00:29:58'),
+(88, 4, 1, 1, 1, 1, '2025-01-22 00:29:58', '2025-01-22 00:29:58'),
+(88, 5, 1, 1, 1, 1, '2025-01-22 00:29:58', '2025-01-22 00:29:58'),
+(88, 6, 1, 1, 1, 1, '2025-01-22 00:29:58', '2025-01-22 00:29:58'),
+(88, 8, 1, 1, 1, 1, '2025-01-22 00:29:58', '2025-01-22 00:29:58'),
+(89, 1, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31'),
+(89, 3, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31'),
+(89, 4, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31'),
+(89, 5, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31'),
+(89, 6, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31'),
+(89, 8, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `budget`
+--
+
+DROP TABLE IF EXISTS `budget`;
+CREATE TABLE IF NOT EXISTS `budget` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `idClient` int NOT NULL,
+  `idWorksheet` int DEFAULT NULL,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `num` int NOT NULL,
+  `year` int NOT NULL,
+  `laborPercent` decimal(5,2) NOT NULL,
+  `discountPercent` decimal(5,2) NOT NULL,
+  `observation` text COLLATE utf8mb4_general_ci NOT NULL,
+  `createdBy` int NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idClient` (`idClient`),
+  KEY `idWorksheet` (`idWorksheet`)
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `budget`
+--
+
+INSERT INTO `budget` (`id`, `idClient`, `idWorksheet`, `name`, `num`, `year`, `laborPercent`, `discountPercent`, `observation`, `createdBy`, `created`, `updated`) VALUES
+(40, 8, 14, 'TESTE1234', 2, 2024, 0.00, 0.00, '', 88, '2024-12-23 18:00:51', '2025-01-22 00:50:54'),
+(41, 8, 14, 'teste', 3, 2025, 0.00, 0.00, '', 88, '2024-12-23 18:15:30', '2025-01-22 00:50:54'),
+(42, 8, 13, 'teste', 4, 2025, 0.00, 0.00, '', 88, '2024-12-23 18:15:30', '2025-01-22 00:50:54'),
+(43, 8, 12, '0.002470355', 5, 2024, 0.00, 0.00, '', 88, '2024-12-24 02:11:34', '2025-01-22 00:50:54'),
+(45, 8, 11, '0.002964426', 6, 2024, 0.00, 0.00, '', 88, '2024-12-27 00:39:18', '2025-01-22 00:50:54'),
+(46, 8, 10, '0.003458498', 7, 2024, 0.00, 0.00, '', 88, '2024-12-27 00:43:12', '2025-01-22 00:50:54'),
+(47, 8, 9, '0.003952569', 8, 2024, 0.00, 0.00, '', 88, '2024-12-27 00:44:12', '2025-01-22 00:50:54'),
+(48, 8, 8, 'TESTEFINAL', 9, 2024, 0.00, 0.00, '', 88, '2024-12-27 00:47:03', '2025-01-22 00:50:54'),
+(49, 8, 1, 'testeeeeee', 10, 2024, 0.00, 0.00, '', 88, '2024-12-27 00:50:56', '2025-01-22 00:50:54'),
+(50, 8, 14, 'testeVersao', 11, 2024, 0.00, 0.00, '', 88, '2024-12-28 00:22:46', '2025-01-22 00:50:54'),
+(51, 8, 7, 'teste 2025', 1, 2025, 0.00, 0.00, '', 88, '2025-01-01 01:32:00', '2025-01-22 00:50:54'),
+(52, 8, 15, 'ENCERRAMENTO – Decoração Loja', 2, 2025, 0.00, 0.00, '', 88, '2025-01-02 00:00:31', '2025-01-22 00:50:54'),
+(53, 8, 18, 'ENCERRAMENTO – Decoração Loja', 3, 2025, 0.00, 0.00, '', 88, '2025-01-02 00:01:46', '2025-01-22 00:50:54'),
+(54, 8, 14, 'ENCERRAMENTO – Decoração Loja', 4, 2025, 0.00, 0.00, '', 88, '2025-01-02 03:14:38', '2025-01-22 00:50:54'),
+(55, 18, NULL, 'testeVersao2', 5, 2025, 0.00, 0.00, '', 88, '2025-01-13 10:18:16', '2025-01-22 00:50:54'),
+(56, 18, NULL, 'testeCriação', 6, 2025, 0.00, 0.00, '', 88, '2025-01-13 14:15:58', '2025-01-22 00:50:54'),
+(57, 17, NULL, 'testeInserção', 7, 2025, 0.00, 0.00, '', 88, '2025-01-13 15:19:55', '2025-01-22 00:50:54'),
+(58, 18, NULL, 'testeee', 8, 2025, 0.00, 0.00, '', 88, '2025-01-13 16:05:11', '2025-01-22 00:50:54'),
+(59, 18, NULL, 'testeFinal v2', 9, 2025, 0.00, 0.00, '', 88, '2025-01-13 19:08:47', '2025-01-22 00:50:54'),
+(60, 18, NULL, 'teste', 10, 2025, 0.00, 0.00, '', 88, '2025-01-13 23:25:45', '2025-01-22 00:50:54'),
+(61, 18, NULL, 'teste', 11, 2025, 0.00, 0.00, '', 88, '2025-01-13 23:26:36', '2025-01-22 00:50:54'),
+(62, 17, 33, 'testePotencialmenteFinal', 12, 2025, 0.00, 0.00, '', 88, '2025-01-13 23:48:22', '2025-01-22 00:50:54'),
+(63, 18, 32, 'queria que fosse o ultimo teste', 13, 2025, 0.00, 0.00, '', 88, '2025-01-14 00:05:37', '2025-01-22 00:50:54'),
+(64, 18, 24, 'tou farto disto', 14, 2025, 18.00, 5.00, 'Aos preços apresentados na proposta acima acresce Iva á tx legal. CP: 50% adjudicação + 25%  1 semana antes da entrada em obra + 25% saida de obra com 5% desc PP.Preços net net – com 3% comissão cedida pela ANM já incluída. Orçamento valido 30 dias.', 88, '2025-01-14 00:42:45', '2025-01-22 00:50:54'),
+(65, 18, NULL, '', 15, 2025, 0.00, 0.00, '', 88, '2025-01-17 19:02:01', '2025-01-22 00:50:54'),
+(66, 18, NULL, '', 16, 2025, 0.00, 0.00, '', 88, '2025-01-17 19:02:11', '2025-01-22 00:50:54'),
+(67, 18, NULL, '', 17, 2025, 0.00, 0.00, '', 88, '2025-01-17 19:03:12', '2025-01-22 00:50:54'),
+(68, 18, NULL, '', 18, 2025, 0.00, 0.00, '', 88, '2025-01-17 19:11:36', '2025-01-22 00:50:54'),
+(69, 18, NULL, '', 19, 2025, 0.00, 0.00, '', 88, '2025-01-17 19:12:00', '2025-01-22 00:50:54'),
+(71, 17, 35, 'teste', 20, 2025, 15.00, 0.00, 'teste', 88, '2025-01-21 15:25:20', '2025-01-22 00:50:54');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `budget_sections_products`
+--
+
+DROP TABLE IF EXISTS `budget_sections_products`;
+CREATE TABLE IF NOT EXISTS `budget_sections_products` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `idBudget` int NOT NULL,
+  `orderSection` int NOT NULL,
+  `nameSection` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `idProduct` int DEFAULT NULL,
+  `orderProduct` int NOT NULL,
+  `checkProduct` tinyint NOT NULL DEFAULT '0',
+  `storageProduct` tinyint NOT NULL DEFAULT '0',
+  `refProduct` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `nameProduct` varchar(250) COLLATE utf8mb4_general_ci NOT NULL,
+  `amountProduct` int NOT NULL,
+  `descriptionProduct` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `observationProduct` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `sizeProduct` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `valueProduct` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idBudget` (`idBudget`,`idProduct`),
+  KEY `idProduct` (`idProduct`)
+) ENGINE=InnoDB AUTO_INCREMENT=309 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `budget_sections_products`
+--
+
+INSERT INTO `budget_sections_products` (`id`, `idBudget`, `orderSection`, `nameSection`, `idProduct`, `orderProduct`, `checkProduct`, `storageProduct`, `refProduct`, `nameProduct`, `amountProduct`, `descriptionProduct`, `observationProduct`, `sizeProduct`, `valueProduct`) VALUES
+(7, 50, 1, '', NULL, 0, 0, 0, '', '', 0, '', '', '', 0.00),
+(8, 50, 2, '', NULL, 0, 0, 0, '', '', 0, '', '', '', 0.00),
+(9, 50, 3, '', NULL, 0, 0, 0, '', '', 0, '', '', '', 0.00),
+(10, 50, 4, '', NULL, 0, 0, 0, '', '', 0, '', '', '', 0.00),
+(11, 50, 5, '', NULL, 0, 0, 0, '', '', 0, '', '', '', 0.00),
+(34, 50, 1, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', '', 699.99),
+(35, 50, 1, '', 5, 2, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', '', 699.99),
+(36, 50, 1, '', 5, 3, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', '', 699.99),
+(37, 50, 2, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', '', 699.99),
+(38, 50, 3, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', '', 699.99),
+(39, 50, 4, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', '1000x10 mm', 699.99),
+(73, 50, 5, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', '', 699.99),
+(74, 50, 6, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', '', 699.99),
+(75, 50, 1, '', 5, 4, 0, 0, 'ELEC001', '  Smartphone', 2, '', '', '', 699.99),
+(76, 51, 1, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(77, 51, 2, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(78, 51, 3, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(79, 51, 4, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(80, 51, 5, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(81, 41, 1, '', 5, 1, 1, 0, 'ELEC001', '  Smartphone', 1, '', 'observação 1', '1000x100', 699.99),
+(82, 41, 1, '', 5, 2, 1, 0, 'ELEC001', '  Smartphone', 1, '', 'observação 1', '1000x100', 699.99),
+(83, 41, 2, '', 5, 1, 1, 1, 'ELEC001', '  Smartphone', 1, '', 'observação 1', '1000x100', 699.99),
+(84, 41, 3, '', 5, 1, 1, 1, 'ELEC001', '  Smartphone', 1, '', 'teste observação', 'teste tamanho', 699.99),
+(85, 40, 1, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(86, 40, 2, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(87, 52, 1, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(88, 52, 2, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(89, 52, 3, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(90, 52, 4, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(91, 53, 1, '', 5, 1, 1, 1, 'ELEC001', '  Smartphone', 1, '', 'observação 1', '1000x100', 699.99),
+(92, 53, 2, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(93, 52, 1, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(94, 52, 2, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(95, 52, 3, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(96, 52, 4, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(97, 54, 1, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(98, 54, 2, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(99, 54, 3, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(100, 54, 1, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(101, 54, 2, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(102, 54, 2, '', 5, 2, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(103, 54, 2, '', 5, 3, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(104, 54, 3, '', 5, 1, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(105, 54, 3, '', 5, 2, 0, 0, 'ELEC001', '  Smartphone', 1, '', '', NULL, 699.99),
+(106, 55, 1, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(107, 55, 2, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(108, 55, 3, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(109, 55, 4, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(110, 55, 5, '', 18, 1, 0, 0, '1234', '  testeultimo', 1, '', '', NULL, 12.00),
+(111, 55, 1, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(112, 55, 2, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(113, 55, 3, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(114, 55, 4, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(115, 55, 5, '', 18, 1, 0, 0, '1234', '  testeultimo', 1, '', '', NULL, 12.00),
+(116, 56, 1, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(117, 56, 2, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(118, 56, 3, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(119, 56, 4, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(120, 55, 2, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(121, 55, 5, '', 18, 1, 0, 0, '1234', '  testeultimo', 1, '', '', NULL, 12.00),
+(122, 55, 3, '', 15, 1, 0, 0, '1234545566', '  testeimagem', 1, '', '', NULL, 1.00),
+(123, 57, 1, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(124, 57, 2, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(125, 57, 3, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(126, 57, 4, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(127, 57, 1, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(128, 57, 1, '', 8, 2, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00),
+(129, 57, 1, '', 11, 3, 0, 0, '1231', '  teste', 1, '', '', NULL, 3.00),
+(130, 57, 2, '', 16, 1, 0, 0, '12', '  12', 1, '', '', NULL, 12.00),
+(131, 57, 3, '', 19, 1, 0, 0, '1', '  a', 1, '', '', NULL, 2.00),
+(132, 57, 4, '', 17, 1, 0, 0, '12345', '  ultimoteste', 1, '', '', NULL, 1.00),
+(133, 57, 1, '', 14, 1, 0, 0, '11123', '  testardenovo', 1, '', '', NULL, 1.00),
+(134, 57, 1, '', 8, 2, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00),
+(135, 57, 1, '', 11, 3, 0, 0, '1231', '  teste', 1, '', '', NULL, 3.00),
+(136, 57, 3, '', 19, 1, 0, 0, '1', '  a', 1, '', '', NULL, 2.00),
+(137, 57, 4, '', 17, 1, 0, 0, '12345', '  ultimoteste', 1, '', '', NULL, 1.00),
+(138, 58, 1, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(139, 58, 2, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(140, 58, 3, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(141, 58, 4, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(142, 58, 1, '', 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00),
+(143, 58, 2, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(144, 58, 3, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(145, 58, 4, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(146, 58, 1, '', 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00),
+(148, 59, 1, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(149, 59, 2, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(150, 59, 3, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(151, 59, 4, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(152, 59, 5, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(153, 59, 1, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(154, 59, 2, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(155, 59, 3, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(156, 59, 4, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(157, 59, 5, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(158, 60, 1, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(159, 61, 1, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(160, 61, 2, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(161, 61, 3, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(162, 61, 4, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(163, 61, 5, '', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(174, 61, 1, '', 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(175, 61, 1, '', 8, 2, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00),
+(185, 62, 2, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(186, 62, 3, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(187, 62, 4, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(188, 62, 5, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(217, 63, 2, 'teste2', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(219, 63, 4, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(220, 63, 5, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(240, 64, 1, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(241, 64, 2, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(242, 64, 3, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(243, 64, 4, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(244, 64, 5, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(245, 64, 1, 'teste', 8, 1, 1, 1, '1123415', 'Mesa', 1, 'teste', '', '', 15.00),
+(246, 64, 2, 'teste', 12, 1, 1, 1, '1234151', 'test', 1, '', '', '', 1.00),
+(247, 64, 3, 'teste', 5, 1, 1, 1, '123', 'testar', 1, '', 'teste', 'teste', 2.50),
+(248, 64, 4, 'teste', 5, 1, 1, 1, '123', 'testar', 1, '', '', '', 2.50),
+(249, 64, 5, 'teste', 5, 1, 1, 1, '123', 'testar', 1, '', 'teste', 'teste', 2.50),
+(250, 64, 1, 'teste', 5, 2, 1, 1, '123', 'testar', 1, '', '', 'teste', 2.50),
+(251, 64, 1, 'teste2', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(252, 64, 2, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(253, 64, 3, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(254, 64, 4, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(255, 64, 5, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(256, 64, 6, 'teste', 5, 1, 1, 1, '123', 'testar', 1, '', 'teste', 'teste', 2.50),
+(257, 69, 1, 'teste', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(258, 63, 2, 'teste2', 8, 1, 1, 1, '1123415', '  Mesa', 1, '', 'teste', 'teste', 15.00),
+(260, 63, 4, '', 5, 1, 1, 1, '123', '  testar', 1, '', 'teste', 'teste', 2.50),
+(261, 63, 5, '', 18, 1, 1, 1, '1234', '  testeultimo', 1, '', '', '', 12.00),
+(262, 62, 2, '0', 5, 1, 1, 1, '123', '  testar', 1, '', '', '', 2.50),
+(263, 62, 3, '0', 18, 1, 1, 1, '1234', '  testeultimo', 1, '', '', '', 12.00),
+(264, 62, 4, '0', 18, 1, 1, 1, '1234', '  testeultimo', 1, '', '', '', 12.00),
+(265, 62, 5, '0', 8, 1, 1, 1, '1123415', '  Mesa', 1, '', '', '', 15.00),
+(289, 71, 1, 'FACHADA', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(290, 71, 2, 'GALERIA', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(291, 71, 3, 'RESTAURANTE . CAFETARIA', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(292, 71, 4, 'PRONTO A COMER', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(293, 71, 5, 'PADARIA', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
+(294, 71, 1, '0', 18, 1, 1, 1, '1234', '  testeultimo', 1, '', '', '', 12.00),
+(295, 71, 1, '0', 8, 2, 1, 1, '1123415', '  Mesa', 1, '', '', '', 15.00),
+(296, 71, 1, '0', 16, 3, 1, 1, '12', '  12', 1, '', '', '', 12.00),
+(297, 71, 2, '0', 15, 1, 0, 0, '1234545566', '  testeimagem', 1, '', '', NULL, 1.00),
+(298, 71, 2, '0', 8, 2, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00),
+(299, 71, 2, '0', 5, 3, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(300, 71, 3, '0', 17, 1, 0, 0, '12345', '  ultimoteste', 1, '', '', NULL, 1.00),
+(301, 71, 3, '0', 11, 2, 0, 0, '1231', '  teste', 1, '', '', NULL, 3.00),
+(302, 71, 3, '0', 8, 3, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00),
+(303, 71, 4, '0', 12, 1, 0, 0, '1234151', '  test', 1, '', '', NULL, 1.00),
+(304, 71, 4, '0', 18, 2, 0, 0, '1234', '  testeultimo', 1, '', '', NULL, 12.00),
+(305, 71, 4, '0', 11, 3, 0, 0, '1231', '  teste', 1, '', '', NULL, 3.00),
+(306, 71, 5, '0', 16, 1, 0, 0, '12', '  12', 1, '', '', NULL, 12.00),
+(307, 71, 5, '0', 5, 2, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50),
+(308, 71, 5, '0', 15, 3, 0, 0, '1234545566', '  testeimagem', 1, '', '', NULL, 1.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `budget_version`
+--
+
+DROP TABLE IF EXISTS `budget_version`;
+CREATE TABLE IF NOT EXISTS `budget_version` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `idVersion` int NOT NULL,
+  `idBudget` int NOT NULL,
+  `nameSection` text COLLATE utf8mb4_general_ci NOT NULL,
+  `orderSection` int NOT NULL,
+  `idProduct` int DEFAULT NULL,
+  `orderProduct` int NOT NULL,
+  `checkProduct` tinyint NOT NULL DEFAULT '0',
+  `storageProduct` tinyint NOT NULL DEFAULT '0',
+  `refProduct` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nameProduct` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `amountProduct` int NOT NULL,
+  `descriptionProduct` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `observationProduct` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `sizeProduct` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `valueProduct` decimal(10,2) NOT NULL,
+  `created` date NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idBudget` (`idBudget`,`idProduct`),
+  KEY `idProduct` (`idProduct`)
+) ENGINE=InnoDB AUTO_INCREMENT=330 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `budget_version`
+--
+
+INSERT INTO `budget_version` (`id`, `idVersion`, `idBudget`, `nameSection`, `orderSection`, `idProduct`, `orderProduct`, `checkProduct`, `storageProduct`, `refProduct`, `nameProduct`, `amountProduct`, `descriptionProduct`, `observationProduct`, `sizeProduct`, `valueProduct`, `created`) VALUES
+(1, 1, 59, '', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(2, 1, 59, '', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(3, 1, 59, '', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(4, 1, 59, '', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(5, 1, 59, '', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(6, 2, 59, '', 3, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(7, 2, 59, '', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(8, 2, 59, '', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(10, 3, 59, 'secção 5', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(15, 1, 61, '', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(16, 1, 61, '', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(17, 1, 61, '', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(18, 1, 61, '', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(19, 1, 61, '', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(30, 3, 61, 'secção 10', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(31, 3, 61, '', 1, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(32, 3, 61, '', 1, 8, 2, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00, '0000-00-00'),
+(42, 1, 62, '', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(43, 1, 62, '', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(44, 1, 62, '', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(45, 1, 62, '', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(65, 1, 63, '', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(66, 1, 63, '', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(67, 1, 63, '', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(68, 1, 63, '', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(88, 1, 64, '', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(89, 1, 64, '', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(90, 1, 64, '', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(91, 1, 64, '', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(92, 1, 64, '', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(93, 2, 64, 'secção 1', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(94, 2, 64, '', 1, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(95, 2, 64, 'secção 2', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(96, 2, 64, '', 2, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(97, 2, 64, 'secção 3', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(98, 2, 64, '', 3, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(99, 2, 64, 'secção 4', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(100, 2, 64, '', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(101, 2, 64, 'secção 5', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(102, 2, 64, '', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(103, 3, 64, 'secção 1', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(104, 3, 64, '', 1, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(105, 3, 64, 'secção 2', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(106, 3, 64, '', 2, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(107, 3, 64, 'secção 3', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(108, 3, 64, '', 3, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(109, 3, 64, 'secção 4', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(110, 3, 64, '', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(111, 3, 64, 'secção 5', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(112, 3, 64, '', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(113, 4, 64, 'secção 1', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(114, 4, 64, '', 1, 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00, '0000-00-00'),
+(115, 4, 64, 'secção 2', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(116, 4, 64, '', 2, 12, 1, 0, 0, '1234151', '  test', 1, '', '', NULL, 1.00, '0000-00-00'),
+(117, 4, 64, 'secção 3', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(118, 4, 64, '', 3, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(119, 4, 64, 'secção 4', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(120, 4, 64, '', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(121, 4, 64, 'secção 5', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(122, 4, 64, '', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(123, 5, 64, 'secção 10', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(124, 5, 64, '', 1, 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00, '0000-00-00'),
+(125, 5, 64, 'secção 2', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(126, 5, 64, '', 2, 12, 1, 0, 0, '1234151', '  test', 1, '', '', NULL, 1.00, '0000-00-00'),
+(127, 5, 64, 'secção 3', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(128, 5, 64, '', 3, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(129, 5, 64, 'secção 4', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(130, 5, 64, '', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(131, 5, 64, 'secção 5', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(132, 5, 64, '', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(133, 6, 64, 'secção 10', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(134, 6, 64, '', 1, 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00, '0000-00-00'),
+(135, 6, 64, '', 1, 5, 2, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(136, 6, 64, 'secção 2', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(137, 6, 64, '', 2, 12, 1, 0, 0, '1234151', '  test', 1, '', '', NULL, 1.00, '0000-00-00'),
+(138, 6, 64, 'secção 3', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(139, 6, 64, '', 3, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(140, 6, 64, 'secção 4', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(141, 6, 64, '', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(142, 6, 64, 'secção 5', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(143, 6, 64, '', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(144, 7, 64, 'secção 10', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(145, 7, 64, '', 1, 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00, '0000-00-00'),
+(146, 7, 64, '', 1, 5, 2, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(147, 7, 64, 'secção 2', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(148, 7, 64, '', 2, 12, 1, 0, 0, '1234151', '  test', 1, '', '', NULL, 1.00, '0000-00-00'),
+(149, 7, 64, 'secção 3', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(150, 7, 64, '', 3, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(151, 7, 64, 'secção 4', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(152, 7, 64, '', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(153, 7, 64, 'secção 5', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(154, 7, 64, '', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(155, 7, 64, 'PEIXARIA', 6, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(156, 8, 64, 'secção 10', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(157, 8, 64, '', 1, 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00, '0000-00-00'),
+(158, 8, 64, '', 1, 5, 2, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(159, 8, 64, 'secção 2', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(160, 8, 64, '', 2, 12, 1, 0, 0, '1234151', '  test', 1, '', '', NULL, 1.00, '0000-00-00'),
+(161, 8, 64, 'secção 3', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(162, 8, 64, '', 3, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(163, 8, 64, 'secção 4', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(164, 8, 64, '', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(165, 8, 64, 'secção 5', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(166, 8, 64, '', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(167, 8, 64, 'nova secção teste', 6, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(168, 8, 64, '', 6, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(169, 9, 64, 'teste', 6, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(170, 10, 64, 'teste', 6, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(171, 11, 64, 'teste', 6, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(172, 12, 64, 'teste', 6, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '0000-00-00'),
+(173, 12, 64, 'teste', 6, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '0000-00-00'),
+(174, 13, 64, 'teste', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-14'),
+(175, 13, 64, 'teste', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-14'),
+(176, 13, 64, 'teste', 6, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-14'),
+(177, 13, 64, 'teste', 6, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-14'),
+(178, 14, 64, 'teste', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-15'),
+(179, 14, 64, 'teste', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-15'),
+(180, 14, 64, 'teste', 6, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-15'),
+(181, 14, 64, 'teste', 6, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-15'),
+(182, 15, 64, 'teste', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-15'),
+(183, 15, 64, 'teste', 1, 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00, '2025-01-15'),
+(184, 15, 64, 'teste', 1, 5, 2, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-15'),
+(185, 15, 64, 'teste', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-15'),
+(186, 15, 64, 'teste', 2, 12, 1, 0, 0, '1234151', '  test', 1, '', '', NULL, 1.00, '2025-01-15'),
+(187, 15, 64, 'teste', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-15'),
+(188, 15, 64, 'teste', 3, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-15'),
+(189, 15, 64, 'teste', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-15'),
+(190, 15, 64, 'teste', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-15'),
+(191, 15, 64, 'teste', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-15'),
+(192, 15, 64, 'teste', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-15'),
+(193, 15, 64, 'teste', 6, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-15'),
+(194, 15, 64, 'teste', 6, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-15'),
+(195, 16, 64, 'teste', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-17'),
+(196, 16, 64, 'teste', 1, 8, 1, 0, 0, '1123415', '  Mesa', 1, 'teste', '', NULL, 15.00, '2025-01-17'),
+(197, 16, 64, 'teste', 1, 5, 2, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-17'),
+(198, 16, 64, 'teste', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-17'),
+(199, 16, 64, 'teste', 2, 12, 1, 0, 0, '1234151', '  test', 1, '', '', NULL, 1.00, '2025-01-17'),
+(200, 16, 64, 'teste', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-17'),
+(201, 16, 64, 'teste', 3, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-17'),
+(202, 16, 64, 'teste', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-17'),
+(203, 16, 64, 'teste', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-17'),
+(204, 16, 64, 'teste', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-17'),
+(205, 16, 64, 'teste', 5, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-17'),
+(206, 16, 64, 'teste', 6, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-17'),
+(207, 16, 64, 'teste', 6, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-17'),
+(208, 1, 69, 'teste', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-17'),
+(209, 17, 64, 'teste', 1, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-19'),
+(210, 17, 64, 'teste', 1, 8, 1, 0, 0, '1123415', 'Mesa', 1, 'teste', '', NULL, 15.00, '2025-01-19'),
+(211, 17, 64, 'teste', 1, 5, 2, 0, 0, '123', 'testar', 1, '', '', NULL, 2.50, '2025-01-19'),
+(212, 17, 64, 'teste', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-19'),
+(213, 17, 64, 'teste', 2, 12, 1, 0, 0, '1234151', 'test', 1, '', '', NULL, 1.00, '2025-01-19'),
+(214, 17, 64, 'teste', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-19'),
+(215, 17, 64, 'teste', 3, 5, 1, 0, 0, '123', 'testar', 1, '', '', NULL, 2.50, '2025-01-19'),
+(216, 17, 64, 'teste', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-19'),
+(217, 17, 64, 'teste', 4, 5, 1, 0, 0, '123', 'testar', 1, '', '', NULL, 2.50, '2025-01-19'),
+(218, 17, 64, 'teste', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-19'),
+(219, 17, 64, 'teste', 5, 5, 1, 0, 0, '123', 'testar', 1, '', '', NULL, 2.50, '2025-01-19'),
+(220, 17, 64, 'teste', 6, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-19'),
+(221, 17, 64, 'teste', 6, 5, 1, 0, 0, '123', 'testar', 1, '', '', NULL, 2.50, '2025-01-19'),
+(222, 2, 63, 'teste', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(223, 2, 63, 'teste', 2, 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00, '2025-01-20'),
+(224, 2, 63, 'teste', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(225, 2, 63, 'teste', 3, 15, 1, 0, 0, '1234545566', '  testeimagem', 1, '', '', NULL, 1.00, '2025-01-20'),
+(226, 2, 63, 'teste', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(227, 2, 63, 'teste', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-20'),
+(228, 2, 63, 'teste', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(229, 2, 63, 'teste', 5, 18, 1, 0, 0, '1234', '  testeultimo', 1, '', '', NULL, 12.00, '2025-01-20'),
+(230, 3, 63, 'teste', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(231, 3, 63, 'teste', 2, 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00, '2025-01-20'),
+(232, 3, 63, 'teste', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(233, 3, 63, 'teste', 3, 15, 1, 0, 0, '1234545566', '  testeimagem', 1, '', '', NULL, 1.00, '2025-01-20'),
+(234, 3, 63, 'teste', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(235, 3, 63, 'teste', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-20'),
+(236, 3, 63, 'teste', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(237, 3, 63, 'teste', 5, 18, 1, 0, 0, '1234', '  testeultimo', 1, '', '', NULL, 12.00, '2025-01-20'),
+(238, 4, 63, 'teste2', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(239, 4, 63, 'teste2', 2, 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00, '2025-01-20'),
+(240, 4, 63, 'teste', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(241, 4, 63, 'teste', 3, 15, 1, 0, 0, '1234545566', '  testeimagem', 1, '', '', NULL, 1.00, '2025-01-20'),
+(242, 4, 63, 'teste', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(243, 4, 63, 'teste', 4, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-20'),
+(244, 4, 63, 'teste', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(245, 4, 63, 'teste', 5, 18, 1, 0, 0, '1234', '  testeultimo', 1, '', '', NULL, 12.00, '2025-01-20'),
+(246, 2, 62, 'teste', 2, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(247, 2, 62, 'teste', 2, 5, 1, 0, 0, '123', '  testar', 1, '', '', NULL, 2.50, '2025-01-20'),
+(248, 2, 62, 'teste', 3, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(249, 2, 62, 'teste', 3, 18, 1, 0, 0, '1234', '  testeultimo', 1, '', '', NULL, 12.00, '2025-01-20'),
+(250, 2, 62, 'teste', 4, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(251, 2, 62, 'teste', 4, 18, 1, 0, 0, '1234', '  testeultimo', 1, '', '', NULL, 12.00, '2025-01-20'),
+(252, 2, 62, 'teste', 5, NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00, '2025-01-20'),
+(253, 2, 62, 'teste', 5, 8, 1, 0, 0, '1123415', '  Mesa', 1, '', '', NULL, 15.00, '2025-01-20'),
+(305, 1, 71, 'FACHADA', 1, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-21'),
+(306, 1, 71, 'GALERIA', 2, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-21'),
+(307, 1, 71, 'RESTAURANTE . CAFETARIA', 3, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-21'),
+(308, 1, 71, 'PRONTO A COMER', 4, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-21'),
+(309, 1, 71, 'PADARIA', 5, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-21'),
+(310, 2, 71, 'FACHADA', 1, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-21'),
+(311, 2, 71, 'FACHADA', 1, 18, 1, 0, 0, '1234', '  testeultimo', 1, '', NULL, NULL, 12.00, '2025-01-21'),
+(312, 2, 71, 'FACHADA', 1, 8, 2, 0, 0, '1123415', '  Mesa', 1, '', NULL, NULL, 15.00, '2025-01-21'),
+(313, 2, 71, 'FACHADA', 1, 16, 3, 0, 0, '12', '  12', 1, '', NULL, NULL, 12.00, '2025-01-21'),
+(314, 2, 71, 'GALERIA', 2, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-21'),
+(315, 2, 71, 'GALERIA', 2, 15, 1, 0, 0, '1234545566', '  testeimagem', 1, '', NULL, NULL, 1.00, '2025-01-21'),
+(316, 2, 71, 'GALERIA', 2, 8, 2, 0, 0, '1123415', '  Mesa', 1, '', NULL, NULL, 15.00, '2025-01-21'),
+(317, 2, 71, 'GALERIA', 2, 5, 3, 0, 0, '123', '  testar', 1, '', NULL, NULL, 2.50, '2025-01-21'),
+(318, 2, 71, 'RESTAURANTE . CAFETARIA', 3, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-21'),
+(319, 2, 71, 'RESTAURANTE . CAFETARIA', 3, 17, 1, 0, 0, '12345', '  ultimoteste', 1, '', NULL, NULL, 1.00, '2025-01-21'),
+(320, 2, 71, 'RESTAURANTE . CAFETARIA', 3, 11, 2, 0, 0, '1231', '  teste', 1, '', NULL, NULL, 3.00, '2025-01-21'),
+(321, 2, 71, 'RESTAURANTE . CAFETARIA', 3, 8, 3, 0, 0, '1123415', '  Mesa', 1, '', NULL, NULL, 15.00, '2025-01-21'),
+(322, 2, 71, 'PRONTO A COMER', 4, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-21'),
+(323, 2, 71, 'PRONTO A COMER', 4, 12, 1, 0, 0, '1234151', '  test', 1, '', NULL, NULL, 1.00, '2025-01-21'),
+(324, 2, 71, 'PRONTO A COMER', 4, 18, 2, 0, 0, '1234', '  testeultimo', 1, '', NULL, NULL, 12.00, '2025-01-21'),
+(325, 2, 71, 'PRONTO A COMER', 4, 11, 3, 0, 0, '1231', '  teste', 1, '', NULL, NULL, 3.00, '2025-01-21'),
+(326, 2, 71, 'PADARIA', 5, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-21'),
+(327, 2, 71, 'PADARIA', 5, 16, 1, 0, 0, '12', '  12', 1, '', NULL, NULL, 12.00, '2025-01-21'),
+(328, 2, 71, 'PADARIA', 5, 5, 2, 0, 0, '123', '  testar', 1, '', NULL, NULL, 2.50, '2025-01-21'),
+(329, 2, 71, 'PADARIA', 5, 15, 3, 0, 0, '1234545566', '  testeimagem', 1, '', NULL, NULL, 1.00, '2025-01-21');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `client`
+--
+
+DROP TABLE IF EXISTS `client`;
+CREATE TABLE IF NOT EXISTS `client` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `contact` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nif` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `client`
+--
+
+INSERT INTO `client` (`id`, `name`, `email`, `contact`, `nif`, `active`, `updated`, `created`) VALUES
+(7, 'AD', 'AD@afaf', 'AD', '15415151', 1, '2025-01-10 15:34:13', '2024-12-10 19:24:19'),
+(8, 'duart', 'awdsa', '98537285', '8275817598', 1, '2024-12-10 19:24:20', '2024-12-10 19:24:20'),
+(9, 'AD', 'afaf@fainga', 'AD', 'AD', 1, '2025-01-10 14:20:24', '2024-12-10 19:24:58'),
+(12, 'ada', 'adadada@adafafafa', '131', '144', 0, '2025-01-10 14:20:32', '2025-01-05 17:58:14'),
+(13, 'wd', 'awdsa@awdsa', '121', '2121', 1, '2025-01-05 17:59:57', '2025-01-05 17:59:57'),
+(14, 'teste', 'teste@teste', '12121', '121212', 1, '2025-01-05 18:03:01', '2025-01-05 18:03:01'),
+(15, 'awdasw', 'a@a', '121', '21', 1, '2025-01-05 18:04:11', '2025-01-05 18:04:11'),
+(17, 'awdsa', 'wdsa@awd', '12121', '1212', 1, '2025-01-06 16:43:51', '2025-01-06 16:43:51'),
+(18, 'awdsa', 'wdsaawd@awdsa', '1', '1', 1, '2025-01-06 16:43:57', '2025-01-06 16:43:57');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `modules`
+--
+
+DROP TABLE IF EXISTS `modules`;
+CREATE TABLE IF NOT EXISTS `modules` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cod` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `module` varchar(250) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `modules`
+--
+
+INSERT INTO `modules` (`id`, `cod`, `module`) VALUES
+(1, 'adm_001', 'Orçamentos'),
+(3, 'adm_002', 'Fichas de Trabalho'),
+(4, 'adm_003', 'Produtos'),
+(5, 'adm_004', 'Clientes'),
+(6, 'adm_005', 'Administradores'),
+(8, 'adm_006', 'Logs');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `product`
+--
+
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE IF NOT EXISTS `product` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `reference` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `value` decimal(10,2) NOT NULL,
+  `size` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `product`
+--
+
+INSERT INTO `product` (`id`, `active`, `reference`, `name`, `value`, `size`, `img`, `created`, `updated`) VALUES
+(5, 0, '123', 'testar', 2.50, '', '/PAP/images/uploads/photo_678fc894bac629.74749421.png', '2025-01-05 02:08:04', '2025-01-21 16:17:24'),
+(6, 1, 'wadsd', 'awdsaw', 1.00, '', NULL, '2025-01-05 02:08:07', '2025-01-10 15:04:07'),
+(7, 1, 'wdsa', 'dawdsa', 1.00, '', NULL, '2025-01-05 02:08:11', '2025-01-05 02:08:11'),
+(8, 0, '1123415', 'Mesa', 15.00, '', NULL, '2025-01-06 14:19:42', '2025-01-10 15:53:56'),
+(9, 1, 'wddawd', 'awdas', 1.00, '', NULL, '2025-01-06 14:31:38', '2025-01-06 14:31:38'),
+(10, 0, 'wdsawd', 'awdsa', 1.00, '', NULL, '2025-01-06 14:33:19', '2025-01-10 14:38:17'),
+(11, 1, '1231', 'teste', 3.00, '', '', '2025-01-09 08:57:06', '2025-01-09 08:57:06'),
+(12, 0, '1234151', 'test', 1.00, '', '', '2025-01-09 09:09:26', '2025-01-09 09:09:26'),
+(13, 0, '1231', 'a', 1.00, '', '', '2025-01-09 10:08:02', '2025-01-09 10:08:02'),
+(14, 0, '11123', 'testardenovo', 1.00, '', '', '2025-01-10 14:18:33', '2025-01-10 14:18:33'),
+(15, 0, '1234545566', 'testeimagem', 1.00, '', '', '2025-01-10 16:19:57', '2025-01-10 16:19:57'),
+(16, 1, '12', '12', 12.00, '', '', '2025-01-10 16:21:09', '2025-01-10 16:21:09'),
+(17, 1, '12345', 'ultimoteste', 1.00, '', '', '2025-01-10 16:22:00', '2025-01-10 16:22:00'),
+(18, 1, '1234', 'testeultimo', 12.00, '', '', '2025-01-10 16:23:21', '2025-01-10 16:23:21'),
+(19, 1, '1', 'a', 2.00, '', '', '2025-01-10 16:27:00', '2025-01-10 16:27:00');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `product_stock`
+--
+
+DROP TABLE IF EXISTS `product_stock`;
+CREATE TABLE IF NOT EXISTS `product_stock` (
+  `idProduct` int NOT NULL,
+  `quantity` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `idProduct` (`idProduct`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `product_stock`
+--
+
+INSERT INTO `product_stock` (`idProduct`, `quantity`, `created`, `updated`) VALUES
+(5, 2.00, '2025-01-05 02:08:04', '2025-01-10 15:33:49'),
+(6, 1.00, '2025-01-05 02:08:07', '2025-01-05 02:08:07'),
+(7, 1.00, '2025-01-05 02:08:11', '2025-01-05 02:08:11'),
+(8, 3.00, '2025-01-06 14:19:42', '2025-01-06 14:19:42'),
+(9, 1.00, '2025-01-06 14:31:38', '2025-01-06 14:31:38'),
+(10, 1.00, '2025-01-06 14:33:19', '2025-01-06 14:33:19'),
+(11, 1.00, '2025-01-09 08:57:06', '2025-01-09 08:57:06'),
+(12, 2.00, '2025-01-09 09:09:26', '2025-01-09 09:09:26'),
+(13, 1.00, '2025-01-09 10:08:02', '2025-01-09 10:08:02'),
+(14, 1.00, '2025-01-10 14:18:33', '2025-01-10 14:18:33'),
+(15, 2.00, '2025-01-10 16:19:57', '2025-01-10 16:19:57'),
+(16, 12.00, '2025-01-10 16:21:09', '2025-01-10 16:21:09'),
+(17, 2.00, '2025-01-10 16:22:00', '2025-01-10 16:22:00'),
+(18, 1.00, '2025-01-10 16:23:21', '2025-01-10 16:23:21'),
+(19, 3.00, '2025-01-10 16:27:00', '2025-01-10 16:27:00');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `worksheet`
+--
+
+DROP TABLE IF EXISTS `worksheet`;
+CREATE TABLE IF NOT EXISTS `worksheet` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `idBudget` int NOT NULL,
+  `idClient` int NOT NULL,
+  `num` int NOT NULL,
+  `year` int NOT NULL,
+  `readyStorage` date DEFAULT NULL,
+  `joinWork` date DEFAULT NULL,
+  `exitWork` date DEFAULT NULL,
+  `observation` text COLLATE utf8mb4_general_ci NOT NULL,
+  `createdBy` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idBudget` (`idBudget`),
+  KEY `idClient` (`idClient`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `worksheet`
+--
+
+INSERT INTO `worksheet` (`id`, `idBudget`, `idClient`, `num`, `year`, `readyStorage`, `joinWork`, `exitWork`, `observation`, `createdBy`) VALUES
+(1, 49, 8, 1, 2024, '2024-12-07', '2024-12-06', '2024-12-08', '', 49),
+(3, 50, 8, 2, 2024, '2024-12-12', '0000-00-00', '0000-00-00', '', 49),
+(7, 51, 8, 1, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(8, 48, 8, 2, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(9, 47, 8, 3, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(10, 46, 8, 4, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(11, 45, 8, 5, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(12, 43, 8, 6, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(13, 42, 8, 7, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(14, 40, 8, 8, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(15, 52, 8, 9, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(16, 53, 8, 10, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(17, 53, 8, 11, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(18, 53, 8, 12, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(19, 41, 8, 13, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(20, 41, 8, 14, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(21, 41, 8, 15, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49),
+(24, 64, 18, 16, 2025, '2000-09-09', '2000-08-09', '2000-09-09', 'teste', 49),
+(25, 63, 18, 17, 2025, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 49),
+(26, 63, 18, 18, 2025, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 49),
+(27, 63, 18, 19, 2025, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 49),
+(28, 63, 18, 20, 2025, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 49),
+(29, 63, 18, 21, 2025, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 49),
+(30, 63, 18, 22, 2025, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 49),
+(31, 63, 18, 23, 2025, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 49),
+(32, 63, 18, 24, 2025, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 49),
+(33, 62, 17, 25, 2025, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 49),
+(35, 71, 17, 26, 2025, '0000-00-00', '0000-00-00', '0000-00-00', '', 49);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `worksheet_version`
+--
+
+DROP TABLE IF EXISTS `worksheet_version`;
+CREATE TABLE IF NOT EXISTS `worksheet_version` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `idVersion` int NOT NULL,
+  `idWorksheet` int NOT NULL,
+  `readyStorage` date NOT NULL,
+  `joinWork` date NOT NULL,
+  `exitWork` date NOT NULL,
+  `observation` text COLLATE utf8mb4_general_ci NOT NULL,
+  `orderSection` int NOT NULL,
+  `orderProduct` int NOT NULL,
+  `checkProduct` tinyint NOT NULL,
+  `storageProduct` tinyint NOT NULL,
+  `observationProduct` text COLLATE utf8mb4_general_ci NOT NULL,
+  `sizeProduct` varchar(250) COLLATE utf8mb4_general_ci NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idWorksheet` (`idWorksheet`),
+  KEY `idWorksheet_2` (`idWorksheet`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `worksheet_version`
+--
+
+INSERT INTO `worksheet_version` (`id`, `idVersion`, `idWorksheet`, `readyStorage`, `joinWork`, `exitWork`, `observation`, `orderSection`, `orderProduct`, `checkProduct`, `storageProduct`, `observationProduct`, `sizeProduct`, `created`) VALUES
+(1, 1, 32, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, 'teste', 'teste', '2025-01-20 18:45:48'),
+(2, 1, 32, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, 'teste', 'teste', '2025-01-20 18:45:48'),
+(3, 2, 32, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, 'teste', 'teste', '2025-01-20 18:59:54'),
+(4, 2, 32, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, 'teste', 'teste', '2025-01-20 18:59:54'),
+(5, 2, 32, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-20 18:59:54'),
+(6, 1, 33, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-20 21:19:58'),
+(7, 1, 33, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-20 21:20:02'),
+(8, 1, 33, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-20 21:20:02'),
+(9, 1, 33, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-20 21:20:07'),
+(10, 1, 33, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-20 21:20:07'),
+(11, 1, 33, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-20 21:20:07'),
+(12, 3, 33, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:27:28'),
+(13, 3, 33, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:27:28'),
+(14, 3, 33, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:27:28'),
+(15, 3, 33, '0000-00-00', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:27:28'),
+(16, 4, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:28:30'),
+(17, 5, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:28:30'),
+(18, 6, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:28:30'),
+(19, 7, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:28:30'),
+(20, 8, 33, '2000-09-09', '2000-09-09', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:29:17'),
+(21, 8, 33, '2000-09-09', '2000-09-09', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:29:17'),
+(22, 8, 33, '2000-09-09', '2000-09-09', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:29:17'),
+(23, 8, 33, '2000-09-09', '2000-09-09', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:29:17'),
+(24, 9, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:36:21'),
+(25, 9, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:36:21'),
+(26, 9, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:36:21'),
+(27, 9, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:36:21'),
+(28, 10, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:39:30'),
+(29, 10, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:39:30'),
+(30, 10, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:39:30'),
+(31, 10, 33, '2000-09-09', '0000-00-00', '0000-00-00', 'teste', 0, 0, 1, 1, '', '', '2025-01-21 11:39:30'),
+(32, 1, 34, '2000-09-09', '2000-09-09', '0000-00-00', 'teste', 1, 2, 1, 1, '', '', '2025-01-21 15:18:32'),
+(33, 1, 34, '2000-09-09', '2000-09-09', '0000-00-00', 'teste', 5, 1, 1, 1, '', '', '2025-01-21 15:18:32'),
+(34, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 1, 2, 0, 0, '', '', '2025-01-21 15:26:22'),
+(35, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 1, 3, 0, 0, '', '', '2025-01-21 15:26:22'),
+(36, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 1, 1, 0, 0, '', '', '2025-01-21 15:26:22'),
+(37, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 2, 3, 0, 0, '', '', '2025-01-21 15:26:22'),
+(38, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 2, 2, 0, 0, '', '', '2025-01-21 15:26:22'),
+(39, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 2, 1, 0, 0, '', '', '2025-01-21 15:26:22'),
+(40, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 3, 3, 0, 0, '', '', '2025-01-21 15:26:22'),
+(41, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 3, 2, 0, 0, '', '', '2025-01-21 15:26:22'),
+(42, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 3, 1, 0, 0, '', '', '2025-01-21 15:26:22'),
+(43, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 4, 3, 0, 0, '', '', '2025-01-21 15:26:22'),
+(44, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 4, 1, 0, 0, '', '', '2025-01-21 15:26:22'),
+(45, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 4, 2, 0, 0, '', '', '2025-01-21 15:26:22'),
+(46, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 5, 2, 0, 0, '', '', '2025-01-21 15:26:22'),
+(47, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 5, 3, 0, 0, '', '', '2025-01-21 15:26:22'),
+(48, 1, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 5, 1, 0, 0, '', '', '2025-01-21 15:26:22'),
+(49, 2, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 1, 2, 1, 1, '', '', '2025-01-21 15:26:31'),
+(50, 2, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 1, 3, 1, 1, '', '', '2025-01-21 15:26:31'),
+(51, 2, 35, '0000-00-00', '0000-00-00', '0000-00-00', '', 1, 1, 1, 1, '', '', '2025-01-21 15:26:31');
+
+--
+-- Restrições para despejos de tabelas
+--
+
+--
+-- Limitadores para a tabela `administrator_logs`
+--
+ALTER TABLE `administrator_logs`
+  ADD CONSTRAINT `administrator_logs_ibfk_1` FOREIGN KEY (`idAdministrator`) REFERENCES `administrator` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `administrator_modules`
+--
+ALTER TABLE `administrator_modules`
+  ADD CONSTRAINT `administrator_modules_ibfk_2` FOREIGN KEY (`idModule`) REFERENCES `modules` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `budget`
+--
+ALTER TABLE `budget`
+  ADD CONSTRAINT `budget_ibfk_1` FOREIGN KEY (`idClient`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `budget_ibfk_2` FOREIGN KEY (`idWorksheet`) REFERENCES `worksheet` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `budget_sections_products`
+--
+ALTER TABLE `budget_sections_products`
+  ADD CONSTRAINT `budget_sections_products_ibfk_2` FOREIGN KEY (`idBudget`) REFERENCES `budget` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `budget_sections_products_ibfk_3` FOREIGN KEY (`idProduct`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `budget_version`
+--
+ALTER TABLE `budget_version`
+  ADD CONSTRAINT `budget_version_ibfk_1` FOREIGN KEY (`idBudget`) REFERENCES `budget` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `budget_version_ibfk_3` FOREIGN KEY (`idProduct`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `product_stock`
+--
+ALTER TABLE `product_stock`
+  ADD CONSTRAINT `product_stock_ibfk_1` FOREIGN KEY (`idProduct`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `worksheet`
+--
+ALTER TABLE `worksheet`
+  ADD CONSTRAINT `worksheet_ibfk_1` FOREIGN KEY (`idClient`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;

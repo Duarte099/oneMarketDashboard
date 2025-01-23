@@ -17,7 +17,7 @@
 
     $idAdminEdit = $_GET['id'];
 
-    $sql = "SELECT * FROM administrator WHERE id = $idAdminEdit";
+    $sql = "SELECT * FROM administrator WHERE id = '$idAdminEdit'";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -27,6 +27,10 @@
         $imgAdmin = $row['img'];
         $birthday = $row['birthday'];
         $status = $row['active'];
+    }
+    else{
+        header('Location: dashboard.php');
+        exit();
     }
 
     $sql = "SELECT MAX(id) AS numModules FROM modules;";
@@ -163,26 +167,36 @@
                                                 $pDelete = "checked";
                                                 //echo "teste";
                                             }
-                                    
                                         }
-
-                                        $sql = "SELECT id, module AS nameModule FROM modules WHERE id = $i;";
+                                        $sql = "SELECT id, cod, module AS nameModule FROM modules WHERE id = $i;";
                                         $result3 = $con->query($sql);
                                         if ($result3->num_rows > 0) {        
                                             $row3 = $result3->fetch_assoc();
                                             $id = $row3['id'];
                                             $nome = $row3['nameModule'];
-                                            ?>
-                                                <div class="module">
-                                                    <span><?php echo $nome;?></span>
-                                                    <div class="permissions">
-                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_ver" <?php echo $pView; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Ver</label>
-                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_edit" <?php echo $pInsert; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Editar</label>
-                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_criar" <?php echo $pUpdate; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Criar</label>
-                                                        <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_apagar" <?php echo $pDelete; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Apagar</label>
+                                            if ($row3['cod'] == "adm_007") {
+                                                ?>
+                                                    <div class="module">
+                                                        <span><?php echo $nome;?></span>
+                                                        <div class="permissions">
+                                                            <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_ver" <?php echo $pView; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Ver</label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            <?php
+                                                <?php
+                                            }
+                                            else {
+                                                ?>
+                                                    <div class="module">
+                                                        <span><?php echo $nome;?></span>
+                                                        <div class="permissions">
+                                                            <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_ver" <?php echo $pView; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Ver</label>
+                                                            <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_edit" <?php echo $pInsert; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Editar</label>
+                                                            <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_criar" <?php echo $pUpdate; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Criar</label>
+                                                            <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_apagar" <?php echo $pDelete; ?> <?php if (adminPermissions("adm_005", "update") == 0) {echo "disabled";}?>> Apagar</label>
+                                                        </div>
+                                                    </div>
+                                                <?php
+                                            }
                                         }
                                     }
                                 }

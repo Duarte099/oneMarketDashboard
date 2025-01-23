@@ -16,6 +16,12 @@
     }
 
     $idBudget = $_GET['idBudget'];
+    $sql = "SELECT * FROM budget WHERE id = '$idBudget'";
+    $result = $con->query($sql);
+    if ($result->num_rows <= 0) {
+        header('Location: dashboard.php');
+        exit();
+    }
 
     $sql = "SELECT MAX(idVersion) AS idVersion FROM budget_version WHERE idBudget = $idBudget;";
     $result = $con->query($sql);
@@ -25,6 +31,14 @@
     }
 
     $versao = isset($_GET['versao']) ? (int)$_GET['versao'] : $maxVersao;
+    $sql = "SELECT * FROM budget_version WHERE idVersion = '$versao' AND idBudget = '$idBudget'";
+    $result = $con->query($sql);
+    if ($result->num_rows <= 0) {
+        header('Location: dashboard.php');
+        exit();
+    }
+
+    
     $inputValue = '';
     $produtosIndex = 0;
 

@@ -34,7 +34,7 @@
         const worksheetsSearchData = [];
                                 
         $.ajax({
-            url: 'ajax.obterWorksheets.php',
+            url: 'json.obterWorksheets.php',
             type: 'POST',
             dataType: 'json',
             success: function(data) {
@@ -142,7 +142,7 @@
         const budgetsSearchData = [];
                                     
         $.ajax({
-            url: 'ajax.obterOrcamentosModal.php',
+            url: 'json.obterOrcamentosModal.php',
             type: 'POST',
             dataType: 'json',
             success: function(data) {

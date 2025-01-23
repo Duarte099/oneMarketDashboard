@@ -2,12 +2,10 @@ responsivo a todos os dispositivos
 
 gestão de stocks -> tentar
 
-no modal do orcamento de selecionar clientes se não aparecer resultados na pesquisa fica na mesma com resultados invisiveis que dao para selecionar 
+imagens na ficha de Trabalho
 
-verificar e corrigir ao ir para alguma pagina que precise de valores no url, se nao tiver voltar para a pagina anterior
+fazer pagina de impressao de orçamentos e fichas de trabalho
 
-adicionar bd ao readme~
+adicionar tabela de logs à pagina de admins
 
-adicionar segurança às paginas ajax
-
-adicionar a todas as paginas segurança de verificar password que ta na base de dados se é igual à que ele inseriu
+tabela na dashboard a indicar os produtos que estao fora de stock

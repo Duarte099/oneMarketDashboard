@@ -16,12 +16,15 @@
     }
 
     $idBudget = $_GET['idBudget'];
-
     $sql = "SELECT budget.idClient FROM budget WHERE budget.id = $idBudget;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $idClient =  $row['idClient'];
+    } 
+    else {
+        header('Location: ../pages/dashboard.php');
+        exit();
     }
 
     $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
@@ -142,7 +145,11 @@
                                             <td><?php echo $amountProduct * $valueProduct . "€";?></td>
                                         </tr>
                                     </tbody>
+                            <?php 
+                            if ($j == $numProducts) {?>
+                                <script>alert(".");</script>
                             <?php }
+                            }
                         ?>
                     </table>
                 </div>
@@ -150,16 +157,28 @@
         ?>
 
         <div class="footer">
-            <div>
-                <p><strong>Percentagem Deslocações e montagens:</strong> <?php echo $maoObraBudget . "%"; ?></p>
-                <p><strong>Desconto:</strong> <?php echo $descontoBudget . "%";?></p>
-                <p><strong>Total:</strong> <?php echo $totalBudget . "€";?></p>
+            <div class="footer-row">
+                <div class="footer-cell label">Deslocações e montagens <span style="padding-left: 100px;"><?php echo $maoObraBudget . "%"; ?></span></div>
+                <div class="footer-cell value"><?php echo $totalBudget * ($maoObraBudget / 100) . "€"; ?></div>
             </div>
-            <div>
-                <p><strong>Total Deslocações e montagens:</strong> <?php echo $totalBudget * ($maoObraBudget / 100) . "€"; ?></p>
-                <p><strong>Total C/ desconto:</strong> <?php echo $totalBudget * ($descontoBudget / 100) . "€";?></p>
+            <div class="footer-row">
+                <div class="footer-cell label">TOTAL</div>
+                <div class="footer-cell value"><?php echo $totalBudget . "€";?></div>
+            </div>
+            <div class="footer-row">
+                <div class="footer-cell label" style="margin-bottom: 10px;">C/ desconto 5%</div>
+                <div class="footer-cell value" style="margin-bottom: 10px;"><?php echo $totalBudget * ($descontoBudget / 100) . "€";?></div>
+            </div>
+            <strong>Observações:</strong>
+            <div class="observacoes">
+                <?php echo $observacao; ?>
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            alert("Atingiu o máximo de produtos criados por alteração.");
+        });
+    </script>
 </body>
 </html>

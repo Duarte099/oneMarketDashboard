@@ -14,6 +14,20 @@
     // }
     // echo "<script>console.error(" . json_encode("aaaaaaa") . ");</script>";
     // exit;
+    
 
+    if (!isset($auxLogin)) $auxLogin = false;
+    
+    if (isset($auxLogin) && !$auxLogin) {
+        $sql = "SELECT * FROM administrator WHERE id = " . $_SESSION['id'] . " AND pass = '" . $_SESSION['password'] . "';";
+        $result = $con->query($sql);
+        if ($result->num_rows > 0) {
+            
+        }
+        else {
+            header('Location: index.php');
+            exit();
+        }
+    }
     include_once 'functions.php';
 ?>  

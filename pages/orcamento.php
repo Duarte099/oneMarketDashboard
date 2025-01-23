@@ -35,7 +35,7 @@
             const clientsSearchData = [];
                                         
             $.ajax({
-                url: 'ajax.obterClientes.php',
+                url: 'json.obterClientes.php',
                 type: 'POST',
                 dataType: 'json',
                 success: function(data) {
@@ -110,7 +110,7 @@
             const budgetsSearchData = [];
                                         
             $.ajax({
-                url: 'ajax.obterOrcamentos.php',
+                url: 'json.obterOrcamentos.php',
                 type: 'POST',
                 dataType: 'json',
                 success: function(data) {

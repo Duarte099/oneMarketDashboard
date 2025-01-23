@@ -35,7 +35,7 @@
         const productsSearchData = [];
                                 
         $.ajax({
-            url: 'ajax.obterProdutos.php',
+            url: 'json.obterProdutos.php',
             type: 'POST',
             dataType: 'json',
             success: function(data) {

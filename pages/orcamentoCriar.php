@@ -15,18 +15,14 @@
         exit();
     }
 
-    // $op = '';
     $idCliente = $_GET['idClient'];
 
-    // if ($op == 'save') {
-    //     $numSeccao  = 10;
-    //     for ($i=1; $i<=$numSeccao; $i++) {
-    //         if (isset($_POST['produto_ref_' . $i])) {
-    //             $produto_ref = $_POST['produto_ref_' . $i];
-    //             echo "produto_ref = $produto_ref";
-    //         }
-    //     }
-    // }
+    $sql = "SELECT * FROM client WHERE id = '$idCliente'";
+    $result = $con->query($sql);
+    if ($result->num_rows <= 0) {
+        header('Location: dashboard.php');
+        exit();
+    }
 
     $anoAtual = date('Y');
     $sql = "SELECT MAX(num) AS maior_numero FROM budget WHERE year = $anoAtual;";

@@ -17,9 +17,9 @@
     if (isset($_GET['id'])) {
         $id = intval($_GET['id']);
     } else {
-        header('Location: cliente.php');  // Caso não esteja na url volta para a página dos clientes
+        header('Location: dashboard.php');  // Caso não esteja na url volta para a página dos clientes
         exit();
-    }   
+    }
 
     // Buscar o id selecionado antes
     $query = "SELECT * FROM client WHERE id = ?";

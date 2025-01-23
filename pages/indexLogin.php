@@ -1,5 +1,8 @@
 <?php
     session_start();
+
+    $auxLogin = true;
+
     include("../db/conexao.php");
 
     $_SESSION['errorMessage'] = "";
@@ -26,18 +29,23 @@
                 // Verification success! User has logged-in!
                 // Create sessions, so we know the user is logged in, they basically act like cookies but remember the data on the server.
                 session_regenerate_id();
+                $_SESSION['password'] = $password;
                 $_SESSION['loggedin'] = TRUE;
                 $_SESSION['name'] = $nomeX;
                 $_SESSION['id'] = $id;
+                $_SESSION['passX'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                //echo "1";
                 header('Location: ../pages/dashboard.php');
                 exit();
             } else {
+                echo "2";
                 $_SESSION['errorMessage'] = "Password ou user Incorreto!";
-                header('Location: ../pages/dashboard.php');
+                // header('Location: ../pages/index.php');
             }
         } else {
+            echo "3";
             $_SESSION['errorMessage'] = "Password ou user incorreto!";
-            header('Location: ../pages/index.php');
+            // header('Location: ../pages/index.php');
         }
 
         $stmt->close();

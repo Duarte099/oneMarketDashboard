@@ -18,6 +18,13 @@
     // $op = '';
     $idBudget = $_GET['idBudget'];
 
+    $sql = "SELECT * FROM budget WHERE id = '$idBudget'";
+    $result = $con->query($sql);
+    if ($result->num_rows <= 0) {
+        header('Location: dashboard.php');
+        exit();
+    }
+
     $idAdmin = $_SESSION['id'];
 
     $sql = "SELECT idClient, num, year FROM budget WHERE id = $idBudget;";

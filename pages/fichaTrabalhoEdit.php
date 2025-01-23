@@ -18,8 +18,12 @@
     
     // $op = '';
     $idWorksheet = $_GET['idWorksheet'];
-
-    $idAdmin = $_SESSION['id'];
+    $sql = "SELECT * FROM worksheet WHERE id = '$idWorksheet'";
+    $result = $con->query($sql);
+    if ($result->num_rows <= 0) {
+        header('Location: dashboard.php');
+        exit();
+    }
 
     $sql = "SELECT MAX(idVersion) AS idVersion FROM worksheet_version WHERE idWorksheet = $idWorksheet;";
     $result = $con->query($sql);
@@ -27,6 +31,16 @@
         $row = $result->fetch_assoc();
         $maxVersao =  $row['idVersion'];
     }
+
+    $versao = isset($_GET['versao']) ? (int)$_GET['versao'] : $maxVersao;
+    $sql = "SELECT * FROM worksheet_version WHERE idVersion = '$versao' AND idWorksheet = '$idWorksheet'";
+    $result = $con->query($sql);
+    if ($result->num_rows <= 0) {
+        header('Location: dashboard.php');
+        exit();
+    }
+
+    $idAdmin = $_SESSION['id'];
 
     $sql = "SELECT idClient, idBudget, num, year FROM worksheet WHERE id = $idWorksheet;";
     $result = $con->query($sql);
@@ -39,7 +53,6 @@
     }
     $numFicha = "$numWorksheet/$yearWorksheet";
 
-    $versao = isset($_GET['versao']) ? (int)$_GET['versao'] : $maxVersao;
     if ($versao == $maxVersao) {
         $sql = "SELECT observation, readyStorage, joinWork, exitWork FROM worksheet WHERE id = $idWorksheet;";
         $result = $con->query($sql);

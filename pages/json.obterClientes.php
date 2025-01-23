@@ -1,8 +1,7 @@
 <?php 
     session_start();
 
-    include('../db/conexao.php'); 
-    $estouEm = 2;
+    include('../db/conexao.php');
 
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');

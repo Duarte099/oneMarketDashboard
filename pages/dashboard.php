@@ -109,126 +109,127 @@
             </ul>
             <!-- End of Insights -->
             
-            <!-- Ano -->
-            <div class="chart-container">
-                <div class="year-selector">
-                    <button id="prevYear" class="year-button">❮</button>
-                    <span id="currentYear" class="year-display"><?php echo $anoAtual; ?></span>
-                    <button id="nextYear" class="year-button">❯</button>
+            <?php if (adminPermissions("adm_007", "view") == 1) { ?>
+                <!-- Ano -->
+                <div class="chart-container">
+                    <div class="year-selector">
+                        <button id="prevYear" class="year-button">❮</button>
+                        <span id="currentYear" class="year-display"><?php echo $anoAtual; ?></span>
+                        <button id="nextYear" class="year-button">❯</button>
+                    </div>
+                    <canvas id="ganhosChart"></canvas>
                 </div>
-                <canvas id="ganhosChart"></canvas>
-            </div>
-            
 
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    let anoAtual = new Date().getFullYear(); // Ano atual
-                    let anoSelecionado = anoAtual; // Inicialmente, o ano selecionado é o atual
-                    const anoDisplay = document.getElementById('currentYear');
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        let anoAtual = new Date().getFullYear(); // Ano atual
+                        let anoSelecionado = anoAtual; // Inicialmente, o ano selecionado é o atual
+                        const anoDisplay = document.getElementById('currentYear');
 
-                    // Atualiza o ano exibido no display
-                    function atualizarAnoDisplay() {
-                        anoDisplay.innerText = anoSelecionado;
-                    }
-
-                    // Atualiza o gráfico com base no ano selecionado
-                    async function atualizarGrafico() {
-                        const response = await buscarDados();
-                        if (!response) {
-                            console.error('Não foi possível atualizar o gráfico.');
-                            return;
+                        // Atualiza o ano exibido no display
+                        function atualizarAnoDisplay() {
+                            anoDisplay.innerText = anoSelecionado;
                         }
 
-                        const data = response.data;
-                        const canvas = document.getElementById('ganhosChart');
-                        if (!canvas) {
-                            console.error('Canvas para o gráfico não encontrado.');
-                            return;
-                        }
+                        // Atualiza o gráfico com base no ano selecionado
+                        async function atualizarGrafico() {
+                            const response = await buscarDados();
+                            if (!response) {
+                                console.error('Não foi possível atualizar o gráfico.');
+                                return;
+                            }
 
-                        const ctx = canvas.getContext('2d');
-                        if (!ctx) {
-                            console.error('Contexto 2D não disponível para o gráfico.');
-                            return;
-                        }
+                            const data = response.data;
+                            const canvas = document.getElementById('ganhosChart');
+                            if (!canvas) {
+                                console.error('Canvas para o gráfico não encontrado.');
+                                return;
+                            }
 
-                        // Verifica se o gráfico já existe antes de destruir
-                        if (window.ganhosChart && typeof window.ganhosChart.destroy === 'function') {
-                            window.ganhosChart.destroy();
-                        }
+                            const ctx = canvas.getContext('2d');
+                            if (!ctx) {
+                                console.error('Contexto 2D não disponível para o gráfico.');
+                                return;
+                            }
 
-                        // Cria o novo gráfico
-                        window.ganhosChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                                datasets: [{
-                                    label: 'Ganhos em €',
-                                    data: [
-                                        data.JANE, data.FEVE, data.MARC, data.ABRI, data.MAIO,
-                                        data.JUNH, data.JULH, data.AGOS, data.SETE, data.OUTR,
-                                        data.NOVE, data.DEZE
-                                    ],
-                                    backgroundColor: '#781215',
-                                    borderColor: '#781215',
-                                    borderWidth: 1,
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
+                            // Verifica se o gráfico já existe antes de destruir
+                            if (window.ganhosChart && typeof window.ganhosChart.destroy === 'function') {
+                                window.ganhosChart.destroy();
+                            }
+
+                            // Cria o novo gráfico
+                            window.ganhosChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                                    datasets: [{
+                                        label: 'Ganhos em €',
+                                        data: [
+                                            data.JANE, data.FEVE, data.MARC, data.ABRI, data.MAIO,
+                                            data.JUNH, data.JULH, data.AGOS, data.SETE, data.OUTR,
+                                            data.NOVE, data.DEZE
+                                        ],
+                                        backgroundColor: '#781215',
+                                        borderColor: '#781215',
+                                        borderWidth: 1,
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
                                     }
                                 }
+                            });
+
+                            // Atualiza o título do gráfico
+                            const titulo = document.getElementById('tituloGrafico');
+                            if (titulo) {
+                                titulo.innerText = `Ganhos Mensais em € (${anoSelecionado})`;
+                            }
+                        }
+
+                        // Busca os dados do ano selecionado
+                        async function buscarDados() {
+                            try {
+                                const response = await fetch(`json.obterGanhosAnuais.php?ano=${anoSelecionado}`);
+                                if (!response.ok) {
+                                    throw new Error('Erro ao buscar os dados.');
+                                }
+                                return await response.json();
+                            } catch (error) {
+                                console.error(error);
+                                return null;
+                            }
+                        }
+
+                        // Eventos dos botões
+                        document.getElementById('prevYear').addEventListener('click', function () {
+                            if (anoSelecionado > anoAtual - 1) { // Apenas permite o ano atual e o anterior
+                                anoSelecionado--;
+                                atualizarAnoDisplay();
+                                atualizarGrafico();
                             }
                         });
 
-                        // Atualiza o título do gráfico
-                        const titulo = document.getElementById('tituloGrafico');
-                        if (titulo) {
-                            titulo.innerText = `Ganhos Mensais em € (${anoSelecionado})`;
-                        }
-                    }
-
-                    // Busca os dados do ano selecionado
-                    async function buscarDados() {
-                        try {
-                            const response = await fetch(`tabelaganhos.php?ano=${anoSelecionado}`);
-                            if (!response.ok) {
-                                throw new Error('Erro ao buscar os dados.');
+                        document.getElementById('nextYear').addEventListener('click', function () {
+                            if (anoSelecionado < anoAtual) { // Apenas permite voltar ao ano atual
+                                anoSelecionado++;
+                                atualizarAnoDisplay();
+                                atualizarGrafico();
                             }
-                            return await response.json();
-                        } catch (error) {
-                            console.error(error);
-                            return null;
-                        }
-                    }
+                        });
 
-                    // Eventos dos botões
-                    document.getElementById('prevYear').addEventListener('click', function () {
-                        if (anoSelecionado > anoAtual - 1) { // Apenas permite o ano atual e o anterior
-                            anoSelecionado--;
-                            atualizarAnoDisplay();
-                            atualizarGrafico();
-                        }
+                        // Inicializa o gráfico com o ano atual
+                        atualizarAnoDisplay();
+                        atualizarGrafico();
                     });
-
-                    document.getElementById('nextYear').addEventListener('click', function () {
-                        if (anoSelecionado < anoAtual) { // Apenas permite voltar ao ano atual
-                            anoSelecionado++;
-                            atualizarAnoDisplay();
-                            atualizarGrafico();
-                        }
-                    });
-
-                    // Inicializa o gráfico com o ano atual
-                    atualizarAnoDisplay();
-                    atualizarGrafico();
-                });
-            </script>
-
-            <div class="FichaLogs">
+                </script>
+            <?php  } ?>
+        
+            <div class="fichalogs">
                 <div class="work-status">
                     <div class="products">
                         <h2>Estado das Fichas de Trabalho</h2>
@@ -300,40 +301,39 @@
                         </table>
                     </div>
                 </div>
-                
-                
-                
 
-                <div class="logs-section">
-                    <div class="logs">
-                    <h2>Logs Recentes</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Log</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                            $sql = "SELECT dataLog, logFile
-                                from administrator_logs
-                                ORDER BY dataLog DESC
-                                LIMIT 10";
-                            $result = $con->query($sql);
-                            if ($result->num_rows > 0) {  
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<tr>
-                                    <td>{$row['dataLog']}</td>
-                                    <td>{$row['logFile']}</td>
-                                    </tr>";
+                <?php if (adminPermissions("adm_006", "view") == 1) { ?>
+                    <div class="logs-section">
+                        <div class="logs">
+                        <h2>Logs Recentes</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Log</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                                $sql = "SELECT dataLog, logFile
+                                    from administrator_logs
+                                    ORDER BY dataLog DESC
+                                    LIMIT 10";
+                                $result = $con->query($sql);
+                                if ($result->num_rows > 0) {  
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<tr>
+                                        <td>{$row['dataLog']}</td>
+                                        <td>{$row['logFile']}</td>
+                                        </tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='2'>Sem logs recentes para exibir.</td></tr>";
                                 }
-                            } else {
-                                echo "<tr><td colspan='2'>Sem logs recentes para exibir.</td></tr>";
-                            }
-                        ?>
-                    </table>
-                </div>
+                            ?>
+                        </table>
+                    </div>
+                <?php  } ?>
             </div>
         </main>
     </div>

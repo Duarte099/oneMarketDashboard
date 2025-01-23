@@ -116,13 +116,14 @@ body{
 /* Ficha de Trabalho e logs */
 
 
-.content main .FichaLogs {
+.content main .fichalogs {
     display: flex; 
     gap: 24px; 
     margin-top: 24px;
     color: var(--secondary-text-color);
     flex-wrap: wrap; 
 }
+
 
 /* Ficha de Trabalho */
 .content main .work-status {
@@ -478,7 +479,7 @@ body{
 .year-selector button {
     background-color: var(--background-color); 
     border: 1px solid #555;
-    color: #f5f5f5;
+    color: var(--primary-text-color);
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
@@ -488,7 +489,7 @@ body{
 }
 
 .year-selector button:hover {
-    background-color: #781215; 
+    background-color: var(--theme-color); 
     color: #fff;
     transform: scale(1.1);
 }
@@ -499,9 +500,6 @@ body{
     color: #f5f5f5;
     font-weight: bold;
 }
-
-
-
 
 
 

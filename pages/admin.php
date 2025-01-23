@@ -36,7 +36,7 @@
         const adminsSearchData = [];
                                 
         $.ajax({
-            url: 'ajax.obterAdmins.php',
+            url: 'json.obterAdmins.php',
             type: 'POST',
             dataType: 'json',
             success: function(data) {
