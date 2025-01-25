@@ -5,8 +5,14 @@
 <script src="../index.js" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<body>
+    <div class="header">
+        <button id="sidebarToggle" class="sidebar-toggle">
+            <i class='bx bx-menu'></i>
+        </button>
+    </div>
 
-
+</body>
 <!-- Sidebar -->
 <div class="sidebar">
     <a href="../pages/dashboard.php" class="logo">
@@ -46,8 +52,25 @@
 
 
 
-
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+        });
+
+        // Fechar o sidebar ao clicar em um link (opcional)
+        const sidebarLinks = document.querySelectorAll('.sidebar .side-menu li a');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+    });
 
 
 </script>

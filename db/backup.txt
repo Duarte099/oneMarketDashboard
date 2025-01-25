@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 22-Jan-2025 às 01:00
+-- Tempo de geração: 23-Jan-2025 às 00:42
 -- Versão do servidor: 9.1.0
 -- versão do PHP: 8.3.14
 
@@ -34,15 +34,15 @@ CREATE TABLE IF NOT EXISTS `administrator` (
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=890 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Extraindo dados da tabela `administrator`
 --
 
 INSERT INTO `administrator` (`id`, `name`, `email`, `user`, `pass`, `img`, `birthday`, `created`, `updated`, `active`) VALUES
-(88, 'test', 'test@test', 'test', '$2y$10$QO6Kux6nWcWGxgy7YltNqeBcVZ5r0xrUgA2psJppki7VIN5Wx3IOe', '/PAP/images/uploads/photo_67901cb433cb87.43940294.png', '2000-09-09', '2025-01-21 22:16:20', '2025-01-21 22:16:20', 1),
-(89, 'teste', 'teste@teste.com', 'teste', '$2y$10$iHYF7eyha19cSqVkxhdFJuukPO8xgfjD2lyk/elIZcU0TLinWm502', '/PAP/images/uploads/photo_67903d26877596.28234662.gif', '2000-09-09', '2025-01-22 00:34:31', '2025-01-22 00:34:31', 1);
+(88, 'test', 'test@test', 'test', '$2y$10$3uz9GVsrICAQuOpQy3sE2uxdmdN0c38hBWEa0DY4nAqMDU3xh2Zhq', '/PAP/images/uploads/photo_679139965a3b30.40737689.gif', '2000-09-09', '2025-01-21 22:16:20', '2025-01-21 22:16:20', 1),
+(89, 'teste', 'teste@teste.com', 'teste', '$2y$10$ugwG/LNFBaK7l6FIYA/PiuPEUAmWcf5Uap.AzA7PQvroe6eAK2kim', '/PAP/images/uploads/photo_679134e8c66fc3.14154049.png', '2000-09-09', '2025-01-22 00:34:31', '2025-01-22 00:34:31', 1);
 
 -- --------------------------------------------------------
 
@@ -64,7 +64,36 @@ CREATE TABLE IF NOT EXISTS `administrator_logs` (
 
 INSERT INTO `administrator_logs` (`idAdministrator`, `dataLog`, `logFile`) VALUES
 (88, '2025-01-22 00:34:31', 'Administrador \'teste\' (ID: 89) criado pelo administrador de ID test.'),
-(88, '2025-01-22 00:34:46', 'Administrador \'teste\' (ID: 89) editado pelo administrador de ID test.');
+(88, '2025-01-22 00:34:46', 'Administrador \'teste\' (ID: 89) editado pelo administrador de ID test.'),
+(88, '2025-01-22 09:25:36', 'Administrador \'teste\' (ID: 89) editado pelo administrador de ID test.'),
+(88, '2025-01-22 09:26:33', 'Administrador \'teste\' (ID: 89) editado pelo administrador de ID test.'),
+(88, '2025-01-22 09:26:46', 'Administrador \'teste\' (ID: 89) editado pelo administrador de ID test.'),
+(88, '2025-01-22 09:29:06', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 12:40:47', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 12:41:34', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 12:42:00', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 12:44:21', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 12:44:31', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 12:45:32', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 17:35:05', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:00:57', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:01:40', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:02:38', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:02:43', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:03:01', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:04:28', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:11:41', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:11:52', 'Administrador \'teste\' (ID: 89) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:17:23', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:21:21', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:26:07', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:26:11', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:26:28', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:26:57', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:29:09', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:30:21', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:31:50', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.'),
+(88, '2025-01-22 18:33:06', 'Administrador \'test\' (ID: 88) editado pelo administrador de ID test.');
 
 -- --------------------------------------------------------
 
@@ -96,13 +125,15 @@ INSERT INTO `administrator_modules` (`idAdministrator`, `idModule`, `pView`, `pI
 (88, 4, 1, 1, 1, 1, '2025-01-22 00:29:58', '2025-01-22 00:29:58'),
 (88, 5, 1, 1, 1, 1, '2025-01-22 00:29:58', '2025-01-22 00:29:58'),
 (88, 6, 1, 1, 1, 1, '2025-01-22 00:29:58', '2025-01-22 00:29:58'),
-(88, 8, 1, 1, 1, 1, '2025-01-22 00:29:58', '2025-01-22 00:29:58'),
+(88, 8, 1, 1, 1, 1, '2025-01-22 00:29:58', '2025-01-22 18:33:06'),
+(88, 10, 1, 0, 0, 0, '2025-01-22 18:00:57', '2025-01-22 18:33:06'),
 (89, 1, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31'),
 (89, 3, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31'),
 (89, 4, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31'),
 (89, 5, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31'),
 (89, 6, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31'),
-(89, 8, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31');
+(89, 8, 0, 0, 0, 0, '2025-01-22 00:34:31', '2025-01-22 00:34:31'),
+(89, 10, 0, 0, 0, 0, '2025-01-22 18:11:52', '2025-01-22 18:11:52');
 
 -- --------------------------------------------------------
 
@@ -135,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `budget` (
 
 INSERT INTO `budget` (`id`, `idClient`, `idWorksheet`, `name`, `num`, `year`, `laborPercent`, `discountPercent`, `observation`, `createdBy`, `created`, `updated`) VALUES
 (40, 8, 14, 'TESTE1234', 2, 2024, 0.00, 0.00, '', 88, '2024-12-23 18:00:51', '2025-01-22 00:50:54'),
-(41, 8, 14, 'teste', 3, 2025, 0.00, 0.00, '', 88, '2024-12-23 18:15:30', '2025-01-22 00:50:54'),
+(41, 8, 14, 'teste', 3, 2025, 0.00, 0.00, '', 88, '2025-01-23 18:15:30', '2025-01-22 12:50:04'),
 (42, 8, 13, 'teste', 4, 2025, 0.00, 0.00, '', 88, '2024-12-23 18:15:30', '2025-01-22 00:50:54'),
 (43, 8, 12, '0.002470355', 5, 2024, 0.00, 0.00, '', 88, '2024-12-24 02:11:34', '2025-01-22 00:50:54'),
 (45, 8, 11, '0.002964426', 6, 2024, 0.00, 0.00, '', 88, '2024-12-27 00:39:18', '2025-01-22 00:50:54'),
@@ -338,7 +369,7 @@ INSERT INTO `budget_sections_products` (`id`, `idBudget`, `orderSection`, `nameS
 (291, 71, 3, 'RESTAURANTE . CAFETARIA', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
 (292, 71, 4, 'PRONTO A COMER', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
 (293, 71, 5, 'PADARIA', NULL, 0, 0, 0, '', '', 0, NULL, '', NULL, 0.00),
-(294, 71, 1, '0', 18, 1, 1, 1, '1234', '  testeultimo', 1, '', '', '', 12.00),
+(294, 71, 1, '0', 18, 1, 1, 1, '1234', '  testeultimo', 1, 'Moldura em tubo de ferro 10x10x1,5mm e metal distendido ferro 40x16 com 1x2mm (espessura x travessa) com lacagem a RAL 9004/9005; inclui patilhas de inox para fixação ao tecto falso; remate em madeira de pinho 30x30mm 2500X600mm', '', '', 12.00),
 (295, 71, 1, '0', 8, 2, 1, 1, '1123415', '  Mesa', 1, '', '', '', 15.00),
 (296, 71, 1, '0', 16, 3, 1, 1, '12', '  12', 1, '', '', '', 12.00),
 (297, 71, 2, '0', 15, 1, 0, 0, '1234545566', '  testeimagem', 1, '', '', NULL, 1.00),
@@ -382,7 +413,7 @@ CREATE TABLE IF NOT EXISTS `budget_version` (
   PRIMARY KEY (`id`),
   KEY `idBudget` (`idBudget`,`idProduct`),
   KEY `idProduct` (`idProduct`)
-) ENGINE=InnoDB AUTO_INCREMENT=330 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=350 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Extraindo dados da tabela `budget_version`
@@ -604,7 +635,27 @@ INSERT INTO `budget_version` (`id`, `idVersion`, `idBudget`, `nameSection`, `ord
 (326, 2, 71, 'PADARIA', 5, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-21'),
 (327, 2, 71, 'PADARIA', 5, 16, 1, 0, 0, '12', '  12', 1, '', NULL, NULL, 12.00, '2025-01-21'),
 (328, 2, 71, 'PADARIA', 5, 5, 2, 0, 0, '123', '  testar', 1, '', NULL, NULL, 2.50, '2025-01-21'),
-(329, 2, 71, 'PADARIA', 5, 15, 3, 0, 0, '1234545566', '  testeimagem', 1, '', NULL, NULL, 1.00, '2025-01-21');
+(329, 2, 71, 'PADARIA', 5, 15, 3, 0, 0, '1234545566', '  testeimagem', 1, '', NULL, NULL, 1.00, '2025-01-21'),
+(330, 3, 71, 'FACHADA', 1, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-22'),
+(331, 3, 71, 'FACHADA', 1, 18, 1, 0, 0, '1234', '  testeultimo', 1, 'Moldura em tubo de ferro 10x10x1,5mm e metal distendido ferro 40x16 com 1x2mm (espessura x travessa) com lacagem a RAL 9004/9005; inclui patilhas de inox para fixação ao tecto falso; remate em madeira de pinho 30x30mm 2500X600mm', NULL, NULL, 12.00, '2025-01-22'),
+(332, 3, 71, 'FACHADA', 1, 8, 2, 0, 0, '1123415', '  Mesa', 1, '', NULL, NULL, 15.00, '2025-01-22'),
+(333, 3, 71, 'FACHADA', 1, 16, 3, 0, 0, '12', '  12', 1, '', NULL, NULL, 12.00, '2025-01-22'),
+(334, 3, 71, 'GALERIA', 2, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-22'),
+(335, 3, 71, 'GALERIA', 2, 15, 1, 0, 0, '1234545566', '  testeimagem', 1, '', NULL, NULL, 1.00, '2025-01-22'),
+(336, 3, 71, 'GALERIA', 2, 8, 2, 0, 0, '1123415', '  Mesa', 1, '', NULL, NULL, 15.00, '2025-01-22'),
+(337, 3, 71, 'GALERIA', 2, 5, 3, 0, 0, '123', '  testar', 1, '', NULL, NULL, 2.50, '2025-01-22'),
+(338, 3, 71, 'RESTAURANTE . CAFETARIA', 3, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-22'),
+(339, 3, 71, 'RESTAURANTE . CAFETARIA', 3, 17, 1, 0, 0, '12345', '  ultimoteste', 1, '', NULL, NULL, 1.00, '2025-01-22'),
+(340, 3, 71, 'RESTAURANTE . CAFETARIA', 3, 11, 2, 0, 0, '1231', '  teste', 1, '', NULL, NULL, 3.00, '2025-01-22'),
+(341, 3, 71, 'RESTAURANTE . CAFETARIA', 3, 8, 3, 0, 0, '1123415', '  Mesa', 1, '', NULL, NULL, 15.00, '2025-01-22'),
+(342, 3, 71, 'PRONTO A COMER', 4, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-22'),
+(343, 3, 71, 'PRONTO A COMER', 4, 12, 1, 0, 0, '1234151', '  test', 1, '', NULL, NULL, 1.00, '2025-01-22'),
+(344, 3, 71, 'PRONTO A COMER', 4, 18, 2, 0, 0, '1234', '  testeultimo', 1, '', NULL, NULL, 12.00, '2025-01-22'),
+(345, 3, 71, 'PRONTO A COMER', 4, 11, 3, 0, 0, '1231', '  teste', 1, '', NULL, NULL, 3.00, '2025-01-22'),
+(346, 3, 71, 'PADARIA', 5, NULL, 0, 0, 0, '', '', 0, NULL, NULL, NULL, 0.00, '2025-01-22'),
+(347, 3, 71, 'PADARIA', 5, 16, 1, 0, 0, '12', '  12', 1, '', NULL, NULL, 12.00, '2025-01-22'),
+(348, 3, 71, 'PADARIA', 5, 5, 2, 0, 0, '123', '  testar', 1, '', NULL, NULL, 2.50, '2025-01-22'),
+(349, 3, 71, 'PADARIA', 5, 15, 3, 0, 0, '1234545566', '  testeimagem', 1, '', NULL, NULL, 1.00, '2025-01-22');
 
 -- --------------------------------------------------------
 
@@ -652,7 +703,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   `cod` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `module` varchar(250) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Extraindo dados da tabela `modules`
@@ -664,7 +715,8 @@ INSERT INTO `modules` (`id`, `cod`, `module`) VALUES
 (4, 'adm_003', 'Produtos'),
 (5, 'adm_004', 'Clientes'),
 (6, 'adm_005', 'Administradores'),
-(8, 'adm_006', 'Logs');
+(8, 'adm_006', 'Logs'),
+(10, 'adm_007', 'Ganhos Anuais');
 
 -- --------------------------------------------------------
 

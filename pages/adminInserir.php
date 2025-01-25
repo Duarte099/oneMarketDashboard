@@ -1,12 +1,12 @@
 <?php
     session_start();
 
-    include('../db/conexao.php'); 
-
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
         exit();
     }
+
+    include('../db/conexao.php'); 
 
     if (adminPermissions("adm_005", "inserir") == 0 || adminPermissions("adm_005", "update") == 0) {
         header('Location: dashboard.php');

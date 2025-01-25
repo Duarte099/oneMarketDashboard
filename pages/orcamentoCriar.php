@@ -1,20 +1,19 @@
 <?php 
     session_start();
 
-    $estouEm = 2;
-
-    include('../db/conexao.php');
-
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
         exit();
     }
 
+    include('../db/conexao.php');
+
     if (adminPermissions("adm_001", "inserir") == 0) {
         header('Location: dashboard.php');
         exit();
     }
-
+    
+    $estouEm = 2;
     $idCliente = $_GET['idClient'];
 
     $sql = "SELECT * FROM client WHERE id = '$idCliente'";

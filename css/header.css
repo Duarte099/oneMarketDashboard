@@ -230,3 +230,32 @@ hr {
     opacity: 0; /* Torna os botões invisíveis */
     pointer-events: none; /* Impede cliques nos botões */
 }
+
+
+
+.mobile-header {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--background-color);
+    padding: 10px;
+    z-index: 2001;
+}
+
+@media screen and (max-width: 768px) {
+    .desktop-header {
+        display: none;
+    }
+
+    .mobile-header {
+        display: none; /* Será controlado via JavaScript */
+    }
+
+    .desktop-header, 
+    .content nav {
+        display: none !important;
+    }
+}
+

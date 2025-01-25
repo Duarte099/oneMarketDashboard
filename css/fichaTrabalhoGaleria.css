@@ -61,29 +61,30 @@ h1, h2, h3, h4 {
     color: var(--secondary-text-color);
 }
 
-.content main .bottom-data .budget {
+.content main .bottom-data .worksheet {
     flex-grow: 1;
     background: var(--background-color);
     padding: 24px;
     border-radius: 20px;
+    width: 100%;
 }
 
-.content main .bottom-data .budget h2 {
+.content main .bottom-data .worksheet h2 {
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 15px;
 }
 
-.content main .bottom-data .budget label {
+.content main .bottom-data .worksheet label {
     display: block;
     font-size: 14px;
     color: #c4c4c4;
     width:75%;
 }
 
-.content main .bottom-data .budget input[type="text"],
-.content main .bottom-data .budget input[type="search"],
-.content main .bottom-data .budget input[type="number"] {
+.content main .bottom-data .worksheet input[type="text"],
+.content main .bottom-data .worksheet input[type="search"],
+.content main .bottom-data .worksheet input[type="number"] {
     width: 100%;
     padding: 10px;
     border: 1px solid var(--border-color);
@@ -95,7 +96,7 @@ h1, h2, h3, h4 {
     display: flex;
 }
 
-.content main .bottom-data .budget input[type="date"]{
+.content main .bottom-data .worksheet input[type="date"]{
     width: 45%;
     padding: 10px;
     border: 1px solid var(--background-color-secundary);
@@ -107,7 +108,7 @@ h1, h2, h3, h4 {
     display: flex;
 }
 
-.content main .bottom-data .budget textarea {
+.content main .bottom-data .worksheet textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid var(--border-color);
@@ -140,7 +141,7 @@ table th {
     font-weight: bold;
 }
 
-table td button.select-budget {
+table td button.select-worksheet {
     background-color: #f04747;
     color: var(--primary-text-color);
     border: none;
@@ -150,13 +151,13 @@ table td button.select-budget {
     font-size: 14px;
 }
 
-.content main .bottom-data .budget table {
+.content main .bottom-data .worksheet table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 16px;
 }
 
-.content main .bottom-data .budget table th {
+.content main .bottom-data .worksheet table th {
     text-align: left;
     font-size: 14px;
     font-weight: 500;
@@ -164,11 +165,13 @@ table td button.select-budget {
     border-bottom: 1px solid var(--background-color-secundary);
 }
 
-.content main .bottom-data .budget table td {
+.content main .bottom-data .worksheet table td {
     font-size: 14px;
 }
 
-.content main .bottom-data .budget button {
+.content main form input[type="file"] {
+    width: auto;
+    min-width: 350px;
     margin-top: 9px;
     padding: 10px 16px;
     background: var(--theme-color);
@@ -180,13 +183,9 @@ table td button.select-budget {
     transition: background 0.3s ease;
 }
 
-.content main .bottom-data .budget button:hover {
-    background: #9b1c1f;
-}
-
 #bottomButton,
-#botSaveBudget,
-#botPrintBudget{
+#botSaveworksheet,
+#botPrintworksheet{
     margin-top: 9px;
     padding: 10px 16px;
     background: var(--theme-color);
@@ -200,7 +199,7 @@ table td button.select-budget {
 }
 
 #bottomButton:hover,
-#botSaveBudget:hover {
+#botSaveworksheet:hover {
     background: #9b1c1f;
 }
 
@@ -238,17 +237,17 @@ table td button.select-budget {
         padding: 16px;
     }
 
-    .content main .bottom-data .budget {
+    .content main .bottom-data .worksheet {
         padding: 16px;
     }
 }
 
 @media screen and (max-width: 576px) {
-    .content main .bottom-data .budget table {
+    .content main .bottom-data .worksheet table {
         min-width: 340px;
     }
 
-    .content main .bottom-data .budget input {
+    .content main .bottom-data .worksheet input {
         font-size: 12px;
     }
 }
@@ -330,11 +329,11 @@ table td button.select-budget {
     overflow: hidden;
 }
 
-#botSaveBudget{
+#botSaveworksheet{
     float: right;
 }
 
-#botPrintBudget{
+#botPrintworksheet{
     float: right;
     margin-right: 10px;
     margin-bottom: 10px;

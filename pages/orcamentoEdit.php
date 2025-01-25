@@ -3,12 +3,12 @@
 
     $estouEm = 2;
 
-    include('../db/conexao.php');
-
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
         exit();
     }
+
+    include('../db/conexao.php');
 
     if (adminPermissions("adm_001", "view") == 0) {
         header('Location: dashboard.php');
@@ -339,11 +339,11 @@
                                         <table id = "table">
                                             <thead>
                                                 <tr>
-                                                    <th style="width: 65px;">Nº</th>
-                                                    <th style="width: 150px;">N/REF</th>
-                                                    <th style="width: 300px;">Designação</th>
+                                                    <th style="width: 65px; text-align: center">Nº</th>
+                                                    <th style="width: 150px; text-align: center">N/REF</th>
+                                                    <th style="width: 300px; text-align: center">Designação</th>
                                                     <th style="width: 65px;">Quantidade</th>
-                                                    <th>Descrição</th>
+                                                    <th  style="text-align: center">Descrição</th>
                                                     <th style="width: 100px;">Preço Unitário</th>
                                                     <th style="width: 100px;">Preço Total</th>
                                                 </tr>

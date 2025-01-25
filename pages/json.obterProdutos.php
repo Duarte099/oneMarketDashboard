@@ -1,12 +1,12 @@
 <?php 
     session_start();
 
-    include('../db/conexao.php'); 
-
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
         exit();
     }
+
+    include('../db/conexao.php'); 
     
     $sql = "SELECT id, img, reference, name, value, quantity FROM product
             INNER JOIN product_stock ON id = idProduct;";

@@ -1,14 +1,15 @@
 <?php 
     session_start();
-    include('../db/conexao.php'); 
-    $estouEm = 1;
 
-    $anoAtual = date('Y');
-    
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true ) {
         header('Location: index.php');
         exit();
     }
+
+    include('../db/conexao.php'); 
+
+    $estouEm = 1;
+    $anoAtual = date('Y');
 ?>
 
 <!DOCTYPE html>

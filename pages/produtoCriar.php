@@ -1,14 +1,14 @@
 <?php 
     session_start();
 
-    include('../db/conexao.php');
-
-    $estouEm = 4;
-
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
         exit();
     }
+
+    include('../db/conexao.php');
+
+    $estouEm = 4;
 
     if (adminPermissions("adm_003", "inserir") == 0) {
         header('Location: dashboard.php');

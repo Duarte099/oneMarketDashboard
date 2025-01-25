@@ -3,12 +3,12 @@
 
     $estouEm = 4;
 
-    include('../db/conexao.php');
-
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         header('Location: index.php');
         exit();
     }
+
+    include('../db/conexao.php');
 
     if (adminPermissions("adm_003", "view") == 0) {
         header('Location: dashboard.php');

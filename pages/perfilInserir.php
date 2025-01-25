@@ -1,6 +1,11 @@
 <?php
     session_start();
 
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit();
+    }
+
     include('../db/conexao.php'); 
 
     // Diretório onde os arquivos serão armazenados
@@ -49,15 +54,32 @@
         echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
     }
 
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $user = $_POST['user'];
-    $birthday = $_POST['birthday'];
-    $idAdmin = $_SESSION['id'];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $idAdmin = $_SESSION['id'];
 
-    $sql = "UPDATE `administrator` SET name = '$name', email = '$email', user = '$user', img = '$fileUrl', birthday = '$birthday' WHERE id = $idAdmin";
-    $result = $con->prepare($sql);
-    $result->execute();
+        $nome = trim($_POST['name']);
+        $email = trim($_POST['email']);
+        $user = trim($_POST['user']);
+        $birthday = trim($_POST['birthday']);
+        $password = trim($_POST['password']);
+        $confirmpassword = trim($_POST['passwordConfirm']);
 
+        if ($password == $confirmpassword && !empty($password)) {
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+            $sql = "UPDATE administrator SET name = '$nome', email = '$email', user = '$user', pass = '$passwordHash', birthday = '$birthday' WHERE id = $idAdmin;";
+            $result = $con->prepare($sql);
+            $result->execute();
+        }
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            $sql = "UPDATE administrator SET name = '$nome', email = '$email', user = '$user', birthday = '$birthday', img = '$fileUrl' WHERE id = $idAdmin;";
+            $result = $con->prepare($sql);
+            $result->execute();
+        }
+        else {
+            $sql = "UPDATE administrator SET name = '$nome', email = '$email', user = '$user', birthday = '$birthday' WHERE id = $idAdmin;";
+            $result = $con->prepare($sql);
+            $result->execute();
+        }
+    }
     header('Location: ../pages/perfil.php');
 ?>

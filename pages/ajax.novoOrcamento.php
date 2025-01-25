@@ -1,14 +1,12 @@
 <?php 
-
     session_start();
-
-    include('../db/conexao.php'); 
-    $estouEm = 2;
 
     if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true ) {
         header('Location: index.php');
         exit();
     }
+
+    include('../db/conexao.php'); 
     
     $nomeProduto = '';
     $valorProduto = '';

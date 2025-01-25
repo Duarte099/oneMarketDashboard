@@ -4,8 +4,14 @@ gestão de stocks -> tentar
 
 imagens na ficha de Trabalho
 
-fazer pagina de impressao de orçamentos e fichas de trabalho
+fazer pagina de impressao de fichas de trabalho
 
 adicionar tabela de logs à pagina de admins
 
 tabela na dashboard a indicar os produtos que estao fora de stock
+
+adicionar imagens às secções, perguntar como
+
+eliminar fotos ao alterar
+
+adicionar botao de galeria
