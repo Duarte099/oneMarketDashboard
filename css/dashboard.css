@@ -175,35 +175,6 @@ body{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .content main .work-status .header .bx{
     color: var(--theme-color);
 }
@@ -259,13 +230,6 @@ body{
 
 .content main .work-status .tables table tbody tr:hover{
     background: var(--background-color-secundary);
-}
-
-.content main .header h1 {
-    font-size: 36px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: var(--primary-text-color);
 }
 
 
@@ -380,8 +344,9 @@ body{
 .content main .header h1 {
     font-size: 36px;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: var(--primary-text-color);
+    clear: both;
 }
 
 .content main .logs-section .logs table {
@@ -503,26 +468,103 @@ body{
 
 
 
-@media screen and (max-width: 768px) 
-{
-    .content{
-        width: calc(100% - 60px);
-        left: 200px;
-    }
-
-}
-
-@media screen and (max-width: 576px) 
-{
+@media screen and (max-width: 768px) {
     .content main .insights {
-        grid-template-columns: 1fr;
-    }
-
-    .content main .work-status .header{
-        min-width: 340px;
-    }
-
-    .content main .work-status .tables table{
-        min-width: 340px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 }
+
+@media screen and (max-width: 1024px) {
+    .content main .fichalogs {
+        flex-direction: column;
+    }
+
+    .content main .work-status,
+    .content main .logs-section {
+        width: 100%;
+    }
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .content main .work-status .products table,
+    .content main .logs-section .logs table {
+        font-size: 14px;
+    }
+
+    .content main .work-status .products table th,
+    .content main .work-status .products table td,
+    .content main .logs-section .logs table th,
+    .content main .logs-section .logs table td {
+        padding: 8px 5px;
+    }
+
+    #ganhosChart {
+        height: 300px;
+    }
+
+    .chart-container {
+        padding: 40px 10px 10px;
+    }
+
+    .year-selector {
+        top: 5px;
+    }
+
+    .year-selector button {
+        font-size: 14px;
+        padding: 3px 8px;
+    }
+
+    .year-selector #currentYear {
+        font-size: 16px;
+    }
+
+    /* Novas alterações */
+    .content main .header {
+        margin-top: 70px;
+    }
+
+    .content main .header h1 {
+        font-size: 28px;
+        margin-top: 20px;
+    }
+
+    .content main .work-status .products {
+        position: relative;
+        padding-top: 60px;
+    }
+
+    .content main .work-status .products h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+        padding-right: 0;
+    }
+
+    .content main .work-status .products button {
+        top: 10px;
+        right: 10px;
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+
+
+
+@media screen and (max-width: 576px) {
+    .content main {
+        padding: 20px 10px;
+    }
+
+    .content main .header h1 {
+        font-size: 24px;
+    }
+
+    .content main .work-status .header h3,
+    .content main .logs-section .header h3 {
+        font-size: 20px;
+    }
+}
+

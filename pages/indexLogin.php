@@ -40,12 +40,12 @@
             } else {
                 echo "2";
                 $_SESSION['errorMessage'] = "Password ou user Incorreto!";
-                // header('Location: ../pages/index.php');
+                header('Location: ../pages/index.php');
             }
         } else {
             echo "3";
             $_SESSION['errorMessage'] = "Password ou user incorreto!";
-            // header('Location: ../pages/index.php');
+            header('Location: ../pages/index.php');
         }
 
         $stmt->close();

@@ -320,7 +320,6 @@
                                 </div>                                 
                             <?php } ?>
                         <?php } ?>
-                    </div>
                     <script>
                         function confirmSubmit(selectElement, maxVersao) {
                             const selectedVersion = selectElement.value;
@@ -337,6 +336,17 @@
                                     selectElement.value = previousValue;
                                 }
                             }
+                        }
+
+                        function worksheetPrint(idWorksheet) {
+                            // Abre a outra página em uma nova janela
+                            const printWindow = window.open('fichaTrabalhoImpressao.php?idWorksheet=' + idWorksheet, '_blank');
+
+                            // Aguarda a página carregar completamente
+                            printWindow.onload = () => {
+                                // Chama o método de impressão da nova página
+                                printWindow.print();
+                            };
                         }
 
                         document.addEventListener("DOMContentLoaded", function() {
@@ -370,7 +380,7 @@
                             echo "<button id=botSaveWorksheet type=\"submit\">Guardar alterações</button>";
                         }
                     ?>
-                    <button id=botPrintWorksheet type="button">Imprimir</button>
+                    <button id=botPrintWorksheet type="button" onclick="worksheetPrint(<?php echo $idWorksheet; ?>)">Imprimir</button>
                 </div>
             </form>
         </main>

@@ -145,10 +145,7 @@
                                             <td><?php echo $amountProduct * $valueProduct . "€";?></td>
                                         </tr>
                                     </tbody>
-                            <?php 
-                            if ($j == $numProducts) {?>
-                                <script>alert(".");</script>
-                            <?php }
+                                <?php 
                             }
                         ?>
                     </table>
@@ -175,10 +172,5 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            alert("Atingiu o máximo de produtos criados por alteração.");
-        });
-    </script>
 </body>
 </html>

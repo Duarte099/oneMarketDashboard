@@ -1,6 +1,7 @@
 <?php
-   // include('../db/conexao.php'); 
+   include('../db/conexao.php'); 
 ?>
+
 <link rel="stylesheet" href="../css/sideBar.css">
 <script src="../index.js" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,8 +12,8 @@
             <i class='bx bx-menu'></i>
         </button>
     </div>
-
 </body>
+
 <!-- Sidebar -->
 <div class="sidebar">
     <a href="../pages/dashboard.php" class="logo">
@@ -47,30 +48,84 @@
                 <a href="../pages/admin.php"><i class='bx bx-shield'></i>Admin</a>
             </li>
         <?php } ?>
+        <!-- Novas opções para mobile -->
+        <li class="mobile-only">
+            <a href="../pages/perfil.php"><i class='bx bx-user'></i>Perfil</a>
+        </li>
+        <li class="mobile-only">
+            <a href="../pages/indexLogout.php"><i class='bx bx-log-out'></i>Logout</a>
+        </li>
     </ul>
+    <!-- Theme toggle para mobile -->
+    <div class="theme-toggle mobile-only">
+        <span class="icon moon">🌙</span>
+        <label class="toggle">
+            <input type="checkbox" id="theme-switch-mobile">
+            <span class="slider"></span>
+        </label>
+        <span class="icon sun">☀️</span>
+    </div>
 </div>
-
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const sidebar = document.querySelector('.sidebar');
-        const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const themeSwitch = document.getElementById('theme-switch-mobile');
 
+    // Função para verificar se é mobile/tablet
+    function isMobileOrTablet() {
+        return window.innerWidth <= 1024;
+    }
+
+    // Toggle do sidebar
+    if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('open');
+            if (isMobileOrTablet()) {
+                sidebar.classList.toggle('open');
+            }
         });
+    }
 
-        // Fechar o sidebar ao clicar em um link (opcional)
-        const sidebarLinks = document.querySelectorAll('.sidebar .side-menu li a');
-        sidebarLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    sidebar.classList.remove('open');
-                }
-            });
+    // Fechar o sidebar ao clicar em um link (apenas para mobile/tablet)
+    const sidebarLinks = document.querySelectorAll('.sidebar .side-menu li a');
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            if (isMobileOrTablet()) {
+                sidebar.classList.remove('open');
+            }
         });
     });
 
+    // Funcionalidade do theme switch
+    if (themeSwitch) {
+        themeSwitch.addEventListener('change', function() {
+            document.documentElement.classList.toggle('light-mode', this.checked);
+            localStorage.setItem('theme', this.checked ? 'light' : 'dark');
+            const logoImage = document.querySelector('#logoImage');
+            if (logoImage) {
+                logoImage.src = this.checked ? '../images/LogoOnemarketPreto.png' : '../images/LogoOnemarketBranco.png';
+            }
+        });
+
+        // Carregar tema salvo
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.documentElement.classList.add('light-mode');
+            themeSwitch.checked = true;
+            const logoImage = document.querySelector('#logoImage');
+            if (logoImage) {
+                logoImage.src = '../images/LogoOnemarketPreto.png';
+            }
+        }
+    }
+
+    // Ajustar o sidebar ao redimensionar a janela
+    window.addEventListener('resize', function() {
+        if (!isMobileOrTablet()) {
+            sidebar.classList.remove('open');
+        }
+    });
+});
 
 </script>

@@ -108,6 +108,11 @@ th {
     display: inline-block;
 }
 
+.inputs-td {
+    gap: 10px;
+    align-items: center;
+}
+
 @media print {
     body {
         margin: 0;

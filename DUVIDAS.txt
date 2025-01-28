@@ -15,3 +15,5 @@ adicionar imagens às secções, perguntar como
 eliminar fotos ao alterar
 
 adicionar botao de galeria
+
+light box 150pixeis
