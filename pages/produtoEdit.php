@@ -105,17 +105,28 @@
         $quantity = isset($_POST['quantity']) ? trim($_POST['quantity']) : $product_stock['quantity'];
         $status = isset($_POST['status']) ? intval($_POST['status']) : $product['active'];
 
-        
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            // Atualiza os dados na base de dados
+            $updateQuery = "UPDATE product SET img = ?, name = ?, reference = ?, value = ?, active = ? WHERE id = ?";
+            $stmt = $con->prepare($updateQuery);
+            $stmt->bind_param("ssssii", $fileUrl, $name, $ref, $value, $status, $id);
 
-        // Atualiza os dados na base de dados
-        $updateQuery = "UPDATE product SET img = ?, name = ?, reference = ?, value = ?, active = ? WHERE id = ?";
-        $stmt = $con->prepare($updateQuery);
-        $stmt->bind_param("ssssii", $fileUrl, $name, $ref, $value, $status, $id);
+            // Atualiza os dados na tabela product_stock
+            $updateStockQuery = "UPDATE product_stock SET quantity = ? WHERE idProduct = ?";
+            $stmtStockUpdate = $con->prepare($updateStockQuery);
+            $stmtStockUpdate->bind_param("ii", $quantity, $id);
+        }
+        else {
+            // Atualiza os dados na base de dados
+            $updateQuery = "UPDATE product SET name = ?, reference = ?, value = ?, active = ? WHERE id = ?";
+            $stmt = $con->prepare($updateQuery);
+            $stmt->bind_param("sssii", $name, $ref, $value, $status, $id);
 
-        // Atualiza os dados na tabela product_stock
-        $updateStockQuery = "UPDATE product_stock SET quantity = ? WHERE idProduct = ?";
-        $stmtStockUpdate = $con->prepare($updateStockQuery);
-        $stmtStockUpdate->bind_param("ii", $quantity, $id);
+            // Atualiza os dados na tabela product_stock
+            $updateStockQuery = "UPDATE product_stock SET quantity = ? WHERE idProduct = ?";
+            $stmtStockUpdate = $con->prepare($updateStockQuery);
+            $stmtStockUpdate->bind_param("ii", $quantity, $id);
+        }
 
 
         if ($stmt->execute()) {

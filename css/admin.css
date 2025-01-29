@@ -70,7 +70,7 @@ body{
 .content main .header .report{
     height: 36px;
     padding: 0 16px;
-    border-radius: 36px;
+    border-radius: 5px;
     background: var(--theme-color);
     color: var(--primary-text-color);
     display: flex;
@@ -85,6 +85,14 @@ body{
     align-items: center;
     justify-content: space-between;
     grid-gap: 16px;
+    flex-wrap: wrap;
+}
+
+.container {
+    display: flex; 
+    gap: 24px; 
+    margin-top: 24px;
+    color: var(--secondary-text-color);
     flex-wrap: wrap;
 }
 
@@ -165,7 +173,29 @@ body{
     text-align: left;
 }
 
-.content main .bottom-data .admins table {
+h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-text-color);
+    margin-bottom: 12px;
+    border-bottom: 2px solid var(--theme-color);
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.container {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    flex-wrap: nowrap;
+}
+
+.bottom-data {
+    flex: 1;
+    min-width: 300px;
+}
+
+.admins table {
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
@@ -235,4 +265,17 @@ tbody::-webkit-scrollbar-thumb:hover {
 
 .search-bar input:focus {
     outline: none; /* Remove o contorno padrão */
+}
+
+/* Responsividade */
+@media screen and (max-width: 768px) {
+    .container {
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .search-bar input {
+        max-width: 100%;
+    }
 }

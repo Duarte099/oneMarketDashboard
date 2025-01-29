@@ -172,7 +172,13 @@
                 <div class="bottom-data">
                     <div class="worksheet">
                         <section>
-                            <h2>Dados da Ficha de Trabalho</h2>
+                            <div class="header-container">
+                                <h2>Dados da Ficha de Trabalho</h2>
+                                <a href="fichaTrabalhoGaleria.php?idWorksheet=<?= $idWorksheet ?>" id="galeria" class="galeria">
+                                    <i class='bx bx-image'></i>
+                                    <span>Galeria</span>
+                                </a>
+                            </div>
                             <div class="section-row">
                                 <div class="section-group">
                                     <label>Ficha Numero:</label>

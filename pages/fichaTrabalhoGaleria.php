@@ -51,6 +51,9 @@ if ($result->num_rows > 0) {
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | <?php echo $numFichaTrabalho; ?> </title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="./css/lightbox.css" rel="stylesheet" />
+       
 </head>
 
 <body>
@@ -77,7 +80,7 @@ if ($result->num_rows > 0) {
                 <div class="bottom-data">
                     <?php
                     $produtosIndex = 0;
-                    for ($i = 1; $i <= $numSections + 5; $i++) {
+                    for ($i = 1; $i <= $numSections; $i++) {
                         $sql = "SELECT nameSection FROM budget_sections_products WHERE orderSection = $i AND idBudget = $idBudget;";
                         $result = $con->query($sql);
                         if ($result->num_rows > 0) {
@@ -101,8 +104,22 @@ if ($result->num_rows > 0) {
                                         value="<?php echo $nomeSecao; ?>"
                                         style="width: 100%;"
                                         readonly>
-                                    <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
-                                    
+                                    <input type="file" name="secao_<?php echo $i; ?>_foto" id="photo" oninput="displayProfilePic()" accept="image/*">
+                                    <div class="grid" id="imageGrid">
+                                        <?php
+                                            $sql = "SELECT img FROM worksheet_photos WHERE idWorksheet = ". $idWorksheet ." AND orderSection = ". $i .";";
+                                            $result = $con->query($sql);
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo "
+                                                        <a href=". $row['img'] ." data-lightbox=\"image-1\" data-title=\"My caption\">
+                                                            <img src=". $row['img'] ." style=\"width: 150px; cursor: pointer;\">
+                                                        </a>
+                                                    ";
+                                                }
+                                            }
+                                        ?>
+                                    </div>
                                 </div>
                             </section>
                         </div>
@@ -112,52 +129,40 @@ if ($result->num_rows > 0) {
             </form>
         </main>
     </div>
+
+    <script src="./js/lightbox.js"></script> 
+
     <script>
         function displayProfilePic() {
-            const file = event.target.files[0]; // Obtém o primeiro arquivo selecionado
-            const preview = document.getElementById('profilePic'); // Seleciona a div
+            const fileInput = document.getElementById('photo');
+            const imageGrid = document.getElementById('imageGrid');
 
-            if (file) {
+            if (fileInput.files && fileInput.files[0]) {
+                const file = fileInput.files[0];
                 const reader = new FileReader();
 
-                // Evento para quando o arquivo for carregado
-                reader.onload = function(e) {
-                    // Define o background-image da div com o resultado do arquivo carregado
-                    preview.style.backgroundImage = `url(${e.target.result})`;
+                reader.onload = function (e) {
+                    // Create a new anchor and image element
+                    const anchor = document.createElement('a');
+                    anchor.href = e.target.result;
+                    anchor.setAttribute('data-lightbox', 'image-1');
+                    anchor.setAttribute('data-title', 'My caption');
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '150px';
+                    img.style.cursor = 'pointer';
+
+                    // Append the image to the anchor
+                    anchor.appendChild(img);
+
+                    // Add the new anchor to the grid
+                    imageGrid.appendChild(anchor);
                 };
 
-                reader.readAsDataURL(file); // Lê o arquivo como URL base64
-            } else {
-                // Remove a imagem de fundo se nenhum arquivo for selecionado
-                preview.style.backgroundImage = "";
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
             }
-        }
-
-        let slideIndex = 1;
-        showSlides(slideIndex);
-
-        function plusSlides(n) {
-            showSlides(slideIndex += n);
-        }
-
-        function currentSlide(n) {
-            showSlides(slideIndex = n);
-        }
-
-        function showSlides(n) {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            let dots = document.getElementsByClassName("dot");
-            if (n > slides.length) {slideIndex = 1}    
-            if (n < 1) {slideIndex = slides.length}
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";  
-            }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-            slides[slideIndex-1].style.display = "block";  
-            dots[slideIndex-1].className += " active";
         }
     </script>
 </body>

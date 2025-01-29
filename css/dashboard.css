@@ -113,6 +113,159 @@ body{
 
 
 
+
+
+
+
+/* Contêiner flexível para tabela e gráfico */
+.container {
+    display: flex; 
+    gap: 24px; 
+    margin-top: 24px;
+    color: var(--secondary-text-color);
+    flex-wrap: wrap;
+}
+
+
+/* Tabela de Produtos Fora de Stock */
+.products-stock-custom {
+    flex: 1; /* Ocupa a metade da largura disponível */
+    background-color: var(--background-color);
+    padding: 24px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative; /* Adiciona a posição relativa para o botão ficar dentro da tabela */
+}
+
+/* Título da Tabela */
+.products-stock-custom h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-text-color);
+    margin-bottom: 20px;
+}
+
+/* Estilo da tabela */
+.products-stock-custom table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    max-height: 300px; /* Limita a altura da tabela */
+    overflow-y: auto; /* Adiciona scroll quando necessário */
+}
+
+/* Estilos das células da tabela */
+.products-stock-custom table th,
+.products-stock-custom table td {
+    width: auto;
+    text-align: center;
+    color: var(--primary-text-color);
+}
+
+.products-stock-custom  table th:first-child,
+.products-stock-custom  table td:first-child {
+    width: 50px;
+}
+
+
+/* Imagem redonda */
+.products-stock-custom table td image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Estilo do botão "Ver Mais" */
+.container .products-stock-custom button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    background-color: var(--theme-color);
+    color: var(--primary-text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.container .products-stock-custom button:hover {
+    background-color: darkred;
+}
+
+/* Efeito de hover nas linhas da tabela */
+.products-stock-custom table tbody tr:hover {
+    background: var(--background-color-secundary);
+}
+
+/* Gráfico */
+.chart-container-custom {
+    flex: 1; /* Ocupa a metade da largura disponível */
+    background-color: var(--background-color);
+    padding: 24px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative; /* Adiciona a posição relativa para o botão ficar dentro da tabela */
+}
+
+.chart-container-custom h2 {
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--primary-text-color);
+    margin-bottom: 20px;
+}
+
+#ganhosChart {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    height: 500px;
+}
+
+.year-selector {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.year-selector button {
+    background-color: var(--background-color);
+    border: 1px solid #555;
+    color: var(--primary-text-color);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px 12px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.year-selector button:hover {
+    background-color: var(--theme-color);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.year-selector #currentYear {
+    font-size: 18px;
+    color: #f5f5f5;
+    font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
 /* Ficha de Trabalho e logs */
 
 
@@ -127,6 +280,7 @@ body{
 
 /* Ficha de Trabalho */
 .content main .work-status {
+    flex: 1;
     width: 48%; 
     min-width: 300px; 
 }
@@ -235,7 +389,7 @@ body{
 
 .content main .work-status .products table th,
 .content main .work-status .products table td {
-    text-align: center;
+    text-align: left;
     padding: 10px;
     color: var(--primary-text-color);
 }
@@ -245,6 +399,8 @@ body{
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
+    display: block;
+    margin: 0 auto 0 0;
 }
 
 .content main .work-status .products table tbody tr:hover {
@@ -266,9 +422,11 @@ body{
 
 
 
+
 /* Logs */
 
 .content main .logs-section {
+    flex: 1;
     width: 50%; 
     min-width: 300px; 
 }
@@ -306,30 +464,13 @@ body{
 .content main .logs-section .logs table{
     width: 100%;
     border-collapse: collapse;
-}
-
-.content main .logs-section .tables table th{
-    padding-bottom: 12px;
-    font-size: 13px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.content main .logs-section .tables table td{
-    padding: 16px 0;
-    text-align: center;
+    table-layout: fixed;
 }
 
 .content main .logs-section .tables table tr td:first-child{
-    align-items: center;
+    align-items: left;
     grid-gap: 12px;
     padding-left: 6px;
-}
-
-.content main .logs-section .tables table td img{
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
 }
 
 .content main .logs-section .tables table tbody tr{
@@ -349,25 +490,20 @@ body{
     clear: both;
 }
 
-.content main .logs-section .logs table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
 .content main .logs-section .logs table th,
 .content main .logs-section .logs table td {
-    text-align: center;
-    padding: 10px;
+    text-align: left;
+    padding: 10px 10px 10px 5px;
     color: var(--primary-text-color);
 }
 
-.content main .logs-section .logs table td img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
+
+.content main .logs-section .logs table th:first-child,
+.content main .logs-section .logs table td:first-child {
+    width: 30%; /* A coluna "Data" terá 30% da largura */
 }
+
+
 
 .content main .logs-section .logs table tbody tr:hover {
     background: var(--background-color-secundary);
@@ -385,88 +521,6 @@ body{
     width: 100%;
     table-layout: fixed;
 }
-
-
-
-/* Grafico */
-.chart-container {
-    background: var(--background-color);
-    border-radius: 20px;
-    padding: 30px; 
-    margin-top: 24px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 1200px; 
-    margin-left: auto; 
-    margin-right: auto;
-}
-
-.chart-container h2 {
-    font-size: 28px; 
-    font-weight: 600;
-    text-align: center;
-    color: var(--primary-text-color);
-    margin-bottom: 20px;
-}
-
-#ganhosChart {
-    display: block;
-    margin: 0 auto;
-    width: 100%; 
-    max-width: 1000px; 
-    height: 500px;
-    margin-top: 5px;
-}
-
-
-.chart-container {
-    background-color: var(--background-color); 
-    padding: 60px 20px 20px; 
-    border-radius: 10px;
-    border: 1px solid #444; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    position: relative;
-    margin-bottom: 30px;
-}
-
-
-.year-selector {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background-color: transparent; 
-}
-
-
-.year-selector button {
-    background-color: var(--background-color); 
-    border: 1px solid #555;
-    color: var(--primary-text-color);
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-    padding: 5px 12px;
-    transition: all 0.3s;
-}
-
-.year-selector button:hover {
-    background-color: var(--theme-color); 
-    color: #fff;
-    transform: scale(1.1);
-}
-
-/* Ano exibido */
-.year-selector #currentYear {
-    font-size: 18px;
-    color: #f5f5f5;
-    font-weight: bold;
-}
-
-
 
 @media screen and (max-width: 768px) {
     .content main .insights {

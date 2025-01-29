@@ -48,6 +48,25 @@ h1, h2, h3, h4 {
     margin-bottom: 24px;
 }
 
+.galeria {
+    background-color: #7a1414; /* Cor do botão */
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espaço entre ícone e texto */
+    font-size: 14px; /* Ajusta o tamanho do texto */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between; /* Deixa o título à esquerda e o botão à direita */
+    align-items: center; /* Alinha os itens verticalmente */
+    padding: 10px; /* Dá um pouco de espaçamento interno */
+}
+
 .content main .header .left h1 {
     font-size: 36px;
     font-weight: 600;
@@ -227,6 +246,19 @@ table td button.select-worksheet {
     float: right;
     margin-right: 10px;
     margin-bottom: 10px;
+}
+
+.content main .report{
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 5px;
+    background: var(--theme-color);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    grid-gap: 10px;
+    font-weight: 500;
 }
 
 .content main .bottom-data .worksheet textarea {

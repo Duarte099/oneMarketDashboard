@@ -76,6 +76,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de Trabalho - Impressão</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/orcamentoImpressao.css">
 </head>
 <body>
@@ -119,11 +120,11 @@
                                 <tr>
                                     <th style="width: 55px;">Check</th>
                                     <th style="width: 55px;">Armazém</th>
-                                    <th>Nº</th>
-                                    <th>N/REF</th>
+                                    <th style="text-align: center;">Nº</th>
+                                    <th>REF</th>
                                     <th>Designação</th>
-                                    <th>Quantidade</th>
-                                    <th style="text-align: center;" class="inputs-th">Observações</th>
+                                    <th>Quant</th>
+                                    <th style="text-align: center;" colspan=2 >Observações</th>
                                 </tr>
                             </thead>
                             <?php 
@@ -155,13 +156,13 @@
                                                     if ($result->num_rows > 0) {
                                                         $row = $result->fetch_assoc();
                                                         if (isset($row['checkProduct']) && $row['checkProduct'] == 1) {
-                                                            ?> <td><i class='bx bx-check'></i></td> <?php
+                                                            ?> <td style="text-align: center;"><i class='bx bx-check'></i></td> <?php
                                                         }
                                                         else {
-                                                            ?> <td> </td> <?php
+                                                            ?> <td > </td> <?php
                                                         }
                                                         if (isset($row['storageProduct']) && $row['storageProduct'] == 1) {
-                                                            ?> <td><i class='bx bx-check'></i></td> <?php
+                                                            ?> <td style="text-align: center;"><i class='bx bx-check'></i></td> <?php
                                                         }
                                                         else {
                                                             ?> <td> </td> <?php
@@ -170,14 +171,12 @@
                                                         $sizeProduct = $row['sizeProduct'];
                                                     }
                                                 ?>
-                                                <td><?php echo $produtosIndex;?></td>
+                                                <td style="text-align: center;"><?php echo $produtosIndex;?></td>
                                                 <td><?php echo $refProduct;?></td>
                                                 <td><?php echo $nameProduct;?></td>
                                                 <td><?php echo $amountProduct;?></td>
-                                                <td class="inputs-td">
-                                                    <label><?php echo $observationProduct;?></label>
-                                                    <label><?php echo $sizeProduct;?></label>
-                                                </td>
+                                                <td><?php echo $observationProduct;?></td>
+                                                <td><?php echo $sizeProduct;?></td>
                                             </tr>
                                         </tbody>
                                     <?php } ?>
@@ -187,39 +186,6 @@
                     </div>                                 
                 <?php } ?>
             <?php } ?>
-
-        <!-- <?php 
-            for ($j=1; $j <= $numProducts; $j++) { 
-                $produtosIndex++;
-                ?>
-                    <tbody>
-                        <tr>
-                            <?php 
-                                $sql = "SELECT refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderProduct = '$j' AND orderSection = '$i';";
-                                $result = $con->query($sql);
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        $refProduct = $row['refProduct'];
-                                        $nameProduct = $row['nameProduct'];
-                                        $amountProduct = $row['amountProduct'];
-                                        $descriptionProduct = $row['descriptionProduct'];
-                                        $valueProduct = $row['valueProduct'];
-                                    }
-                                }
-                            ?>
-                            <td><?php echo $produtosIndex;?></td>
-                            <td><?php echo $refProduct;?></td>
-                            <td><?php echo $nameProduct;?></td>
-                            <td><?php echo $amountProduct;?></td>
-                            <td><?php echo $descriptionProduct;?></td>
-                            <td><?php echo $valueProduct;?></td>
-                            <td><?php echo $amountProduct * $valueProduct . "€";?></td>
-                        </tr>
-                    </tbody>
-                <?php 
-            }
-        ?> -->
-
         <div class="footer">
             <strong>Observações:</strong>
             <div class="observacoes">

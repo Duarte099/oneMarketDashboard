@@ -27,9 +27,9 @@
                         <button class="btn" type="submit">Login</button>
                         <div class="error-message" id="errorMessage">
                             <?php 
-                                $errorMessage = isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : '';
-                                // unset($_SESSION['errorMessage']);
-                                echo htmlspecialchars($errorMessage); 
+                                if (isset($_GET['erro'])) {
+                                    echo $_GET['erro'];
+                                }
                             ?>
                         </div>
                     </form>

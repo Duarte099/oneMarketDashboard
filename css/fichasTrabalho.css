@@ -100,7 +100,7 @@ body{
 .content main .header .report{
     height: 36px;
     padding: 0 16px;
-    border-radius: 36px;
+    border-radius: 5px;
     background: var(--theme-color);
     color: #fff;
     display: flex;
@@ -342,7 +342,7 @@ table th, table td {
 }
 
 table th {
-    padding-bottom: 12px;
+    /* padding-bottom: 12px; */
     font-weight: bold;
     border-bottom: 1px solid var(--background-color);
 }
@@ -454,3 +454,15 @@ table td button.select-worksheet:hover {
 .worksheet tbody::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 }
+
+
+@media screen and (max-width: 768px) {
+    
+}
+
+
+
+
+
+
+

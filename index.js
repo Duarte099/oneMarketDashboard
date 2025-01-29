@@ -102,4 +102,7 @@ $(document).ready(function () {
     }).on('input change', function () {
         adjustHeight(this); // Ajusta a altura ao digitar ou alterar texto
     });
+
+    $("#preloader").fadeOut("slow");  //Adiciona a classe para efeito fade-out
+     
 });

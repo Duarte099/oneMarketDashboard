@@ -1,19 +1,22 @@
-responsivo a todos os dispositivos
-
-gestão de stocks -> tentar
-
-imagens na ficha de Trabalho
-
-fazer pagina de impressao de fichas de trabalho
-
 adicionar tabela de logs à pagina de admins
 
 tabela na dashboard a indicar os produtos que estao fora de stock
 
-adicionar imagens às secções, perguntar como
-
 eliminar fotos ao alterar
 
-adicionar botao de galeria
+perguntar como guardar as fotos todas na base de dados
 
-light box 150pixeis
+finalizar css da pagina admin
+
+tentar alterar css de todas as paginas para deixar mais bonito
+
+
+Diogo:
+
+responsivo a todos os dispositivos HARD
+
+logs acabar em todos EZ
+
+header desaparecer ao da scroll EZ
+
+orcamentos espaco cinzento em cima

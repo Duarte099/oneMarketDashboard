@@ -128,12 +128,31 @@
     transition: all 0.3s ease;
 }
 
+/* Estilo do Preloader */
+#preloader {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
 
+/* Estiliza a imagem */
+#preloader img {
+    width: 300px; /* Ajuste conforme necessário */
+}
 
+/* Animação de FadeIn */
+@keyframes fadeIn {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
 
 
 /*responsivo */
-
 
 @media screen and (max-width: 768px) {
     .sidebar {
@@ -208,7 +227,7 @@
     pointer-events: none;
 }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: 768px) {
     .sidebar-toggle {
         display: none !important;
     }
@@ -223,7 +242,7 @@
     display: none;
 }
 
-@media screen and (max-width: 1025px) {
+@media screen and (max-width: 768px) {
     .mobile-only {
         display: block;
     }

@@ -75,7 +75,7 @@ body{
 .content main .header .report{
     height: 36px;
     padding: 0 16px;
-    border-radius: 36px;
+    border-radius: 5px;
     background: #781215;
     color: var(--primary-text-color);
     display: flex;

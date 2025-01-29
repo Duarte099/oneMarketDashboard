@@ -5,14 +5,17 @@
 <link rel="stylesheet" href="../css/sideBar.css">
 <script src="../index.js" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<body>
+    <div id="preloader">
+        <img src="../images/LogoOnemarketPretoLetras.png" alt="Carregando...">
+    </div>
+
     <div class="header">
         <button id="sidebarToggle" class="sidebar-toggle">
             <i class='bx bx-menu'></i>
         </button>
     </div>
-</body>
 
 <!-- Sidebar -->
 <div class="sidebar">
@@ -75,7 +78,7 @@
 
     // Função para verificar se é mobile/tablet
     function isMobileOrTablet() {
-        return window.innerWidth <= 1024;
+        return window.innerWidth <= 768;
     }
 
     // Toggle do sidebar

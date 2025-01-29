@@ -153,55 +153,94 @@
                 <?php } ?>
             </div>
 
-            <div class="bottom-data" id="bottom-data">
-                <div class="admins">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Img</th>
-                                <th>Nome</th>
-                                <th>Email</th>
-                                <th>Username</th>
-                                <th>Data Nascimento</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                                $sql = "SELECT 
-                                            administrator.id as id,
-                                            administrator.name,
-                                            administrator.email,
-                                            administrator.user,
-                                            administrator.active,
-                                            administrator.img as imagem,
-                                            administrator.birthday
-                                        FROM administrator ;";
-                                $result = $con->query($sql);
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
-                                        echo "<tr onclick=\"handleRowClick('{$row['id']}', 'editAdmin')\" style=\"cursor: pointer;\">
-                                                <td>
-                                                    <div id=\"profilePic\" style=\"width:100%; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
-                                                        <img src=\"../images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
-                                                    </div>
-                                                </td>
-                                                <td>{$row['name']}</td>
-                                                <td>{$row['email']}</td>
-                                                <td>{$row['user']}</td>
-                                                <td>{$row['birthday']}</td>
-                                                <td>{$status}</td>
-                                            </tr>";
+            <div class="container">
+                <!-- Tabela de Administradores -->
+                <div class="bottom-data">
+                    <div class="admins">
+                        <h2>Administração</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Img</th>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Username</th>
+                                    <th>Data Nascimento</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    $sql = "SELECT 
+                                                administrator.id as id,
+                                                administrator.name,
+                                                administrator.email,
+                                                administrator.user,
+                                                administrator.active,
+                                                administrator.img as imagem,
+                                                administrator.birthday
+                                            FROM administrator ;";
+                                    $result = $con->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
+                                            echo "<tr onclick=\"handleRowClick('{$row['id']}', 'editAdmin')\" style=\"cursor: pointer;\">
+                                                    <td>
+                                                        <div id=\"profilePic\" style=\"width:100%; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
+                                                            <img src=\"../images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
+                                                        </div>
+                                                    </td>
+                                                    <td>{$row['name']}</td>
+                                                    <td>{$row['email']}</td>
+                                                    <td>{$row['user']}</td>
+                                                    <td>{$row['birthday']}</td>
+                                                    <td>{$status}</td>
+                                                </tr>";
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
                                     }
-                                } else {
-                                    echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
-                                }
-                            ?>
-
-                        </tbody>
-                    </table>
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+                <?php if (adminPermissions("adm_006", "view") == 1) { ?>
+                    <!-- Tabela de Logs -->
+                    <div class="bottom-data">
+                        <div class="admins">
+                            <h2>Logs</h2>
+                            <div class="search-bar">
+                                <input type="text" id="searchLogs" placeholder="Pesquisar logs..." oninput="logsSearch(this)" />
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Log</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $sql = "SELECT dataLog, logFile FROM administrator_logs ORDER BY dataLog DESC LIMIT 10";
+                                        $result = $con->query($sql);
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo "<tr>
+                                                    <td>{$row['dataLog']}</td>
+                                                    <td>{$row['logFile']}</td>
+                                                    </tr>";
+                                            }
+                                        } else {
+                                            echo "<tr><td colspan='2'>Sem logs recentes para exibir.</td></tr>";
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
         </main>
 
