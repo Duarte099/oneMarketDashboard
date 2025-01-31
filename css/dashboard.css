@@ -256,19 +256,7 @@ body{
     font-weight: bold;
 }
 
-
-
-
-
-
-
-
-
-
-
 /* Ficha de Trabalho e logs */
-
-
 .content main .fichalogs {
     display: flex; 
     gap: 24px; 

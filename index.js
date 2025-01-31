@@ -106,3 +106,8 @@ $(document).ready(function () {
     $("#preloader").fadeOut("slow");  //Adiciona a classe para efeito fade-out
      
 });
+
+
+window.addEventListener("beforeunload", function () {
+    navigator.sendBeacon("logout_log.php");
+});

@@ -49,6 +49,8 @@
 
             $result = $con->prepare($sql);
 
+            
+
             if ($result) {
                 $result->bind_param("issiddsi", $idClient, $nameBudget, $proximo_numero, $anoAtual, $laborPercent, $discountPercent, $observation, $idAdmin);
             }
@@ -56,6 +58,12 @@
             $result->execute();
             $idBudget = $con->insert_id;
 
+
+            //funcao log
+            $idAdministrador = $_SESSION['id'];
+            $username = $_SESSION['name'];
+            $mensagem = "Orçamento " . $proximo_numero . "/" . $anoAtual . "(" . $idBudget . ") criado pelo administrador " . $username ."(" . $idAdministrador . ")";
+            registrar_log($mensagem);
             //Inserir secções
             for ($i=1; $i <= 20; $i++) {
                 $secao = mysqli_real_escape_string($con, $_POST['seccao_nome_' . $i]);
@@ -108,6 +116,11 @@
             $result = $con->prepare($sql);
             $result->execute();
 
+            //funcao log
+            $username = $_SESSION['name'];
+            $mensagem = "Orçamento '$nameBudget' (ID: $idBudget) editado pelo administrador de ID $username.";
+            registrar_log($mensagem);
+
             //Ciclo for para percorrer secções
             for ($i=1; $i <= $numSections+5; $i++) {
                 //Obter nome da secção do form
@@ -150,7 +163,7 @@
                         $descricao = $_POST['secao_' . $i . '_produto_descricao_' . $j];
                         $precoUnitario = trim($_POST['secao_' . $i . '_produto_preco_unitario_' . $j]);
                         //Se os campos referencia, nome e preço não estiverem vazios então...
-                        if(!empty($ref) && !empty($designacao) && !empty($precoUnitario)) {
+                        if(!empty($ref)) {
                             //Obter id do produto cuja referencia é igual à inserida
                             $sql = "SELECT id FROM product WHERE product.reference = '$ref';";
                             $result = $con->query($sql);
@@ -181,8 +194,9 @@
                                 if ($selectIdProduct != $idProduct || $selectRefProduct != $ref || $selectNameProduct != $designacao || $selectDescriptionProduct != $descricao || $selectValueProduct != $precoUnitario) {
                                     //Atualiza a tabela de secções e produtos para os novos valores inseridos
                                     $sql = "UPDATE `budget_sections_products` 
-                                        SET idProduct = $idProduct, refProduct = '$ref', nameProduct = '$designacao', amountProduct = $quantidade, descriptionProduct = '$descricao', valueProduct = $precoUnitario
+                                        SET idProduct = $idProduct, refProduct = '$ref', nameProduct = '$designacao', amountProduct = '$quantidade', descriptionProduct = '$descricao', valueProduct = '$precoUnitario'
                                         WHERE idBudget = $idBudget AND orderSection = $i AND orderProduct = $j";
+                                    echo $sql;
                                     $result = $con->prepare($sql);
                                     $result->execute();
                                 }
@@ -212,14 +226,14 @@
                                                                 `descriptionProduct`,
                                                                 `valueProduct`,
                                                                 `created`)
-                                    VALUES ($versao, $idBudget, '$secao', $i, $idProduct, $j,'$ref', '$designacao', $quantidade, '$descricao', $precoUnitario, '$data');";
+                                    VALUES ($versao, $idBudget, '$secao', $i, $idProduct, $j,'$ref', '$designacao', '$quantidade', '$descricao', '$precoUnitario', '$data');";
                             $result = $con->prepare($sql);
                             $result->execute();
                         }
                     }
                 }
             }
-            header('Location: ../pages/orcamento.php');
+            header('Location: ../pages/orcamentoEdit.php?idBudget=' . $idBudget);
         }
         else {
             header('Location: ../pages/dashboard.php');

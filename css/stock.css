@@ -277,7 +277,8 @@ table td button.select-products:hover {
 }
 
 .search-bar input:focus {
-    outline: none; /* Remove o contorno padrão */
+    outline: none;
+    border-color: var(--theme-color);
 }
 
 /* Barra de rolagem customizada (opcional) */

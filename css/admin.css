@@ -67,17 +67,23 @@ body{
     cursor: pointer;
 }
 
-.content main .header .report{
-    height: 36px;
-    padding: 0 16px;
+.report {
+    background-color: #7a1414; /* Cor do botão */
+    color: white;
+    padding: 8px 12px;
     border-radius: 5px;
-    background: var(--theme-color);
-    color: var(--primary-text-color);
+    text-decoration: none;
     display: flex;
     align-items: center;
-    justify-content: right;
-    grid-gap: 10px;
-    font-weight: 500;
+    gap: 5px; /* Espaço entre ícone e texto */
+    font-size: 14px; /* Ajusta o tamanho do texto */
+}
+
+.up {
+    display: flex;
+    justify-content: space-between; /* Deixa o título à esquerda e o botão à direita */
+    align-items: center; /* Alinha os itens verticalmente */
+    padding: 10px; /* Dá um pouco de espaçamento interno */
 }
 
 .content main .header{
@@ -173,11 +179,82 @@ body{
     text-align: left;
 }
 
+.admins table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.content main .bottom-data .admins table thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.content main .bottom-data .logs{
+    flex-grow: 1;
+    flex-basis: 500px;
+}
+
+.content main .bottom-data .logs table th {
+    padding-bottom: 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Tornar o tbody scrollável */
+.content main .bottom-data .logs table tbody {
+    display: block;
+    max-height: 422px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.content main .bottom-data .logs table thead,
+.content main .bottom-data .logs table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.content main .bottom-data .logs table tbody tr:hover {
+    background: var(--background-color-secundary);
+}
+
+.content main .bottom-data .logs table th,
+.content main .bottom-data .logs table td{
+    width: auto;
+}
+
+.content main .bottom-data .logs table td img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block; /* Remove o espaço reservado para texto */
+}
+
+.content main .bottom-data .logs table td:first-child {
+    text-align: left;
+}
+
+.logs table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.content main .bottom-data .logs table thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
 h2 {
     font-size: 24px;
     font-weight: 600;
     color: var(--primary-text-color);
-    margin-bottom: 12px;
+    margin-top: 12px;
     border-bottom: 2px solid var(--theme-color);
     padding-bottom: 5px;
     display: inline-block;
@@ -193,18 +270,6 @@ h2 {
 .bottom-data {
     flex: 1;
     min-width: 300px;
-}
-
-.admins table {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
-}
-
-.content main .bottom-data .admins table thead {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
 }
 
 table td{
@@ -253,18 +318,19 @@ tbody::-webkit-scrollbar-thumb:hover {
 }
 
 .search-bar input {
-    width: 200%;
-    max-width: 300px; /* Define uma largura máxima */
-    padding: 8px 12px; /* Adiciona espaçamento interno */
-    border: 1px solid var(--border-color); /* Borda cinza */
-    border-radius: 5px; /* Bordas arredondadas */
+    width: 100%;
+    max-width: 300px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
     font-size: 14px;
     background-color: var(--background-color);
     color: var(--primary-text-color);
 }
 
 .search-bar input:focus {
-    outline: none; /* Remove o contorno padrão */
+    outline: none;
+    border-color: var(--theme-color);
 }
 
 /* Responsividade */

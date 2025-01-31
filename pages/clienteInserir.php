@@ -8,11 +8,12 @@
 
     include('../db/conexao.php');
 
+    
     if (adminPermissions("adm_004", "inserir") == 0) {
         header('Location: dashboard.php');
         exit();
     }
-
+        $idClient= $_GET['id'];
         $email = "";
         $nif = "";
         $nome = $_POST['nome'];
@@ -26,9 +27,12 @@
 
         if ($stmt) {
             $stmt->bind_param("ssssi", $nome, $email, $contacto, $nif, $status);
-            $idClient = $con->insert_id;
             if ($stmt->execute()) {
-
+                $idClient = $con->insert_id;
+                //funcao log
+                $username = $_SESSION['name'];
+                $mensagem = "Cliente '$nome' (ID: $idClient) criado pelo administrador de ID $username.";
+                registrar_log($mensagem);
 
                 header('Location: cliente.php');
                 exit();

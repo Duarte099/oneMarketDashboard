@@ -112,6 +112,10 @@
                         $row = $result->fetch_assoc();
                         $nomeSecao = $row['nameSection'];
                     }
+                    else
+                    {
+                        $nomeSecao = "";
+                    }
                     ?>
                     <div class="section">
                         <div class="section-title"><?php echo $nomeSecao; ?></div>

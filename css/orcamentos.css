@@ -73,7 +73,8 @@ body{
 }
 
 .search-bar input:focus {
-    outline: none; /* Remove o contorno padrão */
+    outline: none;
+    border-color: var(--theme-color);
 }
 
 .content main .header .left h1{
@@ -98,6 +99,11 @@ body{
 
 .content main .bottom-data .header .bx{
     cursor: pointer;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: var(--theme-color);
 }
 
 .content main .header .report{

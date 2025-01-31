@@ -31,7 +31,9 @@
                 </label>
                 <span class="icon sun">☀️</span>
             </div>
-            <img src="<?php echo $img ?>" class="profile-img">
+            <div class="profile-img" id="profilePic" style="width:40px; max-width:500px; background: url('<?php echo $img; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
+                <img src="../images/semfundo.png" style="width:100%;padding-bottom: 13px;">
+            </div>
         </a>
 
         <!-- Modal -->
@@ -40,7 +42,9 @@
                 <button id="closeModalBtn" class="close-btn"> &times; </button>
                 <!-- Seção superior com foto e nome -->
                 <div class="user-info" style="display: flex; align-items: center; padding: 10px 20px;">
-                    <img src="<?php echo $img ?>" class="profile-img" style="width: 50px; height: 50px; margin-right: 10px;">
+                <div class="profile-img" id="profilePic" style="width:40px; max-width:500px; background: url('<?php echo $img; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
+                    <img src="../images/semfundo.png" style="width:100%;padding-bottom: 13px;">
+                </div>
                     <span class="user-name" style="font-size: 16px; font-weight: bold;"><?=$_SESSION['name']?></span>
                 </div>
                 <hr style="border: none; border-top: 1px solid #333; margin: 10px 0;">

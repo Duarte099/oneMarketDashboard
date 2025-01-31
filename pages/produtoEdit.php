@@ -23,121 +23,20 @@
         exit();
     }
     else {
-        $id = $_GET['idProduct'];
+        $row = $result->fetch_assoc();
+        $nomeProduto = $row['name'];
+        $img = $row['img'];
+        $ref = $row['reference'];
+        $value = $row['value'];
+        $active = $row['active'];
     }
 
-    // Buscar o id selecionado antes
-    $query = "SELECT * FROM product WHERE id = ?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Pega as informações do produto
-    $product = $result->fetch_assoc();
-
-    // Buscar o id da tabela product_stock selecionado antes
-    $queryStock = "SELECT quantity FROM product_stock WHERE idProduct = ?";
-    $stmtStock = $con->prepare($queryStock);
-    $stmtStock->bind_param("i", $id);
-    $stmtStock->execute();
-    $resultStock = $stmtStock->get_result();
-
-    // Se não encontrar nada, define um valor por padrao
-    if ($resultStock->num_rows === 0) {
-        $product_stock = ['quantity' => 0]; // valor definido caso não encontre
-    } else {
-        $product_stock = $resultStock->fetch_assoc();
+    $sql = "SELECT quantity FROM product_stock WHERE idProduct = '$idProduct'";
+    $result = $con->query($sql);
+    if ($result->num_rows >= 0) {
+        $row = $result->fetch_assoc();
+        $quantidade = $row['quantity'];
     }
-
-    // formulario para editar
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Diretório onde os arquivos serão armazenados
-        $uploadDir = '../images/uploads/';
-        $publicDir = '/PAP/images/uploads/'; // Caminho acessível pelo navegador
-
-        // Verifica se o campo 'photo' está definido no array $_FILES
-        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-            // Recupera informações do arquivo enviado        
-            $fileTmpPath = $_FILES['photo']['tmp_name']; // Caminho temporário
-            $fileName = $_FILES['photo']['name'];       // Nome original do arquivo
-
-            $extension = pathinfo($fileName, PATHINFO_EXTENSION);
-            if (true) { // testar se a extensão faz parte das extensoes permitidas
-                // gif / jpg / jpeg / png
-                // verificar o tamanho da iamgem .. pode ser verificado em javascript // size of document
-                // Gera um nome único para evitar sobrescrita de arquivos
-                $uniqueFileName = uniqid('photo_', true) . '.' . $extension;
-                $uniqueFileName_mini = "mini_" . $uniqueFileName;
-
-                // Define o caminho completo para o upload
-                $destinationPath = $uploadDir . $uniqueFileName_mini;
-                $destinationPathmINI = $uploadDir . $uniqueFileName;
-
-                // Move o arquivo para o diretório final
-                if (move_uploaded_file($fileTmpPath, $destinationPath)) {
-
-                    // GERAR O THUMBNAIL
-                    $thumbWidth = 500; // Largura desejada
-                    $thumbHeight = 500; // Altura desejada
-
-                    createThumbnail($destinationPath, $destinationPathmINI, $thumbWidth, $thumbHeight);
-
-
-                    // Gera o link público para o arquivo
-                    $fileUrl = $publicDir . $uniqueFileName;
-
-                    /** redimensionamento da imagem */
-
-                    echo "Upload realizado com sucesso! Link: <a href=\"$fileUrl\">$fileUrl</a>";
-                } else {
-                    echo "Erro ao mover o arquivo para o diretório final.";
-                }
-            }
-        } else {
-            echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
-        }
-
-        // Caso o formulário seja para editar
-        $name = isset($_POST['name']) ? trim($_POST['name']) : $product['name'];
-        $ref = isset($_POST['ref']) ? trim($_POST['ref']) : $product['reference'];
-        $value = isset($_POST['value']) ? trim($_POST['value']) : $product['value'];
-        $quantity = isset($_POST['quantity']) ? trim($_POST['quantity']) : $product_stock['quantity'];
-        $status = isset($_POST['status']) ? intval($_POST['status']) : $product['active'];
-
-        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-            // Atualiza os dados na base de dados
-            $updateQuery = "UPDATE product SET img = ?, name = ?, reference = ?, value = ?, active = ? WHERE id = ?";
-            $stmt = $con->prepare($updateQuery);
-            $stmt->bind_param("ssssii", $fileUrl, $name, $ref, $value, $status, $id);
-
-            // Atualiza os dados na tabela product_stock
-            $updateStockQuery = "UPDATE product_stock SET quantity = ? WHERE idProduct = ?";
-            $stmtStockUpdate = $con->prepare($updateStockQuery);
-            $stmtStockUpdate->bind_param("ii", $quantity, $id);
-        }
-        else {
-            // Atualiza os dados na base de dados
-            $updateQuery = "UPDATE product SET name = ?, reference = ?, value = ?, active = ? WHERE id = ?";
-            $stmt = $con->prepare($updateQuery);
-            $stmt->bind_param("sssii", $name, $ref, $value, $status, $id);
-
-            // Atualiza os dados na tabela product_stock
-            $updateStockQuery = "UPDATE product_stock SET quantity = ? WHERE idProduct = ?";
-            $stmtStockUpdate = $con->prepare($updateStockQuery);
-            $stmtStockUpdate->bind_param("ii", $quantity, $id);
-        }
-
-
-        if ($stmt->execute()) {
-            if($stmtStockUpdate->execute()){
-                header('Location: produto.php');  // Quando acabar, manda de volta para a página dos produtos
-                exit();
-            }
-            } else {
-                $error = "Erro ao atualizar o produto.";
-            }
-        }
 ?>
 
 <!DOCTYPE html>
@@ -169,14 +68,14 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1><?php echo $product['name'] ?></h1>
+                    <h1><?php echo $nomeProduto ?></h1>
                 </div>
             </div>
             <div class="form-container">
-                <form method="POST" action="" id="profileForm" enctype="multipart/form-data">
+                <form method="POST" action="produtoInserir.php?idProduto=<?= $idProduct ?>&op=edit" id="profileForm" enctype="multipart/form-data">
                     <div class="column-left">
                         <label for="photo">Foto do produto:</label>
-                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $product['img']; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
+                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $img ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
                             <img src="../images/semfundo.png" style="width:100%;padding-bottom: 13px;">
                         </div>
                         <?php if (adminPermissions("adm_003", "update") == 1) { ?>
@@ -185,24 +84,24 @@
                     </div>
                     <div class="column-right">
                         <label for="name">Nome:</label>
-                        <input type="text" name="name" id="name" value="<?php echo $product['name']; ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
+                        <input type="text" name="name" id="name" value="<?php echo $nomeProduto; ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
 
                         <label for="ref">Referencia:</label>
-                        <input type="text" name="ref" id="ref" value="<?php echo $product['reference']; ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
+                        <input type="text" name="ref" id="ref" value="<?php echo $ref; ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
 
                         <label for="value">Valor:</label>
-                        <input type="text" name="value" id="value" value="<?php echo str_replace('.', '.', $product['value']); ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
+                        <input type="text" name="value" id="value" value="<?php echo str_replace('.', '.', $value); ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
 
                         <label for="quantity">Stock:</label>
-                        <input type="int" name="quantity" id="quantity" value="<?php echo intval($product_stock['quantity']); ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
+                        <input type="int" name="quantity" id="quantity" value="<?php echo intval($quantidade); ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
                         
                         <label>Status:</label>
                         <?php if (adminPermissions("adm_003", "update") == 0) { ?>
-                            <input type="text" name="status" id="status" value="<?php if ($product['active'] == 0) {echo "Inativo";} else {echo "Ativo";}?>" readonly>
+                            <input type="text" name="status" id="status" value="<?php if ($active == 0) {echo "Inativo";} else {echo "Ativo";}?>" readonly>
                         <?php } else {?>
                             <select name="status">
-                                <option value="1" <?php echo $product['active'] == 1 ? 'selected' : ''; ?>>Ativo</option>
-                                <option value="0" <?php echo $product['active'] == 0 ? 'selected' : ''; ?>>Inativo</option>
+                                <option value="1" <?php echo $active == 1 ? 'selected' : ''; ?>>Ativo</option>
+                                <option value="0" <?php echo $active == 0 ? 'selected' : ''; ?>>Inativo</option>
                             </select>
                         <?php } ?>
                         

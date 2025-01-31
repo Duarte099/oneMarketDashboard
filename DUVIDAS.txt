@@ -1,15 +1,20 @@
-adicionar tabela de logs à pagina de admins
-
-tabela na dashboard a indicar os produtos que estao fora de stock
-
 eliminar fotos ao alterar
 
 perguntar como guardar as fotos todas na base de dados
 
-finalizar css da pagina admin
+perguntar se é suposto dar para eliminar admins
 
-tentar alterar css de todas as paginas para deixar mais bonito
+alterar css do criar orcamento, css do cabeçalho
 
+adicionar hora das versões ao edit orcamento
+
+rever cores no modo branco
+
+corrigir botão guardar alterações - edit ficha trabalho
+
+acabar produto inserir - não funcional
+
+colocar em todas as paginas de edit para voltar para a pagina de edit ao guardar as alterações
 
 Diogo:
 
@@ -20,3 +25,10 @@ logs acabar em todos EZ
 header desaparecer ao da scroll EZ
 
 orcamentos espaco cinzento em cima
+
+falta a linha a separar o cabeçalho da tabela e os dados
+
+
+
+
+corrigir o botão de alterar o tema, ao dar scroll vem junto, qualquer coisa coloca-se dentro do menu ao clicar na foto

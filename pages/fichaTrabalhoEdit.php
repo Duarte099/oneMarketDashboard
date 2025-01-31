@@ -17,13 +17,12 @@
 
     $produtosIndex = 0;
     
-    // $op = '';
     $idWorksheet = $_GET['idWorksheet'];
     $sql = "SELECT * FROM worksheet WHERE id = '$idWorksheet'";
     $result = $con->query($sql);
     if ($result->num_rows <= 0) {
-        header('Location: dashboard.php');
-        exit();
+        // header('Location: dashboard.php');
+        // exit();
     }
 
     $sql = "SELECT MAX(idVersion) AS idVersion FROM worksheet_version WHERE idWorksheet = $idWorksheet;";
@@ -37,8 +36,8 @@
     $sql = "SELECT * FROM worksheet_version WHERE idVersion = '$versao' AND idWorksheet = '$idWorksheet'";
     $result = $con->query($sql);
     if ($result->num_rows <= 0) {
-        header('Location: dashboard.php');
-        exit();
+        // header('Location: dashboard.php');
+        // exit();
     }
 
     $idAdmin = $_SESSION['id'];
@@ -237,16 +236,19 @@
                                     $row = $result->fetch_assoc();
                                     $nomeSecao = $row['nameSection'];
                                 }
+                                else {
+                                    $nomeSecao = ' ';
+                                }
                                 ?>
                                 <div class="worksheet">
                                     <section id="secoes">
                                         <div class="secao">
-                                            <h3>Secção <?php echo $rowSection['orderSection']; ?>:</h3>
+                                            <h3>Secção <?php echo $nomeSecao ?>:</h3>
                                             <input type="text"
-                                                id="search-box-<?php echo $rowSection['orderSection']; ?>" 
-                                                name="seccao_nome_<?php echo $rowSection['orderSection']; ?>" 
+                                                id="search-box-<?php echo $nomeSecao ?>" 
+                                                name="seccao_nome_<?php echo $nomeSecao ?>" 
                                                 placeholder="Nome da secção" 
-                                                value="<?php echo $row['nameSection']; ?>" readonly/>
+                                                value="<?php echo $nomeSecao ?>" readonly/>
                                             <table id = "table">
                                                 <thead>
                                                     <tr>
@@ -305,15 +307,15 @@
                                                                             $sizeProduct = $row['sizeProduct'];
                                                                         }
                                                                     ?>
-                                                                    <td><input type="checkbox" class="check" name="secao_<?php echo $rowSection['orderSection']; ?>_produto_check_<?php echo $rowProducts['orderProduct']; ?>" <?php if ($checkProduct == "checked") {echo $checkProduct;} ?> <?php if (adminPermissions("adm_002", "update") == 0) {echo "disabled";}?>></td>
-                                                                    <td><input type="checkbox" class="armazem" name="secao_<?php echo $rowSection['orderSection']; ?>_produto_armazem_<?php echo $rowProducts['orderProduct']; ?>" <?php if ($storageProduct == "checked") {echo $storageProduct;} ?> <?php if (adminPermissions("adm_002", "update") == 0) {echo "disabled";}?>></td>
-                                                                    <td><input type="text" class="id" name="secao_<?php echo $rowSection['orderSection']; ?>_produto_index_<?php echo $rowProducts['orderProduct']; ?>" readonly></td>
-                                                                    <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $rowSection['orderSection']; ?>_produto_ref_<?php echo $rowProducts['orderProduct']; ?>" value = "<?php echo $refProduct; ?>" readonly></td>
-                                                                    <td><input type="text" class="designacao" name="secao_<?php echo $rowSection['orderSection']; ?>_produto_designacao_<?php echo $rowProducts['orderProduct']; ?>" value="<?php echo $nameProduct; ?>" readonly></td>
-                                                                    <td><input type="text" class="quantidade" name="secao_<?php echo $rowSection['orderSection']; ?>_produto_quantidade_<?php echo $rowProducts['orderProduct']; ?>" value="<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" readonly></td>
+                                                                    <td><input type="checkbox" class="check" name="secao_<?php echo $nomeSecao ?>_produto_check_<?php echo $rowProducts['orderProduct']; ?>" <?php if ($checkProduct == "checked") {echo $checkProduct;} ?> <?php if (adminPermissions("adm_002", "update") == 0) {echo "disabled";}?>></td>
+                                                                    <td><input type="checkbox" class="armazem" name="secao_<?php echo $nomeSecao ?>_produto_armazem_<?php echo $rowProducts['orderProduct']; ?>" <?php if ($storageProduct == "checked") {echo $storageProduct;} ?> <?php if (adminPermissions("adm_002", "update") == 0) {echo "disabled";}?>></td>
+                                                                    <td><input type="text" class="id" name="secao_<?php echo $nomeSecao ?>_produto_index_<?php echo $rowProducts['orderProduct']; ?>" readonly></td>
+                                                                    <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $nomeSecao ?>_produto_ref_<?php echo $rowProducts['orderProduct']; ?>" value = "<?php echo $refProduct; ?>" readonly></td>
+                                                                    <td><input type="text" class="designacao" name="secao_<?php echo $nomeSecao ?>_produto_designacao_<?php echo $rowProducts['orderProduct']; ?>" value="<?php echo $nameProduct; ?>" readonly></td>
+                                                                    <td><input type="text" class="quantidade" name="secao_<?php echo $nomeSecao ?>_produto_quantidade_<?php echo $rowProducts['orderProduct']; ?>" value="<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" readonly></td>
                                                                     <td class="inputs-td">
-                                                                        <input type="text" class="descricao" name="secao_<?php echo $rowSection['orderSection']; ?>_produto_observacao_<?php echo $rowProducts['orderProduct']; ?>" value="<?php echo $observationProduct; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
-                                                                        <input type="text" class="tamanho" name="secao_<?php echo $rowSection['orderSection']; ?>_produto_tamanho_<?php echo $rowProducts['orderProduct']; ?>" value="<?php echo $sizeProduct; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
+                                                                        <input type="text" class="descricao" name="secao_<?php echo $nomeSecao ?>_produto_observacao_<?php echo $rowProducts['orderProduct']; ?>" value="<?php echo $observationProduct; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
+                                                                        <input type="text" class="tamanho" name="secao_<?php echo $nomeSecao ?>_produto_tamanho_<?php echo $rowProducts['orderProduct']; ?>" value="<?php echo $sizeProduct; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -330,7 +332,7 @@
                         function confirmSubmit(selectElement, maxVersao) {
                             const selectedVersion = selectElement.value;
                             const userConfirmed = true
-                            if (selectedVersion != maxVersao) {
+                            if (selectedVersion == maxVersao ) {
                                 const userConfirmed = confirm("Ao mudar de versão perderá as alterações feitas. Deseja prosseguir?");
                             }
                             if (userConfirmed) {
@@ -380,6 +382,7 @@
                                 });
                             });
                         }
+
                     </script>
                     <?php
                         if (adminPermissions("adm_002", "update") == 1) {

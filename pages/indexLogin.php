@@ -35,6 +35,10 @@
                 $_SESSION['id'] = $id;
                 $_SESSION['passX'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
                 //echo "1";
+                $idAdministrador = $_SESSION['id'];
+                $username = $_SESSION['name'];
+                $mensagem = "Administrador " . $username . "(" . $idAdministrador . ") entrou";
+                registrar_log($mensagem);
                 header('Location: ../pages/dashboard.php');
                 exit();
             } else {

@@ -67,6 +67,11 @@ body{
     cursor: pointer;
 }
 
+.search-bar input:focus {
+    outline: none;
+    border-color: var(--theme-color);
+}
+
 .content main .header .report{
     height: 36px;
     padding: 0 16px;

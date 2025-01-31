@@ -41,6 +41,7 @@
 
     // formulario para editar
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $idClient = $_GET['id'];
         // Verifica se o formulário é para editar ou remover
         if (isset($_POST['delete'])) {
             // Apagar o admin
@@ -68,6 +69,11 @@
             $stmt->bind_param("ssssii", $nome, $email, $contact, $nif, $status, $id);
 
             if ($stmt->execute()) {
+                //funcao log
+                $username = $_SESSION['name'];
+                $mensagem = "Cliente '$nome' (ID: $idClient) editado pelo administrador de ID $username.";
+                registrar_log($mensagem);
+
                 header('Location: cliente.php');  // Quando acabar, manda de volta para a página dos clientes
                 exit();
             } else {

@@ -61,6 +61,11 @@
             $sql = "UPDATE `budget` SET idWorksheet = '$idWorksheet' WHERE id = $idBudget";
             $result = $con->prepare($sql);
             $result->execute();
+
+            //funcao log
+            $username = $_SESSION['name'];
+            $mensagem = "Ficha de Trabalho '$proximo_numero/$anoAtual' (ID: $idWorksheet) criado pelo administrador de ID $username.";
+            registrar_log($mensagem);
         
             //secções e produtos
             $sqlSection = "SELECT DISTINCT orderSection FROM budget_sections_products WHERE idBudget = $idBudget;";
@@ -109,7 +114,6 @@
             $joinWork = $_POST['entradaObra'];
             $exitWork = $_POST['saidaObra'];
             $observacaoWorksheet = $_POST['observation'];
-        
             $idWorksheet = $_GET['idWorksheet'];
         
             $sql = "SELECT idBudget FROM worksheet WHERE worksheet.id = $idWorksheet;";
@@ -130,6 +134,24 @@
             $sql = "UPDATE `worksheet` SET readyStorage = '$readyStorage', joinWork = '$joinWork', exitWork = '$exitWork' WHERE id = $idWorksheet";
             $result = $con->prepare($sql);
             $result->execute();
+
+            $sql = "SELECT num, year FROM worksheet WHERE id = $idWorksheet";
+            $result = $con->query($sql);
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $numFicha = $row['num'];
+                $yearFicha = $row['year'];
+                
+                // Concatenar os dois valores com a barra
+                $fichaCompleta = $numFicha . "/" . $yearFicha;
+
+                // Criar a mensagem de log
+                $username = $_SESSION['name'];
+                $mensagem = "Ficha de Trabalho '$fichaCompleta' (ID: $idWorksheet) versao: ($idVersion) editado pelo administrador de ID $username.";
+                
+                // Registrar o log
+                registrar_log($mensagem);
+            }
         
             //secções e produtos
             $sqlSection = "SELECT DISTINCT orderSection FROM budget_sections_products WHERE idBudget = $idBudget;";

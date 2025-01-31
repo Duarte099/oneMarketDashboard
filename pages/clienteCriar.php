@@ -50,7 +50,7 @@
             </div>
             <div class="bottom-data">
                 <div class="client">
-                    <form method="POST" action="inserirCliente.php">
+                    <form method="POST" action="clienteInserir.php">
                         <section>
                             <h2>Dados do Cliente</h2>
                             <div class="section-row">
