@@ -2,13 +2,13 @@
     include('../pages/head.php'); 
     $estouEm = 6;
 
-    if (adminPermissions($con, "adm_005", "view") == 0 && adminPermissions($con, "adm_006", "update") == 0) {
+    if (adminPermissions($con, "adm_005", "view") == 0 && adminPermissions($con, "adm_006", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 ?>
     <link rel="stylesheet" href="../css/admin.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | Administração</title>
 </head>
 
@@ -44,14 +44,31 @@
                             result.status = "Inativo";
                         }
                         const row = document.createElement("tr");
+                        row.style.cursor = "pointer";
 
-                        // Coluna da Imagem
+                        // Coluna da Imagem - adaptada para ficar igual ao HTML original
                         const imgCell = document.createElement("td");
-                        const img = document.createElement("img");
-                        img.src = result.img; // Link da imagem
-                        img.style.width = "50px"; // Tamanho da imagem
-                        img.style.height = "50px"; // Tamanho da imagem
-                        imgCell.appendChild(img);
+                        imgCell.setAttribute("data-label", "Img");
+
+                        const profileDiv = document.createElement("div");
+                        profileDiv.id = "profilePic";
+                        profileDiv.style.width = "100%";
+                        profileDiv.style.maxWidth = "500px";
+                        profileDiv.style.borderRadius = "250px";
+                        // Se houver imagem, define o background; caso contrário, fica transparente.
+                        if (result.img && result.img.trim() !== "") {
+                            profileDiv.style.background = `url('${result.img}') no-repeat center center`;
+                            profileDiv.style.backgroundSize = "cover";
+                        } else {
+                            profileDiv.style.background = "transparent";
+                        }
+
+                        const fallbackImg = document.createElement("img");
+                        fallbackImg.src = "../images/semfundo.png";
+                        fallbackImg.style.width = "100%";
+                        fallbackImg.style.paddingBottom = "13px";
+                        profileDiv.appendChild(fallbackImg);
+                        imgCell.appendChild(profileDiv);
                         row.appendChild(imgCell);
 
                         // Colunas adicionais
@@ -76,6 +93,8 @@
                         row.appendChild(user);
                         row.appendChild(nascimento);
                         row.appendChild(status);
+
+                        row.addEventListener("click", () => handleRowClick(result.id, "editAdmin"));
 
                         // Adiciona a linha ao corpo da tabela
                         tbody.appendChild(row);
@@ -119,7 +138,7 @@
             error: function(xhr, status, error) {
                 console.error('Erro ao buscar os dados:', error);
             }
-        }); 
+        });
 
         function logsSearch(searchBox) {
             const dataadmin = document.getElementById('logs');
@@ -231,15 +250,15 @@
                                             while ($row = $result->fetch_assoc()) {
                                                 $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
                                                 echo "<tr onclick=\"handleRowClick('{$row['id']}', 'editAdmin')\" style=\"cursor: pointer;\">
-                                                        <td>
+                                                        <td data-label='Img'>
                                                             <div id=\"profilePic\" style=\"width:100%; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
                                                                 <img src=\"../images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
                                                             </div>
                                                         </td>
-                                                        <td>{$row['name']}</td>
-                                                        <td>{$row['email']}</td>
-                                                        <td>{$row['user']}</td>
-                                                        <td>{$status}</td>
+                                                        <td data-label='Nome'>{$row['name']}</td>
+                                                        <td data-label='Email'>{$row['email']}</td>
+                                                        <td data-label='Username'>{$row['user']}</td>
+                                                        <td data-label='Status'>{$status}</td>
                                                     </tr>";
                                             }
                                         } else {
@@ -269,7 +288,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        $sql = "SELECT dataLog, logFile FROM administrator_logs ORDER BY dataLog DESC LIMIT 10";
+                                        $sql = "SELECT dataLog, logFile FROM administrator_logs ORDER BY dataLog DESC";
                                         $result = $con->query($sql);
                                         if ($result->num_rows > 0) {
                                             while ($row = $result->fetch_assoc()) {

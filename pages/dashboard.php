@@ -6,7 +6,7 @@
 ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | Dashboard</title>
 </head>
 
@@ -109,50 +109,6 @@
 
             <!-- Tabela produto fora de stock -->
             <div class="container">
-                <div class="products-stock-custom">
-                    <h2>Produtos Fora de Stock</h2>
-                    <button type="button" onclick="window.location.href='produto.php'">Ver Mais</button>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Imagem</th>
-                                <th>Nome</th>
-                                <th>Referência</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $sql = "SELECT 
-                                        p.id AS id,
-                                        p.img AS imagem,
-                                        p.name AS name,
-                                        p.reference AS reference
-                                    FROM product_stock ps
-                                    INNER JOIN product p ON ps.idProduct = p.id
-                                    WHERE ps.quantity = 0 AND p.active = 1
-                                    ORDER BY p.name ASC
-                                    LIMIT 10;";
-                            $result = $con->query($sql);
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<tr onclick=\"handleRowClick('{$row['id']}', 'stock')\" style=\"cursor: pointer;\">
-                                            <td>
-                                                <div id=\"profilePic\" style=\"width:100%; height:50px; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
-                                                    <img src=\"../images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
-                                                </div>
-                                            </td>
-                                            <td>" . $row['name'] . "</td>
-                                            <td>" . $row['reference'] . "</td>
-                                        </tr>";
-                                }
-                            } else {
-                                echo "<tr><td colspan='3'>Sem produtos fora de stock.</td></tr>";
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-
                 <?php if (adminPermissions($con, "adm_007", "view") == 1) { ?>
                     <!-- Ano -->
                     <div class="chart-container-custom">
@@ -272,6 +228,41 @@
                         });
                     </script>
                 <?php  } ?>
+
+                <?php if (adminPermissions($con, "adm_006", "view") == 1) { ?>
+                    <div class="logs-section">
+                        <div class="logs">
+                            <h2>Logs Recentes</h2>
+                            <button type="button" onclick="window.location.href='admin.php'">Ver Mais</button>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Log</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $sql = "SELECT dataLog, logFile
+                                    from administrator_logs
+                                    ORDER BY dataLog DESC
+                                    LIMIT 10";
+                                    $result = $con->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<tr>
+                                        <td>{$row['dataLog']}</td>
+                                        <td>{$row['logFile']}</td>
+                                        </tr>";
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='2'>Sem logs recentes para exibir.</td></tr>";
+                                    }
+                                    ?>
+                            </table>
+                        </div>
+                    </div>
+                <?php  } ?>
             </div>
 
             <div class="fichalogs">
@@ -346,39 +337,48 @@
                         </table>
                     </div>
                 </div>
-
-                <?php if (adminPermissions($con, "adm_006", "view") == 1) { ?>
-                    <div class="logs-section">
-                        <div class="logs">
-                            <h2>Logs Recentes</h2>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Data</th>
-                                        <th>Log</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $sql = "SELECT dataLog, logFile
-                                    from administrator_logs
-                                    ORDER BY dataLog DESC
-                                    LIMIT 10";
-                                    $result = $con->query($sql);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo "<tr>
-                                        <td>{$row['dataLog']}</td>
-                                        <td>{$row['logFile']}</td>
+                <div class="products-stock-custom">
+                    <h2>Produtos Fora de Stock</h2>
+                    <button type="button" onclick="window.location.href='produto.php'">Ver Mais</button>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Imagem</th>
+                                <th>Nome</th>
+                                <th>Referência</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = "SELECT 
+                                        p.id AS id,
+                                        p.img AS imagem,
+                                        p.name AS name,
+                                        p.reference AS reference
+                                    FROM product_stock ps
+                                    INNER JOIN product p ON ps.idProduct = p.id
+                                    WHERE ps.quantity = 0 AND p.active = 1
+                                    ORDER BY p.name ASC
+                                    LIMIT 10;";
+                            $result = $con->query($sql);
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr onclick=\"handleRowClick('{$row['id']}', 'stock')\" style=\"cursor: pointer;\">
+                                            <td>
+                                                <div id=\"profilePic\" style=\"width:100%; height:50px; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
+                                                    <img src=\"../images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
+                                                </div>
+                                            </td>
+                                            <td>" . $row['name'] . "</td>
+                                            <td>" . $row['reference'] . "</td>
                                         </tr>";
-                                        }
-                                    } else {
-                                        echo "<tr><td colspan='2'>Sem logs recentes para exibir.</td></tr>";
-                                    }
-                                    ?>
-                            </table>
-                        </div>
-                    <?php  } ?>
+                                }
+                            } else {
+                                echo "<tr><td colspan='3'>Sem produtos fora de stock.</td></tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>

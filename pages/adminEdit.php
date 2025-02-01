@@ -2,7 +2,7 @@
     include('../pages/head.php'); 
     $estouEm = 6;
 
-    if (adminPermissions($con, "adm_005", "view") == 0 || adminPermissions($con, "adm_005", "update") == 0) {
+    if (adminPermissions($con, "adm_005", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -34,7 +34,7 @@
     }
 ?>
     <link rel="stylesheet" href="../css/adminCriar.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | <?php echo $user; ?></title>
 </head>
 
@@ -135,16 +135,10 @@
 
                                             $sql = "SELECT pView, pInsert, pUpdate, pDelete FROM administrator_modules WHERE idAdministrator = $idAdminEdit AND idModule = $i;";
                                             $result2 = $con->query($sql);
-                                            //echo "--" . $sql;
                                             
                                             if ($result2->num_rows > 0) {
                                                 $row2 = $result2->fetch_assoc();
                                             
-                                                /*echo "--" . $sql;
-                                                echo "--";
-                                                print_r($row2);
-                                                echo "--";
-                                                echo($row2['pView']);*/
                                                 if ($row2['pView'] == 1) {
                                                     $pView = "checked";
                                                 }
@@ -156,7 +150,6 @@
                                                 }
                                                 if ($row2['pDelete'] == 1) {
                                                     $pDelete = "checked";
-                                                    //echo "teste";
                                                 }
                                             }
                                             $sql = "SELECT id, cod, module AS nameModule FROM modules WHERE id = $i;";
@@ -181,8 +174,8 @@
                                                             <span><?php echo $nome;?></span>
                                                             <div class="permissions">
                                                                 <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_ver" <?php echo $pView; ?> <?php if (adminPermissions($con, "adm_005", "update") == 0) {echo "disabled";}?>> Ver</label>
-                                                                <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_edit" <?php echo $pInsert; ?> <?php if (adminPermissions($con, "adm_005", "update") == 0) {echo "disabled";}?>> Editar</label>
-                                                                <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_criar" <?php echo $pUpdate; ?> <?php if (adminPermissions($con, "adm_005", "update") == 0) {echo "disabled";}?>> Criar</label>
+                                                                <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_edit" <?php echo $pUpdate; ?> <?php if (adminPermissions($con, "adm_005", "update") == 0) {echo "disabled";}?>> Editar</label>
+                                                                <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_criar" <?php echo $pInsert; ?> <?php if (adminPermissions($con, "adm_005", "update") == 0) {echo "disabled";}?>> Criar</label>
                                                                 <label><input type="checkbox" name="modulo_<?php echo $id; ?>_perm_apagar" <?php echo $pDelete; ?> <?php if (adminPermissions($con, "adm_005", "update") == 0) {echo "disabled";}?>> Apagar</label>
                                                             </div>
                                                         </div>

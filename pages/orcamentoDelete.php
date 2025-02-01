@@ -14,8 +14,16 @@
         header('Location: dashboard.php');
         exit();
     }
-
-    $sql = "DELETE FROM budget WHERE id = $idBudget;";
-    $result = $con->prepare($sql);
-    $result->execute();
+    else {
+        $sql = "DELETE FROM budget WHERE id = '$idBudget';";
+        $result = $con->prepare($sql);
+        $result->execute();
+        $sql = "DELETE FROM budget_sections_products WHERE id = '$idBudget';";
+        $result = $con->prepare($sql);
+        $result->execute();
+        $sql = "DELETE FROM budget_versions WHERE idBudget = '$idBudget';";
+        $result = $con->prepare($sql);
+        $result->execute();
+        header('Location: ../pages/orcamento.php');
+    }
 ?>

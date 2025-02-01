@@ -39,7 +39,7 @@
     }
 ?>
     <link rel="stylesheet" href="../css/novoOrcamento.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | Novo Orçamento</title>
 </head>
 

@@ -9,7 +9,7 @@
     }
 ?>
     <link rel="stylesheet" href="../css/stock.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | Stock</title>
 </head>
 
@@ -40,14 +40,31 @@
                 if (results.length > 0) {
                     results.forEach((result) => {
                         const row = document.createElement("tr");
+                        row.style.cursor = "pointer";
 
-                        // Coluna da Imagem
+                        // Coluna da Imagem - adaptada para ficar igual ao HTML original
                         const imgCell = document.createElement("td");
-                        const img = document.createElement("img");
-                        img.src = result.img; // Link da imagem
-                        img.style.width = "50px"; // Tamanho da imagem
-                        img.style.height = "50px"; // Tamanho da imagem
-                        imgCell.appendChild(img);
+                        imgCell.setAttribute("data-label", "Img");
+
+                        const profileDiv = document.createElement("div");
+                        profileDiv.id = "profilePic";
+                        profileDiv.style.width = "100%";
+                        profileDiv.style.maxWidth = "500px";
+                        profileDiv.style.borderRadius = "250px";
+                        // Se houver imagem, define o background; caso contrário, fica transparente.
+                        if (result.img && result.img.trim() !== "") {
+                            profileDiv.style.background = `url('${result.img}') no-repeat center center`;
+                            profileDiv.style.backgroundSize = "cover";
+                        } else {
+                            profileDiv.style.background = "transparent";
+                        }
+
+                        const fallbackImg = document.createElement("img");
+                        fallbackImg.src = "../images/semfundo.png";
+                        fallbackImg.style.width = "100%";
+                        fallbackImg.style.paddingBottom = "13px";
+                        profileDiv.appendChild(fallbackImg);
+                        imgCell.appendChild(profileDiv);
                         row.appendChild(imgCell);
 
                         // Colunas adicionais
@@ -160,16 +177,16 @@
                                     while ($row = $result->fetch_assoc()) {
                                         $status = $row['ativo'] == 1 ? 'Ativo' : 'Inativo';
                                         echo "<tr onclick=\"handleRowClick('{$row['id']}', 'stock')\" style=\"cursor: pointer;\">
-                                            <td>
+                                            <td data-label='Img'>
                                                 <div id=\"profilePic\" style=\"width:100%; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
                                                     <img src=\"../images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
                                                 </div>
                                             </td>
-                                            <td>{$row['nome']}</td>
-                                            <td>{$row['refProduto']}</td>
-                                            <td>" . number_format((float)$row['valorProduto'], 2, '.', '.') . "€</td>
-                                            <td>{$row['stockProduto']}</td>
-                                            <td>{$status}</td>
+                                            <td data-label='Nome'>{$row['nome']}</td>
+                                            <td data-label='Ref'>{$row['refProduto']}</td>
+                                            <td data-label='Valor'>" . number_format((float)$row['valorProduto'], 2, '.', '.') . "€</td>
+                                            <td data-label='Stock'>{$row['stockProduto']}</td>
+                                            <td data-label='Status'>{$status}</td>
                                         </tr>";
                                     }
                                 } else {

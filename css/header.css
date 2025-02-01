@@ -22,7 +22,7 @@
 
 
 .content main{
-    padding-top: 90px;
+    padding-top: 100px;
 }
 
 .content nav {
@@ -253,7 +253,7 @@ hr {
     z-index: 2001;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
     .desktop-header {
         display: none;
     }

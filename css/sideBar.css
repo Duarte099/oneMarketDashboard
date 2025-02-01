@@ -169,7 +169,7 @@
 
 /*responsivo */
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
     .sidebar {
         width: 100%;
         height: 100vh;
@@ -210,9 +210,9 @@
 }
 
 .sidebar-toggle {
-    display: none;
+    display: none !important;
     position: fixed;
-    top: 05px;
+    top: 5px;
     left: 15px;
     z-index: 2002; 
     transition: opacity 0.3s ease, background-color 0.3s ease;
@@ -225,9 +225,6 @@
     border-radius: 5px;
     width: 40px;
     height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 /* Atualize o CSS do botão */
@@ -256,7 +253,7 @@
     display: none;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
     .mobile-only {
         display: block;
     }
@@ -271,6 +268,12 @@
         left: 0;
         right: 0;
         background: var(--background-color);
+    }
+
+    .sidebar-toggle {
+        display: flex !important ;
+        align-items: center;
+        justify-content: center;
     }
 
     .sidebar .side-menu {

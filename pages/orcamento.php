@@ -3,13 +3,13 @@
 
     $estouEm = 2;
 
-    if (adminPermissions($con, "adm_001", "view") == 0 || adminPermissions($con, "adm_001", "update") == 0) {
+    if (adminPermissions($con, "adm_001", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 ?>
     <link rel="stylesheet" href="../css/orcamentos.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | Orçamentos</title>
 </head>
 
@@ -40,6 +40,7 @@
                     if (results.length > 0) {
                         results.forEach((result) => {
                             const row = document.createElement("tr");
+                            row.style.cursor = "pointer";
 
                             // Adiciona as colunas da tabela
                             const nomeCliente = document.createElement("td");
@@ -115,6 +116,7 @@
                     if (results.length > 0) {
                         results.forEach((result) => {
                             const row = document.createElement("tr");
+                            row.style.cursor = "pointer";
 
                             // Adiciona as colunas da tabela
                             const numBudget = document.createElement("td");
@@ -333,17 +335,8 @@
             function deleteBudget(num, id) {
                 const result = confirm("Tem a certeza que deseja eliminar o orçamento " + num + "?");
                 if (result) {
-                    fetch(`./orcamentoDelete.php?idBudget=${encodeURIComponent(id)}`, {
-                        method: 'GET',
-                    })
-                    .then(() => {
-                        console.log("ID enviado com sucesso via GET.");
-                    })
-                    .catch(error => {
-                        console.error("Erro ao enviar ID:", error);
-                    });
+                    window.location.href = "../pages/orcamentoDelete?idBudget=" + id;
                 }
-                window.location.href = window.location.pathname; // Recarrega a página
             }
 
             document.addEventListener('DOMContentLoaded', function () {

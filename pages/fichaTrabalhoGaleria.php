@@ -3,7 +3,7 @@
 
     $estouEm = 3;
 
-    if (adminPermissions($con, "adm_002", "view") == 0 || adminPermissions($con, "adm_002", "update") == 0) {
+    if (adminPermissions($con, "adm_002", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -32,8 +32,7 @@
         $numSections =  $row['numSections'];
     }
 ?>
-    <link rel="stylesheet" href="../css/fichaTrabalhoGaleria.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    <link rel="stylesheet" href="./css/fichaTrabalhoGaleria.css">
     <title>OneMarket | <?php echo $numFichaTrabalho; ?> </title>
 
     <link href="./css/lightbox.css" rel="stylesheet" />
@@ -114,7 +113,7 @@
         </main>
     </div>
 
-    <script src="./js/lightbox.js"></script> 
+    <script src="lightbox.js"></script> 
 </body>
 
 </html>

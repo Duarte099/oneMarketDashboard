@@ -1,7 +1,7 @@
 <?php 
     include('../pages/head.php');
 
-    if (adminPermissions($con, "adm_001", "view") == 0 || adminPermissions($con, "adm_001", "update") == 0) {
+    if (adminPermissions($con, "adm_001", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -54,7 +54,6 @@
     }
 ?>
     <title>OneMarket | Impressão Orçamento</title>
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
     <link rel="stylesheet" href="../css/orcamentoImpressao.css">
 </head>
 <body>

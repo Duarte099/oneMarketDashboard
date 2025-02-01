@@ -11,3 +11,4 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../index.js"></script>
+    <link rel="icon" href="../images/IconOnemarketBranco.png">

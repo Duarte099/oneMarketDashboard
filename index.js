@@ -60,34 +60,44 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function handleRowClick(id, action) {
-    const routes = {
-        "budget": "orcamentoCriar.php?idClient=",
-        "worksheet": "fichaTrabalhoCriar.php?idBudget=",
-        "editBudget": "orcamentoEdit.php?idBudget=",
-        "editClient": "clienteEdit.php?idClient=",
-        "editAdmin": "adminEdit.php?idAdmin=",
-        "editWorksheet": "fichaTrabalhoEdit.php?idWorksheet=",
-        "stock": "produtoEdit.php?idProduct="
-    };
-
-    if(routes[action]) window.location.href = routes[action] + id;
+    if (action == "budget") {
+        window.location.href = "orcamentoCriar.php?idClient=" + id;
+    }
+    else if (action == "worksheet") {
+        window.location.href = "fichaTrabalhoCriar.php?idBudget=" + id;
+    }
+    else if (action == "editBudget") {
+        window.location.href = "orcamentoEdit.php?idBudget=" + id;
+    }
+    else if (action == "editClient") {
+        window.location.href = "clienteEdit.php?idClient=" + id;
+    }
+    else if (action == "editAdmin") {
+        window.location.href = "adminEdit.php?idAdmin=" + id;
+    }
+    else if (action == "editWorksheet") {
+        window.location.href = "fichaTrabalhoEdit.php?idWorksheet=" + id;
+    }
+    else if (action == "stock") {
+        window.location.href = "produtoEdit.php?idProduct=" + id;
+    }
 }
 
-// Funções para textarea autoajustável
-$(document).ready(function() {
-    const adjustHeight = element => {
-        element.style.height = 'auto';
-        element.style.height = `${element.scrollHeight}px`;
-    };
+$(document).ready(function () {
+    function adjustHeight(element) {
+        element.style.height = 'auto'; // Reseta a altura para calcular corretamente
+        element.style.height = (element.scrollHeight) + 'px'; // Define a altura com base no scrollHeight
+    }
 
-    $('.autoExpand').each(function() {
-        adjustHeight(this);
-    }).on('input change', function() {
-        adjustHeight(this);
+    // Aplica o ajuste ao carregar a página e em eventos
+    $('.autoExpand').each(function () {
+        adjustHeight(this); // Ajusta a altura para texto padrão
+    }).on('input change', function () {
+        adjustHeight(this); // Ajusta a altura ao digitar ou alterar texto
     });
 
-    // Esconder preloader
-    $("#preloader").fadeOut("slow");
+    $("#preloader").fadeOut("slow");  //Adiciona a classe para efeito fade-out
+     
 });
 
 // Fechar sidebar ao clicar fora (mobile)

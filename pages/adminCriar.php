@@ -15,7 +15,7 @@
     }
 ?>
     <link rel="stylesheet" href="../css/adminCriar.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | Novo Administrador</title>
 </head>
 

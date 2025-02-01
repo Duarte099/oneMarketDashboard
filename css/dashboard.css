@@ -53,7 +53,7 @@ body{
 .content main .header h1{
     font-size: 36px;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-top: 20px;
     color: var(--primary-text-color);
 }
 
@@ -298,7 +298,7 @@ body{
     position: relative;
 }
 
-.content main .work-status .products button {
+button {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -449,6 +449,7 @@ body{
     background: var(--background-color);
     padding: 24px;
     overflow-x: auto;
+    position: relative;
 }
 
 .content main .logs-section .tables{
@@ -554,6 +555,11 @@ body{
         height: 400px; /* Ajuste para que o gráfico ocupe menos altura em tablets */
     }
 
+    .container {
+        flex-direction: column;
+        gap: 16px; 
+    }
+
     /* Para a navegação no ano */
     .year-selector button {
         font-size: 16px;
@@ -605,6 +611,11 @@ body{
     .container {
         flex-direction: column;
         gap: 16px;
+    }
+
+    .container .products-stock-custom button{
+        font-size: 14px;
+        padding: 8px 12px;
     }
 
     /* Ajustes nos botões de ano */

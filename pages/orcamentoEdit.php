@@ -3,7 +3,7 @@
 
     $estouEm = 2;
 
-    if (adminPermissions($con, "adm_001", "view") == 0 || adminPermissions($con, "adm_001", "update") == 0) {
+    if (adminPermissions($con, "adm_001", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -91,7 +91,7 @@
     }
 ?>
     <link rel="stylesheet" href="../css/editBudget.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | <?php echo $numOrçamento; ?> </title>
 </head>
 
@@ -134,6 +134,12 @@
                     </div>
                 </form>
             </div>
+            <?php 
+                $perm = "";
+                if (adminPermissions($con, "adm_001", "update") == 0) {
+                    $perm = "readonly";
+                }
+            ?>
             <form action="orcamentoInserir.php?idBudget=<?= $idBudget ?>&op=edit" method=post>
                 <div class="bottom-data">
                     <div class="budget">
@@ -146,12 +152,7 @@
                                 </div>
                                 <div class="section-group">
                                     <label>Projeto:</label>
-                                    <input type="text" name="nomeProjeto" required value="<?php echo $nameBudget; ?>" 
-                                    <?php 
-                                        if (adminPermissions($con, "adm_001", "update") == 0) {
-                                            echo "readonly";
-                                        }
-                                    ?>>
+                                    <input type="text" name="nomeProjeto" required value="<?php echo $nameBudget; ?>" <?php echo $perm; ?>>
                                 </div>
                                 <div class="section-group">
                                     <label>Cliente:</label>
@@ -173,7 +174,7 @@
                             <div class="section-row">
                                 <div class="section-group">
                                     <label>Deslocações e Montagem:</label>
-                                    <input name="laborPercent" class="percent" type="text" value="<?php echo $maoObraBudget . "%"; ?>" maxlength="6" pattern="[0-9]+(\.[0-9]{1,2})?%">
+                                    <input name="laborPercent" class="percent" type="text" value="<?php echo $maoObraBudget . "%"; ?>" maxlength="6" pattern="[0-9]+(\.[0-9]{1,2})?%" <?php echo $perm; ?>>
                                 </div>
                                 <div class="section-group">
                                     <label>Total Deslocações e Montagem:</label>
@@ -185,7 +186,7 @@
                                 </div>
                                 <div class="section-group">
                                     <label>Desconto:</label>
-                                    <input name="discountPercent" class="percent" type="text" value="<?php echo $descontoBudget . "%"; ?>" maxlength="6" pattern="[0-9]+(\.[0-9]{1,2})?%">
+                                    <input name="discountPercent" class="percent" type="text" value="<?php echo $descontoBudget . "%"; ?>" maxlength="6" pattern="[0-9]+(\.[0-9]{1,2})?%" <?php echo $perm; ?>>
                                 </div>
                                 <div class="section-group">
                                     <label>Total com Desconto:</label>
@@ -246,7 +247,7 @@
                             <div class="section-row">
                                 <div class="section-group">
                                     <label>Observações:</label>
-                                    <textarea id="overlay-textarea" class="autoExpand" name="observation" rows="1"><?php echo $observacao; ?></textarea>
+                                    <textarea id="overlay-textarea" class="autoExpand" name="observation" rows="1" <?php echo $perm; ?>><?php echo $observacao; ?></textarea>
                                 </div>
                             </div>
                         </section>
@@ -306,7 +307,7 @@
                                             placeholder="Nome da secção" 
                                             value="<?php echo $nomeSecao; ?>"
                                             style="width: 100%;" 
-                                            <?php if (adminPermissions($con, "adm_001", "update") == 0) {echo "readonly";}?>
+                                            <?php echo $perm; ?>
                                         />
                                         <datalist id='datalistSection'>
                                             <?php
@@ -373,7 +374,7 @@
                                                                 ?>
                                                                 <td><input type="text" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" value="100" readonly></td>
                                                                 <td><input type="search" list="datalistProduct" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value="<?php echo $refProduct; ?>" oninput="atualizarCampos(this);" <?php if (adminPermissions($con, "adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
-                                                                <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value="<?php echo $nameProduct; ?>"></td>
+                                                                <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value="<?php echo $nameProduct; ?>" <?php if (adminPermissions($con, "adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
                                                                 <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" min="0" value="<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" oninput="atualizarPrecoTotal(this)" <?php if (adminPermissions($con, "adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
                                                                 <td><textarea rows="1" class="autoExpand" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" <?php if (adminPermissions($con, "adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>><?php echo $descriptionProduct; ?></textarea></td>
                                                                 <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" value="<?php echo $valueProduct; ?>" readonly></td>

@@ -51,7 +51,7 @@ body{
 .content main .header .left h1{
     font-size: 36px;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-top: 20px;
     color: var(--primary-text-color);
 }
 
@@ -222,26 +222,6 @@ table td button.select-products:hover {
     background-color: #555;
 }
 
-@media screen and (max-width: 768px) {
-    .content{
-        width: calc(100% - 60px);
-        left: 200px;
-    }
-
-}
-
-@media screen and (max-width: 576px) {
-
-    .content main .bottom-data .header{
-        min-width: 340px;
-    }
-
-    .content main .bottom-data .products table{
-        min-width: 340px;
-    }
-
-}
-
 .btn-small {
     background-color: var(--theme-color); /* Cor de fundo (vermelho escuro) */
     color: var(--primary-text-color);           /* Cor do texto (branco) */
@@ -294,3 +274,57 @@ tbody::-webkit-scrollbar-thumb {
 tbody::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 }
+
+
+@media screen and (max-width: 768px) {
+    .content main .bottom-data .products table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .content main .bottom-data .products table thead {
+        display: none; /* Esconde o cabeçalho */
+    }
+
+    .content main .bottom-data .products table tbody {
+        display: block;
+        width: 100%;
+    }
+
+    .content main .bottom-data .products table tbody tr {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        margin-bottom: 10px;
+        background: var(--background-color);
+    }
+
+    .content main .bottom-data .products table tbody tr td {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 5px 0;
+    }
+
+    .content main .bottom-data .products table tbody tr td::before {
+        content: attr(data-label) ": "; /* Isso já puxa o data-label */
+        font-weight: bold;
+        margin-right: 8px;
+        color: var(--primary-text-color);
+    }
+
+    .content main .bottom-data .admins table tbody tr:first-of-type {
+        margin-top: 20px !important; /* Adiciona margem superior ao primeiro card */
+    }
+
+    .content main .bottom-data .products table td img {
+        width: 50px; /* Ajuste o tamanho da imagem */
+        height: 50px; /* Ajuste o tamanho da imagem */
+        border-radius: 50%; /* Se você quiser que a imagem seja circular */
+        object-fit: cover; /* Para manter a proporção da imagem */
+    }
+}
+

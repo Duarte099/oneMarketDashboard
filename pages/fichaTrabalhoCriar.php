@@ -56,7 +56,7 @@
     $numFicha = "$proximo_numero/$anoAtual";
 ?>
     <link rel="stylesheet" href="../css/novaFichaTrabalho.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | Nova Ficha de Trabalho</title>
 </head>
 

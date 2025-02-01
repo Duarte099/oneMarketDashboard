@@ -8,7 +8,7 @@
     }
 ?>
     <link rel="stylesheet" href="../css/novoCliente.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | Novo Cliente</title>
 </head>
 

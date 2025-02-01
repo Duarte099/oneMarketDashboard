@@ -3,7 +3,7 @@
 
     $estouEm = 5;
 
-    if (adminPermissions($con, "adm_004", "view") == 0 || adminPermissions($con, "adm_004", "update") == 0) {
+    if (adminPermissions($con, "adm_004", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -26,7 +26,7 @@
     }
 ?>
     <link rel="stylesheet" href="../css/novoCliente.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | <?php echo $name; ?></title>
 </head>
 <body>

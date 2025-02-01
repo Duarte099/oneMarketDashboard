@@ -1,17 +1,5 @@
 perguntar sobre erro ao inserir fotos na galeria
 
-Diogo:
-responsivo a todos os dispositivos HARD:
-
-    login - feito
-    dashboard - meio feito
-    orcamento - nao
-    ficha de trabalho - nao
-    stock - nao
-    Cliente - ver (feito) - criar(nao)  - editar (nao)
-    Admin - nao
-    perfil - feito
-
 tentar mostrar o que foi alterado nas seguintes paginas: (posso fazer)
 produto
 perfil

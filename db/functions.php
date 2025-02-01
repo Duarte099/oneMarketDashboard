@@ -103,4 +103,6 @@
         //returnar true caso guardar, senao retorna false
         return $stmt->execute();
     }
+
+    // header('Location: ../pages/index.php');
 ?>

@@ -46,7 +46,7 @@ body{
 .content main .header .left h1{
     font-size: 36px;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-top: 20px;
     color: var(--primary-text-color);
 }
 
@@ -280,7 +280,7 @@ table th{
     padding: 18px 0;
 }
 
-@media screen and (max-width: 768px) 
+@media screen and (max-width: 768px)
 {
     .content{
         width: calc(100% - 60px);
@@ -333,7 +333,7 @@ tbody::-webkit-scrollbar-thumb:hover {
     border-color: var(--theme-color);
 }
 
-/* Responsividade */
+/* Responsividade 
 @media screen and (max-width: 768px) {
     .container {
         flex-wrap: wrap;
@@ -344,4 +344,75 @@ tbody::-webkit-scrollbar-thumb:hover {
     .search-bar input {
         max-width: 100%;
     }
+} */
+
+@media screen and (max-width: 1024px) {
+    .container {
+        flex-direction: column; /* Muda a direção do flex para coluna */
+    }
+
+    .bottom-data {
+        width: 100%;
+    }
 }
+
+
+@media screen and (max-width: 768px) {
+    .up {
+        display: flex;
+        flex-direction: column; /* Muda a direção do flex para coluna */
+        gap: 10px; /* Adiciona espaço entre o texto e o botão */
+    }
+    
+    .content main .bottom-data .admins table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .content main .bottom-data .admins table thead {
+        display: none; /* Esconde o cabeçalho */
+    }
+
+    .content main .bottom-data .admins table tbody {
+        display: block;
+        width: 100%;
+    }
+
+    .content main .bottom-data .admins table tbody tr {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        margin-bottom: 10px;
+        background: var(--background-color);
+    }
+
+    .content main .bottom-data .admins table tbody tr td {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 5px 0;
+    }
+
+    .content main .bottom-data .admins table tbody tr td::before {
+        content: attr(data-label) ": "; /* Isso já puxa o data-label */
+        font-weight: bold;
+        margin-right: 8px;
+    }
+
+    .content main .bottom-data .admins table td img {
+        width: 50px; /* Ajuste o tamanho da imagem */
+        height: 50px; /* Ajuste o tamanho da imagem */
+        border-radius: 50%; /* Se você quiser que a imagem seja circular */
+        object-fit: cover; /* Para manter a proporção da imagem */
+    }
+
+    .content main .bottom-data .admins table th:first-child,
+    .content main .bottom-data .admins table td:first-child {
+        width: 50px;
+        padding-top: 10px; /* Adiciona espaço acima do primeiro item */
+    }
+}
+

@@ -1,5 +1,5 @@
 <?php
-    $auxLogin = true;
+    // $auxLogin = true;
 
     include('../db/conexao.php'); 
 ?>
@@ -45,7 +45,7 @@
                 <a href="../pages/cliente.php"><i class='bx bx-group'></i>Clientes</a>
             </li>
         <?php } ?>
-        <?php if (adminPermissions($con, "adm_005", "view") == 1) { ?>
+        <?php if (adminPermissions($con, "adm_005", "view") == 1 || adminPermissions($con, "adm_006", "view") == 1) { ?>
             <li class="<?php echo ($estouEm == 6) ? 'active' : ''; ?>">
                 <a href="../pages/admin.php"><i class='bx bx-shield'></i>Admin</a>
             </li>

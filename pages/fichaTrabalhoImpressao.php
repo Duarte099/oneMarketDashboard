@@ -1,7 +1,7 @@
 <?php 
     include('../pages/head.php'); 
 
-    if (adminPermissions($con, "adm_002", "view") == 0 || adminPermissions($con, "adm_002", "update") == 0) {
+    if (adminPermissions($con, "adm_002", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -64,7 +64,7 @@
         $clientContact = $row['contact'];
     }
 ?>
-    <title>Ficha de Trabalho - Impressão</title>
+    <title>OneMarket | Impressão</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/orcamentoImpressao.css">
 </head>

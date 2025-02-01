@@ -9,7 +9,7 @@
     }
 ?>
     <link rel="stylesheet" href="../css/perfil.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | Novo Produto</title>
 </head>
 

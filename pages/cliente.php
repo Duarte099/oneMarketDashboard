@@ -8,7 +8,7 @@
     }
 ?>
     <link rel="stylesheet" href="../css/client.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | Clientes</title>
 </head>
 
@@ -108,7 +108,7 @@
                                 while ($row = $result->fetch_assoc()) {
                                     $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
                                     $class = $row['active'] == 1 ? 'ativo' : 'inativo';
-                                    echo "<tr class='$class' onclick=\"handleRowClick('{$row['id']}', 'editClient')\">
+                                    echo "<tr class='$class' onclick=\"handleRowClick('{$row['id']}', 'editClient')\" style=\"cursor: pointer;\">
                                         <td data-label='Nome'>{$row['name']}</td>
                                         <td data-label='Email'>{$row['email']}</td>
                                         <td data-label='Contacto'>{$row['contact']}</td>

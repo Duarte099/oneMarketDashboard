@@ -9,7 +9,7 @@
     }
 ?>
     <link rel="stylesheet" href="../css/fichasTrabalho.css">
-    <link rel="icon" href="../images/IconOnemarketBranco.png">
+    
     <title>OneMarket | Fichas de Trabalho</title>
 </head>
 
@@ -40,6 +40,7 @@
                 if (results.length > 0) {
                     results.forEach((result) => {
                         const row = document.createElement("tr");
+                        row.style.cursor = "pointer";
 
                         // Adiciona as colunas da tabela
                         const numWorksheet = document.createElement("td");
@@ -148,6 +149,7 @@
                 if (results.length > 0) {
                     results.forEach((result) => {
                         const row = document.createElement("tr");
+                        row.style.cursor = "pointer";
 
                         // Adiciona as colunas da tabela
                         const numBudget = document.createElement("td");
@@ -361,17 +363,8 @@
             function deleteWorksheet(num, id) {
                 const result = confirm("Tem a certeza que deseja eliminar a ficha de trabalho " + num + "?");
                 if (result) {
-                    fetch(`./fichaTrabalhoDelete.php?idWorksheet=${encodeURIComponent(id)}`, {
-                        method: 'GET',
-                    })
-                    .then(() => {
-                        console.log("ID enviado com sucesso via GET.");
-                    })
-                    .catch(error => {
-                        console.error("Erro ao enviar ID:", error);
-                    });
+                    window.location.href = "../pages/fichaTrabalhoDelete?idWorksheet=" + id;
                 }
-                window.location.href = window.location.pathname;
             }
 
             document.addEventListener('DOMContentLoaded', function () {

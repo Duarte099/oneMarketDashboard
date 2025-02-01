@@ -150,10 +150,6 @@ a {
         padding: 24px;
     }
 
-    form {
-        flex-direction: column;
-    }
-
     .column-left, .column-right {
         flex: 0 0 100%;
         padding: 10px 0;
