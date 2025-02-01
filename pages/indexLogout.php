@@ -1,6 +1,6 @@
 <?php
-    include("../db/functions.php");
-    session_start();
+    include("../db/conexao.php");
+    
     $idAdministrador = $_SESSION['id'];
     $username = $_SESSION['name'];
     

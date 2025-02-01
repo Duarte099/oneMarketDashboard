@@ -78,14 +78,14 @@ h1, h2, h3, h4 {
     display: block;
     margin-bottom: 12px;
     font-size: 14px;
-    color: #c4c4c4;
+    color: var(--primary-text-color);
     width:75%;
 }
 
 .content main .bottom-data .budget input[type="text"],
 .content main .bottom-data .budget input[type="search"],
 .content main .bottom-data .budget input[type="number"] {
-    width: 75%;
+    width: 100%;
     padding: 10px;
     border: 1px solid var(--border-color);
     background: var(--background-color);
@@ -175,7 +175,7 @@ table td button.select-budget {
     padding: 10px 16px;
     background: var(--theme-color);
     border: none;
-    color: var(--primary-text-color);
+    color: #fff;
     border-radius: 8px;
     font-size: 14px;
     cursor: pointer;

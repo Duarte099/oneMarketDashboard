@@ -1,29 +1,13 @@
-<?php
-session_start();
+<?php 
+    include('../pages/head.php'); 
 
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header('Location: index.php');
-    exit();
-}
-
-include('../db/conexao.php');
-
-$estouEm = 1;
-$anoAtual = date('Y');
+    $estouEm = 1;
+    $anoAtual = date('Y');
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Dashboard</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -53,11 +37,11 @@ $anoAtual = date('Y');
                         <p>Orçamentos</p>
                         <h3>
                             <?php
-                                $sql = "SELECT COUNT(*) AS numeroOrçamentos FROM budget";
+                                $sql = "SELECT COUNT(*) AS numeroOrcamentos FROM budget";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
-                                        echo $row['numeroOrçamentos'];
+                                        echo $row['numeroOrcamentos'];
                                     }
                                 } else {
                                     echo "0";
@@ -169,7 +153,7 @@ $anoAtual = date('Y');
                     </table>
                 </div>
 
-                <?php if (adminPermissions("adm_007", "view") == 1) { ?>
+                <?php if (adminPermissions($con, "adm_007", "view") == 1) { ?>
                     <!-- Ano -->
                     <div class="chart-container-custom">
                         <div class="year-selector">
@@ -363,7 +347,7 @@ $anoAtual = date('Y');
                     </div>
                 </div>
 
-                <?php if (adminPermissions("adm_006", "view") == 1) { ?>
+                <?php if (adminPermissions($con, "adm_006", "view") == 1) { ?>
                     <div class="logs-section">
                         <div class="logs">
                             <h2>Logs Recentes</h2>
@@ -399,7 +383,7 @@ $anoAtual = date('Y');
             </div>
         </main>
     </div>
-    <script src="../index.js"></script>
+    
 </body>
 
 </html>

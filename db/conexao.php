@@ -1,33 +1,35 @@
 <?php
-    // Change this to your connection info.
+    global $auxLogin; // Permite acesso à variável externa
+
+    // Configurações de conexão ao banco de dados
     $DATABASE_HOST = 'localhost';
     $DATABASE_USER = 'root';
     $DATABASE_PASS = '';
     $DATABASE_NAME = 'onemarket';
-    // Try and connect using the info above.
     $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-    // if ( mysqli_connect_errno() ) {
-    //     // If there is an error with the connection, stop the script and display the error.
-    //     $error_message = 'Failed to connect to MySQL: ' . mysqli_connect_error();
-    //     echo "<script>console.error(" . json_encode($error_message) . ");</script>";
-    //     exit;
-    // }
-    // echo "<script>console.error(" . json_encode("aaaaaaa") . ");</script>";
-    // exit;
-    
 
-    if (!isset($auxLogin)) $auxLogin = false;
-    
-    if (isset($auxLogin) && !$auxLogin) {
+    // Verificação de erro de conexão (opcional)
+    if (mysqli_connect_errno()) {
+        exit('Erro ao conectar ao MySQL: ' . mysqli_connect_error());
+    }
+
+    // Bloco de verificação de sessão (só executa se $auxLogin for false ou não definido)
+    if (!isset($auxLogin) || $auxLogin === false) {
+        session_start();
+        
+        if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+            header('Location: index.php');
+            exit();
+        }
+
+        // Verifica se a senha do admin ainda é válida
         $sql = "SELECT * FROM administrator WHERE id = " . $_SESSION['id'] . " AND pass = '" . $_SESSION['password'] . "';";
         $result = $con->query($sql);
-        if ($result->num_rows > 0) {
-            
-        }
-        else {
+        if ($result->num_rows <= 0) {
             header('Location: index.php');
             exit();
         }
     }
+
     include_once 'functions.php';
-?>  
+?>

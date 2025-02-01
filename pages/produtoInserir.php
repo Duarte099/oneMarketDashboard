@@ -1,14 +1,7 @@
 <?php
-    session_start();
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
     include('../db/conexao.php');
 
-    if (adminPermissions("adm_003", "inserir") == 0) {
+    if (adminPermissions($con, "adm_003", "inserir") == 0 || adminPermissions($con, "adm_003", "update") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -75,7 +68,7 @@
             header('Location: ../pages/produto.php');
         }
         if ($op == "edit") {
-            $idProduto = $_GET['idProduto'];
+            $idProduto = $_GET['idProduct'];
 
             $sql = "SELECT * FROM product WHERE id = '$idProduto'";
             $result = $con->query($sql);
@@ -147,7 +140,6 @@
                 $stmtStockUpdate->bind_param("ii", $quantity, $id);
             }
 
-
             if ($stmt->execute()) {
                 if ($stmtStockUpdate->execute()) {
 
@@ -159,7 +151,7 @@
             } else {
                 $error = "Erro ao atualizar o produto.";
             }
-            // header('Location: ../pages/produto.php');
+            header('Location: ../pages/produtoEdit.php?idProduct=' . $idProduct);
         }
     }
 ?>

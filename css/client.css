@@ -9,7 +9,6 @@
     --border-color: #25252c;
 }
 
-
 :root.light-mode {
     --background-color: #fff;
     --background-color-secundary: #e2dcdc;
@@ -19,51 +18,51 @@
     --border-color: #25252c;
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
 
-.bx{
+.bx {
     font-size: 1.7rem;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-html{
+html {
     overflow-x: hidden;
 }
 
-body{
+body {
     background: var(--background-color-secundary);
     overflow-x: hidden;
 }
 
-.content main .header .left h1{
+.content main .header .left h1 {
     font-size: 36px;
     font-weight: 600;
     margin-bottom: 10px;
     color: var(--primary-text-color);
 }
 
-.content main .bottom-data .header{
+.content main .bottom-data .header {
     display: flex;
     align-items: center;
     grid-gap: 16px;
     margin-bottom: 24px;
 }
 
-.content main .bottom-data .header h3{
+.content main .bottom-data .header h3 {
     margin-right: auto;
     font-size: 24px;
     font-weight: 600;
 }
 
-.content main .bottom-data .header .bx{
+.content main .bottom-data .header .bx {
     cursor: pointer;
 }
 
@@ -72,7 +71,7 @@ body{
     border-color: var(--theme-color);
 }
 
-.content main .header .report{
+.content main .header .report {
     height: 36px;
     padding: 0 16px;
     border-radius: 5px;
@@ -85,7 +84,7 @@ body{
     font-weight: 500;
 }
 
-.content main .header{
+.content main .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -93,13 +92,13 @@ body{
     flex-wrap: wrap;
 }
 
-.content main{
+.content main {
     width: 100%;
     padding: 36px 24px;
     max-height: calc(100vh - 56px);
 }
 
-.content main .bottom-data{
+.content main .bottom-data {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 24px;
@@ -108,20 +107,21 @@ body{
     color: var(--secondary-text-color);
 }
 
-.content main .bottom-data>div{
+.content main .bottom-data > div {
     border-radius: 20px;
     background: var(--background-color);
-    padding-left: 24px;
-    padding-right: 24px;
-    padding-bottom: 24px;
+    padding: 24px;
     overflow-x: auto;
 }
 
-.content main .bottom-data .client{
+/* Ajuste no primeiro quadrado */
+.content main .bottom-data .client {
     flex-grow: 1;
     flex-basis: 500px;
+    padding-top: 15px; /* Adicionando espaçamento no topo */
 }
 
+/* Estilos da tabela */
 .content main .bottom-data .client table th {
     padding-bottom: 12px;
     text-align: center;
@@ -148,7 +148,7 @@ body{
 }
 
 .content main .bottom-data .client table th,
-.content main .bottom-data .client table td{
+.content main .bottom-data .client table td {
     width: auto;
     text-align: center;
     padding: 16px 0;
@@ -166,51 +166,34 @@ body{
     table-layout: fixed;
 }
 
-@media screen and (max-width: 768px) 
-{
-    .content{
-        width: calc(100% - 60px);
-        left: 200px;
-    }
-}
 
-@media screen and (max-width: 576px) 
-{
-    .content main .bottom-data .header{
-        min-width: 340px;
-    }
-
-    .content main .bottom-data .client table{
-        min-width: 340px;
-    }
-}
-
+/* Botão pequeno */
 .btn-small {
-    background-color: var(--theme-color); /* Cor de fundo (vermelho escuro) */
-    color: var(--primary-text-color);           /* Cor do texto (branco) */
-    border: none;             /* Sem borda */
-    width: 40px;              /* Largura fixa para ser quadrado */
-    height: 40px;             /* Altura fixa para ser quadrado */
-    border-radius: 5px;       /* Bordas arredondadas */
-    display: flex;            /* Alinhar conteúdo ao centro */
-    justify-content: center;  /* Centralizar horizontalmente */
-    align-items: center;      /* Centralizar verticalmente */
-    font-size: 14px;          /* Tamanho do texto */
-    cursor: pointer;          /* Muda o cursor ao passar por cima */
-    transition: 0.3s;         /* Transição suave */
+    background-color: var(--theme-color);
+    color: var(--primary-text-color);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .btn-small:hover {
-    background-color: #cc0000; /* Cor de fundo ao passar o mouse */
+    background-color: #cc0000;
 }
 
-/* Barra de rolagem customizada (opcional) */
+/* Scrollbar do tbody */
 tbody::-webkit-scrollbar {
     width: 8px;
 }
 
 tbody::-webkit-scrollbar-thumb {
-    background-color: #888; /* Cor da barra de rolagem */
+    background-color: #888;
     border-radius: 4px;
 }
 
@@ -218,21 +201,65 @@ tbody::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 }
 
+/* Barra de pesquisa */
 .search-bar {
-    margin-top: 10px; /* Adiciona espaçamento entre o título e a barra de pesquisa */
+    margin-top: 10px;
 }
 
 .search-bar input {
     width: 200%;
-    max-width: 300px; /* Define uma largura máxima */
-    padding: 8px 12px; /* Adiciona espaçamento interno */
-    border: 1px solid var(--border-color); /* Borda cinza */
-    border-radius: 5px; /* Bordas arredondadas */
+    max-width: 300px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
     font-size: 14px;
     background-color: var(--background-color);
     color: var(--primary-text-color);
 }
 
 .search-bar input:focus {
-    outline: none; /* Remove o contorno padrão */
+    outline: none;
+}
+
+
+
+@media screen and (max-width: 1024px) {
+    .content main .bottom-data .client table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .content main .bottom-data .client table thead {
+        display: none; /* Esconde o cabeçalho */
+    }
+
+    .content main .bottom-data .client table tbody {
+        display: block;
+        width: 100%;
+    }
+
+    .content main .bottom-data .client table tbody tr {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        margin-bottom: 10px;
+        background: var(--background-color);
+    }
+
+    .content main .bottom-data .client table tbody tr td {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 5px 0;
+    }
+
+    .content main .bottom-data .client table tbody tr td::before {
+        content: attr(data-label) ": "; /* Isso já puxa o data-label */
+        font-weight: bold;
+        margin-right: 8px;
+        color: var(--primary-text-color);
+    }
 }

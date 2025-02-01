@@ -1,14 +1,7 @@
 <?php
-    session_start();
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
     include('../db/conexao.php');
 
-    if (adminPermissions("adm_002", "inserir") == 0 || adminPermissions("adm_002", "update") == 0) {
+    if (adminPermissions($con, "adm_002", "inserir") == 0 || adminPermissions($con, "adm_002", "update") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -110,18 +103,23 @@
             }
             header('Location: ../pages/fichaTrabalhoEdit.php?idWorksheet=' . $idWorksheet);
         } elseif ($op == "edit") {
+            $idWorksheet = $_GET['idWorksheet'];
+
+            $sql = "SELECT * FROM worksheet WHERE id = '$idWorksheet'";
+            $result = $con->query($sql);
+            if ($result->num_rows <= 0) {
+                header('Location: dashboard.php');
+                exit();
+            }
+            else {
+                $row = $result->fetch_assoc();
+                $idBudget =  $row['idBudget'];
+            }
+
             $readyStorage = $_POST['prontoArmazem'];
             $joinWork = $_POST['entradaObra'];
             $exitWork = $_POST['saidaObra'];
             $observacaoWorksheet = $_POST['observation'];
-            $idWorksheet = $_GET['idWorksheet'];
-        
-            $sql = "SELECT idBudget FROM worksheet WHERE worksheet.id = $idWorksheet;";
-            $result = $con->query($sql);
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $idBudget =  $row['idBudget'];
-            }
         
             $sql2 = "SELECT MAX(idVersion) AS idVersion FROM worksheet_version WHERE idWorksheet = $idWorksheet;";
             $result2 = $con->query($sql2);
@@ -158,7 +156,12 @@
             $resultSection = $con->query($sqlSection);
             if ($resultSection->num_rows > 0) {
                 while ($rowSection = $resultSection->fetch_assoc()) {
-                    $secao = mysqli_real_escape_string($con, $_POST['seccao_nome_' . $rowSection['orderSection']]);
+                    if (!empty($_POST['seccao_nome_' . $rowSection['orderSection']])) {
+                        $secao = $_POST['seccao_nome_' . $rowSection['orderSection']];
+                    }
+                    else {
+                        $secao = "";
+                    }
         
                     $sqlProducts = "SELECT orderProduct FROM budget_sections_products WHERE idBudget = $idBudget AND orderSection = '{$rowSection['orderSection']}' AND idProduct > 0;";
                     $resultProducts = $con->query($sqlProducts);
@@ -200,58 +203,68 @@
                     }
                 }
             }
-            header('Location: ../pages/fichaTrabalho.php');
+            header('Location: ../pages/fichaTrabalhoEdit.php?idWorksheet=' . $idWorksheet);
         }
         elseif ($op == "editFotos") {
-            // Diretório onde os arquivos serão armazenados
-            $uploadDir = '../images/uploads/';
-            $publicDir = '/PAP/images/uploads/'; // Caminho acessível pelo navegado
+            $idWorksheet = $_GET['idWorksheet'];
 
-            // Verifica se o campo 'photo' está definido no array $_FILES
-            if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-                // Recupera informações do arquivo enviado        
-                $fileTmpPath = $_FILES['photo']['tmp_name']; // Caminho temporário
-                $fileName = $_FILES['photo']['name'];       // Nome original do arquivo
-
-                $extension = pathinfo($fileName, PATHINFO_EXTENSION);
-                if (true) { // testar se a extensão faz parte das extensoes permitidas
-                    // gif / jpg / jpeg / png
-                    // verificar o tamanho da iamgem .. pode ser verificado em javascript // size of document
-                    // Gera um nome único para evitar sobrescrita de arquivos
-                    $uniqueFileName = uniqid('photo_', true) . '.' . $extension;
-                    $uniqueFileName_mini = "mini_" . $uniqueFileName;
-
-                    // Define o caminho completo para o upload
-                    $destinationPath = $uploadDir . $uniqueFileName_mini;
-                    $destinationPathmINI = $uploadDir . $uniqueFileName;
-
-                    // Move o arquivo para o diretório final
-                    if (move_uploaded_file($fileTmpPath, $destinationPath)) {
-
-                        // GERAR O THUMBNAIL
-                        $thumbWidth = 500; // Largura desejada
-                        $thumbHeight = 500; // Altura desejada
-
-                        createThumbnail($destinationPath, $destinationPathmINI, $thumbWidth, $thumbHeight);
-
-
-                        // Gera o link público para o arquivo
-                        $fileUrl = $publicDir . $uniqueFileName;
-
-                        /** redimensionamento da imagem */
-
-                        echo "Upload realizado com sucesso! Link: <a href=\"$fileUrl\">$fileUrl</a>";
-                    } else {
-                        echo "Erro ao mover o arquivo para o diretório final.";
-                    }
-                }
-            } else {
-                echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
+            $sql = "SELECT * FROM worksheet WHERE id = '$idWorksheet'";
+            $result = $con->query($sql);
+            if ($result->num_rows <= 0) {
+                header('Location: dashboard.php');
+                exit();
+            }
+            else {
+                $row = $result->fetch_assoc();
+                $idBudget = $row['idBudget'];
             }
 
-            
+            $uploadDir = '../images/uploads/';
+            $publicDir = '/PAP/images/uploads/';
 
-            header('Location: ../pages/fichaTrabalhoGaleria.php');
+            $sql = "SELECT DISTINCT orderSection FROM budget_sections_products WHERE idBudget = $idBudget;";
+            $result = $con->query($sql);
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    if (isset($_FILES['secao_'. $row['orderSection'] .'_foto']) && count($_FILES['secao_'. $row['orderSection'] .'_foto']['name']) > 0) {
+                        $uploadedFiles = [];
+                    
+                        foreach ($_FILES['secao_'. $row['orderSection'] .'_foto']['name'] as $key => $fileName) {
+                            if ($_FILES['secao_'. $row['orderSection'] .'_foto']['error'][$key] === UPLOAD_ERR_OK) {
+                                $fileTmpPath = $_FILES['secao_'. $row['orderSection'] .'_foto']['tmp_name'][$key];
+                    
+                                $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+                                $uniqueFileName = uniqid('photo_', true) . '.' . $extension;
+                                $destinationPath = $uploadDir . $uniqueFileName;
+                    
+                                if (move_uploaded_file($fileTmpPath, $destinationPath)) {
+                                    // Criar thumbnail (se necessário)
+                                    $thumbWidth = 500;
+                                    $thumbHeight = 500;
+                                    createThumbnail($destinationPath, $destinationPath, $thumbWidth, $thumbHeight);
+                    
+                                    $fileUrl = $publicDir . $uniqueFileName;
+                                    
+                                    $sql = "INSERT INTO worksheet_photos (idWorksheet, orderSection, img) VALUES (?, ?, ?)";
+                                    $result = $con->prepare($sql);
+                                    if ($result) {
+                                        $result->bind_param("iis", $idWorksheet, $row['orderSection'], $fileUrl);
+                                    }
+                                    $result->execute();
+                                } else {
+                                    echo "Erro ao mover o arquivo: $fileName<br>";
+                                }
+                            } else {
+                                echo "Erro ao enviar o arquivo: $fileName<br>";
+                            }
+                        }
+                    } else {
+                        echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
+                    }
+                }
+            }
+
+            // header('Location: ../pages/fichaTrabalhoEdit.php?idWorksheet=' . $idWorksheet);
         }
         else {
             header('Location: ../pages/dashboard.php');

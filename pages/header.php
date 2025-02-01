@@ -1,17 +1,11 @@
 <?php
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-    else {
-        $idAdmin = $_SESSION['id'];
+    $idAdmin = $_SESSION['id'];
 
-        $sql = "SELECT img FROM administrator WHERE administrator.id = $idAdmin;";
-        $result = $con->query($sql);
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $img =  $row['img'];
-        }
+    $sql = "SELECT img FROM administrator WHERE administrator.id = $idAdmin;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $img =  $row['img'];
     }
 ?>
 
@@ -37,7 +31,7 @@
         </a>
 
         <!-- Modal -->
-        <div id="profileModal" class="profileModal">
+        <div id="profileModal" class="profileModal" style="border: 1px solid var(--border-color);">
             <div class="modal-content">
                 <button id="closeModalBtn" class="close-btn"> &times; </button>
                 <!-- Seção superior com foto e nome -->
@@ -93,4 +87,21 @@
 
         themeSwitch.addEventListener('change', () => setTheme(themeSwitch.checked));
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let lastScroll = 0;
+        window.addEventListener("scroll", () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > lastScroll) {
+                document.querySelector(".desktop-header").style.transform = "translateY(-100%)";
+            } else {
+                document.querySelector(".desktop-header").style.transform = "translateY(0)";
+            }
+            lastScroll = currentScroll;
+        });
+    });
+
+
+</script>
+
 </script>

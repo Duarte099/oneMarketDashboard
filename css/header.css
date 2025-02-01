@@ -15,18 +15,30 @@
     --theme-color: #781215;
 }
 
+
+* {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+.content main{
+    padding-top: 90px;
+}
+
 .content nav {
     height: 100px;
     background: var(--background-color);
     padding: 0 24px;
     display: flex;
     align-items: center;
-    position: sticky;
+    position: fixed; /* Alterei de sticky para fixed */
     top: 0;
     left: 0;
+    width: 100%; /* Para ocupar toda a largura */
     z-index: 1000;
     justify-content: flex-end; 
     gap: 16px; 
+    transition: transform 0.3s ease-in-out; /* Adiciona transição suave */
 }
 
 .content nav::before {
@@ -51,7 +63,6 @@
     height: 40px; /* Altura da imagem */
     border-radius: 50%; /* Torna a imagem redonda */
     object-fit: cover; /* Ajusta o conteúdo para caber no espaço */
-    border: 2px solid var(--primary-text-color); /* (Opcional) Adiciona uma borda */
 }
 
 /* Estilos principais do modal */
@@ -214,9 +225,7 @@ hr {
 
 
 .content nav.transparent {
-    opacity: 0; /* Torna o header invisível */
-    pointer-events: none; /* Impede interações com os botões */
-    transition: opacity 0.3s ease; /* Transição suave */
+    transform: translateY(-100%);
 }
 
 

@@ -1,14 +1,7 @@
 <?php
-    session_start();
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
     include('../db/conexao.php'); 
 
-    if (adminPermissions("adm_005", "inserir") == 0 || adminPermissions("adm_005", "update") == 0) {
+    if (adminPermissions($con, "adm_005", "inserir") == 0 || adminPermissions($con, "adm_005", "update") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -22,15 +15,6 @@
             $row = $result->fetch_assoc();
             $numModules = $row['numModules'];
         }
-
-        if ($op == "edit" || $op == "save") {
-            
-        }
-        else {
-            header('Location: dashboard.php');
-            exit();
-        }
-        
         if ($op == 'save') {
             // Diretório onde os arquivos serão armazenados
             $uploadDir = '../images/uploads/';
@@ -137,9 +121,10 @@
                     $result->execute();
                 }
             }
+            header('Location: ../pages/admin.php');
         }
         elseif ($op == 'edit') {
-            $idAdmin = $_GET['id'];
+            $idAdmin = $_GET['idAdmin'];
             
             $sql = "SELECT * FROM administrator WHERE id = '$idAdmin'";
             $result = $con->query($sql);
@@ -185,7 +170,6 @@
             } else {
                 echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
             }
-
 
             $nome = trim($_POST['name']);
             $email = trim($_POST['email']);
@@ -264,8 +248,12 @@
                     $result->execute();
                 }
             }
+            header('Location: ../pages/adminEdit.php?idAdmin=' . $idAdmin);
         }
-        header('Location: ../pages/admin.php');
+        else {
+            header('Location: dashboard.php');
+            exit();
+        }
     }
     else {
         header('Location: dashboard.php');

@@ -1,11 +1,4 @@
-<?php 
-    session_start();
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
+<?php
     include('../db/conexao.php'); 
     
     $sql = "SELECT id, img, reference, name, value, quantity FROM product

@@ -1,56 +1,40 @@
-<?php
-session_start();
+<?php 
+    include('../pages/head.php'); 
 
-$estouEm = 3;
+    $estouEm = 3;
 
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header('Location: index.php');
-    exit();
-}
+    if (adminPermissions($con, "adm_002", "view") == 0 || adminPermissions($con, "adm_002", "update") == 0) {
+        header('Location: dashboard.php');
+        exit();
+    }
 
-include('../db/conexao.php');
+    $idWorksheet = $_GET['idWorksheet'];
+    $sql = "SELECT * FROM worksheet WHERE id = '$idWorksheet'";
+    $result = $con->query($sql);
+    if ($result->num_rows <= 0) {
+        header('Location: dashboard.php');
+        exit();
+    } else {
+        $row = $result->fetch_assoc();
+        $numWorksheet = $row['num'];
+        $yearWorksheet = $row['year'];
+        $idBudget = $row['idBudget'];
+        $numFichaTrabalho = "$numWorksheet/$yearWorksheet";
+    }
 
-if (adminPermissions("adm_002", "view") == 0) {
-    header('Location: dashboard.php');
-    exit();
-}
+    $inputValue = '';
+    $produtosIndex = 0;
 
-$idWorksheet = $_GET['idWorksheet'];
-$sql = "SELECT * FROM worksheet WHERE id = '$idWorksheet'";
-$result = $con->query($sql);
-if ($result->num_rows <= 0) {
-    header('Location: dashboard.php');
-    exit();
-} else {
-    $row = $result->fetch_assoc();
-    $numWorksheet = $row['num'];
-    $yearWorksheet = $row['year'];
-    $idBudget = $row['idBudget'];
-    $numFichaTrabalho = "$numWorksheet/$yearWorksheet";
-}
-
-$inputValue = '';
-$produtosIndex = 0;
-
-$sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
-$result = $con->query($sql);
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $numSections =  $row['numSections'];
-}
+    $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $numSections =  $row['numSections'];
+    }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/fichaTrabalhoGaleria.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | <?php echo $numFichaTrabalho; ?> </title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <link href="./css/lightbox.css" rel="stylesheet" />
        
@@ -76,7 +60,7 @@ if ($result->num_rows > 0) {
                     <h1>Galeria de fotos <?php echo ($numFichaTrabalho) ?></h1>
                 </div>
             </div>
-            <form action="fichaTrabalhoInserir.php?idWorksheet=<?= $idWorksheet ?>&op=editFotos" method=post>
+            <form action="fichaTrabalhoInserir.php?idWorksheet=<?= $idWorksheet ?>&op=editFotos" method=post enctype="multipart/form-data">
                 <div class="bottom-data">
                     <?php
                     $produtosIndex = 0;
@@ -104,7 +88,7 @@ if ($result->num_rows > 0) {
                                         value="<?php echo $nomeSecao; ?>"
                                         style="width: 100%;"
                                         readonly>
-                                    <input type="file" name="secao_<?php echo $i; ?>_foto" id="photo" oninput="displayProfilePic()" accept="image/*">
+                                    <input type="file" name="secao_<?php echo $i; ?>_foto[]" id="photo" multiple accept="image/*">
                                     <div class="grid" id="imageGrid">
                                         <?php
                                             $sql = "SELECT img FROM worksheet_photos WHERE idWorksheet = ". $idWorksheet ." AND orderSection = ". $i .";";
@@ -125,46 +109,12 @@ if ($result->num_rows > 0) {
                         </div>
                     <?php } ?>
                 </div>
-                <button id=botSaveBudget type="submit">Guardar Alterações</button>
+                <button id=botSaveWorksheet type="submit">Guardar Alterações</button>
             </form>
         </main>
     </div>
 
     <script src="./js/lightbox.js"></script> 
-
-    <script>
-        function displayProfilePic() {
-            const fileInput = document.getElementById('photo');
-            const imageGrid = document.getElementById('imageGrid');
-
-            if (fileInput.files && fileInput.files[0]) {
-                const file = fileInput.files[0];
-                const reader = new FileReader();
-
-                reader.onload = function (e) {
-                    // Create a new anchor and image element
-                    const anchor = document.createElement('a');
-                    anchor.href = e.target.result;
-                    anchor.setAttribute('data-lightbox', 'image-1');
-                    anchor.setAttribute('data-title', 'My caption');
-
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '150px';
-                    img.style.cursor = 'pointer';
-
-                    // Append the image to the anchor
-                    anchor.appendChild(img);
-
-                    // Add the new anchor to the grid
-                    imageGrid.appendChild(anchor);
-                };
-
-                // Read the file as a data URL
-                reader.readAsDataURL(file);
-            }
-        }
-    </script>
 </body>
 
 </html>

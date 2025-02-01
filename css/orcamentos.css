@@ -43,6 +43,8 @@ html{
 body{
     background: var(--background-color-secundary);
     overflow-x: hidden;
+    margin: 0; /* Garantir que não há margens extras no body */
+    padding-top: 0;
 }
 
 .header {

@@ -1,34 +1,19 @@
-eliminar fotos ao alterar
-
-perguntar como guardar as fotos todas na base de dados
-
-perguntar se é suposto dar para eliminar admins
-
-alterar css do criar orcamento, css do cabeçalho
-
-adicionar hora das versões ao edit orcamento
-
-rever cores no modo branco
-
-corrigir botão guardar alterações - edit ficha trabalho
-
-acabar produto inserir - não funcional
-
-colocar em todas as paginas de edit para voltar para a pagina de edit ao guardar as alterações
+perguntar sobre erro ao inserir fotos na galeria
 
 Diogo:
+responsivo a todos os dispositivos HARD:
 
-responsivo a todos os dispositivos HARD
+    login - feito
+    dashboard - meio feito
+    orcamento - nao
+    ficha de trabalho - nao
+    stock - nao
+    Cliente - ver (feito) - criar(nao)  - editar (nao)
+    Admin - nao
+    perfil - feito
 
-logs acabar em todos EZ
-
-header desaparecer ao da scroll EZ
-
-orcamentos espaco cinzento em cima
-
-falta a linha a separar o cabeçalho da tabela e os dados
-
-
-
-
-corrigir o botão de alterar o tema, ao dar scroll vem junto, qualquer coisa coloca-se dentro do menu ao clicar na foto
+tentar mostrar o que foi alterado nas seguintes paginas: (posso fazer)
+produto
+perfil
+admins
+clientes

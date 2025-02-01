@@ -1,16 +1,9 @@
 <?php 
-    session_start();
+    include('../pages/head.php'); 
 
     $estouEm = 4;
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
-    include('../db/conexao.php');
-
-    if (adminPermissions("adm_003", "view") == 0) {
+    if (adminPermissions($con, "adm_003", "view") == 0 || adminPermissions($con, "adm_003", "update") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -38,17 +31,9 @@
         $quantidade = $row['quantity'];
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/perfil.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
-    <title>OneMarket | Editar Produto</title>
+    <title>OneMarket | <?php echo $nomeProduto; ?></title>
 </head>
 
 <body>
@@ -72,31 +57,31 @@
                 </div>
             </div>
             <div class="form-container">
-                <form method="POST" action="produtoInserir.php?idProduto=<?= $idProduct ?>&op=edit" id="profileForm" enctype="multipart/form-data">
+                <form method="POST" action="produtoInserir.php?idProduct=<?= $idProduct ?>&op=edit" id="profileForm" enctype="multipart/form-data">
                     <div class="column-left">
                         <label for="photo">Foto do produto:</label>
                         <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $img ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
                             <img src="../images/semfundo.png" style="width:100%;padding-bottom: 13px;">
                         </div>
-                        <?php if (adminPermissions("adm_003", "update") == 1) { ?>
+                        <?php if (adminPermissions($con, "adm_003", "update") == 1) { ?>
                             <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
                         <?php } ?>
                     </div>
                     <div class="column-right">
                         <label for="name">Nome:</label>
-                        <input type="text" name="name" id="name" value="<?php echo $nomeProduto; ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
+                        <input type="text" name="name" id="name" value="<?php echo $nomeProduto; ?>" <?php if (adminPermissions($con, "adm_003", "update") == 0) {echo "readonly";}?>>
 
                         <label for="ref">Referencia:</label>
-                        <input type="text" name="ref" id="ref" value="<?php echo $ref; ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
+                        <input type="text" name="ref" id="ref" value="<?php echo $ref; ?>" <?php if (adminPermissions($con, "adm_003", "update") == 0) {echo "readonly";}?>>
 
                         <label for="value">Valor:</label>
-                        <input type="text" name="value" id="value" value="<?php echo str_replace('.', '.', $value); ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
+                        <input type="text" name="value" id="value" value="<?php echo str_replace('.', '.', $value); ?>" <?php if (adminPermissions($con, "adm_003", "update") == 0) {echo "readonly";}?>>
 
                         <label for="quantity">Stock:</label>
-                        <input type="int" name="quantity" id="quantity" value="<?php echo intval($quantidade); ?>" <?php if (adminPermissions("adm_003", "update") == 0) {echo "readonly";}?>>
+                        <input type="int" name="quantity" id="quantity" value="<?php echo intval($quantidade); ?>" <?php if (adminPermissions($con, "adm_003", "update") == 0) {echo "readonly";}?>>
                         
                         <label>Status:</label>
-                        <?php if (adminPermissions("adm_003", "update") == 0) { ?>
+                        <?php if (adminPermissions($con, "adm_003", "update") == 0) { ?>
                             <input type="text" name="status" id="status" value="<?php if ($active == 0) {echo "Inativo";} else {echo "Ativo";}?>" readonly>
                         <?php } else {?>
                             <select name="status">
@@ -105,7 +90,7 @@
                             </select>
                         <?php } ?>
                         
-                        <?php if (adminPermissions("adm_003", "update") == 1) { ?>
+                        <?php if (adminPermissions($con, "adm_003", "update") == 1) { ?>
                             <button type="submit" style="margin-top: 15px">Guardar alterações</button>
                         <?php } ?>
                     </div>
@@ -114,7 +99,7 @@
         </main>
     </div>
 
-    <script src="../index.js"></script>
+    
     <script>
         function displayProfilePic() {
             const file = event.target.files[0]; // Obtém o primeiro arquivo selecionado

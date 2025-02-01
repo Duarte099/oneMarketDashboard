@@ -6,7 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Login</title>
-<link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/index.css">
 </head>
 <body>
     <div class="login-form">

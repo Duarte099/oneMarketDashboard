@@ -162,6 +162,13 @@ body{
     color: var(--primary-text-color);
 }
 
+
+.products-stock-custom table th{
+    padding-bottom: 12px;
+    /*text-align: left;*/
+    border-bottom: 1px solid var(--border-color);
+}
+
 .products-stock-custom  table th:first-child,
 .products-stock-custom  table td:first-child {
     width: 50px;
@@ -184,7 +191,7 @@ body{
     right: 10px;
     padding: 10px 15px;
     background-color: var(--theme-color);
-    color: var(--primary-text-color);
+    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -298,7 +305,7 @@ body{
     width: auto;
     padding: 10px 15px;
     background-color: var(--theme-color);
-    color: var(--primary-text-color);
+    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -341,9 +348,9 @@ body{
     border-collapse: collapse;
 }
 
-.content main .work-status .tables table th{
+.content main .work-status table th{
     padding-bottom: 12px;
-    font-size: 13px;
+    /*font-size: 13px;*/
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -485,6 +492,11 @@ body{
     color: var(--primary-text-color);
 }
 
+.content main .logs-section .logs table th{
+    padding-bottom: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
 
 .content main .logs-section .logs table th:first-child,
 .content main .logs-section .logs table td:first-child {
@@ -510,103 +522,128 @@ body{
     table-layout: fixed;
 }
 
-@media screen and (max-width: 768px) {
-    .content main .insights {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    }
-}
-
 @media screen and (max-width: 1024px) {
+    /* Ajustes para tablets */
+    
+    /* Insights: Ajustar a grade para dispositivos com tela média */
+    .content main .insights {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Menor largura mínima */
+    }
+
+    /* Ajustes nos títulos da tabela de produtos e gráficos */
+    .products-stock-custom h2,
+    .chart-container-custom h2 {
+        font-size: 22px;
+    }
+
+    /* Ajuste da largura da tabela de produtos */
+    .products-stock-custom table,
+    .logs-section .logs table {
+        font-size: 14px; /* Menor que o desktop */
+    }
+
+    /* Ajustes para botões em dispositivos com telas menores */
+    .container .products-stock-custom button,
+    .content main .work-status .products button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    /* Ajuste do gráfico */
+    #ganhosChart {
+        height: 400px; /* Ajuste para que o gráfico ocupe menos altura em tablets */
+    }
+
+    /* Para a navegação no ano */
+    .year-selector button {
+        font-size: 16px;
+        padding: 6px 12px;
+    }
+
+    /* Ajuste nos textos para dispositivos mais estreitos */
+    .content main .header h1 {
+        font-size: 28px; /* Tamanho de fonte menor para tablets */
+    }
+
+    .content main .work-status .header h3,
+    .content main .logs-section .header h3 {
+        font-size: 22px;
+    }
+
+    /* Flex container para "Work Status" e "Logs" no tablet */
     .content main .fichalogs {
         flex-direction: column;
     }
 
     .content main .work-status,
     .content main .logs-section {
-        width: 100%;
+        width: 100%; /* Toma toda a largura da tela em tablets */
+    }
+
+    /* Ajustar as tabelas dentro de "Work Status" para dispositivos de tamanho médio */
+    .content main .work-status .tables table {
+        width: 100%; /* Toma a largura total */
+    }
+
+    /* Ajustes nos botões e interações no trabalho */
+    .content main .work-status .products {
+        padding-top: 50px; /* Garantir que o botão não sobreponha a tabela */
     }
 }
 
-
-
 @media screen and (max-width: 768px) {
-    .content main .work-status .products table,
-    .content main .logs-section .logs table {
-        font-size: 14px;
+    /* Ajustes para celulares pequenos */
+    
+    .content main .insights {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Aumentar flexibilidade */
     }
 
-    .content main .work-status .products table th,
-    .content main .work-status .products table td,
-    .content main .logs-section .logs table th,
-    .content main .logs-section .logs table td {
-        padding: 8px 5px;
+    .content main .header h1 {
+        font-size: 24px; /* Ajustar título */
     }
 
-    #ganhosChart {
-        height: 300px;
+    .container {
+        flex-direction: column;
+        gap: 16px;
     }
 
-    .chart-container {
-        padding: 40px 10px 10px;
-    }
-
-    .year-selector {
-        top: 5px;
-    }
-
+    /* Ajustes nos botões de ano */
     .year-selector button {
         font-size: 14px;
         padding: 3px 8px;
     }
 
-    .year-selector #currentYear {
-        font-size: 16px;
-    }
-
-    /* Novas alterações */
-    .content main .header {
-        margin-top: 70px;
-    }
-
-    .content main .header h1 {
-        font-size: 28px;
-        margin-top: 20px;
-    }
-
-    .content main .work-status .products {
-        position: relative;
-        padding-top: 60px;
-    }
-
-    .content main .work-status .products h2 {
-        font-size: 20px;
-        margin-bottom: 10px;
-        padding-right: 0;
+    #ganhosChart {
+        height: 250px; /* Menor altura para celulares */
     }
 
     .content main .work-status .products button {
-        top: 10px;
-        right: 10px;
         font-size: 14px;
         padding: 8px 12px;
     }
+
+    /* Ajustes de tabelas em telas menores */
+    .products-stock-custom table th,
+    .products-stock-custom table td,
+    .logs-section .logs table th,
+    .logs-section .logs table td {
+        padding: 8px 5px;
+    }
+
+    /* Ajustar as tabelas para ficarem mais legíveis em dispositivos móveis */
+    .content main .work-status .tables table th,
+    .content main .logs-section .logs table th {
+        font-size: 12px;
+    }
+
+    .content main .work-status .tables table td,
+    .content main .logs-section .logs table td {
+        font-size: 12px;
+    }
+
+    .content main .work-status .products table tbody tr:hover {
+        background: var(--background-color-secundary);
+    }
 }
 
-
-
-
-@media screen and (max-width: 576px) {
-    .content main {
-        padding: 20px 10px;
-    }
-
-    .content main .header h1 {
-        font-size: 24px;
-    }
-
-    .content main .work-status .header h3,
-    .content main .logs-section .header h3 {
-        font-size: 20px;
-    }
-}
 

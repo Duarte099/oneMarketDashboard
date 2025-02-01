@@ -1,31 +1,16 @@
 <?php 
-    session_start();
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
-    include('../db/conexao.php');
+    include('../pages/head.php'); 
 
     $estouEm = 4;
 
-    if (adminPermissions("adm_003", "inserir") == 0) {
+    if (adminPermissions($con, "adm_003", "inserir") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/perfil.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
-    <title>OneMarket | Criar Produto</title>
+    <title>OneMarket | Novo Produto</title>
 </head>
 
 <body>
@@ -49,7 +34,7 @@
                 </div>
             </div>
             <div class="form-container">
-                <form action="../pages/produtoInserir.php" id="profileForm" method="post" enctype="multipart/form-data">
+                <form action="../pages/produtoInserir.php?op=save" id="profileForm" method="post" enctype="multipart/form-data">
                     <div class="column-left">
                         <label for="photo">Foto:</label>
                         <div id="profilePic" style="width:100%; max-width:500px; background: url('') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
@@ -83,7 +68,7 @@
         </main>
     </div>
 
-    <script src="../index.js"></script>
+    
     <script>
         function displayProfilePic() {
             const file = event.target.files[0]; // Obtém o primeiro arquivo selecionado

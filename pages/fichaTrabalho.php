@@ -1,32 +1,16 @@
 <?php 
+    include('../pages/head.php'); 
 
-    session_start();
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true ) {
-        header('Location: index.php');
-        exit();
-    }
-
-    include('../db/conexao.php');
     $estouEm = 3;
 
-    if (adminPermissions("adm_002", "view") == 0) {
+    if (adminPermissions($con, "adm_002", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/fichasTrabalho.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Fichas de Trabalho</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -244,7 +228,7 @@
                         <input type="text" id="searchBox" placeholder="Pesquisar fichas de trabalho..." oninput="worksheetsSearch(this)" />
                     </div>
                 </div>
-                <?php if (adminPermissions("adm_002", "inserir") == 1) { ?>
+                <?php if (adminPermissions($con, "adm_002", "inserir") == 1) { ?>
                     <a href="novaFichaTrabalho.php" id="new-worksheet" class="report">
                         <i class='bx bx-plus'></i>
                         <span>Nova Ficha de Trabalho</span>
@@ -358,7 +342,7 @@
                                             <td>{$row['joinWork']}</td>
                                             <td>{$row['exitWork']}</td>
                                             <td>{$row['nomeAdministrador']}</td>
-                                            <td>" . (adminPermissions("adm_002", "delete") == '1' ? "<button class='btn-small' id='botDeleteWorksheet' onclick=\"deleteWorksheet('{$row['numWorksheet']}/{$row['yearWorksheet']}', {$row['idWorksheet']}); event.stopPropagation();\">🗑️</button>" : " ") .  "</td>
+                                            <td>" . (adminPermissions($con, "adm_002", "delete") == '1' ? "<button class='btn-small' id='botDeleteWorksheet' onclick=\"deleteWorksheet('{$row['numWorksheet']}/{$row['yearWorksheet']}', {$row['idWorksheet']}); event.stopPropagation();\">🗑️</button>" : " ") .  "</td>
                                         </tr>";
                                     }
                                 } else {

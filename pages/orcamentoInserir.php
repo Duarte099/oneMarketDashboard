@@ -1,29 +1,29 @@
 <?php
-    session_start();
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
     include("../db/conexao.php");
 
-    if (adminPermissions("adm_001", "inserir") == 0 || adminPermissions("adm_001", "update") == 0) {
+    if (adminPermissions($con, "adm_001", "inserir") == 0 || adminPermissions($con, "adm_001", "update") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 
-    $estouEm = 2;
+    $idAdmin = $_SESSION['id'];
 
     if (isset($_GET['op']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $op = $_GET['op'];
         if ($op == "save") {
+            $idClient = $_GET['idClient'];
+            $sql = "SELECT * FROM client WHERE id = '$idClient'";
+            $result = $con->query($sql);
+            if ($result->num_rows <= 0) {
+                header('Location: dashboard.php');
+                exit();
+            }
+
             $numProjeto = $_POST['numOrcamento'];
             $nameBudget = $_POST['nomeProjeto'];
             $laborPercent = (float) str_replace('%', '', $_POST['laborPercent']);
             $discountPercent = (float) str_replace('%', '', $_POST['discountPercent']);
             $observation = $_POST['observation'];
-            $idAdmin = $_SESSION['id'];
 
             $anoAtual = date("Y");
 
@@ -37,27 +37,14 @@
                 $proximo_numero = 1;
             }
 
-            $idClient = $_GET['idClient'];
-            $sql = "SELECT * FROM client WHERE id = '$idClient'";
-            $result = $con->query($sql);
-            if ($result->num_rows <= 0) {
-                header('Location: dashboard.php');
-                exit();
-            }
-
             $sql = "INSERT INTO budget (idClient, name, num, year, laborPercent, discountPercent, observation, createdBy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
             $result = $con->prepare($sql);
-
-            
-
             if ($result) {
                 $result->bind_param("issiddsi", $idClient, $nameBudget, $proximo_numero, $anoAtual, $laborPercent, $discountPercent, $observation, $idAdmin);
             }
 
             $result->execute();
             $idBudget = $con->insert_id;
-
 
             //funcao log
             $idAdministrador = $_SESSION['id'];
@@ -82,13 +69,6 @@
             header('Location: ../pages/orcamentoEdit.php?idBudget=' . $idBudget);
         }
         elseif ($op == "edit") {
-            $numProjeto = $_POST['numOrcamento'];
-            $nameBudget = $_POST['nomeProjeto'];
-            $laborPercent = (float) str_replace('%', '', $_POST['laborPercent']);
-            $discountPercent = (float) str_replace('%', '', $_POST['discountPercent']);
-            $observation = $_POST['observation'];
-            $idAdmin = $_SESSION['id'];
-
             $idBudget = $_GET['idBudget'];
             $sql = "SELECT * FROM budget WHERE id = '$idBudget'";
             $result = $con->query($sql);
@@ -96,6 +76,12 @@
                 header('Location: dashboard.php');
                 exit();
             }
+
+            $numProjeto = $_POST['numOrcamento'];
+            $nameBudget = $_POST['nomeProjeto'];
+            $laborPercent = (float) str_replace('%', '', $_POST['laborPercent']);
+            $discountPercent = (float) str_replace('%', '', $_POST['discountPercent']);
+            $observation = $_POST['observation'];
 
             $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
             $result = $con->query($sql);

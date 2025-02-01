@@ -1,28 +1,12 @@
 <?php 
-    session_start();
-
-    include('../db/conexao.php'); 
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true ) {
-        header('Location: index.php');
-        exit();
-    }
-
+    include('../pages/head.php'); 
     $estouEm = 5;
 
-    if (adminPermissions("adm_005", "inserir") == 0) {
+    if (adminPermissions($con, "adm_004", "inserir") == 0) {
         header('Location: index.php');
         exit();
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/novoCliente.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Novo Cliente</title>
@@ -50,7 +34,7 @@
             </div>
             <div class="bottom-data">
                 <div class="client">
-                    <form method="POST" action="clienteInserir.php">
+                    <form method="POST" action="clienteInserir.php?op=save">
                         <section>
                             <h2>Dados do Cliente</h2>
                             <div class="section-row">

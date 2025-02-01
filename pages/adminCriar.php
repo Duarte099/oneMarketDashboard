@@ -1,16 +1,8 @@
 <?php 
-    session_start();
-
+    include('../pages/head.php'); 
     $estouEm = 6;
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
-    include('../db/conexao.php');
-
-    if (adminPermissions("adm_005", "inserir") == 0) {
+    if (adminPermissions($con, "adm_005", "inserir") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -22,17 +14,9 @@
         $numModules = $row['numModules'];
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/adminCriar.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
-    <title>OneMarket | Criar Administrador</title>
+    <title>OneMarket | Novo Administrador</title>
 </head>
 
 <body>
@@ -126,7 +110,7 @@
         </main>
     </div>
 
-    <script src="../index.js"></script>
+    
     <script>
         function validarPass() {
             const pass = document.querySelector('input[name="password"]');
@@ -175,12 +159,15 @@
                 infoSection.style.display = 'block';
                 permissionsSection.style.display = 'none';
                 permissionsButton1.style.backgroundColor = 'var(--background-color)';
+                permissionsButton2.style.color = '#fff';
+                permissionsButton1.style.color = 'var(--primary-text-color)';
                 infoButton1.style.backgroundColor = 'var(--theme-color)';
             }
             if (section == 'permissions') {
                 infoSection.style.display = 'none';
                 permissionsSection.style.display = 'block';
                 permissionsButton2.style.backgroundColor = 'var(--theme-color)';
+                infoButton2.style.color = 'var(--primary-text-color)';
                 infoButton2.style.backgroundColor = 'var(--background-color)';
             }
         }

@@ -1,17 +1,9 @@
 <?php
-
-    session_start();
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true ) {
-        header('Location: index.php');
-        exit();
-    }
-
     include('../db/conexao.php'); 
 
     $estouEm = 3;
 
-    if (adminPermissions("adm_002", "delete") == 0) {
+    if (adminPermissions($con, "adm_002", "delete") == 0) {
         header('Location: index.php');
         exit();
     }

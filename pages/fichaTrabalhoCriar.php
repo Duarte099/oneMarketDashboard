@@ -1,24 +1,15 @@
 <?php 
-    session_start();
+    include('../pages/head.php'); 
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true ) {
+    if (adminPermissions($con, "adm_002", "inserir") == 0) {
         header('Location: index.php');
         exit();
     }
-
-    include('../db/conexao.php'); 
 
     $estouEm = 3;
-
-    if (adminPermissions("adm_002", "view") == 0) {
-        header('Location: index.php');
-        exit();
-    }
-
     $produtosIndex = 0;
-    
-    // $op = '';
     $idBudget = $_GET['idBudget'];
+    $idAdmin = $_SESSION['id'];
 
     $sql = "SELECT * FROM budget WHERE id = '$idBudget'";
     $result = $con->query($sql);
@@ -26,8 +17,6 @@
         header('Location: dashboard.php');
         exit();
     }
-
-    $idAdmin = $_SESSION['id'];
 
     $sql = "SELECT idClient, num, year FROM budget WHERE id = $idBudget;";
     $result = $con->query($sql);
@@ -66,18 +55,9 @@
     }
     $numFicha = "$proximo_numero/$anoAtual";
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/novaFichaTrabalho.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Nova Ficha de Trabalho</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>

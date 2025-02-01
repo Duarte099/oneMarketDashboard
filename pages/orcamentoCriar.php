@@ -1,14 +1,9 @@
 <?php 
-    session_start();
+    include('../pages/head.php'); 
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
+    $estouEm = 3;
 
-    include('../db/conexao.php');
-
-    if (adminPermissions("adm_001", "inserir") == 0) {
+    if (adminPermissions($con, "adm_001", "inserir") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -42,20 +37,10 @@
         $nameClient = $row['name'];
         $contactClient = $row['contact'];
     }
-
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/novoOrcamento.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Novo Orçamento</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>

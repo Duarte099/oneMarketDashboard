@@ -1,4 +1,6 @@
 <?php
+    $auxLogin = true;
+
     function createThumbnail($sourcePath, $thumbPath, $thumbWidth, $thumbHeight) {
         if (!file_exists($sourcePath)) {
             die("Arquivo de origem não encontrado.");
@@ -50,9 +52,7 @@
         echo "Thumbnail criado com sucesso em: $thumbPath";
     }
 
-    function adminPermissions($codModule, $perm){
-        include('../db/conexao.php');
-
+    function adminPermissions($con, $codModule, $perm){
         $idAdminPerms = $_SESSION['id'];
 
         switch ($perm) {

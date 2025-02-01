@@ -1,32 +1,16 @@
 <?php 
-    session_start();
+    include('../pages/head.php'); 
 
     $estouEm = 4;
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
-    include('../db/conexao.php');
-
-    if (adminPermissions("adm_003", "view") == 0) {
+    if (adminPermissions($con, "adm_003", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/stock.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Stock</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -139,7 +123,7 @@
                         <input type="text" id="searchBox" placeholder="Pesquisar produtos..." oninput="productsSearch(this)" />
                     </div>
                 </div>
-                <?php if (adminPermissions("adm_003", "inserir") == 1) { ?>
+                <?php if (adminPermissions($con, "adm_003", "inserir") == 1) { ?>
                     <a href="../pages/produtoCriar.php" id="new-product" class="report">
                         <i class='bx bx-plus'></i>
                         <span>Novo Produto</span>
@@ -199,7 +183,7 @@
         </main>
     </div>
 
-    <script src="../index.js"></script>
+    
 </body>
 
 </html>

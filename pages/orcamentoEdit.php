@@ -1,16 +1,9 @@
 <?php 
-    session_start();
+    include('../pages/head.php'); 
 
     $estouEm = 2;
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
-    include('../db/conexao.php');
-
-    if (adminPermissions("adm_001", "view") == 0) {
+    if (adminPermissions($con, "adm_001", "view") == 0 || adminPermissions($con, "adm_001", "update") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -97,18 +90,9 @@
         $numFichaTrabalho = "$numWorksheet/$yearWorksheet";
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/editBudget.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | <?php echo $numOrçamento; ?> </title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -164,7 +148,7 @@
                                     <label>Projeto:</label>
                                     <input type="text" name="nomeProjeto" required value="<?php echo $nameBudget; ?>" 
                                     <?php 
-                                        if (adminPermissions("adm_001", "update") == 0) {
+                                        if (adminPermissions($con, "adm_001", "update") == 0) {
                                             echo "readonly";
                                         }
                                     ?>>
@@ -322,7 +306,7 @@
                                             placeholder="Nome da secção" 
                                             value="<?php echo $nomeSecao; ?>"
                                             style="width: 100%;" 
-                                            <?php if (adminPermissions("adm_001", "update") == 0) {echo "readonly";}?>
+                                            <?php if (adminPermissions($con, "adm_001", "update") == 0) {echo "readonly";}?>
                                         />
                                         <datalist id='datalistSection'>
                                             <?php
@@ -388,12 +372,12 @@
                                                                     }
                                                                 ?>
                                                                 <td><input type="text" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" value="100" readonly></td>
-                                                                <td><input type="search" list="datalistProduct" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value = "<?php echo $refProduct; ?>" oninput="atualizarCampos(this);" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
-                                                                <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value = "<?php echo $nameProduct; ?>"></td>
-                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value = "<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" oninput="atualizarPrecoTotal(this)" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
-                                                                <td><textarea rows="1" class="autoExpand" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" <?php if (adminPermissions("adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>><?php echo $descriptionProduct; ?></textarea></td>
-                                                                <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" value = "<?php echo $valueProduct; ?>" readonly></td>
-                                                                <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" value = "<?php echo $amountProduct * $valueProduct . "€";?>" readonly></td>
+                                                                <td><input type="search" list="datalistProduct" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value="<?php echo $refProduct; ?>" oninput="atualizarCampos(this);" <?php if (adminPermissions($con, "adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
+                                                                <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>" value="<?php echo $nameProduct; ?>"></td>
+                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" min="0" value="<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" oninput="atualizarPrecoTotal(this)" <?php if (adminPermissions($con, "adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
+                                                                <td><textarea rows="1" class="autoExpand" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>" <?php if (adminPermissions($con, "adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>><?php echo $descriptionProduct; ?></textarea></td>
+                                                                <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" value="<?php echo $valueProduct; ?>" readonly></td>
+                                                                <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" value="<?php echo $amountProduct * $valueProduct . "€";?>" readonly></td>
                                                             </tr>
                                                         </tbody>
                                                         <datalist id='datalistProduct'>
@@ -414,7 +398,7 @@
                                                                 <td><input type="text" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" value="100" readonly></td>
                                                                 <td><input type="search" list="datalistProduct" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" oninput="atualizarCampos(this);"></td>
                                                                 <td><input type="text" class="designacao" name="secao_<?php echo $i; ?>_produto_designacao_<?php echo $j; ?>"></td>
-                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" value="1" oninput="atualizarPrecoTotal(this)"></td>
+                                                                <td><input type="number" class="quantidade" name="secao_<?php echo $i; ?>_produto_quantidade_<?php echo $j; ?>" min="0" value="1" oninput="atualizarPrecoTotal(this)"></td>
                                                                 <td><textarea rows="1" style="height: 42px;" class="autoExpand" name="secao_<?php echo $i; ?>_produto_descricao_<?php echo $j; ?>"></textarea></td>
                                                                 <td><input type="text" class="valor" name="secao_<?php echo $i; ?>_produto_preco_unitario_<?php echo $j; ?>" readonly></td>
                                                                 <td><input type="text" class="valorTotal" name="secao_<?php echo $i; ?>_produto_preco_total_<?php echo $j; ?>" readonly></td>
@@ -434,7 +418,7 @@
                                                         </datalist>
                                                     <?php } ?>
                                                 <?php } 
-                                                if (adminPermissions("adm_001", "update") == 1 && $versao == $maxVersao) {
+                                                if (adminPermissions($con, "adm_001", "update") == 1 && $versao == $maxVersao) {
                                                     echo "<button type=\"button\" onclick=\"adicionarProduto(" . ($i - 1) . ")\">Adicionar Produto</button>";
                                                 }
                                             ?>
@@ -601,7 +585,7 @@
                     </script>
                 </div>
                 <?php 
-                    if (adminPermissions("adm_001", "update") == 1 && $versao == $maxVersao) {
+                    if (adminPermissions($con, "adm_001", "update") == 1 && $versao == $maxVersao) {
                         echo "
                             <button id=bottomButton type=\"button\" onclick=\"adicionarSecao()\">Adicionar Secção</button>
                             <button id=botSaveBudget type=\"submit\">Guardar Alterações</button>

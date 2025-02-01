@@ -1,32 +1,16 @@
 <?php 
-    session_start();
+    include('../pages/head.php'); 
 
     $estouEm = 2;
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
-    include('../db/conexao.php');
-
-    if (adminPermissions("adm_001", "view") == 0) {
+    if (adminPermissions($con, "adm_001", "view") == 0 || adminPermissions($con, "adm_001", "update") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/orcamentos.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Orçamentos</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -228,7 +212,7 @@
                     <input type="text" id="searchBox" placeholder="Pesquisar orçamentos..." oninput="budgetsSearch(this)" />
                 </div>
             </div>
-            <?php if (adminPermissions("adm_001", "inserir") == 1) { ?>
+            <?php if (adminPermissions($con, "adm_001", "inserir") == 1) { ?>
                 <a href="novoOrcamento.php" id="new-budget" class="report">
                     <i class='bx bx-plus'></i>
                     <span>Novo Orçamento</span>
@@ -333,7 +317,7 @@
                                             <td>{$numWorksheet}</td>
                                             <td>{$row['dataCriacao']}</td>
                                             <td>{$row['responsavel']}</td>
-                                            <td>" . (adminPermissions("adm_001", "delete") == '1' ? "<button class='btn-small' id='botDeleteBudget' onclick=\"deleteBudget('{$row['numBudget']}/{$row['yearBudget']}', {$row['idbudget']}); event.stopPropagation();\">🗑️</button>" : " ") .  "</td>
+                                            <td>" . (adminPermissions($con, "adm_001", "delete") == '1' ? "<button class='btn-small' id='botDeleteBudget' onclick=\"deleteBudget('{$row['numBudget']}/{$row['yearBudget']}', {$row['idbudget']}); event.stopPropagation();\">🗑️</button>" : " ") .  "</td>
                                         </tr>";
                                     }
                                 } else {

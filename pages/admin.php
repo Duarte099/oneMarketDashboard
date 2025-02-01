@@ -1,36 +1,18 @@
 <?php 
-    session_start();
-
+    include('../pages/head.php'); 
     $estouEm = 6;
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
-    include('../db/conexao.php');
-
-    if (adminPermissions("adm_005", "view") == 0 || adminPermissions("adm_006", "view") == 0) {
+    if (adminPermissions($con, "adm_005", "view") == 0 && adminPermissions($con, "adm_006", "update") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
-    <title>OneMarket | Admin</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>OneMarket | Administração</title>
 </head>
 
 <body>
-
 <script>
         //PESQUISA ADMINISTRADORES
         const adminsSearchData = [];
@@ -208,13 +190,13 @@
             </div>
 
             <div class="container">
-                <?php if (adminPermissions("adm_005", "view") == 1) { ?>
+                <?php if (adminPermissions($con, "adm_005", "view") == 1) { ?>
                     <!-- Tabela de Administradores -->
                     <div class="bottom-data">
                         <div class="admins" id="admins">
                             <div class="up">
                                 <h2>Administradores</h2>
-                                <?php if (adminPermissions("adm_005", "inserir") == 1) { ?>
+                                <?php if (adminPermissions($con, "adm_005", "inserir") == 1) { ?>
                                     <a href="../pages/adminCriar.php" class="report">
                                         <i class='bx bx-plus'></i>
                                         <span>Novo Administrador</span>
@@ -270,7 +252,7 @@
                     </div>
                 <?php } ?>
 
-                <?php if (adminPermissions("adm_006", "view") == 1) { ?>
+                <?php if (adminPermissions($con, "adm_006", "view") == 1) { ?>
                     <!-- Tabela de Logs -->
                     <div class="bottom-data">
                         <div class="logs" id="logs">
@@ -308,7 +290,7 @@
             </div>
         </main>
 
-        <script src="../index.js"></script>
+        
     </div>
 </body>
 

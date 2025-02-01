@@ -1,14 +1,7 @@
 <?php
-    session_start();
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
     include('../db/conexao.php'); 
 
-    if (adminPermissions("adm_001", "delete") == 0) {
+    if (adminPermissions($con, "adm_001", "delete") == 0) {
         header('Location: dashboard.php');
         exit();
     }

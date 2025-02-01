@@ -27,6 +27,21 @@
     scrollbar-width: none;
 }
 
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1999;
+    display: none;
+}
+
+.sidebar.open + .sidebar-overlay {
+    display: block;
+}
+
 .sidebar::-webkit-scrollbar{
     display: none;
 }
@@ -194,10 +209,8 @@
     }
 }
 
-
-
 .sidebar-toggle {
-    display: none; 
+    display: none;
     position: fixed;
     top: 05px;
     left: 15px;
@@ -217,22 +230,23 @@
     justify-content: center;
 }
 
+/* Atualize o CSS do botão */
+.sidebar-toggle .bx {
+    transition: transform 0.3s ease;
+}
 
-.sidebar-toggle:hover {
-    background-color: var(--theme-color-hover);
+.sidebar.open + .sidebar-toggle .bx {
+    transform: rotate(90deg);
+}
+
+.sidebar-toggle.active .bx::before {
+    content: "\eb94"; /* Código do ícone 'X' no Boxicons */
 }
 
 .sidebar-toggle.hidden {
     opacity: 0;
     pointer-events: none;
 }
-
-@media screen and (min-width: 768px) {
-    .sidebar-toggle {
-        display: none !important;
-    }
-}
-
 
 .mobile-only {
     display: none;

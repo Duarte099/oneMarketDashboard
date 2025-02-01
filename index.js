@@ -1,113 +1,99 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Variáveis globais
     const themeSwitch = document.querySelector('#theme-switch');
     const themeSwitchMobile = document.querySelector('#theme-switch-mobile');
     const logoImage = document.querySelector('#logoImage');
     const sidebar = document.querySelector('.sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
     const mobileHeader = document.querySelector('.mobile-header');
-
-    function setTheme(isLight) {
-        document.documentElement.classList.toggle('light-mode', isLight);
-        logoImage.src = isLight ? '../images/LogoOnemarketPreto.png' : '../images/LogoOnemarketBranco.png';
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        if (themeSwitch) themeSwitch.checked = isLight;
-        if (themeSwitchMobile) themeSwitchMobile.checked = isLight;
-    }
-
-    // Carregar a preferência de tema do localStorage
-    const savedTheme = localStorage.getItem('theme');
-    setTheme(savedTheme === 'light');
-
-    // Alternar tema e salvar a preferência no localStorage
-    if (themeSwitch) {
-        themeSwitch.addEventListener('change', () => setTheme(themeSwitch.checked));
-    }
-    if (themeSwitchMobile) {
-        themeSwitchMobile.addEventListener('change', () => setTheme(themeSwitchMobile.checked));
-    }
-
-    // Controle do sidebar e header móvel
-    if (sidebarToggle && sidebar) {
-        sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('open');
-            if (window.innerWidth <= 768 && mobileHeader) {
-                mobileHeader.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
-            }
-        });
-    }
-
-    // Fechar o sidebar ao clicar em um link (opcional)
     const sidebarLinks = document.querySelectorAll('.sidebar .side-menu li a');
-    sidebarLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-                sidebar.classList.remove('open');
-                if (mobileHeader) mobileHeader.style.display = 'none';
-            }
-        });
-    });
 
-    // Novo código para controlar a visibilidade do botão de toggle
-    let lastScrollTop = 0;
-    window.addEventListener('scroll', function() {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollTop > lastScrollTop && scrollTop > 50) {
-            // Rolando para baixo
-            sidebarToggle.classList.add('hidden');
-        } else {
-            // Rolando para cima ou no topo
-            sidebarToggle.classList.remove('hidden');
+    // Função para definir o tema
+    const setTheme = (isLight) => {
+        document.documentElement.classList.toggle('light-mode', isLight);
+        if(logoImage) {
+            logoImage.src = isLight ? '../images/LogoOnemarketPreto.png' : '../images/LogoOnemarketBranco.png';
         }
-        
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Para Mobile ou browsers negativos
-    }, false);
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        if(themeSwitch) themeSwitch.checked = isLight;
+        if(themeSwitchMobile) themeSwitchMobile.checked = isLight;
+    };
+
+    // Carregar tema salvo
+    const savedTheme = localStorage.getItem('theme');
+    if(savedTheme) setTheme(savedTheme === 'light');
+
+    // Event listeners para alternância de tema
+    if(themeSwitch) themeSwitch.addEventListener('change', (e) => setTheme(e.target.checked));
+    if(themeSwitchMobile) themeSwitchMobile.addEventListener('change', (e) => setTheme(e.target.checked));
+
+    // Controle do sidebar
+    if(sidebarToggle && sidebar) {
+        // Abrir/fechar menu
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Fechar ao clicar em links (mobile)
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if(window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+
+        // Esconder botão ao rolar
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if(scrollTop > lastScrollTop && scrollTop > 50) {
+                sidebarToggle.classList.add('hidden');
+            } else {
+                sidebarToggle.classList.remove('hidden');
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        }, false);
+    }
 });
-
-
 
 function handleRowClick(id, action) {
-    if (action == "budget") {
-        window.location.href = "orcamentoCriar.php?idClient=" + id;
-    }
-    else if (action == "worksheet") {
-        window.location.href = "fichaTrabalhoCriar.php?idBudget=" + id;
-    }
-    else if (action == "editBudget") {
-        window.location.href = "orcamentoEdit.php?idBudget=" + id;
-    }
-    else if (action == "editClient") {
-        window.location.href = "clienteEdit.php?id=" + id;
-    }
-    else if (action == "editAdmin") {
-        window.location.href = "adminEdit.php?id=" + id;
-    }
-    else if (action == "editWorksheet") {
-        window.location.href = "fichaTrabalhoEdit.php?idWorksheet=" + id;
-    }
-    else if (action == "stock") {
-        window.location.href = "produtoEdit.php?idProduct=" + id;
-    }
+    const routes = {
+        "budget": "orcamentoCriar.php?idClient=",
+        "worksheet": "fichaTrabalhoCriar.php?idBudget=",
+        "editBudget": "orcamentoEdit.php?idBudget=",
+        "editClient": "clienteEdit.php?idClient=",
+        "editAdmin": "adminEdit.php?idAdmin=",
+        "editWorksheet": "fichaTrabalhoEdit.php?idWorksheet=",
+        "stock": "produtoEdit.php?idProduct="
+    };
+
+    if(routes[action]) window.location.href = routes[action] + id;
 }
 
-$(document).ready(function () {
-    function adjustHeight(element) {
-        element.style.height = 'auto'; // Reseta a altura para calcular corretamente
-        element.style.height = (element.scrollHeight) + 'px'; // Define a altura com base no scrollHeight
-    }
+// Funções para textarea autoajustável
+$(document).ready(function() {
+    const adjustHeight = element => {
+        element.style.height = 'auto';
+        element.style.height = `${element.scrollHeight}px`;
+    };
 
-    // Aplica o ajuste ao carregar a página e em eventos
-    $('.autoExpand').each(function () {
-        adjustHeight(this); // Ajusta a altura para texto padrão
-    }).on('input change', function () {
-        adjustHeight(this); // Ajusta a altura ao digitar ou alterar texto
+    $('.autoExpand').each(function() {
+        adjustHeight(this);
+    }).on('input change', function() {
+        adjustHeight(this);
     });
 
-    $("#preloader").fadeOut("slow");  //Adiciona a classe para efeito fade-out
-     
+    // Esconder preloader
+    $("#preloader").fadeOut("slow");
 });
 
-
-window.addEventListener("beforeunload", function () {
-    navigator.sendBeacon("logout_log.php");
-});
+// Fechar sidebar ao clicar fora (mobile)
+function closeSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    if(sidebar && window.innerWidth <= 768) {
+        sidebar.classList.remove('open');
+    }
+}

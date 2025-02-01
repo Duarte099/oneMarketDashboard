@@ -1,14 +1,7 @@
 <?php 
-    session_start();
+    include('../pages/head.php'); 
 
     $estouEm = 1;
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
-    include('../db/conexao.php');
 
     $idAdmin = $_SESSION['id'];
 
@@ -23,14 +16,6 @@
         $birthday =  $row['birthday'];
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/perfil.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
     <title>OneMarket | Perfil</title>
@@ -90,7 +75,7 @@
         </main>
     </div>
 
-    <script src="../index.js"></script>
+    
     <script>
         function validarPass() {
             const pass = document.querySelector('input[name="password"]');

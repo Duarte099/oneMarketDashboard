@@ -1,14 +1,7 @@
 <?php 
-    session_start();
+    include('../pages/head.php'); 
 
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
-    include('../db/conexao.php');
-
-    if (adminPermissions("adm_002", "view") == 0) {
+    if (adminPermissions($con, "adm_002", "view") == 0 || adminPermissions($con, "adm_002", "update") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -65,16 +58,12 @@
 
     $sql = "SELECT name, contact FROM client WHERE client.id = $idClient;";
     $result = $con->query($sql);
-    $row = $result->fetch_assoc();
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
         $clientName = $row['name'];
         $clientContact = $row['contact'];
+    }
 ?>
-
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de Trabalho - Impressão</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/orcamentoImpressao.css">

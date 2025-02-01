@@ -1,16 +1,9 @@
 <?php 
-    session_start();
-
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-        header('Location: index.php');
-        exit();
-    }
-
-    include('../db/conexao.php'); 
+    include('../pages/head.php'); 
 
     $estouEm = 3;
 
-    if (adminPermissions("adm_002", "view") == 0) {
+    if (adminPermissions($con, "adm_002", "view") == 0 || adminPermissions($con, "adm_002", "update") == 0) {
         header('Location: dashboard.php');
         exit();
     }
@@ -21,8 +14,8 @@
     $sql = "SELECT * FROM worksheet WHERE id = '$idWorksheet'";
     $result = $con->query($sql);
     if ($result->num_rows <= 0) {
-        // header('Location: dashboard.php');
-        // exit();
+        header('Location: dashboard.php');
+        exit();
     }
 
     $sql = "SELECT MAX(idVersion) AS idVersion FROM worksheet_version WHERE idWorksheet = $idWorksheet;";
@@ -36,8 +29,8 @@
     $sql = "SELECT * FROM worksheet_version WHERE idVersion = '$versao' AND idWorksheet = '$idWorksheet'";
     $result = $con->query($sql);
     if ($result->num_rows <= 0) {
-        // header('Location: dashboard.php');
-        // exit();
+        header('Location: dashboard.php');
+        exit();
     }
 
     $idAdmin = $_SESSION['id'];
@@ -115,18 +108,9 @@
         $maxVersao =  $row['idVersion'];
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/novaFichaTrabalho.css">
     <link rel="icon" href="../images/IconOnemarketBranco.png">
-    <title>OneMarket | Editar Ficha de Trabalho</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>OneMarket | <?php echo $numFicha ?></title>
 </head>
 
 <body>
@@ -199,15 +183,15 @@
                             <div class="section-row">
                                 <div class="section-group">
                                     <label>Pronto em armazém:</label>
-                                    <input type="date" name="prontoArmazem" value="<?php echo $readyStorage; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
+                                    <input type="date" name="prontoArmazem" value="<?php echo $readyStorage; ?>" <?php if (adminPermissions($con, "adm_002", "update") == 0) {echo "readonly";}?>>
                                 </div>
                                 <div class="section-group">
                                     <label>Entrada em obra:</label>
-                                    <input type="date" name="entradaObra" value="<?php echo $joinWork; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
+                                    <input type="date" name="entradaObra" value="<?php echo $joinWork; ?>" <?php if (adminPermissions($con, "adm_002", "update") == 0) {echo "readonly";}?>>
                                 </div>
                                 <div class="section-group">
                                     <label>Saída de obra:</label>
-                                    <input type="date" name="saidaObra" value="<?php echo $exitWork; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
+                                    <input type="date" name="saidaObra" value="<?php echo $exitWork; ?>" <?php if (adminPermissions($con, "adm_002", "update") == 0) {echo "readonly";}?>>
                                 </div>
                                 <div class="section-group">
                                     <label>Elaborado por:</label>
@@ -243,7 +227,7 @@
                                 <div class="worksheet">
                                     <section id="secoes">
                                         <div class="secao">
-                                            <h3>Secção <?php echo $nomeSecao ?>:</h3>
+                                            <h3>Secção <?php echo $rowSection['orderSection'] ?>:</h3>
                                             <input type="text"
                                                 id="search-box-<?php echo $nomeSecao ?>" 
                                                 name="seccao_nome_<?php echo $nomeSecao ?>" 
@@ -307,15 +291,15 @@
                                                                             $sizeProduct = $row['sizeProduct'];
                                                                         }
                                                                     ?>
-                                                                    <td><input type="checkbox" class="check" name="secao_<?php echo $nomeSecao ?>_produto_check_<?php echo $rowProducts['orderProduct']; ?>" <?php if ($checkProduct == "checked") {echo $checkProduct;} ?> <?php if (adminPermissions("adm_002", "update") == 0) {echo "disabled";}?>></td>
-                                                                    <td><input type="checkbox" class="armazem" name="secao_<?php echo $nomeSecao ?>_produto_armazem_<?php echo $rowProducts['orderProduct']; ?>" <?php if ($storageProduct == "checked") {echo $storageProduct;} ?> <?php if (adminPermissions("adm_002", "update") == 0) {echo "disabled";}?>></td>
+                                                                    <td><input type="checkbox" class="check" name="secao_<?php echo $nomeSecao ?>_produto_check_<?php echo $rowProducts['orderProduct']; ?>" <?php if ($checkProduct == "checked") {echo $checkProduct;} ?> <?php if (adminPermissions($con, "adm_002", "update") == 0) {echo "disabled";}?>></td>
+                                                                    <td><input type="checkbox" class="armazem" name="secao_<?php echo $nomeSecao ?>_produto_armazem_<?php echo $rowProducts['orderProduct']; ?>" <?php if ($storageProduct == "checked") {echo $storageProduct;} ?> <?php if (adminPermissions($con, "adm_002", "update") == 0) {echo "disabled";}?>></td>
                                                                     <td><input type="text" class="id" name="secao_<?php echo $nomeSecao ?>_produto_index_<?php echo $rowProducts['orderProduct']; ?>" readonly></td>
                                                                     <td><input type="text" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $nomeSecao ?>_produto_ref_<?php echo $rowProducts['orderProduct']; ?>" value = "<?php echo $refProduct; ?>" readonly></td>
                                                                     <td><input type="text" class="designacao" name="secao_<?php echo $nomeSecao ?>_produto_designacao_<?php echo $rowProducts['orderProduct']; ?>" value="<?php echo $nameProduct; ?>" readonly></td>
                                                                     <td><input type="text" class="quantidade" name="secao_<?php echo $nomeSecao ?>_produto_quantidade_<?php echo $rowProducts['orderProduct']; ?>" value="<?php if (!isset($amountProduct)) {echo $amountProduct;} else {echo 1;} ?>" readonly></td>
                                                                     <td class="inputs-td">
-                                                                        <input type="text" class="descricao" name="secao_<?php echo $nomeSecao ?>_produto_observacao_<?php echo $rowProducts['orderProduct']; ?>" value="<?php echo $observationProduct; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
-                                                                        <input type="text" class="tamanho" name="secao_<?php echo $nomeSecao ?>_produto_tamanho_<?php echo $rowProducts['orderProduct']; ?>" value="<?php echo $sizeProduct; ?>" <?php if (adminPermissions("adm_002", "update") == 0) {echo "readonly";}?>>
+                                                                        <input type="text" class="descricao" name="secao_<?php echo $nomeSecao ?>_produto_observacao_<?php echo $rowProducts['orderProduct']; ?>" value="<?php echo $observationProduct; ?>" <?php if (adminPermissions($con, "adm_002", "update") == 0) {echo "readonly";}?>>
+                                                                        <input type="text" class="tamanho" name="secao_<?php echo $nomeSecao ?>_produto_tamanho_<?php echo $rowProducts['orderProduct']; ?>" value="<?php echo $sizeProduct; ?>" <?php if (adminPermissions($con, "adm_002", "update") == 0) {echo "readonly";}?>>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -384,12 +368,14 @@
                         }
 
                     </script>
+                </div>
+                <div class="button-container">
                     <?php
-                        if (adminPermissions("adm_002", "update") == 1) {
-                            echo "<button id=botSaveWorksheet type=\"submit\">Guardar alterações</button>";
+                        if (adminPermissions($con, "adm_002", "update") == 1) {
+                            echo '<button id="botSaveWorksheet" type="submit">Guardar alterações</button>';
                         }
                     ?>
-                    <button id=botPrintWorksheet type="button" onclick="worksheetPrint(<?php echo $idWorksheet; ?>)">Imprimir</button>
+                    <button id="botPrintWorksheet" type="button" onclick="worksheetPrint(<?php echo $idWorksheet; ?>)">Imprimir</button>
                 </div>
             </form>
         </main>
