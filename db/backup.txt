@@ -41,8 +41,8 @@ CREATE TABLE IF NOT EXISTS `administrator` (
 --
 
 INSERT INTO `administrator` (`id`, `name`, `email`, `user`, `pass`, `img`, `birthday`, `created`, `updated`, `active`) VALUES
-(88, 'test', 'test@test', 'test', '$2y$10$psgjVyuIqnOIzTiZwHPz5eezdTj5XKfA.J4.sxToT5aH23W7sOqN.', '/PAP/images/uploads/photo_679201f44f1dc5.79519865.gif', '2000-09-09', '2025-01-21 22:16:20', '2025-01-21 22:16:20', 1),
-(89, 'teste', 'teste@teste.com', 'teste', '$2y$10$ugwG/LNFBaK7l6FIYA/PiuPEUAmWcf5Uap.AzA7PQvroe6eAK2kim', '/PAP/images/uploads/photo_679134e8c66fc3.14154049.png', '2000-09-09', '2025-01-22 00:34:31', '2025-01-22 00:34:31', 1);
+(88, 'test', 'test@test', 'test', '$2y$10$psgjVyuIqnOIzTiZwHPz5eezdTj5XKfA.J4.sxToT5aH23W7sOqN.', './images/uploads/photo_679201f44f1dc5.79519865.gif', '2000-09-09', '2025-01-21 22:16:20', '2025-01-21 22:16:20', 1),
+(89, 'teste', 'teste@teste.com', 'teste', '$2y$10$ugwG/LNFBaK7l6FIYA/PiuPEUAmWcf5Uap.AzA7PQvroe6eAK2kim', './images/uploads/photo_679134e8c66fc3.14154049.png', '2000-09-09', '2025-01-22 00:34:31', '2025-01-22 00:34:31', 1);
 
 -- --------------------------------------------------------
 
@@ -763,7 +763,7 @@ CREATE TABLE IF NOT EXISTS `product` (
 --
 
 INSERT INTO `product` (`id`, `active`, `reference`, `name`, `value`, `size`, `img`, `created`, `updated`) VALUES
-(5, 1, '123', 'testar', 2.50, '', '/PAP/images/uploads/photo_679a7c2304b5f4.79822389.gif', '2025-01-05 02:08:04', '2025-01-29 19:06:11'),
+(5, 1, '123', 'testar', 2.50, '', './images/uploads/photo_679a7c2304b5f4.79822389.gif', '2025-01-05 02:08:04', '2025-01-29 19:06:11'),
 (6, 1, 'wadsd', 'awdsaw', 1.00, '', NULL, '2025-01-05 02:08:07', '2025-01-10 15:04:07'),
 (7, 1, 'wdsa', 'dawdsa', 1.00, '', NULL, '2025-01-05 02:08:11', '2025-01-05 02:08:11'),
 (8, 0, '1123415', 'Mesa', 15.00, '', NULL, '2025-01-06 14:19:42', '2025-01-10 15:53:56'),

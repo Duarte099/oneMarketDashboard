@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const setTheme = (isLight) => {
         document.documentElement.classList.toggle('light-mode', isLight);
         if(logoImage) {
-            logoImage.src = isLight ? '../images/LogoOnemarketPreto.png' : '../images/LogoOnemarketBranco.png';
+            logoImage.src = isLight ? './images/LogoOnemarketPreto.png' : './images/LogoOnemarketBranco.png';
         }
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
         if(themeSwitch) themeSwitch.checked = isLight;

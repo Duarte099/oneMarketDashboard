@@ -18,7 +18,7 @@
         session_start();
         
         if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-            header('Location: ../pages/index.php');
+            header('Location: index.php');
             exit();
         }
 
@@ -26,7 +26,7 @@
         $sql = "SELECT * FROM administrator WHERE id = " . $_SESSION['id'] . " AND pass = '" . $_SESSION['password'] . "';";
         $result = $con->query($sql);
         if ($result->num_rows <= 0) {
-            header('Location: ../pages/index.php');
+            header('Location: index.php');
             exit();
         }
     }

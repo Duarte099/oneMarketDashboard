@@ -92,7 +92,7 @@
     }
 
     function registrar_log($mensagem) {
-        include('../db/conexao.php');
+        include('./db/conexao.php');
 
         // Inserir na tabela de logs
         $query = "INSERT INTO administrator_logs (idAdministrator, logFile) VALUES (?, ?)";
@@ -104,5 +104,5 @@
         return $stmt->execute();
     }
 
-    // header('Location: ../pages/index.php');
+    // header('Location: index.php');
 ?>
