@@ -5,14 +5,12 @@ OneMarket - Gestor de Orçamentos e Fichas de Trabalho
 Funcionalidades 
 
     1. Dashboard
-
         - Permite ver os ganhos de cada mês
         - Acompanhamento do progresso dos projetos ("Em Desenvolvimento", "Pendente", "Em Obra", "Concluído").
         - Ultimas acções dentro da plataforma (logs)  
         - Ver os produtos que se encontram fora de stock
 
     2. Fichas de Trabalho
-        
         - Ver, Criar, Editar e Apagar de Fichas de Trabalho
         - Ver versões anteriores das ficha de trabalho
         - Impressão das fichas de trabalho
@@ -54,13 +52,15 @@ Instruções de execução
     
     5. Base de Dados
         - Aceder ao phpMyAdmin através: http://localhost/phpmyadmin
-        - Clicar em SQL (2 aba em cima) 
-        - Pegar no codigo raiz do projeto e colocar na consulta SQL e clicar no botao de continuar
+        - Clicar em importar
+        - Selecionar o ficheiro da base de dados no botão explorar, ficheiro na raiz do projeto
+        - CLicar em Importar
 
     6. Aceder ao Projeto
         - Abrir o navegador e colocar : http://localhost/nome-da-pasta-do-projeto/
         - Substituir o nome_da_pasta_do_projeto pelo nome que esta na sua pasta em htdocs
 
+    7. Caso os "ç" e os "~" não estejam a aparecer tem de ir ao arquivo db/conexao.db e descomentar a linha 12
 Tecnologia Usadas
 
     - Visual Studio Code
