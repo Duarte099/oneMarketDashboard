@@ -1,25 +1,3 @@
-ver erro ao inserir fotos
-
-botao responsivo nao funciona na pagina da ficha de trabalho
-
-
-TODOS:
-
-
-Documento PDF com a descrição do projeto e manual de utilizador. 
-Documentação técnica (explicação do projeto, tecnologias usadas, requisitos de instalação, base de dados(sql)).
-Relatório sobre mecânicas e estrutura do código. 
-
-
-
-Código-fonte compactado (.zip ou .rar) com estrutura organizada. - FEITO
-APK para testes ou instruções para instalação. - FEITO
-Link para o repositório (GitHub, GitLab). - FEITO
-Ficheiro README com instruções claras de execução. - FEITO
-
-https://github.com/paularcsarruda/Stock#%EF%B8%8F-recursos-utilizados
-
-
 OneMarket - Gestor de Orçamentos e Fichas de Trabalho
 
     Gestor Orçamentos e Fichas de Trabalho desenvolvido em PHP e JavaScript. O projeto foi desenvolvido para a Prova de Aptidão Profissional(PAP) do curso programador de informática.
@@ -83,7 +61,7 @@ Instruções de execução
         - Abrir o navegador e colocar : http://localhost/nome-da-pasta-do-projeto/
         - Substituir o nome_da_pasta_do_projeto pelo nome que esta na sua pasta em htdocs
 
-Recursos Utilizados 
+Tecnologia Usadas
 
     - Visual Studio Code
     - PHP
@@ -92,41 +70,3 @@ Recursos Utilizados
     - MYSQL
     - GitHub
     - GIMP
-
-
-1. Arquitetura Geral
-    A aplicação pode seguir o padrão MVC (Model-View-Controller) ou Clean Architecture, dependendo da complexidade e tecnologia escolhida.
-
-    Frontend (Interface do Usuário)
-    Pode ser desenvolvido com React, Angular ou Vue.js (para web) ou Flutter/React Native (para mobile).
-    Consome APIs para exibir e manipular os dados.
-    Permite criar, visualizar e editar orçamentos e fichas de trabalho.
-
-    Backend (Lógica de Negócio e Processamento)
-    Pode ser construído em Node.js (Express, NestJS), Python (Django, FastAPI), Java (Spring Boot) ou outras linguagens/frameworks.
-    Fornece APIs REST ou GraphQL para comunicação com o frontend.
-    Gerencia autenticação, regras de negócio e persistência de dados.
-
-    Banco de Dados (Armazenamento de Dados)
-    SQL (PostgreSQL, MySQL) para dados estruturados e relações complexas.
-    NoSQL (MongoDB, Firebase) para maior flexibilidade e escalabilidade.
-
-    Contém tabelas/coleções como:
-    Usuários (dados de login, permissões)
-    Clientes (informações cadastrais)
-    Orçamentos (valores, status, detalhes)
-    Fichas de Trabalho (tarefas, responsáveis, prazos)
-    Produtos/Serviços (itens que compõem os orçamentos)
-2. Fluxo de Funcionamento
-    Usuário faz login e acessa o sistema.
-    Pode criar um orçamento, selecionando produtos/serviços e gerando um valor final.
-    O orçamento pode ser enviado para o cliente e ficar com status "Aguardando Aprovação".
-    Após aprovação, gera-se uma Ficha de Trabalho, contendo tarefas e responsáveis.
-    O usuário pode acompanhar a execução das tarefas e atualizar o status.
-    No final, pode-se gerar relatórios e analisar métricas.
-3. Tecnologias Possíveis
-    Frontend: React.js + TailwindCSS / Material UI
-    Backend: Node.js (NestJS) ou Python (Django)
-    Banco de Dados: PostgreSQL / MongoDB
-    Autenticação: JWT / OAuth
-    Hospedagem: AWS, Vercel, Firebase
