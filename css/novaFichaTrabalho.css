@@ -29,7 +29,7 @@
 body {
     background: var(--background-color-secundary);
     color: var(--secondary-text-color);
-    overflow-x: hidden;
+    overflow-x: hidden !important;
 }
 
 h1, h2, h3, h4 {
@@ -447,4 +447,78 @@ select:focus {
     border-color: var(--theme-color);
     outline: none;
     box-shadow: 0 0 5px rgba(120, 18, 21, 0.5);
+}
+
+@media (max-width: 768px) {
+    /* Empilha os grupos verticalmente */
+    .section-row {
+      flex-direction: column !important;
+      gap: 15px !important;
+    }
+  
+    /* Cada input ocupa 100% da largura */
+    .section-group {
+      width: 100% !important;
+      margin-right: 0 !important;
+    }
+  
+    /* Labels mais destacados */
+    .section-group label {
+      font-size: 16px !important;
+      margin-bottom: 8px !important;
+    }
+  
+    /* Inputs maiores */
+    .section-group input,
+    .section-group textarea {
+      width: 100% !important;
+      padding: 12px !important;
+      font-size: 14px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Container da tabela */
+    .worksheet {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 -15px !important; /* Remove margens laterais */
+      padding: 0 15px !important;
+    }
+  
+    /* Tabela com largura fixa */
+    table {
+      min-width: 800px !important; /* Ajuste conforme necessário */
+    }
+  
+    /* Células maiores */
+    table td {
+      padding: 15px 10px !important;
+      min-width: 100px !important; /* Largura mínima para evitar esmagamento */
+      font-size: 14px !important;
+    }
+  
+    /* Checkboxes visíveis */
+    table input[type="checkbox"] {
+      width: 25px !important;
+      height: 25px !important;
+    }
+  
+    /* Inputs dentro da tabela */
+    .inputs-td input {
+      min-width: 120px !important; /* Garante espaço para texto */
+      padding: 8px !important;
+    }
+
+    .secao h3 {
+        margin-bottom: 25px !important; /* Aumenta espaço abaixo do título */
+        padding-top: 15px !important; /* Espaço acima do título */
+      }
+
+    .header {
+        display: flex;
+        flex-direction: column; /* Empilha título e versão verticalmente */
+        gap: 15px; /* Espaço entre título e versão */
+        margin-bottom: 25px; /* Espaço antes da tabela */
+    }
 }

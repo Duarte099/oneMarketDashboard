@@ -1,8 +1,11 @@
 <?php
+    //inclui a base de dados e segurança da página
     include('./db/conexao.php'); 
 
+    //Obtem o id do administrador logado
     $idAdmin = $_SESSION['id'];
 
+    //Verifica se o metodo de request é POST
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Diretório onde os arquivos serão armazenados
         $uploadDir = './images/uploads/';
@@ -50,29 +53,27 @@
             echo "Nenhum arquivo foi enviado ou ocorreu um erro.";
         }
 
-        $nome = trim($_POST['name']);
-        $email = trim($_POST['email']);
-        $user = trim($_POST['user']);
-        $birthday = trim($_POST['birthday']);
-        $password = trim($_POST['password']);
-        $confirmpassword = trim($_POST['passwordConfirm']);
+        //Obtem os dados inseridos via POST
+        $nome = $_POST['name'];
+        $email = $_POST['email'];
+        $user = $_POST['user'];
+        $birthday = $_POST['birthday'];
+        $password = $_POST['password'];
 
-        if ($password == $confirmpassword && !empty($password)) {
+        //Se a password não tiver vazia e não tiver inserido foto, altera todos os campos 
+        if (!empty($password) && isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            $sql = "UPDATE administrator SET name = '$nome', email = '$email', user = '$user', pass = '$passwordHash', birthday = '$birthday' WHERE id = $idAdmin;";
+            $sql = "UPDATE administrator SET name = '$nome', email = '$email', user = '$user', pass = '$passwordHash', birthday = '$birthday', img = '$fileUrl' WHERE id = $idAdmin;";
             $result = $con->prepare($sql);
             $result->execute();
         }
-        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-            $sql = "UPDATE administrator SET name = '$nome', email = '$email', user = '$user', birthday = '$birthday', img = '$fileUrl' WHERE id = $idAdmin;";
-            $result = $con->prepare($sql);
-            $result->execute();
-        }
+        //Senão, altera tudo menos a password e a imagem
         else {
             $sql = "UPDATE administrator SET name = '$nome', email = '$email', user = '$user', birthday = '$birthday' WHERE id = $idAdmin;";
             $result = $con->prepare($sql);
             $result->execute();
         }
     }
+    //Redireciona para a pagina do perfil novamente
     header('Location: perfil.php');
 ?>

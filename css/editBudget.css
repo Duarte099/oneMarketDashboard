@@ -375,3 +375,96 @@ select:focus {
     outline: none;
     box-shadow: 0 0 5px rgba(120, 18, 21, 0.5);
 }
+
+@media (max-width: 768px) {
+    /* ===== Container Principal ===== */
+    .content main {
+      padding: 20px 12px !important;
+      max-height: none; /* Remove limite de altura em mobile */
+    }
+  
+    /* ===== Header (Número do Orçamento + Versão) ===== */
+    .content main .header {
+      flex-direction: column !important;
+      gap: 20px !important;
+      align-items: center !important;
+      text-align: center;
+    }
+
+    .content main .header .left h1 {
+        margin-bottom: 15px !important;
+        font-size: 32px !important; /* Tamanho um pouco menor */
+    }
+
+    #secoes .secao h3 {
+        margin-bottom: 25px !important; /* Aumenta espaço abaixo do título */
+        padding-top: 15px !important; /* Espaço acima do título */
+    }
+  
+    /* ===== Tabela de Produtos (Scroll Horizontal) ===== */
+    .budget {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 -12px !important;
+      padding: 0 12px !important;
+    }
+  
+    table {
+      min-width: 800px !important; /* Garante largura mínima para tabelas complexas */
+    }
+  
+    /* ===== Inputs em Linha (Ex: Desconto, Mão de Obra) ===== */
+    .section-row {
+      flex-direction: column !important;
+      gap: 15px !important;
+    }
+  
+    .section-group {
+      width: 100% !important;
+      margin-right: 0 !important;
+    }
+  
+    /* ===== Botões (Adicionar Seção, Salvar, Imprimir) ===== */
+    #bottomButton,
+    #botSaveBudget,
+    #botPrintBudget {
+      width: 100% !important;
+      margin: 10px 0 !important;
+      float: none !important; /* Remove float em mobile */
+    }
+}
+  
+@media (max-width: 576px) {
+    /* ===== Campos de Percentagem ===== */
+    .percent {
+        font-size: 16px !important; /* Mais fácil para toque */
+        padding: 12px !important;
+    }
+
+    /* ===== Títulos ===== */
+    .content main .header .left h1 {
+        font-size: 28px !important; /* Título menor */
+    }
+}
+
+
+@media (max-width: 768px) {
+    /* ===== Células da Tabela ===== */
+    table td {
+      padding: 12px 8px !important;
+      min-width: 120px !important; /* Evita colunas esmagadas */
+      font-size: 13px !important;
+    }
+  
+    /* ===== Inputs Dentro da Tabela ===== */
+    .quantidade, .valor {
+      padding: 8px !important;
+      font-size: 14px !important;
+    }
+  
+    /* ===== Cabeçalhos da Tabela ===== */
+    table th {
+      font-size: 13px !important;
+      white-space: nowrap; /* Evita quebra de linha */
+    }
+  }

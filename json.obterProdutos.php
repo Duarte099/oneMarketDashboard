@@ -1,6 +1,8 @@
 <?php
+    //Inclui a base de dados e a segurança da pagina 
     include('./db/conexao.php'); 
     
+    //query sql para obter todos os clientes e os respetivos dados
     $sql = "SELECT id, img, reference, name, value, quantity FROM product
             INNER JOIN product_stock ON id = idProduct;";
     $data = [];
@@ -17,5 +19,7 @@
             ];
         }
     }
+    
+    //Envia os dados via json 
     echo json_encode($data);
 ?>

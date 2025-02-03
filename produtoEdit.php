@@ -18,7 +18,7 @@
     else {
         $row = $result->fetch_assoc();
         $nomeProduto = $row['name'];
-        $img = $row['img'];
+        $imgProduct = $row['img'];
         $ref = $row['reference'];
         $value = $row['value'];
         $active = $row['active'];
@@ -60,7 +60,7 @@
                 <form method="POST" action="produtoInserir.php?idProduct=<?= $idProduct ?>&op=edit" id="profileForm" enctype="multipart/form-data">
                     <div class="column-left">
                         <label for="photo">Foto do produto:</label>
-                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $img ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
+                        <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $imgProduct ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
                             <img src="./images/semfundo.png" style="width:100%;padding-bottom: 13px;">
                         </div>
                         <?php if (adminPermissions($con, "adm_003", "update") == 1) { ?>

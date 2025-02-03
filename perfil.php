@@ -1,10 +1,14 @@
-<?php 
+<?php
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
 
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
     $estouEm = 1;
 
+    //Obtem o id do administrador logado
     $idAdmin = $_SESSION['id'];
 
+    //Obtem todos os dados do administrador logado
     $sql = "SELECT name, email, user, img, birthday FROM administrator WHERE administrator.id = $idAdmin;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
@@ -17,13 +21,13 @@
     }
 ?>
     <link rel="stylesheet" href="./css/perfil.css">
-    
     <title>OneMarket | Perfil</title>
 </head>
 
 <body>
 
     <?php 
+        //Inclui a sideBar na página
         include('sideBar.php'); 
     ?>
 
@@ -31,6 +35,7 @@
     <div class="content">
         <!-- Navbar -->
         <?php 
+            //Inclui o header na página
             include('header.php'); 
         ?>          
         <!-- End of Navbar -->
@@ -48,7 +53,6 @@
                         <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $imgPerfil; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
                             <img src="./images/semfundo.png" style="width:100%;">
                         </div>
-                        <!--<img src="<?php echo $imgPerfil; ?>" alt="Profile Picture" id="profilePic">-->
                         <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
                     </div>
                     <div class="column-right">
@@ -77,6 +81,7 @@
 
     
     <script>
+        //Função para ver se a palavra pass é igual nos dois campos
         function validarPass() {
             const pass = document.querySelector('input[name="password"]');
             const passC = document.querySelector('input[name="passwordConfirm"]');
@@ -92,6 +97,7 @@
             }
         }
 
+        //Função para mostrar a nova foto inserida
         function displayProfilePic() {
             const file = event.target.files[0]; // Obtém o primeiro arquivo selecionado
             const preview = document.getElementById('profilePic'); // Seleciona a div

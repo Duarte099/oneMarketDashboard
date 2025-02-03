@@ -15,14 +15,16 @@
 
     // Bloco de verificação de sessão (só executa se $auxLogin for false ou não definido)
     if (!isset($auxLogin) || $auxLogin === false) {
+        //Cria uma sessão
         session_start();
         
+        //Se não tiver logado não deixa entrar na página
         if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             header('Location: index.php');
             exit();
         }
 
-        // Verifica se a senha do admin ainda é válida
+        // Verificação da password para segurança das paginas
         $sql = "SELECT * FROM administrator WHERE id = " . $_SESSION['id'] . " AND pass = '" . $_SESSION['password'] . "';";
         $result = $con->query($sql);
         if ($result->num_rows <= 0) {
@@ -31,5 +33,6 @@
         }
     }
 
+    //Chama as funções para serem usadas em todas as paginas
     include_once 'functions.php';
 ?>

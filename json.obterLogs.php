@@ -1,6 +1,8 @@
 <?php
+    //Inclui a base de dados e a segurança da pagina 
     include('./db/conexao.php');
     
+    //query sql para obter todas as logs e os respetivos dados
     $sql = "SELECT dataLog, logFile FROM administrator_logs;";
 
     $data = [];
@@ -15,6 +17,7 @@
         }
     }
 
+    //Envia os dados via json 
     header('Content-Type: application/json');
     echo json_encode($data);
 ?>

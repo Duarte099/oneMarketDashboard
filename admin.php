@@ -1,22 +1,28 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
+
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
     $estouEm = 6;
 
-    if (adminPermissions($con, "adm_005", "view") == 0 && adminPermissions($con, "adm_006", "view") == 0) {
+    //Verifica se o administrador tem acesso para aceder a esta pagina, caso contrario redericiona para a dashboard
+    if (adminPermissions($con, "adm_005", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 ?>
     <link rel="stylesheet" href="./css/admin.css">
-    
     <title>OneMarket | Administração</title>
 </head>
 
 <body>
 <script>
-        //PESQUISA ADMINISTRADORES
+        //Script para pesquisar administradores
+
+        //Variavel para guardar todos os admins
         const adminsSearchData = [];
-                                
+        
+        //Pega os administradores todos via json no arquivo json.obterAdmins.php
         $.ajax({
             url: 'json.obterAdmins.php',
             type: 'POST',
@@ -29,6 +35,7 @@
             }
         }); 
 
+        //Função para fazer a pesquisa, apenas mostra os resultados que forem parecidos com a pesquisa
         function adminsSearch(searchBox) {
             const dataadmin = document.getElementById('admins');
             const tbody = dataadmin.querySelector('table tbody');
@@ -125,9 +132,12 @@
             }
         }
 
-        //PESQUISA LOGS
+        //Script para pesquisar logs
+
+        //Variavel para guardar todas as logs 
         const logsSearchData = [];
-                                
+                       
+        //Pega as logs todas via json no arquivo json.obterLogs.php
         $.ajax({
             url: 'json.obterLogs.php',
             type: 'POST',
@@ -140,6 +150,7 @@
             }
         });
 
+        //Função para fazer a pesquisa, apenas mostra os resultados que forem parecidos com a pesquisa
         function logsSearch(searchBox) {
             const dataadmin = document.getElementById('logs');
             const tbody = dataadmin.querySelector('table tbody');
@@ -190,6 +201,7 @@
     </script>
 
     <?php 
+        //inclui a sideBar na página
         include('sideBar.php'); 
     ?>
 
@@ -197,6 +209,7 @@
     <div class="content">
         <!-- Navbar -->
         <?php 
+            //Inclui o header na página
             include('header.php'); 
         ?>          
         <!-- End of Navbar -->
@@ -209,13 +222,17 @@
             </div>
 
             <div class="container">
-                <?php if (adminPermissions($con, "adm_005", "view") == 1) { ?>
+                <?php //Se tiver permissões para ver os administradores, mostra a tabela
+                if (adminPermissions($con, "adm_005", "view") == 1) { 
+                    ?>
                     <!-- Tabela de Administradores -->
                     <div class="bottom-data">
                         <div class="admins" id="admins">
                             <div class="up">
                                 <h2>Administradores</h2>
-                                <?php if (adminPermissions($con, "adm_005", "inserir") == 1) { ?>
+                                <?php // Se tiver permissões para criar novos administradores mostra o botão para tal
+                                if (adminPermissions($con, "adm_005", "inserir") == 1) { 
+                                    ?>
                                     <a href="adminCriar.php" class="report">
                                         <i class='bx bx-plus'></i>
                                         <span>Novo Administrador</span>
@@ -237,6 +254,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
+                                        //query para selecionar todos os administradores
                                         $sql = "SELECT 
                                                     administrator.id as id,
                                                     administrator.name,
@@ -249,6 +267,7 @@
                                         if ($result->num_rows > 0) {
                                             while ($row = $result->fetch_assoc()) {
                                                 $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
+                                                //mostra os resultados todos 
                                                 echo "<tr onclick=\"handleRowClick('{$row['id']}', 'editAdmin')\" style=\"cursor: pointer;\">
                                                         <td data-label='Img'>
                                                             <div id=\"profilePic\" style=\"width:100%; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
@@ -271,7 +290,9 @@
                     </div>
                 <?php } ?>
 
-                <?php if (adminPermissions($con, "adm_006", "view") == 1) { ?>
+                <?php //Se tiver permissões para ver as logs, mostra a tabela
+                if (adminPermissions($con, "adm_006", "view") == 1) { 
+                    ?>
                     <!-- Tabela de Logs -->
                     <div class="bottom-data">
                         <div class="logs" id="logs">
@@ -288,10 +309,12 @@
                                 </thead>
                                 <tbody>
                                     <?php
+                                        //query sql para buscar todas as logs
                                         $sql = "SELECT dataLog, logFile FROM administrator_logs ORDER BY dataLog DESC";
                                         $result = $con->query($sql);
                                         if ($result->num_rows > 0) {
                                             while ($row = $result->fetch_assoc()) {
+                                                //mostra as logs
                                                 echo "<tr>
                                                     <td style=\"width: 200px;\">{$row['dataLog']}</td>
                                                     <td>{$row['logFile']}</td>
@@ -308,8 +331,6 @@
                 <?php } ?>
             </div>
         </main>
-
-        
     </div>
 </body>
 

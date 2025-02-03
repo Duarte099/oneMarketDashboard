@@ -1,7 +1,11 @@
 <?php
+    //Inclui a base de dados e a segurança da pagina 
     include('./db/conexao.php');
 
+    //Obtem o adno atual
     $anoAtual = date('Y');
+
+    //Recebe o ano via GET, caso esteja vazio atribui o ano atual 
     $ano = isset($_GET['ano']) ? (int) $_GET['ano'] : $anoAtual;
 
     // Verifica se o ano é válido (apenas ano atual ou ano anterior)
@@ -10,6 +14,7 @@
         exit;
     }
 
+    //query SQL para obter os ganhos mensais
     $sql = "
     SELECT
         (SELECT IFNULL(SUM(valueProduct * amountProduct),0) FROM budget_sections_products p 
@@ -40,6 +45,7 @@
 
     $result = $con->query($sql);
 
+    //Envia os dados via json
     if ($result->num_rows > 0) {
         $data = $result->fetch_assoc();
         echo json_encode(['ano' => $ano, 'data' => $data]);

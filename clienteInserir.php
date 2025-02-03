@@ -1,15 +1,19 @@
 <?php
+    //Incluit a conexão à base de dados nesta página
     include('./db/conexao.php');
-    
-    if (adminPermissions($con, "adm_004", "inserir") == 0 || adminPermissions($con, "adm_004", "update") == 0) {
-        header('Location: dashboard.php');
-        exit();
-    }
 
+    //Se a operação tiver sido declarada e o metodo de request for POST
     if (isset($_GET['op']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        //Obtem a operação a ser feita
         $op = $_GET['op'];
         if ($op == 'save') {
-            $idClient= $_GET['id'];
+            //Se o administrador não tiver permissões para criar novos clientes então redireciona para a dashboard
+            if (adminPermissions($con, "adm_004", "inserir") == 0) {
+                header('Location: dashboard.php');
+                exit();
+            }
+            
+            //Obtem todos os dados inserido via POST
             $email = "";
             $nif = "";
             $nome = $_POST['nome'];
@@ -18,6 +22,7 @@
             $nif = $_POST['nif'];
             $status = $_POST['status'];
 
+            //Insere os dados inseridos na base ded dados
             $query = "INSERT INTO client (name, email, contact, nif, active) VALUES (?, ?, ?, ?, ?)";
             $stmt = $con->prepare($query);
 
@@ -32,46 +37,47 @@
                     registrar_log($mensagem);
                 }
             }
-            header('Location: client.php');
+            //Redireciona para a pagina dos clientes
+            header('Location: cliente.php');
         }
         elseif ($op == 'edit') {
+            //Se o administrador não tiver permissões para editar clientes então redireciona para a dashboard
+            if (adminPermissions($con, "adm_004", "update") == 0) {
+                header('Location: dashboard.php');
+                exit();
+            }
+
+            //Obtem o id do cliente a ser editado via GET
             $idClient = $_GET['idClient'];
             
+            //seleciona o cliente cujo id foi o que recebeu via GET
             $sql = "SELECT * FROM client WHERE id = '$idClient'";
             $result = $con->query($sql);
+            //Se não houver cliente com esse id redireciona para a dashboard
             if ($result->num_rows <= 0) {
                 header('Location: dashboard.php');
                 exit();
             }
-            else {
-                $row = $result->fetch_assoc();
-                
-            }
-            // Caso o formulário seja para editar
+
+            // Obtem os dados inseridos na pagina de edit recebidos via POST
             $nome = isset($_POST['nome']) ? trim($_POST['nome']) : $client['name'];
             $email = isset($_POST['email']) ? trim($_POST['email']) : $client['email'];
             $contact = isset($_POST['contact']) ? trim($_POST['contact']) : $client['contact'];
             $nif = isset($_POST['nif']) ? trim($_POST['nif']) : $client['nif'];
             $status = isset($_POST['status']) ? intval($_POST['status']) : $client['active'];
 
-            // Atualiza os dados na base de dados
+            // Atualiza os dados do cliente na base de dados
             $updateQuery = "UPDATE client SET name = ?, email = ?, contact = ?, nif = ?, active = ? WHERE id = ?";
             $stmt = $con->prepare($updateQuery);
-            $stmt->bind_param("ssssii", $nome, $email, $contact, $nif, $status, $id);
+            $stmt->bind_param("ssssii", $nome, $email, $contact, $nif, $status, $idClient);
 
             if ($stmt->execute()) {
                 //funcao log
                 $username = $_SESSION['name'];
                 $mensagem = "Cliente '$nome' (ID: $idClient) editado pelo administrador de ID $username.";
                 registrar_log($mensagem);
-
-                header('Location: cliente.php');  // Quando acabar, manda de volta para a página dos clientes
-                exit();
-            } else {
-                $error = "Erro ao atualizar o cliente.";
             }
-
-            header('Location: clientEdit.php?idClient=' . $idClient);
+            header('Location: clienteEdit.php?idClient=' . $idClient);
         }
         else{
             header('Location: dashboard.php');

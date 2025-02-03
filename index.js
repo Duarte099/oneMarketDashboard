@@ -1,3 +1,4 @@
+//Evento para definir o tema de cada página, carregar o tema alocado na cache do administrador, controlo da sidebar e do botão "hamburguer"
 document.addEventListener('DOMContentLoaded', function() {
     // Variáveis globais
     const themeSwitch = document.querySelector('#theme-switch');
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+//Função para redirecionar para a página escolhida
 function handleRowClick(id, action) {
     if (action == "budget") {
         window.location.href = "orcamentoCriar.php?idClient=" + id;
@@ -83,6 +85,7 @@ function handleRowClick(id, action) {
     }
 }
 
+//Função para ajustar a altura de uma textarea de acordo com as linhas e texto que tem
 $(document).ready(function () {
     function adjustHeight(element) {
         element.style.height = 'auto'; // Reseta a altura para calcular corretamente

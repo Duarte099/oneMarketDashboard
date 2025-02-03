@@ -1,12 +1,17 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
+    
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
     $estouEm = 6;
 
+    //Verificar se o admin tem permissões para criar administradores
     if (adminPermissions($con, "adm_005", "inserir") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 
+    //Obtem o numero de modulos existentes
     $sql = "SELECT COUNT(id) AS numModules FROM modules;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
@@ -15,13 +20,13 @@
     }
 ?>
     <link rel="stylesheet" href="./css/adminCriar.css">
-    
     <title>OneMarket | Novo Administrador</title>
 </head>
 
 <body>
 
     <?php 
+        //Inclui a sideBar na página
         include('sideBar.php'); 
     ?>
 
@@ -29,6 +34,7 @@
     <div class="content">
         <!-- Navbar -->
         <?php 
+            //Inclui o header na página
             include('header.php');
         ?>          
         <!-- End of Navbar -->
@@ -55,17 +61,17 @@
                         </div>
 
                         <label for="name">Nome:</label>
-                        <input type="text" name="name" id="name">
+                        <input type="text" name="name" id="name" required>
 
                         <label for="user">Nome de utilizador:</label>
-                        <input type="text" name="user" id="user">
+                        <input type="text" name="user" id="user" required>
 
                         <label for="email">Email:</label>
-                        <input type="email" name="email" id="email">
+                        <input type="email" name="email" id="email" required>
 
                         <label for="password">Password:</label>
-                        <input type="password" name="password" id="password" placeholder="Nova password">
-                        <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirmar nova password">
+                        <input type="password" name="password" id="password" placeholder="Nova password" required>
+                        <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirmar nova password" required>
 
                         <label for="birthday">Data nascimento:</label>
                         <input type="date" name="birthday" id="birthday">
@@ -85,10 +91,12 @@
                         </div>
                         <div class="modules">
                             <?php
+                            //query sql para buscar os modulos todos
                                 $sql = "SELECT module AS nameModule, id FROM modules;";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
+                                        //mostra os resultados em forma de checkboxes para selecionar as permissões
                                         echo "<div class=\"module\">
                                             <span>{$row['nameModule']}</span>
                                             <div class=\"permissions\">
@@ -112,6 +120,7 @@
 
     
     <script>
+        //Valida se os campos de password e confimarção de password contem o mesmo valor
         function validarPass() {
             const pass = document.querySelector('input[name="password"]');
             const passC = document.querySelector('input[name="passwordConfirm"]');
@@ -127,6 +136,7 @@
             }
         }
 
+        //Mostra a foto que foi inserida
         function displayProfilePic() {
             const file = event.target.files[0]; // Obtém o primeiro arquivo selecionado
             const preview = document.getElementById('profilePic'); // Seleciona a div
@@ -147,6 +157,7 @@
             }
         }
 
+        //Mostra a secção de permissões ou de informações ao clicar
         function showSection(section) {
             const infoSection = document.getElementById('infoSection');
             const permissionsSection = document.getElementById('permissionsSection');

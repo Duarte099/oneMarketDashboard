@@ -1,23 +1,28 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
 
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
     $estouEm = 2;
 
+    //Verifica se o administrador tem acesso para aceder a esta pagina, caso contrario redereciona para a dashboard
     if (adminPermissions($con, "adm_001", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 ?>
     <link rel="stylesheet" href="./css/orcamentos.css">
-    
     <title>OneMarket | Orçamentos</title>
 </head>
 
 <body>
     <script>
-        //PESQUISA MODAL CLIENTES
+        //Função para pesquisar clientes do modal
+
+            //Variavel para guardar todos os clientes
             const clientsSearchData = [];
-                                        
+                    
+            //Pega os administradores todos via json no arquivo json.obterClientes.php
             $.ajax({
                 url: 'json.obterClientes.php',
                 type: 'POST',
@@ -30,6 +35,7 @@
                 }
             });
 
+            //Função para fazer a pesquisa, apenas mostra os resultados que forem parecidos com a pesquisa
             function clientsSearch(searchBox) {
                 const modal = document.getElementById('budgetModal');
                 const tbody = modal.querySelector('table tbody');
@@ -91,9 +97,13 @@
                 }
             }
         
-        //PESQUISA ORÇAMENTOS
+
+        //Função para pesquisar orçamentos
+
+            //Variavel para guardar todos os orçamentos
             const budgetsSearchData = [];
-                                        
+                     
+            //Pega os orçamentos todos via json no arquivo json.obterOrcamentos.php
             $.ajax({
                 url: 'json.obterOrcamentos.php',
                 type: 'POST',
@@ -106,6 +116,7 @@
                 }
             }); 
 
+            //Função para fazer a pesquisa, apenas mostra os resultados que forem parecidos com a pesquisa
             function budgetsSearch(searchBox) {
                 const data = document.getElementById('bottom-data');
                 const tbody = data.querySelector('table tbody');
@@ -194,6 +205,7 @@
     </script>
 
     <?php 
+        //inclui a sideBar na página
         include('sideBar.php'); 
     ?>
 
@@ -201,6 +213,7 @@
     <div class="content">
         <!-- Navbar -->
         <?php 
+            //Inclui o header na página
             include('header.php'); 
         ?>          
         <!-- End of Navbar -->
@@ -279,7 +292,7 @@
                                 <th>Ficha Trabalho</th>
                                 <th>Data Criação</th>
                                 <th>Responsavel</th>
-                                <th></th>
+                                <th>Ação</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -332,13 +345,18 @@
             </div>
         </main>
         <script>
+            //Função para deletar um orçamento
             function deleteBudget(num, id) {
+                //Faz uma pergunta e guarda o resultado em result
                 const result = confirm("Tem a certeza que deseja eliminar o orçamento " + num + "?");
+                //Se tiver respondido que sim
                 if (result) {
+                    //redireciona para a pagina orcamentoDelete e manda o id do orçamento a ser deletada por GET
                     window.location.href = "orcamentoDelete?idBudget=" + id;
                 }
             }
 
+            //Evento para o modal
             document.addEventListener('DOMContentLoaded', function () {
                 const searchInput = document.getElementById('budget-search-input');
                 const modal = document.getElementById('budgetModal');
@@ -362,7 +380,7 @@
                     closeButton.addEventListener('click', closeModal);
                 }
 
-                // Adiciona evento de clique ao botão "Nova Ficha de Trabalho"
+                // Adiciona evento de clique ao botão "Novo Orçamento"
                 if (newBudgetButton) {
                     newBudgetButton.addEventListener('click', function (event) {
                         event.preventDefault(); // Evita o comportamento padrão do link

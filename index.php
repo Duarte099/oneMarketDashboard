@@ -15,9 +15,6 @@
             <div class="main">
                 <div class="content">
                     <h2>Login</h2>
-                    <p><?php
-                        // echo $passwordHash = password_hash("123456", PASSWORD_DEFAULT);
-                    ?></p>
                     <form action="indexLogin.php" method="post">
                         <input type="text" name="username" placeholder="Username" id="username" required>
                         <div class="password-container">
@@ -27,6 +24,7 @@
                         <button class="btn" type="submit">Login</button>
                         <div class="error-message" id="errorMessage">
                             <?php 
+                                //mostrar o erro recebido via GET da pagina indexLogin
                                 if (isset($_GET['erro'])) {
                                     echo $_GET['erro'];
                                 }
@@ -43,7 +41,8 @@
     <script>
         const togglePassword = document.querySelector('#togglePassword');
         const passwordInput = document.querySelector('#password');
-
+        
+        //Evento para mostrar a password quando clicado no olho
         togglePassword.addEventListener('click', function () {
             // Alterna o tipo de input entre "password" e "text"
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';

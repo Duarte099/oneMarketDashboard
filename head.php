@@ -1,4 +1,5 @@
 <?php 
+    //inclui a base de dados e segurança da página
     include('./db/conexao.php'); 
 ?>
 

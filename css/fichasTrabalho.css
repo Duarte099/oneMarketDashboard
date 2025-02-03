@@ -197,7 +197,7 @@ body{
     table-layout: fixed;
 }
 
-#worksheetModal {
+/*#worksheetModal {
     display: none;
     position: fixed;
     overflow: hidden;
@@ -211,7 +211,7 @@ body{
     height: 600px;
     background-color: var(--background-color);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
+}*/
 
 .modal-overlay {
     display: none;
@@ -225,15 +225,17 @@ body{
 }
 
 .modal {
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
     display: none;
     position: fixed;
+    overflow: hidden;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 1000;
-    left: 0;
-    top: 0;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: var(--background-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .worksheet-modal-content {
@@ -301,6 +303,7 @@ body{
     table-layout: fixed; /* Colunas fixas e consistentes */
 }
 
+
 /* Barra de rolagem customizada (opcional) */
 .modal .tabela tbody::-webkit-scrollbar {
     width: 8px;
@@ -313,25 +316,6 @@ body{
 
 .modal .tabela tbody::-webkit-scrollbar-thumb:hover {
     background-color: #555;
-}
-
-@media screen and (max-width: 768px) 
-{
-    .content{
-        width: calc(100% - 60px);
-        left: 200px;
-    }
-}
-
-@media screen and (max-width: 576px) 
-{
-    .content main .bottom-data .header{
-        min-width: 340px;
-    }
-
-    .content main .bottom-data .worksheet table{
-        min-width: 340px;
-    }
 }
 
 table {
@@ -446,28 +430,170 @@ table td button.select-worksheet:hover {
     background-color: #cc0000; /* Cor de fundo ao passar o mouse */
 }
 
-/* Barra de rolagem customizada (opcional) */
-.worksheet tbody::-webkit-scrollbar {
-    width: 8px;
+
+/* Ajustes específicos para telas de tablets e telemóveis */
+@media screen and (max-width: 992px) {
+    .content {
+        width: 100%;
+        padding: 20px;
+        margin-left: 0;
+    }
+
+    .content main .header {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 20px; /* Adicionar espaço abaixo do cabeçalho */
+    }
+
+    .search-bar input {
+        width: 100%;
+        max-width: none;
+        margin-bottom: 20px; /* Adicionar espaço abaixo da barra de pesquisa */
+    }
+
+    .content main .bottom-data {
+        flex-direction: column;
+        gap: 16px; /* Aumentar o espaço entre os blocos */
+    }
+
+    .content main .bottom-data > div {
+        padding: 20px; /* Aumentar o padding */
+        margin-bottom: 20px; /* Adicionar espaço entre os blocos */
+    }
+
+    .content main .bottom-data .worksheet {
+        width: 100%;
+    }
+
+    .content main .bottom-data .worksheet table {
+        width: 100%;
+        table-layout: auto;
+        margin-bottom: 20px; /* Adicionar espaço abaixo da tabela */
+    }
+
+    .content main .bottom-data .worksheet table thead,
+    .content main .bottom-data .worksheet table tbody {
+        display: block;
+        width: 100%;
+    }
+
+    /* Desabilitar scroll interno e melhorar espaçamento */
+    .content main .bottom-data .worksheet table tbody {
+        overflow-y: visible;
+        max-height: none;
+    }
+
+    .content main .bottom-data .worksheet table th,
+    .content main .bottom-data .worksheet table td {
+        padding: 16px 10px;
+        line-height: 1.75; /* Aumentar a altura da linha */
+    }
+
+    .content main .bottom-data .worksheet table th {
+        margin-bottom: 16px; /* Adicionar espaço extra abaixo dos títulos */
+    }
+
+    .content main .bottom-data .worksheet table tbody tr {
+        min-height: 60px; /* Aumentar a altura mínima das linhas */
+    }
+
+    .modal {
+        display: none;
+        position: absolute;
+        overflow: hidden;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: var(--background-color);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .worksheet-modal-content {
+        width: 100%;
+        height: auto;
+        padding: 20px; /* Adicionar padding ao modal */
+    }
+
+    .worksheet-modal-content .headerModal {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 20px; /* Adicionar espaço abaixo do cabeçalho */
+    }
+
+    .worksheet-modal-content .form-input {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .worksheet-modal-content .tabela {
+        overflow-x: auto; /* Permitir rolagem horizontal */
+        max-height: 350px; /* Ajustar a altura máxima da tabela */
+    }
+
+    .worksheet-modal-content .tabela table thead,
+    .worksheet-modal-content .tabela table tbody {
+        display: block;
+        width: 100%;
+    }
+
+    .worksheet-modal-content .tabela table th,
+    .worksheet-modal-content .tabela table td {
+        padding: 12px 8px;
+        line-height: 1.75; /* Aumentar a altura da linha */
+    }
+
+    .worksheet-modal-content .tabela table th {
+        margin-bottom: 16px; /* Adicionar espaço extra abaixo dos títulos */
+    }
+
+    .worksheet-modal-content .tabela table tbody tr {
+        min-height: 60px; /* Aumentar a altura mínima das linhas */
+    }
 }
 
-.worksheet tbody::-webkit-scrollbar-thumb {
-    background-color: #888; /* Cor da barra de rolagem */
-    border-radius: 4px;
+/* Ajustes específicos para telas muito pequenas */
+@media screen and (max-width: 576px) {
+    .content main .header h1 {
+        font-size: 24px;
+        margin-bottom: 20px; /* Adicionar espaço abaixo do título */
+    }
+
+    .content main .bottom-data .header {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 20px; /* Adicionar espaço abaixo do cabeçalho */
+    }
+
+    .content main .bottom-data .worksheet table {
+        width: 100%;
+        margin-bottom: 20px; /* Adicionar espaço abaixo da tabela */
+    }
+
+    .content main .bottom-data .worksheet table th,
+    .content main .bottom-data .worksheet table td {
+        font-size: 14px;
+        padding: 12px 8px;
+        line-height: 1.75; /* Aumentar a altura da linha */
+    }
+
+    .content main .bottom-data .worksheet table th {
+        margin-bottom: 16px; /* Adicionar espaço extra abaixo dos títulos */
+    }
+
+    .modal {
+        display: none;
+        position: absolute;
+        overflow: hidden;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: var(--background-color);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
 }
-
-.worksheet tbody::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-}
-
-
-@media screen and (max-width: 768px) {
-    
-}
-
-
-
-
-
-
-

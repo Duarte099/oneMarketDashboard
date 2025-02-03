@@ -1,14 +1,14 @@
 <?php
     include('./db/conexao.php');
 
-    if (adminPermissions($con, "adm_003", "inserir") == 0 || adminPermissions($con, "adm_003", "update") == 0) {
-        header('Location: dashboard.php');
-        exit();
-    }
-
     if (isset($_GET['op']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $op = $_GET['op'];
         if ($op == "save") {
+            if (adminPermissions($con, "adm_003", "inserir") == 0) {
+                header('Location: dashboard.php');
+                exit();
+            }
+
             // Diretório onde os arquivos serão armazenados
             $uploadDir = './images/uploads/';
             $publicDir = './images/uploads/'; // Caminho acessível pelo navegador
@@ -68,6 +68,11 @@
             header('Location: produto.php');
         }
         if ($op == "edit") {
+            if (adminPermissions($con, "adm_003", "update") == 0) {
+                header('Location: dashboard.php');
+                exit();
+            }
+
             $idProduto = $_GET['idProduct'];
 
             $sql = "SELECT * FROM product WHERE id = '$idProduto'";
@@ -122,22 +127,22 @@
                 // Atualiza os dados na base de dados
                 $updateQuery = "UPDATE product SET img = ?, name = ?, reference = ?, value = ?, active = ? WHERE id = ?";
                 $stmt = $con->prepare($updateQuery);
-                $stmt->bind_param("ssssii", $fileUrl, $name, $ref, $value, $status, $id);
+                $stmt->bind_param("ssssii", $fileUrl, $name, $ref, $value, $status, $idProduto);
 
                 // Atualiza os dados na tabela product_stock
                 $updateStockQuery = "UPDATE product_stock SET quantity = ? WHERE idProduct = ?";
                 $stmtStockUpdate = $con->prepare($updateStockQuery);
-                $stmtStockUpdate->bind_param("ii", $quantity, $id);
+                $stmtStockUpdate->bind_param("ii", $quantity, $idProduto);
             } else {
                 // Atualiza os dados na base de dados
                 $updateQuery = "UPDATE product SET name = ?, reference = ?, value = ?, active = ? WHERE id = ?";
                 $stmt = $con->prepare($updateQuery);
-                $stmt->bind_param("sssii", $name, $ref, $value, $status, $id);
+                $stmt->bind_param("sssii", $name, $ref, $value, $status, $idProduto);
 
                 // Atualiza os dados na tabela product_stock
                 $updateStockQuery = "UPDATE product_stock SET quantity = ? WHERE idProduct = ?";
                 $stmtStockUpdate = $con->prepare($updateStockQuery);
-                $stmtStockUpdate->bind_param("ii", $quantity, $id);
+                $stmtStockUpdate->bind_param("ii", $quantity, $idProduto);
             }
 
             if ($stmt->execute()) {
@@ -151,7 +156,7 @@
             } else {
                 $error = "Erro ao atualizar o produto.";
             }
-            header('Location: produtoEdit.php?idProduct=' . $idProduct);
+            header('Location: produtoEdit.php?idProduct=' . $idProduto);
         }
     }
 ?>

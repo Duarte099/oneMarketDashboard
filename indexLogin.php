@@ -3,8 +3,6 @@
     $auxLogin = true; // Define a variável ANTES de incluir conexao.php
     include("./db/conexao.php");
 
-    $_SESSION['errorMessage'] = "";
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Now we check if the data from the login form was submitted, isset() will check if the data exists.
         if ( !isset($_POST['username'], $_POST['password']) ) {
@@ -34,7 +32,6 @@
                         $_SESSION['name'] = $nomeX;
                         $_SESSION['id'] = $id;
                         $_SESSION['passX'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                        //echo "1";
                         $idAdministrador = $_SESSION['id'];
                         $username = $_SESSION['name'];
                         $mensagem = "Administrador " . $username . "(" . $idAdministrador . ") entrou";
@@ -42,17 +39,14 @@
                         header('Location: dashboard.php');
                         exit();
                     } else {
-                        echo $active;
                         header('Location: index.php?erro=Password ou user Incorreto!');
                         exit();
                     }
                 } else {
-                    echo $active;
                     header('Location: index.php?erro=Password ou user Incorreto!');
                     exit();
                 }
             } else {
-                echo $active;
                 header('Location: index.php?erro=Password ou user Incorreto!');
                 exit();
             }

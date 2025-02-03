@@ -266,12 +266,14 @@ table td button.select-budget:hover {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-    padding: 20px;
     border-radius: 8px;
     width: 800px; /* Define largura fixa */
-    height: 600px; /* Define altura fixa */
+    height: auto; 
     background-color: var(--background-color); /* Certifique-se de ter esta variável */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 90%; /* Alterado de 800px fixos */
+    max-width: 800px; /* Largura máxima */
+    padding: 25px;
 }
 
 .modal-overlay {
@@ -460,4 +462,81 @@ tbody::-webkit-scrollbar-thumb {
 
 tbody::-webkit-scrollbar-thumb:hover {
     background-color: #555;
+}
+
+.content main .bottom-data > div {
+    overflow-x: auto; /* Scroll horizontal quando necessário */
+    -webkit-overflow-scrolling: touch; /* Scroll suave em dispositivos móveis */
+}
+
+
+/* MEDIA QUERIES SIMPLIFICADAS */
+@media screen and (max-width: 992px) {
+    .content main .header .left h1 {
+        font-size: 28px;
+    }
+    
+    .search-bar input {
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .content main {
+        padding: 20px;
+    }
+
+    #budgetModal {
+        width: 95%;
+        max-width: none;
+        top: 50%; /* Centraliza melhor */
+        padding: 15px;
+    }
+
+    .modal .tabela td,
+    .modal .tabela th {
+        padding: 15px 20px; 
+        line-height: 1.5; 
+        min-width: 120px; 
+        word-break: break-word; 
+    }
+
+    /* Adicionar espaço entre colunas */
+    .modal .tabela table {
+        border-spacing: 8px 0; /* Espaço horizontal entre colunas */
+        border-collapse: separate;
+    }
+    
+    .content main .bottom-data .budget table {
+        min-width: 1200px; /* Aumenta o scroll horizontal */
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .content main .header .left h1 {
+        font-size: 24px;
+    }
+    
+    .btn-small {
+        width: 35px;
+        height: 35px;
+    }
+
+    .modal .tabela td,
+    .modal .tabela th {
+        padding: 10px 12px;
+        font-size: 13px;
+        min-width: 80px;
+    }
+
+    /* Garantir que cabeçalhos não quebrem */
+    .modal .tabela th {
+        white-space: nowrap;
+    }
+    
+    /* Espaçamento extra para linhas */
+    .modal .tabela tr {
+        margin-bottom: 8px;
+        display: table-row;
+    }
 }

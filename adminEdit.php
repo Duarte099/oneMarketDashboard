@@ -1,16 +1,23 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
+
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
     $estouEm = 6;
 
+    //Verifica se o administrador tem acesso para aceder a esta pagina, caso contrario redireciona para a dashboard
     if (adminPermissions($con, "adm_005", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 
+    //Obtem o id do admin via GET
     $idAdminEdit = $_GET['idAdmin'];
 
+    //Obtem todas as informações do administrador que está a ser editado
     $sql = "SELECT * FROM administrator WHERE id = '$idAdminEdit'";
     $result = $con->query($sql);
+    //Se houver um administrador com o id recebido, guarda as informações em variáveis
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $nome = $row['name'];
@@ -21,11 +28,13 @@
         $birthday = $row['birthday'];
         $status = $row['active'];
     }
+    //Caso contrário volta para a dashboard para não dar erro
     else{
         header('Location: dashboard.php');
         exit();
     }
 
+    //Seleciona o numero de modulos
     $sql = "SELECT MAX(id) AS numModules FROM modules;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
@@ -34,13 +43,12 @@
     }
 ?>
     <link rel="stylesheet" href="./css/adminCriar.css">
-    
     <title>OneMarket | <?php echo $user; ?></title>
 </head>
 
 <body>
     <?php 
-    
+        //inclui a sideBar na página
         include('sideBar.php'); 
     ?>
 
@@ -48,6 +56,7 @@
     <div class="content">
         <!-- Navbar -->
         <?php 
+            //Inclui o header na página
             include('header.php');
         ?>          
         <!-- End of Navbar -->
@@ -56,7 +65,9 @@
             <div class="header">
                 <div class="left">
                     <h1><?php echo $nome; ?></h1>
-                    <?php if ($adminMor == 1) { ?>
+                    <?php //Caso o administrador que esta a ser editado seja um administrador mor, avisa que não pode ser editado
+                    if ($adminMor == 1) { 
+                        ?>
                         <label>*Este é um administrador mor, não podes alterar as informações e permissões.</label>
                     <?php } ?>
                 </div>
@@ -68,26 +79,30 @@
                         <div id="profilePic" style="width:100%; max-width:500px; background: url('<?php echo $imgAdmin; ?>') no-repeat center center; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover; border-radius: 250px;">
                             <img src="./images/semfundo.png" style="width:100%;padding-bottom: 13px;">
                         </div>
-                        <?php if (adminPermissions($con, "adm_005", "update") == 1) { if ($adminMor == 0) { ?>
+                        <?php //Se o administrador tiver permissão para editar o administrador e ele não for mor, mostra o campo para inserir nova foto
+                        if (adminPermissions($con, "adm_005", "update") == 1) { if ($adminMor == 0) { 
+                            ?>
                             <input type="file" name="photo" id="photo" oninput="displayProfilePic()" accept="image/*">
                         <?php } }?>
                         </div>
                     <div class="column-right" id="infoSection">
                         <div class="button-container">
                             <button type="button" id="infoButton1" class="toggle-button" onclick="showSection('info')">Informações</button>
-                            <?php if ($adminMor == 0) { ?>
+                            <?php //Se o administrador não for mor mostra a secçãod e permissões
+                            if ($adminMor == 0) { 
+                                ?>
                                 <button type="button" id="permissionsButton1" class="toggle-button" onclick="showSection('permissions')">Permissões</button>
                             <?php } ?>
                         </div>
-
+                        <!-- Caso o administrador não tenha permissões para editar coloca todos os campos como readonly para impossibilitar alterações -->
                         <label for="name">Nome:</label>
-                        <input type="text" name="name" id="name" value="<?php echo $nome; ?>" <?php if (adminPermissions($con, "adm_005", "update") == 0 || $adminMor == 1) {echo "readonly";}?>>
+                        <input type="text" name="name" id="name" value="<?php echo $nome; ?>" required <?php if (adminPermissions($con, "adm_005", "update") == 0 || $adminMor == 1) {echo "readonly";}?>>
 
                         <label for="user">Nome de utilizador:</label>
-                        <input type="text" name="user" id="user" value="<?php echo $user; ?>" <?php if (adminPermissions($con, "adm_005", "update") == 0 || $adminMor == 1) {echo "readonly";}?>>
+                        <input type="text" name="user" id="user" value="<?php echo $user; ?>" required <?php if (adminPermissions($con, "adm_005", "update") == 0 || $adminMor == 1) {echo "readonly";}?>>
 
                         <label for="email">Email:</label>
-                        <input type="email" name="email" id="email" value="<?php echo $email; ?>" <?php if (adminPermissions($con, "adm_005", "update") == 0 || $adminMor == 1) {echo "readonly";}?>>
+                        <input type="email" name="email" id="email" value="<?php echo $email; ?>" required <?php if (adminPermissions($con, "adm_005", "update") == 0 || $adminMor == 1) {echo "readonly";}?>>
 
                         <?php if (adminPermissions($con, "adm_005", "update") == 1) { if ($adminMor == 0) {?>
                             <label for="password">Password:</label>
@@ -120,6 +135,7 @@
                             </div>
                             <div class="modules">
                                 <?php
+                                    //Ciclo for para percorrer todos os modulos
                                     for ($i=1; $i <= $numModules; $i++) { 
                                         $sql = "SELECT id FROM modules WHERE id = $i;";
                                         $result = $con->query($sql);
@@ -158,7 +174,8 @@
                                                 $row3 = $result3->fetch_assoc();
                                                 $id = $row3['id'];
                                                 $nome = $row3['nameModule'];
-                                                if ($row3['cod'] == "adm_007") {
+                                                //Se o modulo for de logs ou do grafico de ganhos como apenas pode ser visto, apenas mostra a checkBox de ver
+                                                if ($row3['cod'] == "adm_007" || $row3['cod'] == "adm_006") {
                                                     ?>
                                                         <div class="module">
                                                             <span><?php echo $nome;?></span>
@@ -195,6 +212,7 @@
 
     
     <script>
+        //Verifica se a palavra pass inserida nos dois campos é igual
         function validarPass() {
             const pass = document.querySelector('input[name="password"]');
             const passC = document.querySelector('input[name="passwordConfirm"]');
@@ -210,6 +228,7 @@
             }
         }
 
+        //Mostra a nova foto inserida
         function displayProfilePic() {
             const file = event.target.files[0]; // Obtém o primeiro arquivo selecionado
             const preview = document.getElementById('profilePic'); // Seleciona a div
@@ -230,6 +249,7 @@
             }
         }
 
+        //Altera de secção quando clicado no botão
         function showSection(section) {
             const infoSection = document.getElementById('infoSection');
             const permissionsSection = document.getElementById('permissionsSection');

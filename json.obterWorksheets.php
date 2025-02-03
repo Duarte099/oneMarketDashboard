@@ -1,6 +1,8 @@
 <?php
+    //Inclui a base de dados e a segurança da pagina 
     include('./db/conexao.php');
     
+    //query sql para obter todas as fichas de trabalho e os respetivos dados
     $sql = "SELECT 
         client.name as nomeCliente, 
         client.contact as contactoCliente, 
@@ -26,8 +28,6 @@
     $data = [];
     $result = $con->query($sql);
 
-
-
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $data[] = [
@@ -45,5 +45,6 @@
         }
     }
 
+    //Envia os dados via json 
     header('Content-Type: application/json');
     echo json_encode($data);

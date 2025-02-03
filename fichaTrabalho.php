@@ -1,23 +1,28 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
 
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
     $estouEm = 3;
 
+    //Verifica se o administrador tem acesso para aceder a esta pagina, caso contrario redereciona para a dashboard
     if (adminPermissions($con, "adm_002", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 ?>
     <link rel="stylesheet" href="./css/fichasTrabalho.css">
-    
     <title>OneMarket | Fichas de Trabalho</title>
 </head>
 
 <body>
     <script>
-        //PESQUISA FICHAS DE TRABALHO
+        //Função para pesquisar fichas de trabalho
+
+        //Variavel para guardar todas as fichas de trabalho
         const worksheetsSearchData = [];
                                 
+        //Obtem as fichas de trabalho via json no arquivo json.obterWorksheets.php
         $.ajax({
             url: 'json.obterWorksheets.php',
             type: 'POST',
@@ -30,6 +35,7 @@
             }
         }); 
 
+        //Função para fazer a pesquisa, apenas mostra os resultados que forem parecidos com a pesquisa
         function worksheetsSearch(searchBox) {
             const dataWorksheet = document.getElementById('bottom-data');
             const tbody = dataWorksheet.querySelector('table tbody');
@@ -124,9 +130,12 @@
             }
         }
     
-        //PESQUISA ORÇAMENTOS
+        //Função para pesquisar os orçamentos para o MODAL
+
+        //Variavel para guardar todas os orçamentos
         const budgetsSearchData = [];
-                                    
+                              
+        //Obtem os orçamentos via json no arquivo json.obterOrcamentosModal.php
         $.ajax({
             url: 'json.obterOrcamentosModal.php',
             type: 'POST',
@@ -139,6 +148,7 @@
             }
         });
 
+        //Função para fazer a pesquisa, apenas mostra os resultados que forem parecidos com a pesquisa
         function budgetsSearch(searchBox) {
             const modal = document.getElementById('worksheetModal');
             const tbody = modal.querySelector('table tbody');
@@ -211,6 +221,7 @@
     </script>
 
     <?php 
+        //inclui a sideBar na página
         include('sideBar.php'); 
     ?>
 
@@ -218,6 +229,7 @@
     <div class="content">
         <!-- Navbar -->
         <?php 
+            //Inclui o header na página
             include('header.php'); 
         ?>          
         <!-- End of Navbar -->
@@ -230,7 +242,10 @@
                         <input type="text" id="searchBox" placeholder="Pesquisar fichas de trabalho..." oninput="worksheetsSearch(this)" />
                     </div>
                 </div>
-                <?php if (adminPermissions($con, "adm_002", "inserir") == 1) { ?>
+                <?php 
+                //Se o administrador tiver permissões para criar ficahs de trabalho então mostra o botão para tal
+                if (adminPermissions($con, "adm_002", "inserir") == 1) { 
+                    ?>
                     <a href="novaFichaTrabalho.php" id="new-worksheet" class="report">
                         <i class='bx bx-plus'></i>
                         <span>Nova Ficha de Trabalho</span>
@@ -260,6 +275,7 @@
                             </thead>
                             <tbody>
                                 <?php
+                                    //query sql para selecionar todos os orçamentos que não tem uma ficha de trabalho associada
                                     $sql = "SELECT 
                                                 budget.id as idBudget,
                                                 budget.num as numBudget,
@@ -306,11 +322,12 @@
                                 <th>Entrada em Obra</th>
                                 <th>Saída de Obra</th>
                                 <th>Elaborado Por</th>
-                                <th></th>
+                                <th>Ação</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
+                                //query sql para selecionar todas as fichas de trabalho
                                 $sql = "SELECT 
                                             client.name as nomeCliente, 
                                             client.contact as contactoCliente, 
@@ -335,6 +352,7 @@
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
+                                        //mostra os resultados, caso o administrador tenha permissões para apagar mostra também, o botão para tal
                                         echo "<tr onclick=\"handleRowClick('{$row['idWorksheet']}', 'editWorksheet')\" style=\"cursor: pointer;\">
                                             <td>" . $row['numWorksheet'] . "/" . $row['yearWorksheet'] . "</td>
                                             <td>{$row['nomeCliente']}</td>
@@ -360,13 +378,18 @@
 
         <script src="./index.js" defer></script>
         <script>
+            //Função para deletar uma ficha de trabalho
             function deleteWorksheet(num, id) {
+                //Faz uma pergunta e guarda o resultado em result
                 const result = confirm("Tem a certeza que deseja eliminar a ficha de trabalho " + num + "?");
+                //Se tiver respondido que sim
                 if (result) {
+                    //redireciona para a pagina fichaTrabalhoDelete e manda o id da ficha a ser deletada por GET
                     window.location.href = "fichaTrabalhoDelete?idWorksheet=" + id;
                 }
             }
 
+            //Evento para o modal
             document.addEventListener('DOMContentLoaded', function () {
                 const searchInput = document.getElementById('search-input');
                 const modal = document.getElementById('worksheetModal');

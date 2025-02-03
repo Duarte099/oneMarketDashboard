@@ -171,22 +171,23 @@
                                             product.active as ativo,
                                             product_stock.quantity as stockProduto
                                         FROM product
-                                        LEFT JOIN product_stock ON product.id = product_stock.idProduct;";
+                                        LEFT JOIN product_stock ON product.id = product_stock.idProduct
+                                        ORDER BY id DESC;";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         $status = $row['ativo'] == 1 ? 'Ativo' : 'Inativo';
                                         echo "<tr onclick=\"handleRowClick('{$row['id']}', 'stock')\" style=\"cursor: pointer;\">
-                                            <td data-label='Img'>
+                                            <td>
                                                 <div id=\"profilePic\" style=\"width:100%; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
                                                     <img src=\"./images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
                                                 </div>
                                             </td>
-                                            <td data-label='Nome'>{$row['nome']}</td>
-                                            <td data-label='Ref'>{$row['refProduto']}</td>
-                                            <td data-label='Valor'>" . number_format((float)$row['valorProduto'], 2, '.', '.') . "€</td>
-                                            <td data-label='Stock'>{$row['stockProduto']}</td>
-                                            <td data-label='Status'>{$status}</td>
+                                            <td>{$row['nome']}</td>
+                                            <td>{$row['refProduto']}</td>
+                                            <td>" . number_format((float)$row['valorProduto'], 2, '.', '.') . "€</td>
+                                            <td>{$row['stockProduto']}</td>
+                                            <td>{$status}</td>
                                         </tr>";
                                     }
                                 } else {

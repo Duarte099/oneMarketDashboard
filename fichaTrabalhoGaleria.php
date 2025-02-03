@@ -1,20 +1,29 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
 
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
     $estouEm = 3;
 
+    //Verifica se o administrador tem acesso para aceder a esta pagina, caso contrario redereciona para a dashboard
     if (adminPermissions($con, "adm_002", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 
+    //Obtem o id da ficha de trabalho associada à galeria via GET
     $idWorksheet = $_GET['idWorksheet'];
+
+    //Obtem a ficha de trabalho cujo id foi o recebido pelo GET
     $sql = "SELECT * FROM worksheet WHERE id = '$idWorksheet'";
     $result = $con->query($sql);
+    //Caso não obtenha nenhuma ficha de trabalho com esse id redireciona para dashboard
     if ($result->num_rows <= 0) {
         header('Location: dashboard.php');
         exit();
-    } else {
+    } 
+    //Caso haja uma ficha de trabalho com esse id obtem os dados dela
+    else {
         $row = $result->fetch_assoc();
         $numWorksheet = $row['num'];
         $yearWorksheet = $row['year'];
@@ -22,9 +31,7 @@
         $numFichaTrabalho = "$numWorksheet/$yearWorksheet";
     }
 
-    $inputValue = '';
-    $produtosIndex = 0;
-
+    //Obtem o numero de secções desta ficha de trabalho
     $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
@@ -34,22 +41,22 @@
 ?>
     <link rel="stylesheet" href="./css/fichaTrabalhoGaleria.css">
     <title>OneMarket | <?php echo $numFichaTrabalho; ?> </title>
-
     <link href="./css/lightbox.css" rel="stylesheet" />
-       
 </head>
 
 <body>
 
     <?php
-    include('sideBar.php');
+        //inclui a sideBar na página
+        include('sideBar.php');
     ?>
 
     <!-- Main Content -->
     <div class="content">
         <!-- Navbar -->
         <?php
-        include('header.php');
+            //Inclui o header na página
+            include('header.php');
         ?>
         <!-- End of Navbar -->
 
@@ -62,19 +69,19 @@
             <form action="fichaTrabalhoInserir.php?idWorksheet=<?= $idWorksheet ?>&op=editFotos" method=post enctype="multipart/form-data">
                 <div class="bottom-data">
                     <?php
-                    $produtosIndex = 0;
-                    for ($i = 1; $i <= $numSections; $i++) {
-                        $sql = "SELECT nameSection FROM budget_sections_products WHERE orderSection = $i AND idBudget = $idBudget;";
-                        $result = $con->query($sql);
-                        if ($result->num_rows > 0) {
-                            $row = $result->fetch_assoc();
-                            $nomeSecao = $row['nameSection'];
-                            $displayStyle = '';
-                        } else {
-                            $nomeSecao = '';
-                            $displayStyle = 'display: none;';
-                        }
-                    ?>
+                        //Ciclo para percorrer todas as secções mostra-las com o respetivo nome
+                        for ($i = 1; $i <= $numSections; $i++) {
+                            $sql = "SELECT nameSection FROM budget_sections_products WHERE orderSection = $i AND idBudget = $idBudget;";
+                            $result = $con->query($sql);
+                            if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                $nomeSecao = $row['nameSection'];
+                                $displayStyle = '';
+                            } else {
+                                $nomeSecao = '';
+                                $displayStyle = 'display: none;';
+                            }
+                            ?>
                         <div class="worksheet" style="<?php echo $displayStyle; ?>">
                             <section id="secoes">
                                 <div class="secao">
@@ -90,6 +97,7 @@
                                     <input type="file" name="secao_<?php echo $i; ?>_foto[]" id="photo" multiple accept="image/*">
                                     <div class="grid" id="imageGrid">
                                         <?php
+                                            //Mostra todas as fotos pertencentes a esta secção
                                             $sql = "SELECT img FROM worksheet_photos WHERE idWorksheet = ". $idWorksheet ." AND orderSection = ". $i .";";
                                             $result = $con->query($sql);
                                             if ($result->num_rows > 0) {

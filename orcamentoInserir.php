@@ -1,32 +1,45 @@
 <?php
+    //inclui a base de dados e segurança da página
     include("./db/conexao.php");
 
-    if (adminPermissions($con, "adm_001", "inserir") == 0 || adminPermissions($con, "adm_001", "update") == 0) {
-        header('Location: dashboard.php');
-        exit();
-    }
-
+    //Obter o id do administrador logado
     $idAdmin = $_SESSION['id'];
 
+    //Se a variavel op foi declarada no GET e o metodo de request foi POST
     if (isset($_GET['op']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        //Obtem a operação a ser realizada
         $op = $_GET['op'];
+        
         if ($op == "save") {
+            //Se o administrador não tiver permissões para criar novos orçamentos redireciona para a dashboard
+            if (adminPermissions($con, "adm_001", "inserir") == 0) {
+                header('Location: dashboard.php');
+                exit();
+            }
+
+            //Obtem o id do cliente via GET, associado ao orçamento a inserir
             $idClient = $_GET['idClient'];
-            $sql = "SELECT * FROM client WHERE id = '$idClient'";
+
+            //Seleciona um cliente onde o id dele é igual ao recebido via GET
+            $sql = "SELECT * FROM client WHERE id = '$idClient';";
             $result = $con->query($sql);
+            //Se não retornar reusltados então redireciona para a dashboard
             if ($result->num_rows <= 0) {
                 header('Location: dashboard.php');
                 exit();
             }
 
+            //Obtem os dados inseridos ao criar o orçamento via POST
             $numProjeto = $_POST['numOrcamento'];
             $nameBudget = $_POST['nomeProjeto'];
             $laborPercent = (float) str_replace('%', '', $_POST['laborPercent']);
             $discountPercent = (float) str_replace('%', '', $_POST['discountPercent']);
             $observation = $_POST['observation'];
 
+            //Obtem o ano atual
             $anoAtual = date("Y");
 
+            //Obtem o maior numero de todos os orçamentos onde o ano é o atual
             $sql = "SELECT MAX(num) AS maior_numero FROM budget WHERE year = $anoAtual;";
             $result = $con->query($sql);
             if ($result->num_rows > 0) {
@@ -37,13 +50,15 @@
                 $proximo_numero = 1;
             }
 
+            //Insere o novo orçamento
             $sql = "INSERT INTO budget (idClient, name, num, year, laborPercent, discountPercent, observation, createdBy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $result = $con->prepare($sql);
             if ($result) {
                 $result->bind_param("issiddsi", $idClient, $nameBudget, $proximo_numero, $anoAtual, $laborPercent, $discountPercent, $observation, $idAdmin);
             }
-
             $result->execute();
+
+            //Obtem o id do novo orçamento
             $idBudget = $con->insert_id;
 
             //funcao log
@@ -51,38 +66,54 @@
             $username = $_SESSION['name'];
             $mensagem = "Orçamento " . $proximo_numero . "/" . $anoAtual . "(" . $idBudget . ") criado pelo administrador " . $username ."(" . $idAdministrador . ")";
             registrar_log($mensagem);
-            //Inserir secções
+
+            //Percorre todas as secções possiveis de serem inseridas
             for ($i=1; $i <= 20; $i++) {
-                $secao = mysqli_real_escape_string($con, $_POST['seccao_nome_' . $i]);
+                //Obtem o nome da secção
+                $secao = $_POST['seccao_nome_' . $i];
+                //Se a secção não tiver vazia
                 if (!empty($secao)) {
+                    //Insere a secção dentro da tabela de produtos e secções
                     $sql = "INSERT INTO budget_sections_products (idBudget, nameSection, orderSection) VALUES ($idBudget, '$secao', $i);";
                     $result = $con->prepare($sql);
                     $result->execute();
-
-                    $data = date('Y-m-d');
-                    $sql = "INSERT INTO budget_version (idVersion, idBudget, nameSection, orderSection, created) VALUES (1, $idBudget, '$secao', $i, '$data');";
+                    
+                    //Insere as secções na tabela de versões
+                    $sql = "INSERT INTO budget_version (idVersion, idBudget, nameSection, orderSection, created) VALUES (1, $idBudget, '$secao', $i);";
                     $result = $con->prepare($sql);
                     $result->execute();
                 }
             }
-
+            //Redireciona para a pagina de edição do orçamento que acabaram de inserir
             header('Location: orcamentoEdit.php?idBudget=' . $idBudget);
         }
         elseif ($op == "edit") {
-            $idBudget = $_GET['idBudget'];
-            $sql = "SELECT * FROM budget WHERE id = '$idBudget'";
-            $result = $con->query($sql);
-            if ($result->num_rows <= 0) {
+            //Se o administrador não tiver permissão de editar um orçamento redireciona para a dashboard
+            if (adminPermissions($con, "adm_001", "update") == 0) {
                 header('Location: dashboard.php');
                 exit();
             }
 
+            //Obtem o id do orçamento a editar via GET 
+            $idBudget = $_GET['idBudget'];
+
+            //Seleciona um orçamento onde o id dele é igual ao recebido via GET
+            $sql = "SELECT * FROM budget WHERE id = '$idBudget'";
+            $result = $con->query($sql);
+            if ($result->num_rows <= 0) {
+                //Se não retornar reusltados então redireciona para a dashboard
+                header('Location: dashboard.php');
+                exit();
+            }
+
+            //Obtem os dados inseridos ao editar o orçamento via POST
             $numProjeto = $_POST['numOrcamento'];
             $nameBudget = $_POST['nomeProjeto'];
             $laborPercent = (float) str_replace('%', '', $_POST['laborPercent']);
             $discountPercent = (float) str_replace('%', '', $_POST['discountPercent']);
             $observation = $_POST['observation'];
 
+            //Obtem o numero de secções do orçamento selecionado
             $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
             $result = $con->query($sql);
             if ($result->num_rows > 0) {
@@ -90,6 +121,7 @@
                 $numSections =  $row['numSections'];
             }
 
+            //Seleciona a versão atual do orçamento 
             $sql = "SELECT MAX(idVersion) AS idVersion FROM budget_version WHERE idBudget = $idBudget;";
             $result = $con->query($sql);
             if ($result->num_rows > 0) {
@@ -97,7 +129,7 @@
                 $versao =  $row['idVersion'] + 1;
             }
 
-            //cabeçalho
+            //Editar cabeçalho
             $sql = "UPDATE `budget` SET name = '$nameBudget', laborPercent = $laborPercent, discountPercent = $discountPercent, observation = '$observation' WHERE id = $idBudget";
             $result = $con->prepare($sql);
             $result->execute();
@@ -198,7 +230,6 @@
                                 $result->bind_param("iiiiissisd",$idBudget, $secao, $i, $idProduct, $j,$ref, $designacao, $quantidade, $descricao, $precoUnitario);
                                 $result->execute();
                             }
-                            $data = date('Y-m-d');
                             //Insere todos os produtos e secções à tabela de versões
                             $sql = "INSERT INTO `budget_version`(`idVersion`,
                                                                 `idBudget`,
@@ -212,7 +243,7 @@
                                                                 `descriptionProduct`,
                                                                 `valueProduct`,
                                                                 `created`)
-                                    VALUES ($versao, $idBudget, '$secao', $i, $idProduct, $j,'$ref', '$designacao', '$quantidade', '$descricao', '$precoUnitario', '$data');";
+                                    VALUES ($versao, $idBudget, '$secao', $i, $idProduct, $j,'$ref', '$designacao', '$quantidade', '$descricao', '$precoUnitario');";
                             $result = $con->prepare($sql);
                             $result->execute();
                         }

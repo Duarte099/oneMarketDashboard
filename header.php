@@ -1,8 +1,11 @@
 <?php
-    include('./db/conexao.php'); 
+    //inclui a base de dados e segurança da página
+    include('./db/conexao.php');
 
+    //Obtem o id do administrador logado
     $idAdmin = $_SESSION['id'];
 
+    //Obtem a foto do administrador logado
     $sql = "SELECT img FROM administrator WHERE administrator.id = $idAdmin;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
@@ -54,6 +57,7 @@
 </nav>
 
 <script>
+    //Evento para gerir o modal, abrir, fechar, mudar a imagem do site e a cor de acordo com o tema alocado na cache
     document.addEventListener('DOMContentLoaded', function() {
         const profileModal = document.getElementById('profileModal');
         const profileLink = document.querySelector('.desktop-header .profile');
@@ -90,6 +94,7 @@
         themeSwitch.addEventListener('change', () => setTheme(themeSwitch.checked));
     });
 
+    //Evento para remover o header quando der scroll para baixo e mostrar quando der scroll para cima
     document.addEventListener("DOMContentLoaded", function () {
         let lastScroll = 0;
         window.addEventListener("scroll", () => {
@@ -102,8 +107,4 @@
             lastScroll = currentScroll;
         });
     });
-
-
-</script>
-
 </script>

@@ -1,15 +1,20 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php');
 
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
     $estouEm = 5;
 
+    //Verifica se o administrador tem acesso para aceder a esta pagina, caso contrario redereciona para a dashboard
     if (adminPermissions($con, "adm_004", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 
+    //Recebe o id do cliente a ser editado via GET
     $idClient = $_GET['idClient'];
 
+    //Se o id existir, obtem os dados do cliente que esta a ser editado
     $sql = "SELECT * FROM client WHERE id = '$idClient'";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
@@ -20,22 +25,28 @@
         $nif = $row['nif'];
         $active = $row['active'];
     }
+    //Se não existir redireciona para a dashboard
     else{
         header('Location: dashboard.php');
         exit();
     }
 ?>
     <link rel="stylesheet" href="./css/novoCliente.css">
-    
     <title>OneMarket | <?php echo $name; ?></title>
 </head>
 <body>
 
-    <?php include('sideBar.php'); ?>
+    <?php 
+        //inclui a sideBar na página
+        include('sideBar.php'); 
+    ?>
 
     <!-- Main Content -->
     <div class="content">
-        <?php include('header.php'); ?>          
+        <?php 
+            //Inclui o header na página
+            include('header.php'); 
+        ?>          
 
         <main>
             <div class="header">
@@ -48,6 +59,7 @@
                 <div class="administrator">
                     <form method="POST" action="clienteInserir.php?idClient=<?=$idClient?>&op=edit">
                         <section>
+                            <!-- Caso o administrador não tenha permissões para editar coloca todos os campos como readonly para impossibilitar alterações -->
                             <h2>Dados do Cliente</h2>
                             <div class="section-row">
                                 <div class="section-group">
@@ -80,17 +92,13 @@
                                     <?php } ?>
                                 </div>
                             </div>
-                            <?php if (adminPermissions($con, "adm_004", "update") == 1) { ?>
+                            <?php //Se o administrador tiver permissão para editar mostra o botão de guardar alterações
+                            if (adminPermissions($con, "adm_004", "update") == 1) { 
+                                ?>
                                 <button type="submit">Atualizar Cliente</button>
                             <?php } ?>
                         </section>
                     </form>
-
-                    <?php
-                        if (isset($error)) {
-                            echo "<p style='color: red;'>$error</p>";
-                        }
-                    ?>
                 </div>
             </div>
         </main>

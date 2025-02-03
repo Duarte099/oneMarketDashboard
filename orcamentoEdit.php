@@ -1,60 +1,29 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
 
+    //inclui a base de dados e segurança da página
     $estouEm = 2;
 
+    //Verifica se o administrador tem acesso para aceder a esta pagina, caso contrario redereciona para a dashboard
     if (adminPermissions($con, "adm_001", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 
+    //Obtem o id do orçamento a ser alterado via GET
     $idBudget = $_GET['idBudget'];
+
+    //Seleciona o orçamento cujo id é igual ao recebido por GET
     $sql = "SELECT * FROM budget WHERE id = '$idBudget'";
     $result = $con->query($sql);
+    //Se não retornar nenhum resultado redireciona para a página dashboard
     if ($result->num_rows <= 0) {
         header('Location: dashboard.php');
         exit();
     }
-
-    $sql = "SELECT MAX(idVersion) AS idVersion FROM budget_version WHERE idBudget = $idBudget;";
-    $result = $con->query($sql);
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $maxVersao =  $row['idVersion'];
-    }
-
-    $versao = isset($_GET['versao']) ? (int)$_GET['versao'] : $maxVersao;
-    $sql = "SELECT * FROM budget_version WHERE idVersion = '$versao' AND idBudget = '$idBudget'";
-    $result = $con->query($sql);
-    if ($result->num_rows <= 0) {
-        header('Location: dashboard.php');
-        exit();
-    }
-
-    
-    $inputValue = '';
-    $produtosIndex = 0;
-
-    if ($versao == $maxVersao) {
-        $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
-        $result = $con->query($sql);
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $numSections =  $row['numSections'];
-        }
-    }
+    //Se retornar obtem os dados do orçamento
     else {
-        $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_version WHERE idBudget = $idBudget AND idVersion <= $versao;";
-        $result = $con->query($sql);
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $numSections =  $row['numSections'];
-        }
-    }
-
-    $sql = "SELECT num, year, name, laborPercent , discountPercent, observation, idClient, created FROM budget WHERE id = $idBudget;";
-    $result = $con->query($sql);
-    if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $numBudget = $row['num'];
         $yearBudget = $row['year'];
@@ -67,20 +36,69 @@
     }
     $numOrçamento = "$numBudget/$yearBudget";
 
+    //Seleciona a maior versão, ou seja, a atual
+    $sql = "SELECT MAX(idVersion) AS idVersion FROM budget_version WHERE idBudget = $idBudget;";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $maxVersao =  $row['idVersion'];
+    }
+
+    //Obtem a versão enviada via GET caso não tenha atribui a versão atual
+    $versao = isset($_GET['versao']) ? (int)$_GET['versao'] : $maxVersao;
+
+    //Se obteu uma versão via GET seleciona a versão cujo id é igual ao recebido
+    $sql = "SELECT * FROM budget_version WHERE idVersion = '$versao' AND idBudget = '$idBudget'";
+    $result = $con->query($sql);
+    //Se não retornar resultados redireciona para a dashboard
+    if ($result->num_rows <= 0) {
+        header('Location: dashboard.php');
+        exit();
+    }
+
+    //Se a versão for a atual conta o numero de versões da versão atual
+    if ($versao == $maxVersao) {
+        $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_sections_products WHERE idBudget = $idBudget;";
+        $result = $con->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $numSections =  $row['numSections'];
+        }
+    }
+    //Caso contrário conta o numero de secções da versão escolhida
+    else {
+        $sql = "SELECT COUNT(DISTINCT orderSection) AS numSections FROM budget_version WHERE idBudget = $idBudget AND idVersion <= $versao;";
+        $result = $con->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $numSections =  $row['numSections'];
+        }
+    }
+
+    //Inicia a variavel que irá conter o total do orçamento como 0 para poder calcular
     $totalBudget = 0;
+
+    //Seleciona todos os produtos, valor e quantidade deste orçamento
     $sql = "SELECT valueProduct, amountProduct FROM budget_sections_products WHERE idBudget = $idBudget;";
     $result = $con->query($sql);
+    //Percorre todos produtos, multiplica o valor do produto pela quantidade e adiciona o resultado ao valor total
     while ($row = $result->fetch_assoc()) {
         $totalBudget = $totalBudget + $row['valueProduct'] * $row['amountProduct'];
     }
 
+    //Obter dados do cliente associado ao orçamento
     $sql = "SELECT name, contact FROM client WHERE client.id = $idClient;";
     $result = $con->query($sql);
-    $row = $result->fetch_assoc();
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
         $clientName = $row['name'];
         $clientContact = $row['contact'];
+    }
 
+    //Inicia a variavel sem valor porque pode não ter ficha de trabalho associada
     $numFichaTrabalho = "";
+
+    //Obtem dados da ficha de trabalho associado caso tenha
     $sql = "SELECT num, year FROM worksheet WHERE idBudget = $idBudget;";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
@@ -91,13 +109,13 @@
     }
 ?>
     <link rel="stylesheet" href="./css/editBudget.css">
-    
     <title>OneMarket | <?php echo $numOrçamento; ?> </title>
 </head>
 
 <body>
 
     <?php 
+        //inclui a sideBar na página
         include('sideBar.php'); 
     ?>
 
@@ -105,6 +123,7 @@
     <div class="content">
         <!-- Navbar -->
         <?php 
+            //Inclui o header na página
             include('header.php'); 
         ?>          
         <!-- End of Navbar -->
@@ -121,10 +140,11 @@
                         <label for="versao" class="select-label">Versão:</label>
                         <select name="versao" id="versao" onchange="confirmSubmit(this, <?php echo $maxVersao; ?>)">
                             <?php
+                                //Seleciona todos os ids das versões e a respetiva data
                                 $sql = "SELECT DISTINCT idVersion, created FROM budget_version WHERE idBudget = $idBudget ORDER BY idVersion DESC;";
                                 $result = $con->query($sql);
-
                                 if ($result->num_rows > 0) {
+                                    //Percorre todas as versões e adiciona a opção à select box
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<option value=\"{$row['idVersion']}\" " . ($row['idVersion'] == $versao ? 'selected' : '') . ">{$row['idVersion']} | {$row['created']}</option>";
                                     }
@@ -135,6 +155,7 @@
                 </form>
             </div>
             <?php 
+                //Obtem a permissão do administrador, se não tiver permissões de editar declara a variavel como readonly para colocar nos inputs
                 $perm = "";
                 if (adminPermissions($con, "adm_001", "update") == 0) {
                     $perm = "readonly";
@@ -193,7 +214,7 @@
                                     <input type="text" name="totalDesconto" readonly required value="<?php echo $totalBudget * ($descontoBudget / 100) . "€"; ?>">
                                 </div>
                                 <script>
-                                    //Get human input: 
+                                    //evento para colocar o % nos campos de percentagem
                                     document.querySelector('.percent').addEventListener('input', function(e){
                                         //Separate the percent sign from the number:
                                         let int = e.target.value.slice(0, e.target.value.length - 1);
@@ -253,28 +274,36 @@
                         </section>
                     </div>
                     <?php 
+                        //Inicia a variavel produtosIndex como 0 para ser incrementada
                         $produtosIndex = 0; 
+                        //Ciclo for que percorre todas as secções e adiciona mais 5 que são as que podem ser adicionas por edição
                         for ($i=1; $i <= $numSections + 5; $i++) {
+                            //Se a versão for a atual
                             if ($versao == $maxVersao) {
+                                //Obtem o numero de produtos que a secção atual tem
                                 $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0;";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
                                     $numProducts = $row['numProducts'];
                                 }
-
+                                
+                                //obtem o nome da secção atual
                                 $sql = "SELECT nameSection FROM budget_sections_products WHERE orderSection = $i AND idBudget = $idBudget;";
                                 $result = $con->query($sql);
-                            
+                                //Se a secção exitir guarda o nome da secção 
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    $nomeSecao = htmlspecialchars($row['nameSection']);
+                                    $nomeSecao = $row['nameSection'];
                                     $displayStyle = '';
-                                } else {
+                                } 
+                                //Se não existir secção nessa ordem então declara a variavel displayStyle como display:none para colocar na secção e não a mostrar
+                                else {
                                     $nomeSecao = '';
                                     $displayStyle = 'display: none;';
                                 }
                             }
+                            //Se a versão não for a atual vai buscar os dados à tabela que tem as versões
                             else {
                                 $sql = "SELECT COUNT(idProduct) AS numProducts FROM budget_version WHERE idbudget = $idBudget AND orderSection = '$i' AND idProduct > 0 AND idVersion = $versao;";
                                 $result = $con->query($sql);
@@ -283,12 +312,12 @@
                                     $numProducts = $row['numProducts'];
                                 }
 
-                                $sql = "SELECT nameSection FROM budget_sections_products WHERE orderSection = $i AND idBudget = $idBudget;";
+                                //Obtem o nome da secção da versão selecionada
+                                $sql = "SELECT nameSection FROM budget_version WHERE orderSection = $i AND idBudget = $idBudget AND idVersion = $versao;";
                                 $result = $con->query($sql);
-                            
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    $nomeSecao = htmlspecialchars($row['nameSection']);
+                                    $nomeSecao = $row['nameSection'];
                                     $displayStyle = '';
                                 } else {
                                     $nomeSecao = '';
@@ -311,6 +340,7 @@
                                         />
                                         <datalist id='datalistSection'>
                                             <?php
+                                                //Obtem todos os nomes diferentes de secções para a datalist ao inserir o nome da secção
                                                 $sql = "SELECT DISTINCT nameSection FROM budget_sections_products;";
                                                 $result = $con->query($sql);
 
@@ -334,18 +364,24 @@
                                                 </tr>
                                             </thead>
                                             <?php 
+                                                //Percorre todos os produtos masi 10 que são os que podem ser adicionados
                                                 for ($j=1; $j <= $numProducts + 10; $j++) { 
+                                                    //incrementa o index dos produtos que é o numero que aparece antes de cada produto, para os contar
                                                     $produtosIndex++;
+                                                    //Reinicia o valor das variaveis que contêm os dados do produto
                                                     $refProduct = '';
                                                     $nameProduct = '';
                                                     $amountProduct = 0;
                                                     $descriptionProduct = '';
-                                                    $valueProduct = 0;?>
-                                                    <?php if ($j == 1 || $j <= $numProducts) { ?>
+                                                    $valueProduct = 0;
+                                                    //Se for o primeiro produto ou o numero do produto for menor ou igual ao numero total de produtos desta secção então mostra o produto
+                                                    if ($j == 1 || $j <= $numProducts) { ?>
                                                         <tbody class="produtos">
                                                             <tr>
                                                                 <?php 
+                                                                    //Se a versão selecionada for a atual
                                                                     if ($versao == $maxVersao) {
+                                                                        //Obtem os dados atuais do produto
                                                                         $sql = "SELECT refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct FROM budget_sections_products WHERE budget_sections_products.idbudget = $idBudget AND orderProduct = '$j' AND orderSection = '$i';";
                                                                         $result = $con->query($sql);
                                                                         if ($result->num_rows > 0) {
@@ -358,7 +394,9 @@
                                                                             }
                                                                         }
                                                                     }
+                                                                    //Se for de outra versão
                                                                     else {
+                                                                        //Obtem os dados dos produtos da versão selecionada
                                                                         $sql = "SELECT refProduct, nameProduct, amountProduct, descriptionProduct, valueProduct FROM budget_version WHERE budget_version.idbudget = $idBudget AND orderProduct = '$j' AND orderSection = '$i' AND idVersion = $versao;";
                                                                         $result = $con->query($sql);
                                                                         if ($result->num_rows > 0) {
@@ -371,6 +409,7 @@
                                                                             }
                                                                         }
                                                                     }
+                                                                //Mostra os dados dos produtos, proibindo de editar se não for a versão atual ou se não tiver permissões
                                                                 ?>
                                                                 <td><input type="text" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" value="100" readonly></td>
                                                                 <td><input type="search" list="datalistProduct" id="reference-<?php echo $produtosIndex; ?>" name="secao_<?php echo $i; ?>_produto_ref_<?php echo $j; ?>" value="<?php echo $refProduct; ?>" oninput="atualizarCampos(this);" <?php if (adminPermissions($con, "adm_001", "update") == 0 || $versao < $maxVersao) {echo "readonly";}?>></td>
@@ -383,17 +422,20 @@
                                                         </tbody>
                                                         <datalist id='datalistProduct'>
                                                             <?php
-                                                                $sql = "SELECT DISTINCT refProduct FROM budget_sections_products;";
+                                                                //Obtem todas as referencias dos produtos que estao ativos
+                                                                $sql = "SELECT reference FROM product WHERE product.active = 1 ;";
                                                                 $result = $con->query($sql);
-
                                                                 if ($result->num_rows > 0) {
+                                                                    //Percorre todos os produtos e adiciona-os como opção na dataList
                                                                     while ($row = $result->fetch_assoc()) {
-                                                                        echo "<option>$row[refProduct]</option>";
+                                                                        echo "<option>$row[reference]</option>";
                                                                     }
                                                                 }
                                                             ?>
                                                         </datalist>
-                                                    <?php } else { ?>
+                                                    <?php //Se não for o primeiro produto ou o numero do produto não for menor ou igual ao numero total de produtos desta secção então não mostra o produto
+                                                    } else { 
+                                                        ?>
                                                         <tbody class="produtos" style="display: none;">
                                                             <tr>
                                                                 <td><input type="text" class="id" name="secao_<?php echo $i; ?>_produto_index_<?php echo $j; ?>" value="100" readonly></td>
@@ -407,18 +449,20 @@
                                                         </tbody>
                                                         <datalist id='datalistProduct'>
                                                             <?php
-                                                                $sql = "SELECT DISTINCT refProduct FROM budget_sections_products;";
+                                                                //Obtem todas as referencias dos produtos que estao ativos
+                                                                $sql = "SELECT reference FROM product WHERE product.active = 1 ;";
                                                                 $result = $con->query($sql);
-
                                                                 if ($result->num_rows > 0) {
+                                                                    //Percorre todos os produtos e adiciona-os como opção na dataList
                                                                     while ($row = $result->fetch_assoc()) {
-                                                                        echo "<option>$row[refProduct]</option>";
+                                                                        echo "<option>$row[reference]</option>";
                                                                     }
                                                                 }
                                                             ?>
                                                         </datalist>
                                                     <?php } ?>
                                                 <?php } 
+                                                //Se o administrador tiver permissões de edição e a versão for a atual mostra o botão de adicionar produtos
                                                 if (adminPermissions($con, "adm_001", "update") == 1 && $versao == $maxVersao) {
                                                     echo "<button type=\"button\" onclick=\"adicionarProduto(" . ($i - 1) . ")\">Adicionar Produto</button>";
                                                 }
@@ -429,19 +473,28 @@
                             </div>
                     <?php } ?>
                     <script>
+                        //Atualiza o numero dos produtos quando a página é carregada
                         document.addEventListener("DOMContentLoaded", function() {
                             atualizarIndicesGlobais();
                         });
 
+                        //Obtem a versão selecionada
                         function confirmSubmit(selectElement, maxVersao) {
+                            //Obtem a versão selecionada
                             const selectedVersion = selectElement.value;
+                            //Inicia a variavel com a resposta do administrador como true
                             const userConfirmed = true
+                            //Se a versão selecionada for a atual então pergunta ao administrador se pretende continuar
                             if (selectedVersion != maxVersao) {
                                 const userConfirmed = confirm("Ao mudar de versão perderá as alterações feitas. Deseja prosseguir?");
                             }
+                            //Se o administrador tiver respondido que sim 
                             if (userConfirmed) {
-                                selectElement.form.submit(); // Envia o formulário
-                            } else {
+                                // Envia o formulário
+                                selectElement.form.submit();
+                            } 
+                            //Caso contrario
+                            else {
                                 // Restaura a seleção anterior
                                 const previousValue = selectElement.getAttribute('data-previous');
                                 if (previousValue !== null) {
@@ -455,6 +508,7 @@
                             this.setAttribute('data-previous', this.value);
                         });
 
+                        //Função para atualizar o indice dos produtos todos 
                         function atualizarIndicesGlobais() {
                             const secoes = document.querySelectorAll(".secao");
                             let produtoGlobalIndex = 0; // Reinicia o índice global de produtos
@@ -483,6 +537,7 @@
                             });
                         }
 
+                        //Função para tornar visivel o proximo produto ao clicar no botão
                         function adicionarProduto(secaoIdx) {
                             // Seleciona a seção com base no índice fornecido
                             const secao = document.querySelectorAll(".secao")[secaoIdx];
@@ -503,6 +558,7 @@
                             }
                         }
 
+                        //Função para tornar visivel a proxima secção ao clicar no botão
                         function adicionarSecao() {
                             // Seleciona a seção com base no índice fornecido
                             const secao = document.querySelectorAll(".budget");
@@ -519,6 +575,7 @@
                             }
                         }
 
+                        //Função para atualizar os campos do produto de acordo com a referencia inserida
                         function atualizarCampos(campoReferencia) {
                             const referencia = campoReferencia.value;
                             const linha = campoReferencia.closest("tr"); // A linha atual onde o campo está
@@ -561,6 +618,7 @@
                             atualizarPrecoTotal(campoReferencia);
                         }
 
+                        //Atualiza o preço total, multiplica o preço da unidade pela quantidade
                         function atualizarPrecoTotal(elemento) {
                             const linha = elemento.closest("tr");
                             const quantidadeCampo = linha.querySelector(".quantidade");
@@ -573,6 +631,7 @@
                             valorTotalCampo.value = (quantidade * valor).toFixed(2);
                         }
 
+                        //Função para imprimir o orçamento
                         function budgetPrint(idBudget) {
                             // Abre a outra página em uma nova janela
                             const printWindow = window.open('orcamentoImpressao.php?idBudget=' + idBudget, '_blank');
@@ -586,6 +645,7 @@
                     </script>
                 </div>
                 <?php 
+                    //Se o administrador tiver permissão para editar e a versão for a atual mostra o botão de adicionar secção e de salvar alterações
                     if (adminPermissions($con, "adm_001", "update") == 1 && $versao == $maxVersao) {
                         echo "
                             <button id=bottomButton type=\"button\" onclick=\"adicionarSecao()\">Adicionar Secção</button>

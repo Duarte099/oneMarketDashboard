@@ -1,26 +1,31 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
 
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
     $estouEm = 1;
+
+    //Obtem o ano atual para usar no gráfico de ganhos
     $anoAtual = date('Y');
 ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="./css/dashboard.css">
-    
     <title>OneMarket | Dashboard</title>
 </head>
 
 <body>
 
     <?php
-    include('sideBar.php');
+        //inclui a sideBar na página
+        include('sideBar.php');
     ?>
 
     <!-- Main Content -->
     <div class="content">
         <!-- Navbar -->
         <?php
-        include('header.php');
+            //Inclui o header na página
+            include('header.php');
         ?>
         <!-- End of Navbar -->
 
@@ -37,6 +42,7 @@
                         <p>Orçamentos</p>
                         <h3>
                             <?php
+                                //Conta o numero de orçamentos existentes
                                 $sql = "SELECT COUNT(*) AS numeroOrcamentos FROM budget";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
@@ -55,6 +61,7 @@
                         <p>Fichas de trabalho</p>
                         <h3>
                             <?php
+                                //Conta o numero de ficahs de trabalho existentes
                                 $sql = "SELECT COUNT(*) AS numeroFichas FROM worksheet";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
@@ -73,7 +80,8 @@
                         <p>Clientes</p>
                         <h3>
                             <?php
-                                $sql = "SELECT COUNT(*) AS numeroClientes FROM client";
+                                //Conta o numero de clientes ativos existentes
+                                $sql = "SELECT COUNT(*) AS numeroClientes FROM client WHERE active = 1";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
@@ -91,7 +99,8 @@
                         <p>Administradores</p>
                         <h3>
                             <?php
-                                $sql = "SELECT COUNT(*) AS numeroAdmins FROM administrator";
+                                //Conta o numero de administradores ativos existentes
+                                $sql = "SELECT COUNT(*) AS numeroAdmins FROM administrator WHERE active = 1";
                                 $result = $con->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
@@ -109,7 +118,9 @@
 
             <!-- Tabela produto fora de stock -->
             <div class="container">
-                <?php if (adminPermissions($con, "adm_007", "view") == 1) { ?>
+                <?php //Se o administrador tiver permissões para ver o gráfico de ganhos mensais então mostra o gráfico
+                if (adminPermissions($con, "adm_007", "view") == 1) { 
+                    ?>
                     <!-- Ano -->
                     <div class="chart-container-custom">
                         <div class="year-selector">
@@ -229,7 +240,9 @@
                     </script>
                 <?php  } ?>
 
-                <?php if (adminPermissions($con, "adm_006", "view") == 1) { ?>
+                <?php //Se o administrador tiver permissões para ver a tabela de logs então mostra a tabela
+                if (adminPermissions($con, "adm_006", "view") == 1) { 
+                    ?>
                     <div class="logs-section">
                         <div class="logs">
                             <h2>Logs Recentes</h2>
@@ -279,59 +292,60 @@
                             </thead>
                             <tbody>
                                 <?php
-                                $sql = "SELECT 
-                                        budget.id as idBudget,
-                                        budget.num as numBudget,
-                                        budget.year as yearBudget, 
-                                        worksheet.id as idWorksheet,
-                                        worksheet.num as numWorksheet,
-                                        worksheet.year as yearWorksheet,
-                                        worksheet.readyStorage,
-                                        worksheet.joinWork, 
-                                        worksheet.exitWork,
-                                        CASE
-                                            WHEN worksheet.readyStorage = '0000-00-00' THEN 'Em Desenvolvimento'
-                                            WHEN worksheet.readyStorage != '0000-00-00' AND worksheet.joinWork = '0000-00-00' THEN 'Pendente'
-                                            WHEN worksheet.joinWork != '0000-00-00' AND worksheet.exitWork = '0000-00-00' THEN 'Em Obra'
-                                            WHEN worksheet.exitwork != '0000-00-00' THEN 'Concluido'
-                                        END as status
-                                    FROM worksheet
-                                    LEFT JOIN 
-                                        budget ON worksheet.idBudget = budget.id
-                                    ORDER BY idWorksheet DESC
-                                    LIMIT 10;";
-                                $result = $con->query($sql);
-                                if ($result->num_rows > 0) {
+                                    //query SQL para obter o estado das fichas de trabalho
+                                    $sql = "SELECT 
+                                            budget.id as idBudget,
+                                            budget.num as numBudget,
+                                            budget.year as yearBudget, 
+                                            worksheet.id as idWorksheet,
+                                            worksheet.num as numWorksheet,
+                                            worksheet.year as yearWorksheet,
+                                            worksheet.readyStorage,
+                                            worksheet.joinWork, 
+                                            worksheet.exitWork,
+                                            CASE
+                                                WHEN worksheet.readyStorage = '0000-00-00' THEN 'Em Desenvolvimento'
+                                                WHEN worksheet.readyStorage != '0000-00-00' AND worksheet.joinWork = '0000-00-00' THEN 'Pendente'
+                                                WHEN worksheet.joinWork != '0000-00-00' AND worksheet.exitWork = '0000-00-00' THEN 'Em Obra'
+                                                WHEN worksheet.exitwork != '0000-00-00' THEN 'Concluido'
+                                            END as status
+                                        FROM worksheet
+                                        LEFT JOIN 
+                                            budget ON worksheet.idBudget = budget.id
+                                        ORDER BY idWorksheet DESC
+                                        LIMIT 10;";
+                                    $result = $con->query($sql);
+                                    if ($result->num_rows > 0) {
 
-                                    while ($row = $result->fetch_assoc()) {
-                                        $statustext = $row['status'];
-                                        $statusicon = '';
+                                        while ($row = $result->fetch_assoc()) {
+                                            $statustext = $row['status'];
+                                            $statusicon = '';
 
-                                        switch ($statustext) {
-                                            case 'Em Desenvolvimento':
-                                                $statusicon = '<i class="bx bx-time" style="color: yellow; margin-right: 8px;"></i>';
-                                                break;
-                                            case 'Pendente':
-                                                $statusicon = '<i class="bx bx-error" style="color: red; margin-right: 8px;"></i>';
-                                                break;
-                                            case 'Em Obra':
-                                                $statusicon = '<i class="bx bx-check-circle" style="color: orange; margin-right: 8px;"></i>';
-                                                break;
-                                            case 'Concluido':
-                                                $statusicon = '<i class="bx bx-check-circle" style="color: green; margin-right: 8px;"></i>';
-                                                break;
-                                            default:
-                                                $statusicon = '<i class="bx bx-question-mark" style="color: gray; margin-right: 8px;"></i>';
-                                                break;
+                                            switch ($statustext) {
+                                                case 'Em Desenvolvimento':
+                                                    $statusicon = '<i class="bx bx-time" style="color: yellow; margin-right: 8px;"></i>';
+                                                    break;
+                                                case 'Pendente':
+                                                    $statusicon = '<i class="bx bx-error" style="color: red; margin-right: 8px;"></i>';
+                                                    break;
+                                                case 'Em Obra':
+                                                    $statusicon = '<i class="bx bx-check-circle" style="color: orange; margin-right: 8px;"></i>';
+                                                    break;
+                                                case 'Concluido':
+                                                    $statusicon = '<i class="bx bx-check-circle" style="color: green; margin-right: 8px;"></i>';
+                                                    break;
+                                                default:
+                                                    $statusicon = '<i class="bx bx-question-mark" style="color: gray; margin-right: 8px;"></i>';
+                                                    break;
+                                            }
+                                            echo "<tr onclick=\"handleRowClick('{$row['idWorksheet']}', 'editWorksheet')\" style=\"cursor: pointer;\">
+                                                <td>" . $row['numWorksheet'] . "/" . $row['yearWorksheet'] . "</td>
+                                                <td>{$statusicon}{$statustext}</td>
+                                            </tr>";
                                         }
-                                        echo "<tr onclick=\"handleRowClick('{$row['idWorksheet']}', 'editWorksheet')\" style=\"cursor: pointer;\">
-                                            <td>" . $row['numWorksheet'] . "/" . $row['yearWorksheet'] . "</td>
-                                            <td>{$statusicon}{$statustext}</td>
-                                        </tr>";
+                                    } else {
+                                        echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
                                     }
-                                } else {
-                                    echo "<tr><td colspan='8'>Sem registros para exibir.</td></tr>";
-                                }
                                 ?>
                             </tbody>
                         </table>
@@ -350,32 +364,33 @@
                         </thead>
                         <tbody>
                             <?php
-                            $sql = "SELECT 
-                                        p.id AS id,
-                                        p.img AS imagem,
-                                        p.name AS name,
-                                        p.reference AS reference
-                                    FROM product_stock ps
-                                    INNER JOIN product p ON ps.idProduct = p.id
-                                    WHERE ps.quantity = 0 AND p.active = 1
-                                    ORDER BY p.name ASC
-                                    LIMIT 10;";
-                            $result = $con->query($sql);
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<tr onclick=\"handleRowClick('{$row['id']}', 'stock')\" style=\"cursor: pointer;\">
-                                            <td>
-                                                <div id=\"profilePic\" style=\"width:100%; height:50px; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
-                                                    <img src=\"./images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
-                                                </div>
-                                            </td>
-                                            <td>" . $row['name'] . "</td>
-                                            <td>" . $row['reference'] . "</td>
-                                        </tr>";
+                                //Query SQL para obter todos os produtos que estão fora de stock ou seja o stock é igual a 0
+                                $sql = "SELECT 
+                                            p.id AS id,
+                                            p.img AS imagem,
+                                            p.name AS name,
+                                            p.reference AS reference
+                                        FROM product_stock ps
+                                        INNER JOIN product p ON ps.idProduct = p.id
+                                        WHERE ps.quantity = 0 AND p.active = 1
+                                        ORDER BY p.name ASC
+                                        LIMIT 10;";
+                                $result = $con->query($sql);
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<tr onclick=\"handleRowClick('{$row['id']}', 'stock')\" style=\"cursor: pointer;\">
+                                                <td>
+                                                    <div id=\"profilePic\" style=\"width:100%; height:50px; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
+                                                        <img src=\"./images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
+                                                    </div>
+                                                </td>
+                                                <td>" . $row['name'] . "</td>
+                                                <td>" . $row['reference'] . "</td>
+                                            </tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='3'>Sem produtos fora de stock.</td></tr>";
                                 }
-                            } else {
-                                echo "<tr><td colspan='3'>Sem produtos fora de stock.</td></tr>";
-                            }
                             ?>
                         </tbody>
                     </table>

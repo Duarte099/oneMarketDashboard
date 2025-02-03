@@ -1,6 +1,8 @@
 <?php
+    //Inclui a base de dados e a segurança da pagina 
     include('./db/conexao.php');
     
+    //query sql para obter todos os orçamentos e os respetivos dados
     $sql = "SELECT 
                 budget.id as idBudget,
                 budget.num as numBudget,
@@ -43,5 +45,7 @@
         }
     }
 
+    //Envia os dados via json 
     header('Content-Type: application/json');
     echo json_encode($data);
+?>

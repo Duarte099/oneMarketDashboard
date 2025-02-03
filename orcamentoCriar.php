@@ -1,51 +1,60 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
 
-    $estouEm = 3;
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
+    $estouEm = 2;
 
+    //Verifica se o administrador tem acesso para aceder a esta pagina, caso contrario redereciona para a dashboard    
     if (adminPermissions($con, "adm_001", "inserir") == 0) {
         header('Location: dashboard.php');
         exit();
     }
     
-    $estouEm = 2;
+    //Obtem o id do cliente seleciona para ser associado ao orçamento via GET
     $idCliente = $_GET['idClient'];
 
+    //Obtem o cliente cujo id é igual ao recebido via GET
     $sql = "SELECT * FROM client WHERE id = '$idCliente'";
     $result = $con->query($sql);
+    //Se não encontrar nenhum cliente redireciona para a dashboard
     if ($result->num_rows <= 0) {
         header('Location: dashboard.php');
         exit();
     }
-
-    $anoAtual = date('Y');
-    $sql = "SELECT MAX(num) AS maior_numero FROM budget WHERE year = $anoAtual;";
-    $result = $con->query($sql);
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $proximo_numero = $row['maior_numero'] + 1;
-    }
+    //Caso contrário pega as informações do cliente
     else {
-        $proximo_numero = 1;
-    }
-    $numOrcamento = "$proximo_numero/$anoAtual";
-
-    $sql = "SELECT name, contact FROM client WHERE client.id = $idCliente;";
-    $result = $con->query($sql);
-    if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $nameClient = $row['name'];
         $contactClient = $row['contact'];
     }
+
+    //Obtem o ano atual
+    $anoAtual = date('Y');
+
+    //Obtem o numero maior de todos os orçamentos do ano atual
+    $sql = "SELECT MAX(num) AS maior_numero FROM budget WHERE year = $anoAtual;";
+    $result = $con->query($sql);
+    //Se houver orçamento no ano atual soma mais um ao numero maior
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $proximo_numero = $row['maior_numero'] + 1;
+    }
+    //senão é o primeiro orçamento, numero 1
+    else {
+        $proximo_numero = 1;
+    }
+    //Forma o numero do orçamento, junção entre o numero e o ano atual
+    $numOrcamento = "$proximo_numero/$anoAtual";
 ?>
     <link rel="stylesheet" href="./css/novoOrcamento.css">
-    
     <title>OneMarket | Novo Orçamento</title>
 </head>
 
 <body>
 
     <?php 
+        //inclui a sideBar na página
         include('sideBar.php'); 
     ?>
 
@@ -53,6 +62,7 @@
     <div class="content">
         <!-- Navbar -->
         <?php 
+            //Inclui o header na página
             include('header.php'); 
         ?>          
         <!-- End of Navbar -->
@@ -116,7 +126,7 @@
                                         <input type="text" name="totalDesconto" readonly>
                                     </div>
                                     <script>
-                                        //Get human input: 
+                                        //evento para colocar o % nos respetivos campos
                                         document.querySelector('.percent').addEventListener('input', function(e){
                                             //Separate the percent sign from the number:
                                             let int = e.target.value.slice(0, e.target.value.length - 1);
@@ -179,7 +189,9 @@
                             <!-- Secções e Produtos -->
                             <section id="secoes">
                                 <h2>Secções</h2>
-                                <?php for ($i=1; $i <= 20; $i++) { 
+                                <?php //Ciclo for para gerar 20 campos de secções 
+                                for ($i=1; $i <= 20; $i++) { 
+                                    //Se for a primeira secção torna-a visivel
                                     if ($i == 1) { ?>
                                         <div class="secao" style="position: relative; width: 100%;">
                                             <h3>Secção <?php echo $i; ?>: </h3>
@@ -197,7 +209,8 @@
                                                 ?>
                                             </datalist>
                                         </div>
-                                    <?php } else { ?>
+                                    <?php // Se não for a primeira secção torna-a invisivel
+                                    } else { ?>
                                         <div class="secao" style="position: relative; width: 100%; display: none">
                                             <h3>Secção <?php echo $i; ?>: </h3>
                                             <input type="search" id="datalistSecao" name="seccao_nome_<?php echo $i; ?>" placeholder="Nome da secção">
@@ -217,6 +230,7 @@
                                     <?php } ?>
                                 <?php } ?>
                                 <script>
+                                    //Função para tornar visivel a proxima secção ao clicar no botão
                                     function adicionarSecao() {
                                         // Seleciona a seção com base no índice fornecido
                                         const secao = document.querySelectorAll(".secao");
@@ -239,7 +253,6 @@
                     </div>
                 </div>
             </main>
-        <!-- <input type=text id=numSeccao name=numSeccao value=1> -->
         </form>
     </div>
 </body>

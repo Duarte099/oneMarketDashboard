@@ -1,6 +1,8 @@
 <?php
+    //Inclui a base de dados e a segurança da pagina 
     include('./db/conexao.php');
     
+    //query sql para obter todos os clientes e os respetivos dados
     $sql = "SELECT 
             client.id as id,
             client.name as nome,
@@ -26,6 +28,7 @@
         }
     }
 
+    //Envia os dados via json 
     header('Content-Type: application/json');
     echo json_encode($data);
 ?>

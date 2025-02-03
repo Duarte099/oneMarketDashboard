@@ -398,3 +398,110 @@ select:focus {
     transition: background 0.3s ease;
     padding-bottom: 10px;
 }
+
+/* Grid de imagens responsivo */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.grid img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    border-radius: 8px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+
+/* Responsividade para a seção de upload */
+@media screen and (max-width: 768px) {
+    .content main {
+        padding: 20px 15px;
+    }
+
+    .content main .header .left h1 {
+        font-size: 28px;
+    }
+
+    .content main form input[type="file"] {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    #secoes .secao h3 {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .content main .header .left h1 {
+        font-size: 24px;
+    }
+
+    .content main .bottom-data .worksheet {
+        padding: 15px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #botSaveWorksheet {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    .content main .bottom-data .worksheet input[type="search"] {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+/* Ajustes específicos para lightbox em mobile */
+@media screen and (max-width: 600px) {
+    .lb-container {
+        padding: 10px;
+    }
+
+    .lb-nav {
+        width: 90%;
+    }
+}
+
+/* Melhorias no formulário para mobile */
+@media screen and (max-width: 400px) {
+    .content main {
+        padding: 15px 10px;
+    }
+
+    .content main .bottom-data .worksheet {
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .grid {
+        gap: 10px;
+    }
+}
+
+/* Garantir que o botão não quebre em mobile */
+#botSaveWorksheet {
+    float: none;
+    display: block;
+    margin: 25px auto 0;
+    width: fit-content;
+}
+
+@media screen and (max-width: 360px) {
+    #botSaveWorksheet {
+        width: 100%;
+    }
+}

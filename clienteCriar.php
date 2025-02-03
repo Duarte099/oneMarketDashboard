@@ -1,20 +1,24 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
+
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
     $estouEm = 5;
 
+    //Verifica se o administrador tem acesso para aceder a esta pagina, caso contrario redereciona para a dashboard
     if (adminPermissions($con, "adm_004", "inserir") == 0) {
         header('Location: index.php');
         exit();
     }
 ?>
     <link rel="stylesheet" href="./css/novoCliente.css">
-    
     <title>OneMarket | Novo Cliente</title>
 </head>
 
 <body>
 
     <?php 
+        //inclui a sideBar na página
         include('sideBar.php'); 
     ?>
 
@@ -22,6 +26,7 @@
     <div class="content">
         <!-- Navbar -->
         <?php 
+            //Inclui o header na página
             include('header.php'); 
         ?>          
         <!-- End of Navbar -->
@@ -60,7 +65,8 @@
                                 <div class="section-group">
                                     <label>Status</label>
                                     <select name="status">
-                                        <option value="1">Ativo</option>
+          
+                                    <option value="1">Ativo</option>
                                         <option value="0">Inativo</option>
                                     </select>
                                 </div>

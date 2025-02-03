@@ -276,55 +276,48 @@ tbody::-webkit-scrollbar-thumb:hover {
 }
 
 
+/* Remover todo o bloco de media query para mobile que transforma em cards */
 @media screen and (max-width: 768px) {
-    .content main .bottom-data .products table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    .content main .bottom-data .products table thead {
-        display: none; /* Esconde o cabeçalho */
-    }
-
-    .content main .bottom-data .products table tbody {
-        display: block;
-        width: 100%;
-    }
-
-    .content main .bottom-data .products table tbody tr {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px;
-        border: 1px solid var(--border-color);
-        border-radius: 10px;
-        margin-bottom: 10px;
-        background: var(--background-color);
-    }
-
-    .content main .bottom-data .products table tbody tr td {
-        display: block;
-        width: 100%;
-        text-align: left;
-        padding: 5px 0;
-    }
-
+    .content main .bottom-data .products table tbody tr,
     .content main .bottom-data .products table tbody tr td::before {
-        content: attr(data-label) ": "; /* Isso já puxa o data-label */
-        font-weight: bold;
-        margin-right: 8px;
-        color: var(--primary-text-color);
+        all: revert !important;
+    }
+}
+
+/* ========== [ADICIONAR] ========== */
+@media screen and (max-width: 768px) {
+    /* Container da tabela com scroll horizontal */
+    .content main .bottom-data .products {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -16px;
+        width: calc(100% + 32px);
+        padding: 0 !important;
     }
 
-    .content main .bottom-data .admins table tbody tr:first-of-type {
-        margin-top: 20px !important; /* Adiciona margem superior ao primeiro card */
+    /* Tabela com largura fixa para forçar scroll */
+    .content main .bottom-data .products table {
+        min-width: 800px; /* Ajuste conforme necessário */
+        white-space: nowrap;
+        margin: 0 16px;
     }
 
-    .content main .bottom-data .products table td img {
-        width: 50px; /* Ajuste o tamanho da imagem */
-        height: 50px; /* Ajuste o tamanho da imagem */
-        border-radius: 50%; /* Se você quiser que a imagem seja circular */
-        object-fit: cover; /* Para manter a proporção da imagem */
+    /* Ajuste de padding e alinhamento */
+    .content main .bottom-data .products table th,
+    .content main .bottom-data .products table td {
+        padding: 12px 15px !important;
+        text-align: left !important;
+    }
+
+    /* Centralizar coluna de imagem */
+    .content main .bottom-data .products table td:first-child {
+        text-align: center !important;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .content main .bottom-data .products table {
+        min-width: 700px; /* Reduzir se necessário */
     }
 }
 

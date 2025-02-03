@@ -1,22 +1,28 @@
 <?php 
+    //inclui o head que inclui as páginas de js necessárias, a base de dados e segurança da página
     include('head.php'); 
+
+    //variável para indicar à sideBar que página esta aberta para ficar como ativa na sideBar
     $estouEm = 5;
 
+    //Verifica se o administrador tem acesso para aceder a esta pagina, caso contrario redereciona para a dashboard
     if (adminPermissions($con, "adm_004", "view") == 0) {
         header('Location: dashboard.php');
         exit();
     }
 ?>
     <link rel="stylesheet" href="./css/client.css">
-    
     <title>OneMarket | Clientes</title>
 </head>
 
 <body>
     <script>
-        // Pesquisa de clientes usando AJAX
+        //Função para pesquisar clientes
+
+        //Variavel para guardar todos os clientes
         const clientsSearchData = [];
 
+        //Pega os administradores todos via json no arquivo json.obterClientes.php
         $.ajax({
             url: 'json.obterClientes.php',
             type: 'POST',
@@ -29,6 +35,7 @@
             }
         });
 
+        //Função para fazer a pesquisa, apenas mostra os resultados que forem parecidos com a pesquisa
         function clientsSearch(searchBox) {
             const tbody = document.querySelector('#bottom-data table tbody');
             const query = searchBox.value.toLowerCase();
@@ -63,11 +70,13 @@
     </script>
 
     <?php 
+        //inclui a sideBar na página
         include('sideBar.php'); 
     ?>
 
     <div class="content">
         <?php 
+            //Inclui o header na página
             include('header.php'); 
         ?>
 
@@ -79,7 +88,9 @@
                         <input type="text" id="searchBox" placeholder="Pesquisar clientes..." oninput="clientsSearch(this)" />
                     </div>
                 </div>
-                <?php if (adminPermissions($con, "adm_005", "inserir") == 1) { ?>
+                <?php //Se o administrador tiver permissões para criar novos clientes então mostra o botão
+                if (adminPermissions($con, "adm_005", "inserir") == 1) { 
+                    ?>
                     <a href="clienteCriar.php" id="new-budget" class="report">
                         <i class='bx bx-plus'></i>
                         <span>Novo Cliente</span>
@@ -101,32 +112,32 @@
                         </thead>
                         <tbody>
                             <?php
-                            $sql = "SELECT id, name, email, contact, nif, active FROM client;";
-                            $result = $con->query($sql);
+                                //query sql para selecionar todos os clientes 
+                                $sql = "SELECT id, name, email, contact, nif, active FROM client ORDER BY id DESC;";
+                                $result = $con->query($sql);
 
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
-                                    $class = $row['active'] == 1 ? 'ativo' : 'inativo';
-                                    echo "<tr class='$class' onclick=\"handleRowClick('{$row['id']}', 'editClient')\" style=\"cursor: pointer;\">
-                                        <td data-label='Nome'>{$row['name']}</td>
-                                        <td data-label='Email'>{$row['email']}</td>
-                                        <td data-label='Contacto'>{$row['contact']}</td>
-                                        <td data-label='NIF'>{$row['nif']}</td>
-                                        <td data-label='Status'>{$status}</td>
-                                    </tr>";
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
+                                        $class = $row['active'] == 1 ? 'ativo' : 'inativo';
+                                        //Mostra os resultados(produtos)
+                                        echo "<tr class='$class' onclick=\"handleRowClick('{$row['id']}', 'editClient')\" style=\"cursor: pointer;\">
+                                            <td data-label='Nome'>{$row['name']}</td>
+                                            <td data-label='Email'>{$row['email']}</td>
+                                            <td data-label='Contacto'>{$row['contact']}</td>
+                                            <td data-label='NIF'>{$row['nif']}</td>
+                                            <td data-label='Status'>{$status}</td>
+                                        </tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='5' style='text-align:center;'>Sem registros para exibir.</td></tr>";
                                 }
-                            } else {
-                                echo "<tr><td colspan='5' style='text-align:center;'>Sem registros para exibir.</td></tr>";
-                            }
                             ?>
                         </tbody>
                     </table>
                 </div>
             </div>
         </main>
-
-        
     </div>
 </body>
 

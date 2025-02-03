@@ -315,3 +315,82 @@ table td button.select-budget {
 #botSaveBudget{
     float: right;
 }
+
+
+@media (max-width: 768px) {
+    .content {
+        padding: 16px;
+    }
+
+    .content main {
+        padding: 20px 12px;
+        max-height: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .section-row {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    .section-group {
+        width: 100% !important;
+        margin-right: 0 !important;
+    }
+
+    .content main .header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .content main .bottom-data {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .content main .bottom-data .budget {
+        width: 100%;
+        padding: 16px;
+        flex-direction: column;
+    }
+
+    table {
+        min-width: 100%;
+        overflow-x: auto;
+    }
+
+    /* Ajuste de botões */
+    #bottomButton,
+    #botSaveBudget,
+    #botPrintBudget {
+        width: 100%;
+        margin: 10px 0;
+        float: none;
+    }
+
+    /* Ajuste de inputs */
+    .content main .bottom-data .budget input,
+    .content main .bottom-data .budget textarea {
+        width: 100%;
+    }
+}
+
+/* Ajustes para telas ainda menores */
+@media (max-width: 576px) {
+    .content main .bottom-data .budget table {
+        min-width: 340px;
+    }
+
+    .content main .bottom-data .budget input {
+        font-size: 12px;
+    }
+
+    /* Ajuste de títulos */
+    .content main .header .left h1 {
+        font-size: 28px;
+    }
+}
+
