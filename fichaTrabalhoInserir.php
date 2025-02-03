@@ -168,8 +168,10 @@
             $result->execute();
         
             //Seleciona as diferentes ordens de cada secção 
-            $sqlSection = "SELECT DISTINCT orderSection FROM budget_sections_products WHERE idBudget = $idBudget;";
-            $resultSection = $con->query($sqlSection);
+            $stmt = $con->prepare("SELECT DISTINCT orderSection FROM budget_sections_products WHERE idBudget = ?");
+            $stmt->bind_param("i", $idBudget);
+            $stmt->execute();
+            $resultSection = $stmt->get_result();
             if ($resultSection->num_rows > 0) {
                 //Ciclo que percorre todas as secções e a respetiva ordem
                 while ($rowSection = $resultSection->fetch_assoc()) {
@@ -248,10 +250,10 @@
 
             //seleciona a diferente ordem de cada secção 
             $sql = "SELECT DISTINCT orderSection FROM budget_sections_products WHERE idBudget = $idBudget;";
-            $result = $con->query($sql);
-            if ($result->num_rows > 0) {
+            $result1 = $con->query($sql);
+            if ($result1->num_rows > 0) {
                 //Ciclo percorre todas as secções e a devida ordem
-                while ($row = $result->fetch_assoc()) {
+                while ($row = $result1->fetch_assoc()) {
                     //Se tiver imagens inseridas no input desta secção então guarda essa imagem no servidor para formar um link
                     if (isset($_FILES['secao_'. $row['orderSection'] .'_foto']) && count($_FILES['secao_'. $row['orderSection'] .'_foto']['name']) > 0) {
                         $uploadedFiles = [];

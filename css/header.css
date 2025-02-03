@@ -251,6 +251,17 @@ hr {
     background: var(--background-color);
     padding: 10px;
     z-index: 2001;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.mobile-header.open {
+    overflow: hidden; /* Impede o scroll */
+}
+
+.mobile-header .theme-toggle {
+    margin-top: auto; /* Empurra o botão para a parte inferior */
 }
 
 @media screen and (max-width: 1024px) {

@@ -24,9 +24,11 @@
         $sql = "DELETE FROM worksheet WHERE id = $idWorksheet;";
         $result = $con->prepare($sql);
         $result->execute();
+        
         $sql = "DELETE FROM worksheet_versions WHERE idWorksheet = $idWorksheet;";
         $result = $con->prepare($sql);
         $result->execute();
+
         header('Location: fichaTrabalho.php');
     }
 ?>

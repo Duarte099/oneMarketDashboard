@@ -286,12 +286,12 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Numero</th>
-                                <th>Cliente</th>
-                                <th>Contacto</th>
-                                <th>Ficha Trabalho</th>
-                                <th>Data Criação</th>
-                                <th>Responsavel</th>
+                                <th style="width: 150px;">Número</th>
+                                <th style="text-align: center;">Cliente</th>
+                                <th style="width: 250px;">Contacto</th>
+                                <th style="width: 150px;">Ficha Trabalho</th>
+                                <th style="width: 200px;">Data Criação</th>
+                                <th style="width: 150px;">Responsável</th>
                                 <th>Ação</th>
                             </tr>
                         </thead>
@@ -326,12 +326,12 @@
                                             $numWorksheet = '';
                                         }
                                         echo "<tr onclick=\"handleRowClick('{$row['idbudget']}', 'editBudget')\" style=\"cursor: pointer; position: relative;\">
-                                            <td>" . $row['numBudget'] . "/" . $row['yearBudget'] . "</td>
+                                            <td style=\"width: 150px;\">" . $row['numBudget'] . "/" . $row['yearBudget'] . "</td>
                                             <td>{$row['nomeCliente']}</td>
-                                            <td>{$row['contactoCliente']}</td>
-                                            <td>{$numWorksheet}</td>
-                                            <td>{$row['dataCriacao']}</td>
-                                            <td>{$row['responsavel']}</td>
+                                            <td style=\"width: 250px;\">{$row['contactoCliente']}</td>
+                                            <td style=\"width: 150px;\">{$numWorksheet}</td>
+                                            <td style=\"width: 200px;\">{$row['dataCriacao']}</td>
+                                            <td style=\"width: 150px;\">{$row['responsavel']}</td>
                                             <td>" . (adminPermissions($con, "adm_001", "delete") == '1' ? "<button class='btn-small' id='botDeleteBudget' onclick=\"deleteBudget('{$row['numBudget']}/{$row['yearBudget']}', {$row['idbudget']}); event.stopPropagation();\">🗑️</button>" : " ") .  "</td>
                                         </tr>";
                                     }

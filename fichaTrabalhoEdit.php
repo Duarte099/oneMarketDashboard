@@ -371,14 +371,16 @@
 
                         //Função para imprimir a ficha de trabalho
                         function worksheetPrint(idWorksheet) {
-                            // Abre a outra página em uma nova janela
-                            const printWindow = window.open('fichaTrabalhoImpressao.php?idWorksheet=' + idWorksheet, '_blank');
-
-                            // Aguarda a página carregar completamente
-                            printWindow.onload = () => {
-                                // Chama o método de impressão da nova página
-                                printWindow.print();
-                            };
+                            const userConfirmed = confirm("Já guardou as alterações?");
+                            if (userConfirmed) {
+                                // Abre a outra página em uma nova janela
+                                const printWindow = window.open('fichaTrabalhoImpressao.php?idWorksheet=' + idWorksheet, '_blank');
+                                // Aguarda a página carregar completamente
+                                printWindow.onload = () => {
+                                    // Chama o método de impressão da nova página
+                                    printWindow.print();
+                                };
+                            }
                         }
 
                         //Evento para quando a pagina for carregada atualizar o indice dos produtos

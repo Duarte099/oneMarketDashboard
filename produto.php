@@ -8,9 +8,19 @@
         exit();
     }
 ?>
-    <link rel="stylesheet" href="./css/stock.css">
-    
+    <link rel="stylesheet" href="./css/orcamentos.css">
     <title>OneMarket | Stock</title>
+    <style>
+        .content main .bottom-data .budget table th,
+        .content main .bottom-data .budget table td{
+            padding: 8px !important;
+        }
+
+        .content main .bottom-data .budget table th:last-child,
+        .content main .bottom-data .budget table td:last-child {
+            width: 100px;
+        }
+    </style>
 </head>
 
 <body>
@@ -148,11 +158,11 @@
                 <?php } ?>
             </div>
             <div class="bottom-data" id="bottom-data">
-                <div class="products">
+                <div class="budget">
                     <table>
                         <thead>
                             <tr>
-                                <th>Img</th>
+                                <th style="width: 65px;">Img</th>
                                 <th>Nome</th>
                                 <th>Referencia</th>
                                 <th>Valor</th>
@@ -178,7 +188,7 @@
                                     while ($row = $result->fetch_assoc()) {
                                         $status = $row['ativo'] == 1 ? 'Ativo' : 'Inativo';
                                         echo "<tr onclick=\"handleRowClick('{$row['id']}', 'stock')\" style=\"cursor: pointer;\">
-                                            <td>
+                                            <td style=\"width: 65px;\">
                                                 <div id=\"profilePic\" style=\"width:100%; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
                                                     <img src=\"./images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
                                                 </div>

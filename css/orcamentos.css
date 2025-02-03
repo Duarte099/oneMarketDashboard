@@ -168,7 +168,6 @@ body{
 .content main .bottom-data .budget table tbody {
     display: block;
     max-height: 422px;
-    overflow-y: auto;
     width: 100%;
 }
 
@@ -408,6 +407,19 @@ table td button.select-budget:hover {
     transition: background 0.3s;
 }
 
+.content main .bottom-data .budget table td img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+td {
+    word-break: break-word;
+    white-space: normal;
+  }
+
 .content main .budget-modal-content .form-input button:hover {
     background: #666;
 }
@@ -520,7 +532,7 @@ tbody::-webkit-scrollbar-thumb:hover {
     .btn-small {
         width: 35px;
         height: 35px;
-    }
+    }     
 
     .modal .tabela td,
     .modal .tabela th {

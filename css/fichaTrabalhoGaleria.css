@@ -399,19 +399,25 @@ select:focus {
     padding-bottom: 10px;
 }
 
-/* Grid de imagens responsivo */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Colunas responsivas */
+    gap: 0; /* Remover o espaço entre as imagens no desktop */
     margin-top: 20px;
+}
+
+.grid a {
+    display: block; /* Faz com que o link envolva a imagem completamente */
+    margin: 5px; /* Remove margens */
+    padding: 0; /* Remove preenchimento */
+    border-radius: 8px; /* Se você quiser que o link tenha bordas arredondadas */
 }
 
 .grid img {
     width: 100%;
     height: auto;
     max-width: 100%;
-    border-radius: 8px;
+    border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
     aspect-ratio: 1/1;
     object-fit: cover;
 }
@@ -432,7 +438,8 @@ select:focus {
     }
 
     .grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(2, 1fr); /* Duas colunas em dispositivos móveis */
+        gap: 10px; /* Adicionar um espaço entre as imagens em dispositivos móveis */
     }
 
     #secoes .secao h3 {
@@ -450,7 +457,8 @@ select:focus {
     }
 
     .grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr; /* Uma coluna em telas muito pequenas */
+        gap: 10px; /* Espaço entre as imagens */
     }
 
     #botSaveWorksheet {

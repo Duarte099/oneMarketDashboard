@@ -197,7 +197,7 @@ body{
     table-layout: fixed;
 }
 
-/*#worksheetModal {
+#worksheetModal {
     display: none;
     position: fixed;
     overflow: hidden;
@@ -207,11 +207,26 @@ body{
     z-index: 1000;
     padding: 20px;
     border-radius: 8px;
-    width: 1000px;
-    height: 600px;
+    width: 90%;
+    max-width: 1000px;
     background-color: var(--background-color);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}*/
+}
+
+#menu-btn {
+    display: none; /* Oculta em desktop */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001; /* Superior ao modal (1000) */
+    background: var(--theme-color);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
 
 .modal-overlay {
     display: none;
@@ -222,20 +237,6 @@ body{
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    overflow: hidden;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: var(--background-color);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .worksheet-modal-content {
@@ -495,6 +496,10 @@ table td button.select-worksheet:hover {
 
     .content main .bottom-data .worksheet table tbody tr {
         min-height: 60px; /* Aumentar a altura mínima das linhas */
+    }
+
+    #menu-btn {
+        display: block; /* Exibe apenas em mobile */
     }
 
     .modal {

@@ -11,7 +11,7 @@
         exit();
     }
 ?>
-    <link rel="stylesheet" href="./css/client.css">
+    <link rel="stylesheet" href="./css/orcamentos.css">
     <title>OneMarket | Clientes</title>
 </head>
 
@@ -99,7 +99,7 @@
             </div>
 
             <div class="bottom-data" id="bottom-data">
-                <div class="client">
+                <div class="budget">
                     <table>
                         <thead>
                             <tr>
@@ -122,11 +122,11 @@
                                         $class = $row['active'] == 1 ? 'ativo' : 'inativo';
                                         //Mostra os resultados(produtos)
                                         echo "<tr class='$class' onclick=\"handleRowClick('{$row['id']}', 'editClient')\" style=\"cursor: pointer;\">
-                                            <td data-label='Nome'>{$row['name']}</td>
-                                            <td data-label='Email'>{$row['email']}</td>
-                                            <td data-label='Contacto'>{$row['contact']}</td>
-                                            <td data-label='NIF'>{$row['nif']}</td>
-                                            <td data-label='Status'>{$status}</td>
+                                            <td>{$row['name']}</td>
+                                            <td>{$row['email']}</td>
+                                            <td>{$row['contact']}</td>
+                                            <td>{$row['nif']}</td>
+                                            <td>{$status}</td>
                                         </tr>";
                                     }
                                 } else {

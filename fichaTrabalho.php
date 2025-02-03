@@ -219,7 +219,7 @@
             }
         }
     </script>
-
+    
     <?php 
         //inclui a sideBar na página
         include('sideBar.php'); 
@@ -259,11 +259,9 @@
                         <h2>Selecione um Orçamento</h2>
                         <span class="close">&times;</span>
                     </div>
-                    <form method="GET" action="">
                         <div class="form-input">
                             <input id="search-input" name="search-input" type="text" placeholder="Search..." oninput="budgetsSearch(this)">
                         </div>
-                    </form>
                     <div class="tabela">
                         <table>
                             <thead>
@@ -314,10 +312,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Numero</th>
+                                <th style="width: 90px;">Numero</th>
                                 <th>Cliente</th>
                                 <th>Contato</th>
-                                <th>Nº Orçamento</th>
+                                <th style="width: 100px;">Orçamento</th>
                                 <th>Pronto em Armazém</th>
                                 <th>Entrada em Obra</th>
                                 <th>Saída de Obra</th>
@@ -354,10 +352,10 @@
                                     while ($row = $result->fetch_assoc()) {
                                         //mostra os resultados, caso o administrador tenha permissões para apagar mostra também, o botão para tal
                                         echo "<tr onclick=\"handleRowClick('{$row['idWorksheet']}', 'editWorksheet')\" style=\"cursor: pointer;\">
-                                            <td>" . $row['numWorksheet'] . "/" . $row['yearWorksheet'] . "</td>
+                                            <td style=\"width: 90px;\">" . $row['numWorksheet'] . "/" . $row['yearWorksheet'] . "</td>
                                             <td>{$row['nomeCliente']}</td>
                                             <td>{$row['contactoCliente']}</td>
-                                            <td>" . $row['numBudget'] . "/" . $row['yearBudget'] . "</td>
+                                            <td style=\"width: 90px;\">" . $row['numBudget'] . "/" . $row['yearBudget'] . "</td>
                                             <td>{$row['readyStorage']}</td>
                                             <td>{$row['joinWork']}</td>
                                             <td>{$row['exitWork']}</td>
@@ -389,19 +387,36 @@
                 }
             }
 
-            //Evento para o modal
+            // Evento para o modal
             document.addEventListener('DOMContentLoaded', function () {
+                console.log('DOM fully loaded and parsed');
                 const searchInput = document.getElementById('search-input');
                 const modal = document.getElementById('worksheetModal');
-                const newBudgetButton = document.getElementById('new-worksheet'); // Seleciona o botão
+                const newWorksheetButton = document.getElementById('new-worksheet'); // Seleciona o botão
+
+                // Verificar se o botão está presente no DOM
+                if (newWorksheetButton) {
+                    console.log('Button found');
+                    
+                    // Verificar se outro evento está impedindo o funcionamento do botão
+                    newWorksheetButton.addEventListener('click', function (event) {
+                        event.preventDefault(); // Evita o comportamento padrão do link
+                        console.log('Button clicked');
+                        openModal(); // Abre o modal
+                    });
+                } else {
+                    console.log('Button not found');
+                }
 
                 // Função para abrir o modal
                 window.openModal = function () {
+                    console.log('Open Modal');
                     modal.style.display = 'block';
                 };
 
                 // Função para fechar o modal
                 function closeModal() {
+                    console.log('Close Modal');
                     modal.style.display = 'none';
                     searchInput.value = '';
                     budgetsSearch(searchInput);
@@ -411,16 +426,13 @@
                 const closeButton = document.querySelector('.close');
                 if (closeButton) {
                     closeButton.addEventListener('click', closeModal);
-                }
-
-                // Adiciona evento de clique ao botão "Nova Ficha de Trabalho"
-                if (newBudgetButton) {
-                    newBudgetButton.addEventListener('click', function (event) {
-                        event.preventDefault(); // Evita o comportamento padrão do link
-                        openModal(); // Abre o modal
-                    });
+                } else {
+                    console.log('Close button not found');
                 }
             });
+
+
+
         </script>
     </div>
 </body>

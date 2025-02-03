@@ -633,14 +633,17 @@
 
                         //Função para imprimir o orçamento
                         function budgetPrint(idBudget) {
-                            // Abre a outra página em uma nova janela
-                            const printWindow = window.open('orcamentoImpressao.php?idBudget=' + idBudget, '_blank');
+                            const userConfirmed = confirm("Já guardou as alterações?");
+                            if (userConfirmed) {
+                                // Abre a outra página em uma nova janela
+                                const printWindow = window.open('orcamentoImpressao.php?idBudget=' + idBudget, '_blank');
 
-                            // Aguarda a página carregar completamente
-                            printWindow.onload = () => {
-                                // Chama o método de impressão da nova página
-                                printWindow.print();
-                            };
+                                // Aguarda a página carregar completamente
+                                printWindow.onload = () => {
+                                    // Chama o método de impressão da nova página
+                                    printWindow.print();
+                                };
+                            }
                         }
                     </script>
                 </div>

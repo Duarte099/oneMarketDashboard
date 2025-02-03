@@ -1,4 +1,3 @@
-//Evento para definir o tema de cada página, carregar o tema alocado na cache do administrador, controlo da sidebar e do botão "hamburguer"
 document.addEventListener('DOMContentLoaded', function() {
     // Variáveis globais
     const themeSwitch = document.querySelector('#theme-switch');
@@ -8,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebarToggle = document.getElementById('sidebarToggle');
     const mobileHeader = document.querySelector('.mobile-header');
     const sidebarLinks = document.querySelectorAll('.sidebar .side-menu li a');
+    const themeButton = document.querySelector('.theme-button'); // Botão de tema no fim da sidebar
 
     // Função para definir o tema
     const setTheme = (isLight) => {
@@ -30,16 +30,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Controle do sidebar
     if(sidebarToggle && sidebar) {
+        console.log("teste1");
         // Abrir/fechar menu
         sidebarToggle.addEventListener('click', () => {
+            console.log("teste2");
             sidebar.classList.toggle('open');
+            document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : 'auto'; // Desabilitar o scroll da página
         });
+
 
         // Fechar ao clicar em links (mobile)
         sidebarLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if(window.innerWidth <= 768) {
                     sidebar.classList.remove('open');
+                    document.body.style.overflow = 'auto'; // Permitir rolar a página novamente
                 }
             });
         });
@@ -58,7 +63,30 @@ document.addEventListener('DOMContentLoaded', function() {
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         }, false);
     }
+
+    // Garantir que o botão de tema fique fixo no final da sidebar (no modo responsivo)
+    if(themeButton) {
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 768) {
+                themeButton.style.position = 'absolute';
+                themeButton.style.bottom = '10px'; // Define a distância do botão do tema do fundo da tela
+                themeButton.style.width = '100%'; // Faz o botão ocupar toda a largura
+            } else {
+                themeButton.style.position = 'relative';
+                themeButton.style.bottom = 'auto'; // Remove a fixação do botão quando o sidebar não estiver em modo mobile
+                themeButton.style.width = 'auto'; // Restaurar a largura original
+            }
+        });
+
+        // Ajusta a posição do botão ao carregar a página
+        if (window.innerWidth <= 768) {
+            themeButton.style.position = 'absolute';
+            themeButton.style.bottom = '10px';
+            themeButton.style.width = '100%';
+        }
+    }
 });
+
 
 //Função para redirecionar para a página escolhida
 function handleRowClick(id, action) {

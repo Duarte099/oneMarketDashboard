@@ -32,6 +32,16 @@
         $numBudget = $row['num'];
         $yearBudget = $row['year'];
     }
+
+    //Seleciona o orçamento cujo id é igual ao que recebemos via GET e o id da ficha de trabalho é nulo
+    $sql = "SELECT idWorksheet FROM budget WHERE id = '$idBudget' AND idWorksheet IS NULL;";
+    $result = $con->query($sql);
+    //Se retonar não retornar resultados significa que este orçamento ja tem uma ficha de trabalho associada então redireciona para a dashboard
+    if ($result->num_rows <= 0) {
+        header('Location: dashboard.php');
+        exit();
+    }
+    
     //forma o numero do orçamento que vem da junção do numero dele com o ano em que foi criado
     $numOrcamento = "$numBudget/$yearBudget";
     

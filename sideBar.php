@@ -19,7 +19,7 @@
 <!-- Sidebar -->
 <div class="sidebar">
     <a href="dashboard.php" class="logo">
-        <img src="./images/logoOnemarketBranco.png" id="logoImage">
+        <img src="./images/LogoOnemarketBranco.png" id="logoImage">
     </a>
     <ul class="side-menu">
         <li class="<?php echo ($estouEm == 1) ? 'active' : ''; ?>">
@@ -71,12 +71,9 @@
 <!-- Overlay Mobile -->
 <div class="sidebar-overlay" onclick="closeSidebar()"></div>
 
-
-
 <script>
-// Função global para fechar sidebar
-function closeSidebar() {
-    document.querySelector('.sidebar').classList.remove('open');
-}
-
+    // Função global para fechar sidebar
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+    }
 </script>

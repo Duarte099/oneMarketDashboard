@@ -11,6 +11,7 @@
         exit();
     }
 ?>
+    <link rel="stylesheet" href="./css/orcamentos.css">
     <link rel="stylesheet" href="./css/admin.css">
     <title>OneMarket | Administração</title>
 </head>
@@ -227,7 +228,7 @@
                     ?>
                     <!-- Tabela de Administradores -->
                     <div class="bottom-data">
-                        <div class="admins" id="admins">
+                        <div class="budget" id="admins">
                             <div class="up">
                                 <h2>Administradores</h2>
                                 <?php // Se tiver permissões para criar novos administradores mostra o botão para tal
@@ -245,8 +246,8 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Img</th>
-                                        <th>Nome</th>
+                                        <th style="width: 60px;">Img</th>
+                                        <th style="text-align: center;">Nome</th>
                                         <th>Email</th>
                                         <th>Username</th>
                                         <th>Status</th>
@@ -269,15 +270,15 @@
                                                 $status = $row['active'] == 1 ? 'Ativo' : 'Inativo';
                                                 //mostra os resultados todos 
                                                 echo "<tr onclick=\"handleRowClick('{$row['id']}', 'editAdmin')\" style=\"cursor: pointer;\">
-                                                        <td data-label='Img'>
+                                                        <td style=\"width: 50px;\">
                                                             <div id=\"profilePic\" style=\"width:100%; max-width:500px; background: url('{$row['imagem']}') no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; border-radius: 250px;\">
                                                                 <img src=\"./images/semfundo.png\" style=\"width:100%;padding-bottom: 13px;\">
                                                             </div>
                                                         </td>
-                                                        <td data-label='Nome'>{$row['name']}</td>
-                                                        <td data-label='Email'>{$row['email']}</td>
-                                                        <td data-label='Username'>{$row['user']}</td>
-                                                        <td data-label='Status'>{$status}</td>
+                                                        <td style=\"text-align: center;\">{$row['name']}</td>
+                                                        <td>{$row['email']}</td>
+                                                        <td>{$row['user']}</td>
+                                                        <td>{$status}</td>
                                                     </tr>";
                                             }
                                         } else {

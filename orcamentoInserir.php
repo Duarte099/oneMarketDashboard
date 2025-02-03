@@ -79,7 +79,7 @@
                     $result->execute();
                     
                     //Insere as secções na tabela de versões
-                    $sql = "INSERT INTO budget_version (idVersion, idBudget, nameSection, orderSection, created) VALUES (1, $idBudget, '$secao', $i);";
+                    $sql = "INSERT INTO budget_version (idVersion, idBudget, nameSection, orderSection) VALUES (1, $idBudget, '$secao', $i);";
                     $result = $con->prepare($sql);
                     $result->execute();
                 }
