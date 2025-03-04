@@ -2,7 +2,7 @@
     //Inclui a base de dados e a segurança da pagina 
     include('./db/conexao.php');
 
-    //Obtem o adno atual
+    //Obtem o ano atual
     $anoAtual = date('Y');
 
     //Recebe o ano via GET, caso esteja vazio atribui o ano atual 

@@ -364,7 +364,7 @@
                                                 </tr>
                                             </thead>
                                             <?php 
-                                                //Percorre todos os produtos masi 10 que são os que podem ser adicionados
+                                                //Percorre todos os produtos mais 10 que são os que podem ser adicionados
                                                 for ($j=1; $j <= $numProducts + 10; $j++) { 
                                                     //incrementa o index dos produtos que é o numero que aparece antes de cada produto, para os contar
                                                     $produtosIndex++;

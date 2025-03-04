@@ -269,7 +269,6 @@ table td button.select-budget:hover {
     width: 800px; /* Define largura fixa */
     height: auto; 
     background-color: var(--background-color); /* Certifique-se de ter esta variável */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     width: 90%; /* Alterado de 800px fixos */
     max-width: 800px; /* Largura máxima */
     padding: 25px;
