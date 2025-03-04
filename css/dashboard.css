@@ -278,7 +278,7 @@ button:not(.year-button) {
 
 .year-selector #currentYear {
     font-size: 18px;
-    color: #f5f5f5;
+    color: var(--primary-text-color);
     font-weight: bold;
 }
 

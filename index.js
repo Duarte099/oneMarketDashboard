@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
             sidebar.classList.toggle('open');
             document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : 'auto'; // Desabilitar o scroll da página
         });
+        console.log("teste3");
+        // Abrir/fechar menu
 
 
         // Fechar ao clicar em links (mobile)
@@ -131,7 +133,7 @@ $(document).ready(function () {
      
 });
 
-// Fechar sidebar ao clicar fora (mobile)
+// Fechar sidebar ao clicar fora (telemovel)
 function closeSidebar() {
     const sidebar = document.querySelector('.sidebar');
     if(sidebar && window.innerWidth <= 768) {

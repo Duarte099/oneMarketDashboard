@@ -246,7 +246,7 @@
                 //Se o administrador tiver permissões para criar ficahs de trabalho então mostra o botão para tal
                 if (adminPermissions($con, "adm_002", "inserir") == 1) { 
                     ?>
-                    <a href="novaFichaTrabalho.php" id="new-worksheet" class="report">
+                    <a href="" id="new-worksheet" class="report">
                         <i class='bx bx-plus'></i>
                         <span>Nova Ficha de Trabalho</span>
                     </a>
@@ -374,7 +374,6 @@
 
         </main>
 
-        <script src="./index.js" defer></script>
         <script>
             //Função para deletar uma ficha de trabalho
             function deleteWorksheet(num, id) {
@@ -389,7 +388,6 @@
 
             // Evento para o modal
             document.addEventListener('DOMContentLoaded', function () {
-                console.log('DOM fully loaded and parsed');
                 const searchInput = document.getElementById('search-input');
                 const modal = document.getElementById('worksheetModal');
                 const newWorksheetButton = document.getElementById('new-worksheet'); // Seleciona o botão
@@ -401,7 +399,6 @@
                     // Verificar se outro evento está impedindo o funcionamento do botão
                     newWorksheetButton.addEventListener('click', function (event) {
                         event.preventDefault(); // Evita o comportamento padrão do link
-                        console.log('Button clicked');
                         openModal(); // Abre o modal
                     });
                 } else {
@@ -410,13 +407,11 @@
 
                 // Função para abrir o modal
                 window.openModal = function () {
-                    console.log('Open Modal');
                     modal.style.display = 'block';
                 };
 
                 // Função para fechar o modal
                 function closeModal() {
-                    console.log('Close Modal');
                     modal.style.display = 'none';
                     searchInput.value = '';
                     budgetsSearch(searchInput);
@@ -430,9 +425,6 @@
                     console.log('Close button not found');
                 }
             });
-
-
-
         </script>
     </div>
 </body>

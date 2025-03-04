@@ -287,7 +287,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 150px;">Número</th>
-                                <th style="text-align: center;">Cliente</th>
+                                <th>Cliente</th>
                                 <th style="width: 250px;">Contacto</th>
                                 <th style="width: 150px;">Ficha Trabalho</th>
                                 <th style="width: 200px;">Data Criação</th>

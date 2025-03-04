@@ -9,7 +9,7 @@
     $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 
     //codificação
-    //$con->set_charset("utf8mb4");
+    $con->set_charset("utf8mb4");
 
     // Verificação de erro de conexão (opcional)
     if (mysqli_connect_errno()) {

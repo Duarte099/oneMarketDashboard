@@ -35,42 +35,12 @@ Funcionalidades
     7. Perfil
         - Ver e Editar o seu perfil
 
-Instruções de execução
-
-    1. Fazer download do projeto
-
-    2. Fazer download do XAMPP
-        - https://www.apachefriends.org
-
-    3. Colocar o Projeto na Pasta do XAMPP.
-        - Localizar a pasta htdocs do XAMPP (normalmente em C:\xampp\htdocs\)
-        - Copiar a pasta do projeto para dentro da pasta htdocs
-    
-    4. Iniciar o Servidor Local
-        - Abrir o XAMPP Control Panel
-        - Clicar em Start nos módulos Apache e MySQL
-    
-    5. Base de Dados
-        - Aceder ao phpMyAdmin através: http://localhost/phpmyadmin
-        - Clicar em importar
-        - Selecionar o ficheiro da base de dados no botão explorar, ficheiro na raiz do projeto
-        - CLicar em Importar
-
-    6. Aceder ao Projeto
-        - Abrir o navegador e colocar : http://localhost/nome-da-pasta-do-projeto/
-        - Substituir o nome_da_pasta_do_projeto pelo nome que esta na sua pasta em htdocs
-
-    7. Caso os "ç" e os "~" não estejam a aparecer tem de ir ao arquivo db/conexao.db e descomentar a linha 12
-
 Tecnologia Usadas
-
-    - Visual Studio Code
-    - PHP
+    - HTML
+    - CSS
     - JavaScript
-    - WAMPP
+    - PHP
     - MYSQL
-    - GitHub
-    - GIMP
 
 Site online:
     http://onemarket.byethost5.com
